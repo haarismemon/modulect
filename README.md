@@ -1,13 +1,13 @@
 # Recursive Husky: Modulect
 
 ## Dev setup:
-> git clone https://github.kcl.ac.uk/k1502493/project-run.git
 
-> cd project-run
-
-> bundle install
-
-> rails s
+```
+git clone https://github.kcl.ac.uk/k1502493/project-run.git 
+cd project-run 
+bundle install 
+rails s
+```
 
 Visit 0.0.0.0:3000 in your browser.
 
