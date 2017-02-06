@@ -32,6 +32,8 @@ group :development do
   # Change application code and see the changes without restarting the server
   gem 'spring',                '1.7.2'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # Run 'bundle exec guard' in a terminal to run your tests automatically
+  gem 'guard-rspec', require: false
 end
 
 group :production do
