@@ -15,6 +15,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -25,6 +26,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
 end
 
+
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console',           '>= 3.3.0'
@@ -34,6 +36,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Run 'bundle exec guard' in a terminal to run your tests automatically
   gem 'guard-rspec', require: false
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 group :production do
