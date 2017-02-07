@@ -13,7 +13,7 @@ Visit 0.0.0.0:3000 in your browser.
 
 ## Conventions:
 * [AirBNB Ruby Style Guide](https://github.com/airbnb/ruby)
-* Pull Requests: *Never merge your own code*
+* Pull Requests: *Never merge your own code* and use a label to mark the request
 * Imperative present tense commit messages
 * New branch for each user story/task
 * Unit and/or Integration test your own code
