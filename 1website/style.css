@@ -1,0 +1,94 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css?family=Raleway|Open+Sans|Varela+Round');
+@import url('awesome-bootstrap-checkbox.css');
+::selection {
+    background: rgba(61, 201, 179, 0.6);
+    /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+    background: rgba(61, 201, 179, 0.6);
+    /* Gecko Browsers */
+}
+body {
+    font-family: "Varela Round";
+    color: #555459
+}
+p {
+    font-family: "Open Sans"
+}
+header {
+    position: fixed;
+    height: 60px;
+    border-bottom: 1px solid #dfe2e1;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
+    transition: top 0.3s ease-in-out;
+    height: 70px;
+    width: 100%;
+    background: white;
+    z-index: 1000000000;
+}
+footer {
+    height: 60px;
+    border-top: 1px solid #dfe2e1;
+}
+#page {
+    min-height: 800px;
+    background: #f9f9f9;
+    padding-top: 90px;
+    padding-bottom:20px;
+}
+.login-card {
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+    padding: 10px 30px 30px 30px;
+    border: 1px solid #e8e8e8;
+}
+#login-area {
+    margin-top: 20px;
+}
+
+label {font-size:15px;-webkit-user-select:none;}
+
+.form-control {
+    font-size: 18px;
+    padding: 25px 15px;
+}
+textarea:focus,
+input:focus,
+.uneditable-input:focus {
+    border-color: rgba(42, 178, 123, 0.8) !important;
+    box-shadow: 0 0.4px 0.4px rgba(42, 178, 123, 0.075) inset, 0 0 6px rgba(42, 178, 123, 0.6) !important;
+    outline: 0 none !important;
+}
+.btn {
+    color: #fff;
+    background: #2ab27b;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    text-transform: uppercase;
+    box-shadow: 0px 3px 0px 0px #228e62;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+.btn:hover,
+.btn:focus {
+    background: rgba(42, 178, 123, 0.7);
+    color: #fff;
+}
+.btn:active {
+    background: #14563b;
+    box-shadow: 0px 3px 0px 0px #228e62;
+}
+
+.form-group{margin-bottom:20px;}
+
+@media (max-width: 800px) {
+    header {
+        position: absolute;
+    }
+    [class*="col-"] {
+        margin-bottom: 15px;
+    }
+}
