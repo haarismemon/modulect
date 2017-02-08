@@ -11,7 +11,7 @@
 <!doctype html>
 <html>
    <head>
-      <title>modulect | login</title>
+      <title>Modulect</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -45,7 +45,7 @@
             <div class="row">
                <div class="col-md-5 col-md-offset-1">
                   <div class="col-md-12 login-card">
-                     <h2>modulect log in</h2>
+                     <h2>Log in</h2>
                      <div id="login-area">
                         <form>
                            <div class="form-group">
@@ -68,7 +68,7 @@
                               </button>
                            </div>
                            <div class="form-group">
-                              <p style="margin-top:30px;"><a href="#">Forgot your password?</a>
+                              <p style="margin-top:30px;"><a href="password-reset.php">Forgot your password?</a>
                               </p>
                            </div>
                         </form>
@@ -77,7 +77,7 @@
                </div>
                <div class="col-md-5">
                   <div class="col-md-12 login-card">
-                     <h2>register</h2>
+                     <h2>Register</h2>
                      <p>It's quick and easy to sign-up. Just fill in a few details and you're done!</p>
                      <div style="margin-top:20px;"><a href="register.php" class="btn btn-lg btn-block" type="submit">register&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></a>
                      </div>
@@ -86,7 +86,7 @@
             </div>
             <div class="row" style="margin-top:40px;">
                <div class="col-md-12 text-center">
-                  <p>Need help? <a href="#">Contact KCL modulect support</a>
+                  <p>Need help? <a href="#">Contact KCL Modulect support</a>
                   </p>
                </div>
             </div>

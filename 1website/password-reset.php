@@ -11,7 +11,7 @@
 <!doctype html>
 <html>
    <head>
-      <title>Register | Modulect</title>
+      <title>Password reset | Modulect</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -45,27 +45,16 @@
             <div class="row">
                <div class="col-md-6 col-md-offset-3">
                   <div class="col-md-12  login-card">
-                     <h2>Modulect registration</h2>
+                     <h2>Password reset</h2>
                      <div id="login-area">
                         <form>
                            <div class="form-group">
-                              <label for="inputName" class="sr-only">Name</label>
-                              <input type="text" id="inputName" class="form-control" placeholder="Full name" required autofocus>
-                           </div>
-                           <div class="form-group">
                               <label for="inputEmail" class="sr-only">Email address</label>
-                              <input type="email" id="inputEmail" class="form-control" placeholder="Email: first.last@kcl.ac.uk" required>
+                              <input type="email" id="inputEmail" class="form-control" placeholder="Email: first.last@kcl.ac.uk" required autofocus>
                            </div>
+
                            <div class="form-group">
-                              <label for="inputPassword" class="sr-only">Password</label>
-                              <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                           </div>
-                           <div class="form-group">
-                              <label for="inputCPassword" class="sr-only">Confirm Password</label>
-                              <input type="password" id="inputCPassword" class="form-control" placeholder="Confirm password" required>
-                           </div>
-                           <div class="form-group">
-                              <button class="btn btn-lg btn-block" type="submit">Sign up&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
+                              <button class="btn btn-lg btn-block" type="submit">Reset password&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
                               </button>
                            </div>
                            <div class="form-group">
