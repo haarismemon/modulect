@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Tag, type: :model do
   before do
-    @tag = Career.new(name: "Finance")
+    @tag = build(:career)
   end
 
   describe "with a blank name" do
