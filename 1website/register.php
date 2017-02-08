@@ -45,7 +45,7 @@
             <div class="row">
                <div class="col-md-6 col-md-offset-3">
                   <div class="col-md-12  login-card">
-                     <h2>Modulect registration</h2>
+                     <h2>Sign up</h2>
                      <div id="login-area">
                         <form>
                            <div class="form-group">
