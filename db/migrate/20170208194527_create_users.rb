@@ -9,7 +9,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.integer :user_level
       t.boolean :entered_before
       t.integer :year_of_study
-      t.integer :course_id
+      t.string :course_id
 
       t.timestamps
     end
