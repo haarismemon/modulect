@@ -11,7 +11,8 @@
 }
 body {
     font-family: "Varela Round";
-    color: #555459
+    color: #555459;
+    font-size: 14px;
 }
 p {
     font-family: "Open Sans"
@@ -35,7 +36,7 @@ footer {
     min-height: 800px;
     background: #f9f9f9;
     padding-top: 90px;
-    padding-bottom:20px;
+    padding-bottom: 20px;
 }
 .login-card {
     background-color: #fff;
@@ -47,9 +48,10 @@ footer {
 #login-area {
     margin-top: 20px;
 }
-
-label {font-size:15px;-webkit-user-select:none;}
-
+label {
+    font-size: 15px;
+    -webkit-user-select: none;
+}
 .form-control {
     font-size: 18px;
     padding: 25px 15px;
@@ -81,9 +83,33 @@ input:focus,
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
-
-.form-group{margin-bottom:20px;}
-
+.form-group {
+    margin-bottom: 20px;
+}
+.flash-alert {
+    padding: 15px;
+    border: 1px solid #e8e8e8;
+    background: #fff;
+    color: #555459;
+    margin-bottom: 15px;
+    border-left-width: 5px;
+    border-radius: .25rem;
+    font-family: "Open Sans";
+}
+.flash-alert-error {
+    border-left-color: #cb5234;
+}
+.flash-alert-error i {
+    color: #cb5234;
+    margin-right: 8px;
+}
+.flash-alert-success {
+    border-left-color: #2ab27b;
+}
+.flash-alert-success i {
+    color: #2ab27b;
+    margin-right: 8px;
+}
 @media (max-width: 800px) {
     header {
         position: absolute;
