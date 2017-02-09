@@ -1,75 +1,166 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  context "when it is valid" do
-    before do
-      @user = User.new(first_name: "Allison",
-                       last_name: "Wonderland",
-                       email: "allison_wonderland@eemail.com",
-                       username: "allisonBurgers",
-                       password_digest: "password",
-                       user_level: 3,
-                       entered_before: false,
-                       year_of_study: 2)
 
+  describe "#valid?" do
 
+    let(:user) { build(:user) }
 
-    end
-    it "has a first name" do
-      @user.first_name = "fname"
-      expect(@user.valid?).to eq true
-      @user.first_name = ""
-      expect(@user.valid?).to eq false
+    context "when all fields are valid" do
+      it "evaluates to true" do
+        expect(user.valid?).to eq true
+      end
     end
 
-    it "has a last name" do
-      @user.last_name = "lname"
-      expect(@user.valid?).to eq true
-      @user.last_name = ""
-      expect(@user.valid?).to eq false
+    context "when first name is blank" do
+      before do
+        user.first_name = nil
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
     end
 
-    it "has an email" do
-      @user.email = "o@l.com"
-      expect(@user.valid?).to eq true
-      @user2 = User.create(first_name: "Allison",
-                       last_name: "Wonderland",
-                       email: "efw@rfew.com",
-                       username: "allisonBurgers",
-                       password_digest: "password",
-                       user_level: 3,
-                       entered_before: false,
-                       year_of_study: 2)
-      @user.email = "efw@rfew.com"
-      expect(@user.valid?).to eq false
+    context "when last name is blank" do
+      before do
+        user.last_name = nil
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
     end
 
-    it "has a username" do
-      @user.username = "itsme"
-      expect(@user.valid?).to eq true
-      @user.username = ""
-      expect(@user.valid?).to eq false
+    context "when first name is longer than 70 characters" do
+      before do
+        user.first_name = "a" * 71
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
     end
 
-    it "has a password" do
-      @user.password_digest = "pasworddd"
-      expect(@user.valid?).to eq true
-      @user.password_digest = ""
-      expect(@user.valid?).to eq false
+    context "when last name is longer than 70 characters" do
+      before do
+        user.last_name = "a" * 71
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
     end
 
-    it "has a user_level" do
-      @user.user_level = 2
-      expect(@user.valid?).to eq true
-      @user.user_level = 222
-      expect(@user.valid?).to eq false
+    context "when email is blank" do
+      before do
+        user.email = nil
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
     end
 
-    it "has a year of study" do
-      @user.year_of_study = 1
-      expect(@user.valid?).to eq true
-      @user.year_of_study = 321
-      expect(@user.valid?).to eq false
+    context "when email is of wrong format" do
+      let(:invalid_emails) { %w(foo foo@bar foo@.bar
+                               foo@bar.123 foo@bar..baz
+                               foo.bar@baz @foo.bar) }
+      it "evaluates to false" do
+        invalid_emails.each do |email|
+          user.email = email
+          expect(user.valid?).to eq false
+        end
+      end
+    end
+
+    context "when email is already taken" do
+      before do
+        create(:user, email: user.email)
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
+    end
+
+    context "when email is longer than 255 characters" do
+      before do
+        user.email = "a" * 256
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
+    end
+
+    context "when username is blank" do
+      before do
+        user.username = nil
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
+    end
+
+    context "when username is already taken" do
+      before do
+        create(:user, username: user.username)
+      end
+      it "evaluates to false" do
+        expect(user.valid?). to eq false
+      end
+    end
+
+    context "when user_level is one digit long" do
+      context "but not 1|2|3" do
+        before do
+          user.user_level = 4
+        end
+        it "evaluates to false" do
+          expect(user.valid?).to eq false
+        end
+      end
+    end
+
+    context "when user_level is longer than one digit" do
+      before do
+        user.user_level = 11
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
+    end
+
+    context "when year_of_study is one digit long" do
+      context "and is one of 1|2|3|4|5|6" do
+        before do
+          user.year_of_study = 1
+        end
+        it "evaluates to true" do
+          expect(user.valid?).to eq true
+        end
+      end
+
+      context "and is not one of 1|2|3|4|5|6" do
+        before do
+          user.year_of_study = 7
+        end
+        it "evaluates to false" do
+          expect(user.valid?).to eq false
+        end
+      end
+    end
+
+    context "when year_of_study is blank" do
+      before do
+        user.year_of_study = nil
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
+    end
+
+    context "when year_of_study is longer than one digit" do
+      before do
+        user.year_of_study = 10
+      end
+      it "evaluates to false" do
+        expect(user.valid?).to eq false
+      end
     end
   end
 end

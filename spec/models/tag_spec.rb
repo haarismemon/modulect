@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Tag, type: :model do
-  # Using FactoryGirl to build a test object
+  # Using FactoryGirl to build test objects
   let (:career) { build(:career, name: "Software QA Tester") }
   let (:interest) { build(:interest, name: "Finance") }
 

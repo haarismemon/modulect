@@ -1,11 +1,21 @@
 class User < ApplicationRecord
-  validates :first_name, presence: true
-  validates :last_name, presence: true
-  validates :email, presence: true, :uniqueness => true
-  validates :username, presence: true, :uniqueness => true
-  validates :password_digest, presence: true
-  validates :user_level, length: { is: 1}
-  validates :year_of_study, presence: true, length: { is: 1}
+  validates :first_name, presence: true,
+                         length: { maximum: 70}
+  validates :last_name, presence: true,
+                        length: { maximum: 70}
+  VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+  validates :email, presence: true,
+                    length: { maximum: 255 },
+                    uniqueness: { case_sensitive: false },
+                    format: { with: VALID_EMAIL_REGEX }
+  validates :username, presence: true,
+                       uniqueness: true
+  validates :user_level, length: { is: 1},
+                         inclusion: { in: [1, 2, 3]}
+  YEAR_OF_STUDY_REGEX = /\d/
+  validates :year_of_study, presence: true,
+                            length: { is: 1 },
+                            inclusion: { in: [1, 2, 3, 4, 5, 6]}
 
   has_and_belongs_to_many :uni_modules
 end

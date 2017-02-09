@@ -26,4 +26,15 @@ FactoryGirl.define do
     tag
     uni_module
   end
+
+  factory :user do
+    first_name "Allison"
+    last_name "Wonderland"
+    email "allison_wonderland@eemail.com"
+    username "allisonBurgers"
+    password_digest "password"
+    user_level 3
+    entered_before false
+    year_of_study 2
+  end
 end
