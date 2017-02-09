@@ -24,12 +24,26 @@ footer {
 #footer-logo {
   width: 150px;
   height: auto;
+  opacity: 1;
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+
+#footer-logo:hover {
+  opacity: .5;
 }
 
 .fa-ul .fa-2x {
   margin-left: 15px;
   color: #2AB27B;
   font-size: 1.5em;
+  opacity: 1;
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+
+.fa-ul .fa-2x:hover {
+  opacity: .5;
 }
 
 #contact-us {
