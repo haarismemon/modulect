@@ -1,0 +1,2 @@
+class Career < Tag
+end
