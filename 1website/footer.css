@@ -5,7 +5,7 @@ html {
 
 .footer-bottom {
   background: #f8f8f8;
-  border-top: 1px solid #DDDDDD;
+  border-top: 1px solid #2AB27B;
   padding-top: 7px;
   padding-bottom: 7px;
 }
@@ -20,4 +20,9 @@ footer {
 #footer-logo {
   width: 150px;
   height: auto;
+}
+
+.fa-ul .fa-2x {
+  margin-left: 15px;
+  color: #2AB27B;
 }
