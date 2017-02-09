@@ -31,3 +31,17 @@ footer {
   color: #2AB27B;
   font-size: 1.2em;
 }
+
+@media only screen and (max-width: 560px) {
+  #footer-logo {
+    width: 120px;
+  }
+
+  .fa-ul .fa-2x {
+    margin-left: 5px;
+  }
+
+  #contact-us {
+    font-size: 1em;
+  }
+}
