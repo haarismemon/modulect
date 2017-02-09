@@ -6,7 +6,7 @@
  */
 ?>
 <!--Header stuff goes here-->
-<nav class="navbar navbar-default" id="nav">
+<div class="navbar navbar-default" id="modulect-nav">
 
       <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -38,4 +38,4 @@
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
-    </nav>
+    </div>
