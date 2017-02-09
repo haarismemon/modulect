@@ -1,4 +1,8 @@
 FactoryGirl.define do
+  factory :tagging do
+    tag_id 1
+    uni_module_id 1
+  end
   factory :tag do
     name "Arbitrary Tag"
     type "Career"
