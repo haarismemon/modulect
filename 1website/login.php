@@ -73,7 +73,7 @@
                   <div class="col-md-12 login-card">
                      <h2>Register</h2>
                      <p>It's quick and simple to register. Once signed up, you can use Modulect as you want.</p>
-                     <div style="margin-top:20px;"><a href="register.php" class="btn btn-lg btn-block" type="submit">register&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                     <div style="margin-top:20px;"><a href="register.php" class="btn btn-lg btn-block">register&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></a>
                      </div>
                   </div>
                </div>

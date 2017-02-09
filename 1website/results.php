@@ -60,7 +60,7 @@
 <div class="row" style="margin-bottom:20px;">
    <div class="col-md-6 col-md-offset-1">
 <h1>Here's what we found:</h1>
-<h5>Showing 6 modules</h5>
+<h5>Showing 2 modules</h5>
 </div>
 
 <div class="col-md-4 text-right" style="padding-top:40px;">
@@ -77,11 +77,12 @@
             <div class="row">
 
 <style>
-  .result-card-main{border-right:1px solid #e8e8e8;}
-
+  .result-card-main{border-right:1px dotted #dfe2e1;}
+.btn-small{    width: 150px;
+    font-size: 13px;}
 @media (max-width: 768px) {
 
-  .result-card-main{border-right:0px;border-bottom:1px solid #e8e8e8;margin-bottom:20px;padding-bottom:20px;}
+  .result-card-main{border-right:0px;border-bottom:1px dotted #dfe2e1;margin-bottom:20px;padding-bottom:20px;}
 
 }
 
@@ -96,24 +97,24 @@
                      <h2>5CCS2INS Internet Systems</h2>
                      <h4>Second Year, Semester 1 - 15 Credits</h4>
 
-                     <h5>Description</h5>
+                     <h5 style="margin-top:20px;">Description</h5>
                      <p>The aims of this module are: to provide an overall understanding of the communication model used on the Internet,
 to provide an in-depth understanding of the main underlying software components of the Internet to provide an overview of the main languages used on the Internet,
 to provide an understanding of security threats to Internet application and main techniques used to tackle them.</p>
 
-<div>
-  SAVE MODULE
-<a style="cursor:pointer;float:right;" data-toggle="collapse" data-target="#result-1-more">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a></div>
+<div style="margin-top:20px">
+  <a href="#" class="btn btn-lg btn-small"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+<a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-1-more">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a></div>
 
 
-<div id="result-1-more" class="collapse" style="margin-top:0px;">
+<div id="result-1-more" class="collapse" style="padding-top:25px;">
+  <h5 style="margin-top:20px;">Potential careers aspects for this module</h5>
+  <p>Read, from, model, okay</p>
 
-                       <h5>Requirements/Pre-requisites</h5>
+                       <h5 style="margin-top:20px;">Requirements/Pre-requisites</h5>
     <p>(none)</p>
-                       <h5 style="margin-top:20px;">Lecturers</h5
-                                            <h5 style="margin-top:20px;">Assessment methods</h5>
-                         <p>80% exam, 20% coursework</p>
-  <p>Dr Steve Phelps and Dr Samhar Mahmood</p>
+                       <h5 style="margin-top:20px;">Lecturers</h5>
+<p>Dr Steve Phelps and Dr Samhar Mahmood</p>
                        <h5 style="margin-top:20px;">Assessment methods</h5>
     <p>80% exam, 20% coursework</p>
 
@@ -123,8 +124,9 @@ to provide an understanding of security threats to Internet application and main
 
 </div>
 <div class="col-md-3">
-<h5>Tag percentage match</h5>
-<div style="color:#2ab27b;font-size:18px;">85%</div>
+<h5>Tag match </h5>
+<div style="color:#2ab27b;font-size:18px;">80%</div>
+<p>4 out of 5</p>
 
 
 <h5 style="margin-top:20px">Matched tags</h5>
