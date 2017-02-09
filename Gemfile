@@ -42,6 +42,10 @@ group :development do
   gem "binding_of_caller"
 end
 
+group :test do
+  gem 'database_cleaner'
+end
+
 group :production do
   # Use postrgres in production
   gem 'pg', '0.18.4'
