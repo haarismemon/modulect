@@ -6,7 +6,6 @@
 .navbar-default {
   background-color: #ffffff;
   border-color: #ffffff;
-  font-family: "Varela Round";
   font-size: 16px;
   box-shadow: 0px 1px 0px 0px #D3D3D3
 }
@@ -123,9 +122,4 @@
   .btn-drop:active {
     background: transparent;
   }
-}
-
-#header-logo {
-  height: 30px;
-  width: auto;
 }
