@@ -22,7 +22,6 @@ gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'factory_girl_rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug',      '9.0.0', platform: :mri
   gem 'rspec-rails', '~> 3.5'
@@ -40,10 +39,6 @@ group :development do
   gem 'guard-rspec', require: false
   gem "better_errors"
   gem "binding_of_caller"
-end
-
-group :test do
-  gem 'database_cleaner'
 end
 
 group :production do
