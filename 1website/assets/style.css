@@ -118,6 +118,7 @@ input:focus,
   font-size: 16px;
 /*  box-shadow: 0px 10px 0px 0px #D3D3D3;*/
 border-bottom: 1px solid #D3D3D3;
+border-radius: 0px;
 
 }
 .navbar-default .navbar-brand {
@@ -257,14 +258,6 @@ border-bottom: 1px solid #D3D3D3;
 
 /** Footer stuff by Khalil **/
 
-.footer-bottom {
-  background: #ffffff;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  font-family: "Varela Round";
-  font-size: 16px;
-  border-top:1px solid #D3D3D3
-}
 
 #rec-husky-footer {
   color: #2AB27B;
