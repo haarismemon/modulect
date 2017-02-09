@@ -46,4 +46,20 @@ RSpec.describe Tag, type: :model do
       expect(invalid_tag.valid?).to eq false
     end
   end
+
+  describe "#add_module" do
+
+    let (:valid_module) { create(:uni_module) }
+
+    context "when passed a valid module" do
+      before do
+        career.save
+        career.add_module(valid_module)
+      end
+
+      it "adds the module to the tag's list of modules" do
+        expect(career.modules.include?(valid_module)).to eq true
+      end
+    end
+  end
 end

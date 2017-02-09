@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe UniModule, type: :model do
 
-
   context "when it is valid" do
     before do
       @module = UniModule.new(name: "Programming Applications",
@@ -41,6 +40,22 @@ RSpec.describe UniModule, type: :model do
                                      lecturers: "Lela Kouluri")
       @module.code = "4CCS1PRP"
       expect(@module.valid?).to eq false
+    end
+  end
+
+  describe "#add_tag" do
+
+    let (:valid_tag) { create(:tag) }
+    let (:valid_module) { create(:uni_module) }
+
+    context "when passed a valid tag" do
+      before do
+        valid_module.add_tag(valid_tag)
+      end
+
+      it "adds the tag to the module's list of tags" do
+        expect(valid_module.tags.include?(valid_tag)).to eq true
+      end
     end
   end
 end

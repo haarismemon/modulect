@@ -1,7 +1,7 @@
 # Build mock objects for testing purposes here.
 # The name of a factory needs to be the same as the model's that it is building.
 FactoryGirl.define do
-  :factory :tag do
+  factory :tag do
     name "Arbitrary Tag"
     type "Career"
   end
