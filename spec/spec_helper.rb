@@ -35,7 +35,8 @@ RSpec.configure do |config|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
-  # Cleans the database after every test run.
+  # Ensures that records that are already in the database
+  # are not considered when running tests.
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
