@@ -76,27 +76,46 @@
 
             <div class="row">
 
+<style>
+  .result-card-main{border-right:1px solid #e8e8e8;}
 
+@media (max-width: 768px) {
+
+  .result-card-main{border-right:0px;border-bottom:1px solid #e8e8e8;margin-bottom:20px;padding-bottom:20px;}
+
+}
+
+
+</style>
                <div class="col-md-10 col-md-offset-1">
-                  <div class="col-md-12 login-card" style="
-    border-left-width: 5px;
-    border-radius: .25rem;border-left-color: #2ab27b;">
+                  <div class="col-md-12 login-card result-card" style="
+                  border-left-width: 5px;
+                  border-radius: .25rem;border-left-color: #2ab27b;">
 
-<div class="col-md-9" style="border-right:1px solid #e8e8e8">
-
+<div class="col-md-9 result-card-main">
                      <h2>5CCS2INS Internet Systems</h2>
-                     <h5>Semester 2, Third Year</h5>
+                     <h4>Second Year, Semester 1 - 15 Credits</h4>
+
+                     <h5>Description</h5>
                      <p>The aims of this module are: to provide an overall understanding of the communication model used on the Internet,
 to provide an in-depth understanding of the main underlying software components of the Internet to provide an overview of the main languages used on the Internet,
 to provide an understanding of security threats to Internet application and main techniques used to tackle them.</p>
-<a style="cursor:pointer;" data-toggle="collapse" data-target="#result-1-more">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+
+<div>
+  SAVE MODULE
+<a style="cursor:pointer;float:right;" data-toggle="collapse" data-target="#result-1-more">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a></div>
 
 
-<div id="result-1-more" class="collapse" style="margin-top:10px;">
+<div id="result-1-more" class="collapse" style="margin-top:0px;">
 
-  <p>The aims of this module are: to provide an overall understanding of the communication model used on the Internet,
- to provide an in-depth understanding of the main underlying software components of the Internet to provide an overview of the main languages used on the Internet,
- to provide an understanding of security threats to Internet application and main techniques used to tackle them.</p>
+                       <h5>Requirements/Pre-requisites</h5>
+    <p>(none)</p>
+                       <h5 style="margin-top:20px;">Lecturers</h5
+                                            <h5 style="margin-top:20px;">Assessment methods</h5>
+                         <p>80% exam, 20% coursework</p>
+  <p>Dr Steve Phelps and Dr Samhar Mahmood</p>
+                       <h5 style="margin-top:20px;">Assessment methods</h5>
+    <p>80% exam, 20% coursework</p>
 
 
 </div>
@@ -105,7 +124,16 @@ to provide an understanding of security threats to Internet application and main
 </div>
 <div class="col-md-3">
 <h5>Tag percentage match</h5>
-<p style="color:#2ab27b;font-size:20px;">85%</p>
+<div style="color:#2ab27b;font-size:18px;">85%</div>
+
+
+<h5 style="margin-top:20px">Matched tags</h5>
+<div style="font-size:18px;">HERE</div>
+
+
+
+<h5 style="margin-top:20px">Module pass rate</h5>
+<div style="font-size:18px;">74%</div>
 
 
 </div>
