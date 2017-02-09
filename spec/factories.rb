@@ -3,14 +3,14 @@
 FactoryGirl.define do
   factory :tag do
     name "Arbitrary Tag"
-    type "Career"
+    type "CareerTag"
   end
 
-  factory :career do
+  factory :career_tag do
     name "Software Engineer"
   end
 
-  factory :interest do
+  factory :interest_tag do
     name "Medicine"
   end
 
@@ -22,8 +22,4 @@ FactoryGirl.define do
     lecturers "Dr. Steffen Zschaler, Dr. Martin Chapman"
   end
 
-  factory :tagging do
-    tag
-    uni_module
-  end
 end
