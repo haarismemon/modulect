@@ -1,8 +1,4 @@
 FactoryGirl.define do
-  factory :tagging do
-    tag_id 1
-    uni_module_id 1
-  end
   factory :tag do
     name "Arbitrary Tag"
     type "Career"
@@ -14,5 +10,18 @@ FactoryGirl.define do
 
   factory :interest do
     name "Medicine"
+  end
+
+  factory :uni_module do
+    name "Programming Applications"
+    code "4CCS1PRA"
+    description "PRA is aimed to further develop the Java programming
+    skills of first year students"
+    lecturers "Dr. Steffen Zschaler, Dr. Martin Chapman"
+  end
+
+  factory :tagging do
+    tag
+    uni_module
   end
 end
