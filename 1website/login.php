@@ -85,7 +85,7 @@
                </div>
             </div>
          </div>
-      </div><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />vvtest
-      <?php //include 'includes/partial-footer.php'; ?>
+      </div>
+      <?php include 'includes/partial-footer.php'; ?>
    </body>
 </html>

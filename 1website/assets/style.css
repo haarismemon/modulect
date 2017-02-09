@@ -268,31 +268,95 @@ border-bottom: 1px solid #D3D3D3;
 /** Footer stuff by Khalil **/
 
 .footer-bottom {
-  background: #f8f8f8;
-  border-top: 1px solid #2AB27B;
+  background: #ffffff;
   padding-top: 7px;
   padding-bottom: 7px;
+  font-family: "Varela Round";
+  font-size: 16px;
+  border-top:1px solid #D3D3D3
 }
 
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: auto;
+#rec-husky-footer {
+  color: #2AB27B;
+  font-family: "Varela Round";
+  /*font-size: 20px;*/
+  float:right; 
+  margin-top: 5px
 }
 
 #footer-logo {
   width: 150px;
   height: auto;
+  opacity: 1;
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
 }
 
-.fa-ul .fa-2x {
-  margin-left: 15px;
-  color: #2AB27B;
+#footer-logo:hover {
+  opacity: .5;
 }
 
-#contact-us {
-  color: #2AB27B;
-  font-size: 1.2em;
+@media only screen and (max-width: 560px) {
+  #footer-logo {
+    width: 120px;
+  }
+
+  .footer-bottom {
+    font-size: 14px;
+  }
 }
 
+/* Navbar mobile view */
+
+@media (max-width: 768px) {
+    .navbar {
+        position: absolute;
+        /*padding: 12px 5px;*/
+    }
+    [class*="col-"] {
+        margin-bottom: 15px;
+    }
+
+
+    .navbar-collapse{margin-top:15px;background: #fff;border-bottom:1px solid #2ab27b;}
+
+   #modulect-nav .btn-drop {
+    border: none;
+    outline: none;
+    color: #2ab27b;
+    background: transparent;
+    text-shadow: none;
+    box-shadow: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+    font-size:16px;
+    margin-left:3px;
+  }
+  #modulect-nav .btn-drop:hover,
+  #modulect-nav .btn-drop:focus {
+    color: #14563b;
+    box-shadow: none;
+    border: none;
+    text-decoration: underline;
+    background: transparent;
+  }
+  #modulect-nav .btn-drop:active {
+    background: transparent;
+    border:0px;
+  }
+
+
+}
+
+/** Footer stuff by Khalil **/
+
+.footer-bottom {
+  background: #ffffff;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-family: "Varela Round";
+  font-size: 16px;
+  border-top:1px solid #D3D3D3
+}
