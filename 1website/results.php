@@ -36,7 +36,7 @@
    </div>
 
 
-      <div id="page">
+      <div id="page" style="padding-top:40px;">
          <div class="container">
             <?php if($mock == "error"){?>
             <div class="row">
