@@ -63,4 +63,8 @@ footer {
   #contact-us {
     font-size: 1em;
   }
+
+  .footer-bottom {
+    font-size: 14px;
+  }
 }
