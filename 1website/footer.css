@@ -14,6 +14,14 @@ html {
   border-top:1px solid #D3D3D3
 }
 
+#rec-husky-footer {
+  color: #2AB27B;
+  font-family: "Varela Round";
+  /*font-size: 20px;*/
+  float:right; 
+  margin-top: 5px
+}
+
 #footer-logo {
   width: 150px;
   height: auto;
@@ -26,35 +34,9 @@ html {
   opacity: .5;
 }
 
-.fa-ul .fa-2x {
-  margin-left: 15px;
-  color: #2AB27B;
-  font-size: 1.5em;
-  opacity: 1;
-  -webkit-transition: .3s ease-in-out;
-  transition: .3s ease-in-out;
-}
-
-.fa-ul .fa-2x:hover {
-  opacity: .5;
-}
-
-#contact-us {
-  color: #2AB27B;
-  font-size: 1.2em;
-}
-
 @media only screen and (max-width: 560px) {
   #footer-logo {
     width: 120px;
-  }
-
-  .fa-ul .fa-2x {
-    margin-left: 5px;
-  }
-
-  #contact-us {
-    font-size: 1em;
   }
 
   .footer-bottom {
