@@ -9,7 +9,7 @@
 <footer>
     <div class="footer-bottom">
       <div class="container">
-        <img id="footer-logo" class="pull-left" src="assets/modulect-logo.png">
+        <img id="footer-logo" style="display:none;" class="pull-left" src="assets/modulect-logo.png">
         <div class="pull-right">
           <ul class="fa-ul">
             <a id="contact-us">Contact Us</a>
