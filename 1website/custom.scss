@@ -3,13 +3,11 @@
 
 /* header */
 
-.navbar-custom {
-  font-family: "Varela Round";
-}
-
 .navbar-default {
   background-color: #ffffff;
   border-color: #ffffff;
+  font-family: "Varela Round";
+  font-size: 16px;
 }
 .navbar-default .navbar-brand {
   color: #2ab27b;
@@ -27,6 +25,7 @@
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
   color: #14563b;
+  text-decoration: underline;
 }
 .navbar-default .navbar-nav > li > .dropdown-menu {
   background-color: #ffffff;
@@ -81,39 +80,22 @@
   color: #14563b;
 }
 
-@media (max-width: 767px) {
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-    color: #2ab27b;
-  }
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #14563b;
-  }
-  .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
-  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
-  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
-    color: #14563b;
-    background-color: #ffffff;
-  }
-}
-
-.btn {
+.btn-drop {
     color: #fff;
     background: #2ab27b;
     text-shadow: 0 1px 1px rgba(0, 0, 0, .1);
-    text-transform: uppercase;
     box-shadow: 0px 3px 0px 0px #228e62;
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
     -o-transition: all 0.5s;
     transition: all 0.5s;
 }
-.btn:hover,
+.btn-drop:hover,
 .btn:focus {
     background: rgba(42, 178, 123, 0.7);
     color: #fff;
 }
-.btn:active {
+.btn-drop:active {
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
