@@ -19,11 +19,11 @@ p {
 }
 header {
     position: fixed;
-    height: 60px;
     border-bottom: 1px solid #dfe2e1;
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
     transition: top 0.3s ease-in-out;
-    height: 70px;
+    height: 80px;
+    padding: 15px 20px 8px 20px;
     width: 100%;
     background: white;
     z-index: 1000000000;
