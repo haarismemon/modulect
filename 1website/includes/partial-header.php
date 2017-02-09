@@ -4,6 +4,16 @@
  * @author Aqib Rashid
  * @author Feras Al-Hamadani
  */
+
+ $login = "";
+ if(isset($_GET['login'])) {
+   $login = $_GET['login'];
+ }
+
+ $ftLogin = "";
+ if(isset($_GET['ftlogin'])) {
+   $ftLogin = $_GET['ftlogin'];
+ }
 ?>
 <!--Header stuff goes here-->
 <div class="navbar navbar-default" id="modulect-nav">
@@ -25,6 +35,7 @@
           <ul class="nav navbar-nav navbar-right">
             <!-- this would be our current page, but it is static for now -->
             <li><a href="#">About<span class="sr-only">(current)</span></a></li>
+            <?php if($login == "true" && $ftLogin == "false") { ?>
             <li><a href="#">Search <i class="fa fa-search" aria-hidden="true"></i></a></li>
             <li><a href="#">Saved <i class="fa fa-star-o" aria-hidden="true"></i></a></li>
             <li class="dropdown">
@@ -35,6 +46,13 @@
                 <li><a href="#">Log Out</a></li>
               </ul>
             </li>
+            <?php }
+            else if($ftLogin == "true") {
+            ?>
+            <li><a style="color:#555459">Welcome Alice</a></li>
+            <?php
+            }
+            ?>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
