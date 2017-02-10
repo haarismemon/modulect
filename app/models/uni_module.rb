@@ -6,6 +6,10 @@ class UniModule < ApplicationRecord
   has_and_belongs_to_many :users
   has_and_belongs_to_many :tags
 
+  scope :search, lambda {|tag|
+    joins(:tags).where(["tags.name = ?", tag])
+  }
+
   # Registers this module as having been tagged with the valid_tag.
   def add_tag(valid_tag)
     tags << valid_tag
@@ -15,12 +19,10 @@ class UniModule < ApplicationRecord
   def add_user(valid_user)
     users << valid_user
   end
-  scope :search, lambda {|tag|
-    joins(:tags).where(["tags.name = ?", tag])
-  }
 
+  # Searches for Modules with matching tags passed in through an array
   def self.basic_search(tags_array)
-    # store the search results in hash. modules => [array of tags matched]
+    # store the search results in a hash. modules => [array of matched tags]
     results = {}
 
     # for each tag, search for the modules that contain the tag name
