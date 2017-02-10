@@ -7,6 +7,7 @@ class Tag < ApplicationRecord
   has_many :taggings
   has_many :modules, through: :taggings, source: :uni_module
 
+  # Registers a module as belonging to this tag.
   def add_module(valid_uni_module)
     Tagging.create(tag_id: self.id, uni_module_id: valid_uni_module.id)
   end

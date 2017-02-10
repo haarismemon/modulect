@@ -7,7 +7,7 @@ class UniModule < ApplicationRecord
   has_many :taggings
   has_many :tags, through: :taggings
 
-  # Adds a valid tag to 
+  # Registers a tag as belonging to this module.
   def add_tag(valid_tag)
     Tagging.create(tag_id: valid_tag.id, uni_module_id: self.id)
   end
