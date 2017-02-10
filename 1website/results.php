@@ -17,6 +17,12 @@
    <head>
       <title>Search results | Modulect</title>
       <?php include 'includes/assets.php'; ?>
+      <style>
+         @media print {
+         .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
+         .collapse{display:block;}
+         }
+      </style>
    </head>
    <body>
       <?php include 'includes/partial-header.php'; ?>
@@ -52,12 +58,12 @@
                </div>
             </div>
             <?php } else { ?>
-            <div class="row" style="margin-bottom:20px;">
+            <div class="row here-what" style="margin-bottom:20px;">
                <div class="col-md-6 col-md-offset-1">
                   <h1>Here's what we found:</h1>
                   <h5>Showing 2 modules</h5>
                </div>
-               <div class="col-md-4 text-right" style="padding-top:40px;">
+               <div class="col-md-4 text-right" style="padding-top:30px;">
                   <div class="sort-area">
                      Sort by: &nbsp;&nbsp;
                      <select class="selectpicker">
@@ -67,6 +73,16 @@
                         <option value="pass">Pass rate</option>
                      </select>
                   </div>
+               </div>
+            </div>
+            <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
+               <div class="col-md-10 col-md-offset-1 text-right">
+                  <ul class="results-page-options">
+                     <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
+                     <?php if($login == "true") { ?>
+                     <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email advisor</a> </li>
+                     <?php } ?>
+                  </ul>
                </div>
             </div>
             <div class="row">
@@ -79,11 +95,11 @@
                            <h4>Second Year, Semester 1 - 15 Credits</h4>
                            <div style="margin-top:30px">
                               <?php if($login == "true") { ?>
-                              <a href="#" class="btn btn-lg btn-small"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+                              <a href="#" class="btn btn-lg btn-small save-button"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
                               <?php } else { ?>
-                              <a class="btn btn-lg btn-small btn-disabled" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+                              <a class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
                               <?php } ?>
-                              <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-1-more">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                              <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-1-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
                            </div>
                         </div>
                         <div class="col-md-3 result-side-column result-card-side">
@@ -148,11 +164,11 @@
                            <h4>Second Year, Semester 1 & 2 - 30 Credits</h4>
                            <div style="margin-top:30px">
                               <?php if($login == "true") { ?>
-                              <a href="#" class="btn btn-lg btn-small"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+                              <a href="#" class="btn btn-lg btn-small save-button"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
                               <?php } else { ?>
-                              <a class="btn btn-lg btn-small btn-disabled" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+                              <a class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
                               <?php } ?>
-                              <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-2-more">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                              <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" class="more-info-link" data-toggle="collapse" data-target="#result-2-more">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
                            </div>
                         </div>
                         <div class="col-md-3 result-side-column result-card-side">

@@ -17,6 +17,11 @@ body {
 p {
     font-family: "Open Sans"
 }
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none;
+}
 footer {
     height: 60px;
     border-top: 1px solid #dfe2e1;
@@ -396,6 +401,14 @@ input:focus,
     margin-left: 0px;
     margin-right: 0px;
 }
+.results-page-options ul {
+    list-style: none;
+    display: inline-block;
+}
+.results-page-options li {
+    display: inline-block;
+    margin-left: 13px
+}
 @media only screen and (max-width: 560px) {
     #footer-logo {
         width: 120px;
@@ -455,5 +468,8 @@ input:focus,
         padding-top: 20px;
         padding-bottom: 20px;
         margin-top: 20px;
+    }
+    .nomobile {
+        display: none;
     }
 }
