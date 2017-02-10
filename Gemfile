@@ -16,6 +16,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
+gem 'coffee-script-source', '1.8.0'
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
