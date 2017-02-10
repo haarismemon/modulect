@@ -213,6 +213,7 @@ border-bottom: 1px solid #D3D3D3;
 
 
 
+
 @media (max-width: 768px) {
     .navbar {
         position: absolute;
@@ -347,4 +348,25 @@ border-bottom: 1px solid #D3D3D3;
     margin-left:10px;
   }
 
+}
+
+#quickButton .btn {
+  color: #2ab27b;
+  background: #FFFFFF;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+  text-transform: uppercase;
+  box-shadow: 0px 3px 0px 0px #DDDDDD;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+#quickButton .btn:hover,
+#quickButton .btn:focus {
+  background: #EEEEEE;
+  color: #2ab27b;
+}
+#quickButton .btn:active {
+  background: #808080;
+  box-shadow: 0px 3px 0px 0px #a8a8a8;
 }

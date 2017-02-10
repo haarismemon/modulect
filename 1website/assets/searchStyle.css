@@ -1,0 +1,29 @@
+.btnQuick {
+  color: #2ab27b;
+  background: #FFFFFF;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+  text-transform: uppercase;
+  box-shadow: 0px 3px 0px 0px #DDDDDD;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.btnQuick:hover,
+.btnQuick:focus {
+  background: #EEEEEE;
+  color: #2ab27b;
+}
+.btnQuick:active {
+  background: #808080;
+  box-shadow: 0px 3px 0px 0px #a8a8a8;
+}
+
+.banner {
+   height: 270px;
+   background-image: url(banner.png), linear-gradient(-150deg, #00C1B6 0%, #136EB5 97%);
+   background-size: 380px, contain;
+   padding-top: 121px;
+   padding-bottom: 35px;
+   color:#fff;
+}
