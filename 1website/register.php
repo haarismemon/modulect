@@ -1,6 +1,6 @@
 <?php
    /**
-   * Will form the login page / home page
+   * Will form the registration
    * author Aqib Rashid
    */
       $mock = "";
@@ -70,14 +70,10 @@
                   </div>
                </div>
             </div>
-            <div class="row" style="margin-top:40px;">
-               <div class="col-md-12 text-center">
-                  <p>Need help? <a href="#">Contact KCL Modulect support</a>
-                  </p>
-               </div>
-            </div>
+            
+            <?php include 'includes/aftercontent.php' ?>
          </div>
       </div>
-    <?php include 'includes/footer.php'; ?>
+    <?php include 'includes/partial-footer.php'; ?>
    </body>
 </html>
