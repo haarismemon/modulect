@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 20170209222340) do
 
   create_table "tags_uni_modules", id: false, force: :cascade do |t|
     t.integer "tag_id"
-    t.integer "uni_module__id"
-    t.index ["tag_id", "uni_module__id"], name: "index_tags_uni_modules_on_tag_id_and_uni_module__id"
+    t.integer "uni_module_id"
+    t.index ["tag_id", "uni_module_id"], name: "index_tags_uni_modules_on_tag_id_and_uni_module_id"
   end
 
   create_table "uni_modules", force: :cascade do |t|
