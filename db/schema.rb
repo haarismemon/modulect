@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(version: 20170209222340) do
   end
 
   create_table "modules_users", id: false, force: :cascade do |t|
-    t.integer "uni_module__id"
+    t.integer "uni_module_id"
     t.integer "user_id"
-    t.index ["uni_module__id", "user_id"], name: "index_modules_users_on_uni_module__id_and_user_id"
+    t.index ["uni_module_id", "user_id"], name: "index_modules_users_on_uni_module_id_and_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
