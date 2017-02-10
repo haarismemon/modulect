@@ -10,11 +10,25 @@ class UniModule < ApplicationRecord
   }
 
   def self.basic_search(tags_array)
-    tags_array.each do |tag_name|
-      search(tag_name).each do |uni_module|
-        puts uni_module.name
+    # store the search results in hash. modules => [array of tags matched]
+    results = {}
+
+    # for each tag, search for the modules that contain the tag name
+    tags_array.each do |tag|
+      search(tag).each do |uni_module|
+        # if the module was previously matched with a tag, store the current tag to the module's matched tags
+        if results.key?(uni_module)
+          matched_tags_array = results[uni_module]
+          matched_tags_array << tag
+          results[uni_module] = matched_tags_array
+        # if this is first matched tag, then store the tag in an array
+        else
+          results[uni_module] = [tag]
+        end
       end
     end
+
+    return results
   end
 
 end
