@@ -15,17 +15,17 @@ class UsersController < ApplicationController
 
 
   def edit
-    #! allows for template's form to be ready popilated with the associated users data ready for modification by admin
+    #! allows for template's form to be ready populated with the associated users data ready for modification by admin
     @user = User.find(params[:id])
   end
 
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
-      flash[:notice] = "You have successfully updated "
-      redirect_to(#page_after_login_for_admin) and return
+      flash[:notice] = "You have successfully updated "+ @user.full_name
+      redirect_to(page_after_login_for_admin) and return
     else
-      flash.now[:notice] = "Failed to edit"
+      flash.now[:notice] = "Failed to update"
       render('edit')
     end
   end
@@ -53,8 +53,7 @@ class UsersController < ApplicationController
 
   def user_params
     #!add params that want to be recognized by this application
-    params.require(l:user).permit(:first_name, :last_name, :email,:password,:username)
+    params.require(l:user).permit(:first_name, :last_name, :email,:password,:username,:year_of_study)
   end
 end
 end
-u
