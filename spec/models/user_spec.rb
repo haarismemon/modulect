@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
-  describe "#valid?" do
+  let(:user) { build(:user) }
 
-    let(:user) { build(:user) }
+  describe "#valid?" do
 
     context "when all fields are valid" do
       it "evaluates to true" do
@@ -160,6 +160,21 @@ RSpec.describe User, type: :model do
       end
       it "evaluates to false" do
         expect(user.valid?).to eq false
+      end
+    end
+  end
+
+  describe "#select_module" do
+    let(:valid_uni_module) { create(:uni_module) }
+
+    context "when passed a valid uni_module" do
+      before do
+        user.save
+        user.select_module(valid_uni_module)
+      end
+
+      it "registers the uni modules as having been selected" do
+        expect(user.uni_modules.include?(valid_uni_module)).to eq true
       end
     end
   end

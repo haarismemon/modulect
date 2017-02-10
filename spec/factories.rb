@@ -2,10 +2,6 @@
 # The name of a factory needs to be the same as the model's that it is building.
 FactoryGirl.define do
 
-  factory :career_tag do
-    name "Software Engineer"
-  end
-
   factory :course do
     name "BA Geography"
   end
@@ -14,18 +10,17 @@ FactoryGirl.define do
     name "Mathematics"
   end
 
-  factory :interest_tag do
-    name "Medicine"
-  end
-
   factory :tag do
     name "Arbitrary Tag"
     type "CareerTag"
   end
 
-  factory :tagging do
-    tag
-    uni_module
+  factory :career_tag do
+    name "Software Engineer"
+  end
+
+  factory :interest_tag do
+    name "Medicine"
   end
 
   factory :uni_module do

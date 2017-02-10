@@ -52,7 +52,7 @@ RSpec.describe UniModule, type: :model do
 
   describe "#add_tag" do
 
-    let (:valid_tag) { create(:tag) }
+    let(:valid_tag) { create(:tag) }
 
     context "when passed a valid tag" do
 
@@ -63,6 +63,21 @@ RSpec.describe UniModule, type: :model do
 
       it "adds the tag to the module's list of tags" do
         expect(uni_module.tags.include?(valid_tag)).to eq true
+      end
+    end
+  end
+
+  describe "#add_user" do
+    let(:valid_user) { create(:user) }
+
+    context "when passed a valid user" do
+      before do
+        uni_module.save
+        uni_module.add_user(valid_user)
+      end
+
+      it "records the user as having selected this module" do
+        expect(uni_module.users.include?(valid_user)).to eq true
       end
     end
   end
