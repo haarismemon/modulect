@@ -139,9 +139,75 @@
                            <p>4 out of 5</p>
                         </div>
                         <div class="row" style="margin-top:10px">
+
+<style>
+.tags-area{padding-left:10px;margin-top:10px;}
+.tags-area span { 
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  position: relative;
+  margin: 0 16px 8px 0;
+  padding: 0 10px 0 12px;
+  background: #2986BE; 
+  -webkit-border-bottom-right-radius: 3px;  
+  border-bottom-right-radius: 3px;
+  -webkit-border-top-right-radius: 3px; 
+  border-top-right-radius: 3px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  color: #fff;
+  font-size: 11px;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  font-weight: bold;
+  } 
+
+.tags-area span:before {
+  content: "";
+  position: absolute;
+  top:0;
+  left: -12px;
+  width: 0;
+  height: 0;
+  border-color: transparent #2986BE transparent transparent;
+  border-style: solid;
+  border-width: 12px 12px 12px 0;   
+  }
+
+.tags-area span:after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 1px;
+  float: left;
+  width: 5px;
+  height: 5px;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  background: #fff;
+  -moz-box-shadow: -1px -1px 2px rgba(0,0,0,0.4);
+  -webkit-box-shadow: -1px -1px 2px rgba(0,0,0,0.4);
+  box-shadow: -1px -1px 2px rgba(0,0,0,0.4);
+  }
+
+
+</style>
+
+
+
+
+
                            <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
-                           <div style="font-size:18px;color:#64a3c8">HERE</div>
-                        </div>
+                        <div class="tags-area">
+    
+      <span title="" href="" class="color5">Internet</span>
+      <span title="" href="" class="color5">Web servers</span>
+      <span title="" href="" class="color5">Engineer</span>
+      <span title="" href="" class="color5">Networks</span>
+    
+  </div></div>
+                       
                      </div>
                      
                      </div>
@@ -184,7 +250,7 @@
 </div>
 
 <div class="col-md-4" style="margin-bottom:15px;">
- <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam : Coursework ratio</h5>
+ <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
                         <p>80:20</p>
 </div>
 
