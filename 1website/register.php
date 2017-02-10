@@ -1,6 +1,6 @@
 <?php
    /**
-   * Will form the login page / home page
+   * Will form the registration
    * author Aqib Rashid
    */
       $mock = "";
