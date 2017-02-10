@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update_attributes(user_creation_params)
       flash[:notice] = "You have successfully updated "+ @user.full_name
-      redirect_to(page_after_login_for_admin) and return
+      redirect_to(users_path) and return
     else
       flash.now[:notice] = 'Lack of information prohibited this record from being updated'
       render('edit')

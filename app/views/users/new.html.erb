@@ -1,0 +1,65 @@
+<div class="ui container">
+  <%= form_for(@user) do |f|%>
+
+      <div class="ui vertical segment">
+        <div class=" field">
+          <label>First_name</label>
+          <div class="ui left input" id="name">
+            <%= f.text_field(:first_name,:placeholder => "Modify Subject") %>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ui vertical segment">
+
+        <div class=" field" id="position">
+          <label>Last_name</label>
+          <div class="ui left input">
+            <%= f.text_field(:last_name,:placeholder => "Enter Position") %>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="ui vertical segment">
+        <div class=" field" id="visible">
+          <label>Enter Username</label>
+          <div class="ui left input">
+            <%= f.text_field(:username,:placeholder => "Enter Visible") %>
+          </div>
+        </div>
+      </div>
+      <div class="ui vertical segment">
+
+
+        <div class="ui vertical segment">
+          <div class=" field" id="visible">
+            <label>Enter Password</label>
+            <div class="ui left input">
+              <%= f.text_field(:password_digest,:placeholder => "Enter Visible") %>
+            </div>
+          </div>
+        </div>
+        <div class="ui vertical segment">
+
+
+          <div class="ui vertical segment">
+            <div class=" field" id="visible">
+              <label>Enter Email</label>
+              <div class="ui left input">
+                <%= f.text_field(:email,:placeholder => "Enter Visible") %>
+              </div>
+            </div>
+          </div>
+          <div class="ui vertical segment">
+
+
+
+            <%= f.submit("Finalize change",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"ui button" )  %>
+          </div>
+
+
+  <%end%>
+
+  </div>
