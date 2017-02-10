@@ -22,11 +22,12 @@ maths = InterestTag.create(name: "Maths")
 robotics = InterestTag.create(name: "Robotics")
 algorithms = InterestTag.create(name: "Algorithms")
 artificial_intelligence = InterestTag.create(name: "Artificial Intelligence")
-software_engineer = CareerTag.create(name: "Software Engineering")
+software_engineer = CareerTag.create(name: "Software Engineer")
 network_engineer = CareerTag.create(name: "Network Engineer")
 logic_engineer = CareerTag.create(name: "Logic Engineer")
 database_engineer = CareerTag.create(name: "Database Engineer")
 hardware_engineer = CareerTag.create(name: "Database Engineer")
+front_end_developer = CareerTag.create(name: "Front-end Developer")
 
 prp.tags << programming
 pra.tags << programming
@@ -42,3 +43,4 @@ ins.tags << network_engineer
 ela.tags << logic_engineer
 dbs.tags << database_engineer
 cs1.tags << hardware_engineer
+pra.tags << front_end_developer

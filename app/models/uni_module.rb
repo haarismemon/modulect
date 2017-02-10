@@ -32,7 +32,8 @@ class UniModule < ApplicationRecord
       end
     end
 
-    return results
+    # return a sorted array with elements containing a module and an array of matched tags
+    return results.sort_by {|key, value| value.size}.reverse
   end
 
 end
