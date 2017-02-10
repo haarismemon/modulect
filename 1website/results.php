@@ -64,10 +64,15 @@
 </div>
 
 <div class="col-md-4 text-right" style="padding-top:40px;">
+<div class="dropdown">
+Sort by: 
 <select>
-  <option>Sort by:</option>
-  <option>Pass rate</option>
+  <option value="tags" selected>Tag matches</option>
+  <option value="coursework">Coursework percentage</option>
+  <option value="exam">Exam percentage</option>
+  <option value="pass">Pass rate</option>
 </select>
+</div>
 </div>
 
 </div>
@@ -123,19 +128,34 @@ to provide an understanding of security threats to Internet application and main
 
 
 </div>
-<div class="col-md-3">
-<h5>Tag match </h5>
+<style>
+.result-side-column .row{margin-left:0px;margin-right:0px;}
+</style>
+
+<div class="col-md-3 result-side-column">
+
+<div class="row">
+<h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
 <div style="color:#2ab27b;font-size:18px;">80%</div>
 <p>4 out of 5</p>
+</div>
+
+<div class="row" style="margin-top:10px">
+<h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
+<div style="font-size:18px;color:#64a3c8">HERE</div>
+</div>
 
 
-<h5 style="margin-top:20px">Matched tags</h5>
-<div style="font-size:18px;">HERE</div>
+<div class="row" style="margin-top:10px">
+<h5><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam : Coursework ratio</h5>
+<div style="font-size:18px;">80:20</div>
+</div>
 
 
-
-<h5 style="margin-top:20px">Module pass rate</h5>
+<div class="row" style="margin-top:10px">
+<h5>Module pass rate</h5>
 <div style="font-size:18px;">74%</div>
+</div>
 
 
 </div>
