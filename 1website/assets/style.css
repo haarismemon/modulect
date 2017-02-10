@@ -373,8 +373,9 @@ input:focus,
     padding: 8px 12px;
     text-align: left;
 }
-
-.res-card{margin-bottom:20px;}
+.res-card {
+    margin-bottom: 20px;
+}
 .result-card-green {
     border-left-width: 5px;
     border-radius: .25rem;
@@ -385,10 +386,12 @@ input:focus,
     border-radius: .25rem;
     border-left-color: orange;
 }
-
-.result-card-green .tag-match-figure{color:#2ab27b;}
-.result-card-orange .tag-match-figure{color:orange;}
-
+.result-card-green .tag-match-figure {
+    color: #2ab27b;
+}
+.result-card-orange .tag-match-figure {
+    color: orange;
+}
 .result-side-column .row {
     margin-left: 0px;
     margin-right: 0px;

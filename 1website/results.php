@@ -7,6 +7,10 @@
       if(isset($_GET['mock'])) {
         $mock = $_GET['mock'];
       }
+      $results = "";
+      if(isset($_GET['results'])) {
+        $results = $_GET['results'];
+      }
       ?>
 <!doctype html>
 <html>
@@ -16,11 +20,6 @@
    </head>
    <body>
       <?php include 'includes/partial-header.php'; ?>
-      <!--VERY MESSY NOT GOOD CODING PRACTICE-->
-      <style>
-  
-      </style>
-              
       <div class="banner">
          <div class="container">
             <h1>Results</h1>
@@ -46,12 +45,18 @@
                </div>
             </div>
             <?php } ?>
+            <?php if($results == "false") { ?>
+            <div class="row" style="margin-bottom:20px;">
+               <div class="col-md-10 col-md-offset-1 text-center">
+                  <h1>No modules found :(</h1>
+               </div>
+            </div>
+            <?php } else { ?>
             <div class="row" style="margin-bottom:20px;">
                <div class="col-md-6 col-md-offset-1">
                   <h1>Here's what we found:</h1>
                   <h5>Showing 2 modules</h5>
                </div>
-               
                <div class="col-md-4 text-right" style="padding-top:40px;">
                   <div class="sort-area">
                      Sort by: &nbsp;&nbsp;
@@ -66,16 +71,13 @@
             </div>
             <div class="row">
                <div class="col-md-10 col-md-offset-1">
-
-
-<!--BEGIN CARD -->
+                  <!--BEGIN CARD -->
                   <div class="col-md-12 login-card res-card result-card-green" >
                      <div class="row">
                         <div class="col-md-9 result-card-main">
                            <h2>5CCS2INS Internet Systems</h2>
                            <h4>Second Year, Semester 1 - 15 Credits</h4>
                            <div style="margin-top:30px">
-                              
                               <?php if($login == "true") { ?>
                               <a href="#" class="btn btn-lg btn-small"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
                               <?php } else { ?>
@@ -92,7 +94,6 @@
                            </div>
                            <div class="row" style="margin-top:10px">
                               <style>
-                                 
                               </style>
                               <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
                               <div class="tags-area">
@@ -138,20 +139,14 @@
                         </div>
                      </div>
                   </div>
-
-<!--END CARD -->
-
-
-
-
-<!--BEGIN CARD -->
+                  <!--END CARD -->
+                  <!--BEGIN CARD -->
                   <div class="col-md-12 login-card res-card result-card-orange" >
                      <div class="row">
                         <div class="col-md-9 result-card-main">
                            <h2>5CCS2SEG Sofware Engineering Group Project</h2>
                            <h4>Second Year, Semester 1 & 2 - 30 Credits</h4>
                            <div style="margin-top:30px">
-                              
                               <?php if($login == "true") { ?>
                               <a href="#" class="btn btn-lg btn-small"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
                               <?php } else { ?>
@@ -168,7 +163,6 @@
                            </div>
                            <div class="row" style="margin-top:10px">
                               <style>
-                                 
                               </style>
                               <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
                               <div class="tags-area">
@@ -212,14 +206,10 @@
                         </div>
                      </div>
                   </div>
-
-<!--END CARD -->
-
-
-
-
+                  <!--END CARD -->
                </div>
             </div>
+            <?php } ?>
             <?php include 'includes/aftercontent.php' ?>
          </div>
       </div>
