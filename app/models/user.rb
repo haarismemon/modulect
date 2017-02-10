@@ -6,6 +6,8 @@ class User < ApplicationRecord
   validates :password_digest, presence: true
   validates :user_level, length: { is: 1}
   validates :year_of_study, presence: true, length: { is: 1}
+  default_value_for :user_level, 3  #student #(needs testing)
+  default_value_for :entered_before, false  #(needs testing)
 
   has_and_belongs_to_many :uni_modules
 
