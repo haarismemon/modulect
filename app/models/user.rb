@@ -8,4 +8,9 @@ class User < ApplicationRecord
   validates :year_of_study, presence: true, length: { is: 1}
 
   has_and_belongs_to_many :uni_modules
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
 end
