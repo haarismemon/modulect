@@ -11,6 +11,10 @@
 	<head>
 		<title> Search | Modulect </title>
 		<?php include 'includes/assets.php'; ?>
+		<link rel="stylesheet" type="text/css" href="assets/bootstrap-tagsinput.css">
+		<script type="text/javascript" src="../includes/bootstrap-tagsinput.js"></script>
+		<script type="text/javascript" src="../includes/typeahead.bundle.js"></script>
+		<script type="text/javascript" src="../includes/bloodhound.js"></script>
 	</head>
 	<body>
   	<?php include 'includes/partial-header.php'; ?>
@@ -39,7 +43,7 @@
 	   				<div class="col-md-8">
 		   				<form>
 		   					<div class="form-group">
-		   						<input type="text" id="inputSearch" class="form-control" placeholder="Search anything (like modules, careers, interests, etc.)" required autofocus>
+		   						<input type="text" name="searchBar" data-role="tagsinput" placeholder='Search anything (like modules, careers, interests, etc.)' required autofocus/>
 		   					</div>
 		   				</form>
 		   			</div>
