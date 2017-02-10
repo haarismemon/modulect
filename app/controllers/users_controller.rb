@@ -23,6 +23,7 @@ class UsersController < ApplicationController
         #! after person has signed up redirects back out to login page #change path#
         redirect_to(login_path)
       end
+      render(:login)
       flash.now[:notice] = "Failed to create"
     end
   end
@@ -46,11 +47,9 @@ class UsersController < ApplicationController
   def delete
     @user = User.find(params[:id])
     full_name = @user.full_name
-    if @user.destroy
-      flash[:notice] = "You have removed #{full_name} from the database"
-    else
-      flash[:notice] = ""
-    end
+    @user.destroy
+    print_flash(@user.destroyed?,"You have removed #{full_name} from the database","You have failed to delete")
+    ##defined in application_controller // see
   end
 
   #! index can either show all results when first accessed by admin intially or allowed to come up with results based on input/search given by
