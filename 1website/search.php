@@ -28,7 +28,9 @@
    	<div class="banner">
    		<div class="row">
 	   		<div class="container">
-	   			<h1>Hi Alice. Lets find your perfect module...</h1>
+	   			<div class="col-md-8">
+	   				<h1>Hi Alice. Lets find your perfect module...</h1>
+	   			</div>
 	   		</div>
 	   	</div>
    		<div class="row">
@@ -43,6 +45,28 @@
 		   			</div>
 		   			<div class="col-md-4">
 		   				<div class="form-group">
+		   					<style>
+			   					.btn {
+								    color: #2ab27b;
+								    background: #FFFFFF;
+								    text-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+								    text-transform: uppercase;
+								    box-shadow: 0px 3px 0px 0px #DDDDDD;
+								    -webkit-transition: all 0.5s;
+								    -moz-transition: all 0.5s;
+								    -o-transition: all 0.5s;
+								    transition: all 0.5s;
+									}
+									.btn:hover,
+									.btn:focus {
+								    background: #EEEEEE;
+								    color: #2ab27b;
+									}
+									.btn:active {
+								    background: #808080;
+								    box-shadow: 0px 3px 0px 0px #a8a8a8;
+									}
+								</style>
 		   					<button class="btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
 		   					</button>
 		   				</div>
