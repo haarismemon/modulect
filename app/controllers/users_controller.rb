@@ -1,18 +1,31 @@
 class UsersController < ApplicationController
   def new
-    @user= User.new
+    @user = User.new
   end
 
-  def create
-    @user = User.new(user_params)
+  def create_by_admin
+    @user = User.new(user_creation_params)
     if @user.save
-      #! after person has signed up redirects back out to login page #change path#
-      redirect_to(login_path)
-    else
-      render(:list)
+      if
+        #! after person has signed up redirects back out to login page #change path#
+        redirect_to(list_path)
+      else
+        render(:edit)
+      end
     end
   end
 
+
+  def create_by_signup
+    @user = User.new(user_creation_params)
+    if @user.save
+      if
+        #! after person has signed up redirects back out to login page #change path#
+        redirect_to(login_path)
+      end
+      flash.now[:notice] = "Failed to create"
+    end
+  end
 
   def edit
     #! allows for template's form to be ready populated with the associated users data ready for modification by admin
@@ -32,15 +45,20 @@ class UsersController < ApplicationController
 
   def delete
     @user = User.find(params[:id])
-    admin_user.destroy
+    full_name = @user.full_name
+    if @user.destroy
+      flash[:notice] = "You have removed #{full_name} from the database"
+    else
+      flash[:notice] = ""
+    end
   end
 
   #! index can either show all results when first accessed by admin intially or allowed to come up with results based on input/search given by
   #! Admin which will just redirect to same action. A dropdown specifies type( searchable attributes of user i.e email) and textfield specifies search
   def index
     @search_results = []
-    if(params.has_key?(:search)&&params.has_key?(:type))
-      @search_results = User.search_by_type(params[:search],params[:type]).order(params[:type]+" ASC")
+    if (params.has_key?(:search)&&params.has_key?(:type))
+      @search_results = User.search_by_type(params[:search], params[:type]).order(params[:type]+" ASC")
       if @search_results.empty?
         flash.now[:notice] = "There are no results found"
       end
@@ -51,9 +69,9 @@ class UsersController < ApplicationController
 
   private
 
-  def user_params
+  def user_creation_params
     #!add params that want to be recognized by this application
-    params.require(l:user).permit(:first_name, :last_name, :email,:password,:username,:year_of_study)
+    params.require(l: user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level)
   end
 end
 end
