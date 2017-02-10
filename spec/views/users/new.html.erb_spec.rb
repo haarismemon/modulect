@@ -8,3 +8,4 @@ context 'My context' do
     true.should == false
   end
 end
+  end
