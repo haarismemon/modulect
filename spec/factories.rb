@@ -2,7 +2,7 @@
 # The name of a factory needs to be the same as the model's that it is building.
 FactoryGirl.define do
 
-  factory :career do
+  factory :career_tag do
     name "Software Engineer"
   end
 
@@ -14,13 +14,13 @@ FactoryGirl.define do
     name "Mathematics"
   end
 
-  factory :interest do
+  factory :interest_tag do
     name "Medicine"
   end
 
   factory :tag do
     name "Arbitrary Tag"
-    type "Career"
+    type "CareerTag"
   end
 
   factory :tagging do
@@ -46,5 +46,4 @@ FactoryGirl.define do
     entered_before false
     year_of_study 2
   end
-
 end
