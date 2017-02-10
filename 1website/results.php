@@ -58,13 +58,31 @@
                   <h1>Here's what we found:</h1>
                   <h5>Showing 2 modules</h5>
                </div>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-*.min.js"></script>
+
+<Style>
+.dropdown-toggle,.dropdown-toggle:hover,.dropdown-toggle:focus,.dropdown-toggle:active{background: #dfe2e1;
+    color: #333;
+    box-shadow: 0px 3px 0px 0px #999;
+    outline: none;}
+</Style>
+
+
+
                <div class="col-md-4 text-right" style="padding-top:40px;">
-                  <div class="dropdown">
+                  <div class="sort-area">
                      Sort by: &nbsp;&nbsp;
-                     <select>
+                     <select class="selectpicker">
                         <option value="tags" selected>Tag matches</option>
-                        <option value="coursework">Coursework percentage</option>
-                        <option value="exam">Exam percentage</option>
+                        <option value="coursework">Coursework %</option>
+                        <option value="exam">Exam %</option>
                         <option value="pass">Pass rate</option>
                      </select>
                   </div>
@@ -95,6 +113,8 @@
 
 <style>
 .btn-disabled{opacity: 0.5;cursor: default}
+.tooltip {text-align: left;font-family: "Open Sans";}
+.tooltip-inner {padding:8px 12px;text-align: left;}
 </style>
 
 <?php if($login == "true") { ?>
@@ -102,7 +122,7 @@
                             <a href="#" class="btn btn-lg btn-small"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
 <?php } else { ?>
 
-                           <a class="btn btn-lg btn-small btn-disabled" data-toggle="tooltip"  data-placement="right" title="Login to add to your saved modules"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+                           <a class="btn btn-lg btn-small btn-disabled" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
 <?php } ?>
 
 
