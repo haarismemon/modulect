@@ -60,7 +60,7 @@
                </div>
                <div class="col-md-4 text-right" style="padding-top:40px;">
                   <div class="dropdown">
-                     Sort by: 
+                     Sort by: &nbsp;&nbsp;
                      <select>
                         <option value="tags" selected>Tag matches</option>
                         <option value="coursework">Coursework percentage</option>
@@ -92,7 +92,20 @@
                         <h2>5CCS2INS Internet Systems</h2>
                         <h4>Second Year, Semester 1 - 15 Credits</h4>
                         <div style="margin-top:30px">
-                           <a href="#" class="btn btn-lg btn-small"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+
+<style>
+.btn-disabled{opacity: 0.5;cursor: default}
+</style>
+
+<?php if($login == "true") { ?>
+
+                            <a href="#" class="btn btn-lg btn-small"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+<?php } else { ?>
+
+                           <a class="btn btn-lg btn-small btn-disabled" data-toggle="tooltip"  data-placement="right" title="Login to add to your saved modules"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+<?php } ?>
+
+
                            <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-1-more">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
                         </div>
                      </div>
@@ -194,12 +207,7 @@
 
 
             </div>
-            <div class="row" style="margin-top:40px;">
-               <div class="col-md-12 text-center">
-                  <p>Need help? <a href="#">Contact KCL Modulect support</a>
-                  </p>
-               </div>
-            </div>
+            <?php include 'includes/aftercontent.php' ?>
          </div>
       </div>
       <?php include 'includes/partial-footer.php'; ?>
