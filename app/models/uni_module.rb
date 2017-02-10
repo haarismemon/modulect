@@ -9,4 +9,12 @@ class UniModule < ApplicationRecord
     joins(:tags).where(["tags.name = ?", tag])
   }
 
+  def self.basic_search(tags_array)
+    tags_array.each do |tag_name|
+      search(tag_name).each do |uni_module|
+        puts uni_module.name
+      end
+    end
+  end
+
 end
