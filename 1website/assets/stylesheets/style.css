@@ -485,9 +485,9 @@ input:focus,
     border-radius: 4px;
     line-height: 35px;
     cursor: text;
-    max-width: inherit !important;
     display: inline-block, width: auto;
     margin: auto 0;
+    width: 100% !important;
 }
 .bootstrap-tagsinput input {
     border: none;
@@ -499,7 +499,8 @@ input:focus,
     font-size: 18px border-color: none !important;
     box-shadow: none !important;
     outline: none !important;
-    width: 500px;
+    text-overflow: ellipsis;
+    width: 100% !important;
 }
 .bootstrap-tagsinput.form-control input::-moz-placeholder {
     color: #777;
