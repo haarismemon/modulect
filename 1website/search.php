@@ -29,7 +29,7 @@
             ?>
 	   			</div>
 	   		</div>
-   		<div class="row">
+   		<div class="row" style="margin-top: 15px">
    				<div id="quick-search">
 	   				<div class="col-md-8">
 		   				<form>
