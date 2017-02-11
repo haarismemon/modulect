@@ -108,8 +108,10 @@
 			  		<div class="row" style="margin-top: 20px">
 			  			<div class="col-md-4">
 				 				<div class="form-group">
-			   					<button id='pathwayButton' class="btn btn-lg btn-block" type="submit">Login or Register
-			   					</button>
+					 				<form action="/">
+				   					<button id='loginRegButton' class="btn btn-lg btn-block" type="submit">Login or Register
+				   					</button>
+				   				</form>
 			   				</div>
 			   			</div>
 		   			</div>
