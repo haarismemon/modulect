@@ -25,16 +25,6 @@ class User < ApplicationRecord
     uni_modules << valid_uni_module
   end
 
-  # Stores a user in the database for persistent sessions.
-  def remember
-    self.remember_token = User.new_token
-    update_attribute(:remember_digest, User.digest(remember_token))
-  end
-
-  def forget
-    update_attribute(:remember_token, nil)
-  end
-
   private
 
   def downcase_email
