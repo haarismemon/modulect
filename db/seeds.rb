@@ -44,3 +44,13 @@ ela.tags << logic_engineer
 dbs.tags << database_engineer
 cs1.tags << hardware_engineer
 pra.tags << front_end_developer
+
+
+# User seeds
+User.create!(first_name:  "Bob",
+             last_name:   "Ross",
+						 email:       "example@example.com",
+						 password: 							"foobar",
+						 password_confirmation: "foobar",
+             user_level: 3,
+             year_of_study: 1)
