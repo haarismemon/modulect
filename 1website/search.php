@@ -93,7 +93,7 @@
 					</div>
 				</div>
 				<?php }
-				else if($login == "false") {
+				else {
 					?>
 					<div class="row" style="margin-top: 20px">
 						<div class="col-md-12">
