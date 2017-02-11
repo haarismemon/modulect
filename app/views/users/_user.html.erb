@@ -1,23 +1,19 @@
 <tr>
   <td>
-    <h2 class="ui center aligned header"><%= user.full_name %></h2>
+    <h2 class="ui center aligned header">
+      <%= full_name_for(user) %>
+    </h2>
   </td>
   <td class="single line">
     <%= user.username %>
   </td>
   <td>
     <%= user.email %>
-
   </td>
-  <td><%= user.year_of_study %></td>
   <td>
-    <% case user.user_level
-         when 3 %>
-            Student rights
-        <% when 2 %>
-            Department admin rights
-        <% when 1 %>
-            Super admin rights
-    <% end %>
+    <%= user.year_of_study %>
+  </td>
+  <td>
+    <%= privileges_description_for(user) %>
   </td>
 </tr>

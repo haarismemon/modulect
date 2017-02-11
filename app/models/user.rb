@@ -20,11 +20,6 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :uni_modules
 
-  def full_name
-    "#{first_name} #{last_name}"
-  end
-
-
   # Registers the valid_uni_module as having been selected by this user.
   def select_module(valid_uni_module)
     uni_modules << valid_uni_module
