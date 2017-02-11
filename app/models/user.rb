@@ -1,5 +1,7 @@
 class User < ApplicationRecord
 
+  has_and_belongs_to_many :uni_modules
+
   validates :first_name, presence: true, length: { maximum: 70 }
 
   validates :last_name, presence: true, length: { maximum: 70 }
@@ -19,10 +21,16 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: {minimum: 6}
 
-  has_and_belongs_to_many :uni_modules
+  before_save :downcase_email
 
   # Registers the valid_uni_module as having been selected by this user.
   def select_module(valid_uni_module)
     uni_modules << valid_uni_module
+  end
+
+  private
+
+  def downcase_email
+    self.email.downcase!
   end
 end

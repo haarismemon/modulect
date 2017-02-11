@@ -4,6 +4,18 @@ RSpec.describe User, type: :model do
 
   let(:user) { build(:user) }
 
+  describe "before save" do
+    context "when email contains capital letters" do
+      before do
+        user.email.upcase!
+        user.save
+      end
+      it "downcases email" do
+        expect(user.email).to eq user.email.downcase
+      end
+    end
+  end
+
   describe "#valid?" do
 
     context "when all fields are valid" do
