@@ -71,6 +71,47 @@
 		   	</div>
 	   	</div>
 	  </div>
+
+	  <div id="page">
+	  	<div class="container login-card">
+		  		<div class="col-md-12">
+		  			<div class="row">
+			  			<h1>Start a Pathway Search</h1>
+			  			<h3 style="margin-top: 20px">Let us assist you in finding the right modules which suit your interests and career aspirations.</h3>
+			  		</div>
+			  	</div>
+			  	<?php if($login == "true" && $ftLogin == "false") { ?>
+		  		<div class="row" style="margin-top: 20px">
+		  			<div class="col-md-4">
+			 				<div class="form-group">
+		   					<button id='pathwayButton' class="btn btn-lg btn-block" type="submit">Pathway Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
+		   					</button>
+		   				</div>
+		   			</div>
+		   		</div>
+		   		<?php }
+            else if($login == "false") {
+            ?>
+            <div class="row" style="margin-top: 20px">
+			  			<div class="col-md-12">
+			  				<h4>In order to fully make use of the Modulect system please Register or Login</h4>
+			  			</div>
+			  		</div>
+			  		<div class="row" style="margin-top: 20px">
+			  			<div class="col-md-4">
+				 				<div class="form-group">
+			   					<button id='pathwayButton' class="btn btn-lg btn-block" type="submit">Login or Register
+			   					</button>
+			   				</div>
+			   			</div>
+		   			</div>
+		   			<?php
+            }
+            ?>
+		   		</div>
+		   	</div>
+		   </div>
+	  </div>
 	  <?php include 'includes/partial-footer.php'; ?>
 	</body>
 </html>
