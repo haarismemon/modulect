@@ -8,6 +8,7 @@ end
 ruby '2.3.3'
 gem 'sass-rails',             '~> 5.0'
 gem 'bcrypt', 		  		      '3.1.11'
+gem 'bootstrap-sass'
 gem 'materialize-sass'
 gem 'rails',                  '~> 5.0.1'
 gem 'puma',                   '~> 3.0'
