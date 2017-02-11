@@ -33,7 +33,31 @@
 	   				<div class="col-md-8">
 		   				<form>
 		   					<div class="form-group">
-		   						<input type="text" name="searchBar" data-role="tagsinput" placeholder='Search anything (like modules, careers, interests, etc.)' required autofocus/>
+		   						<input type="text" data-role="tagsinput" placeholder='Search anything (like modules, careers, interests, etc.)' required autofocus/>
+		   						<script>
+										var modules = new Bloodhound({
+										  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+										  queryTokenizer: Bloodhound.tokenizers.whitespace,
+										  prefetch: {
+										    url: 'assets/module-list.json',
+										    filter: function(list) {
+										      return $.map(list, function(modules) {
+										        return { name: modules }; });
+										    }
+										  }
+										});
+										modules.initialize();
+
+										$('input').tagsinput({
+										  typeaheadjs: {
+										    name: 'modules',
+										    displayKey: 'name',
+										    valueKey: 'name',
+										    source: modules.ttAdapter()
+										  },
+										  freeInput: false
+										});
+									</script>
 		   					</div>
 		   				</form>
 		   			</div>
