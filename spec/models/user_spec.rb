@@ -16,6 +16,54 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#remember" do
+    before do
+      user.update_attribute(:remember_digest, nil)
+      user.remember
+    end
+
+    it "generates and saves a unique remember_token for the user" do
+      expect(user.remember_token).not_to be_blank
+    end
+
+    it "generates and saves a digest of the user's unique remember token" do
+      expect(user.remember_digest).not_to be_blank
+    end
+  end
+
+  describe "#forget" do
+    before do
+      user.remember
+      expect(user.remember_token).not_to be_blank
+    end
+
+    it "forgets the user's remember token" do
+      user.forget
+      expect(user.remember_token).to be_blank
+    end
+  end
+
+  describe "#authenticated?" do
+    before do
+      user.remember
+    end
+
+    context "when checking if a user is a remembered user" do
+      context "and the user's remember_token is passed" do
+        it "returns true" do
+          expect(user.authenticated?(:remember,
+                                      user.remember_token)).to eq true
+        end
+      end
+
+      context "and an incorrect remember_token is passed" do
+        it "returns false" do
+          expect(user.authenticated?(:remember, "DEADBEEF")).to eq false
+        end
+      end
+    end
+  end
+
   describe "#valid?" do
 
     context "when all fields are valid" do

@@ -18,15 +18,61 @@ class User < ApplicationRecord
 
   before_save :downcase_email
 
-  attr_accessor :remember_token, :activation_token, :reset_token
+  attr_accessor :remember_token
+
+  # Static methods
+  class << self
+
+    # Returns the hash digest of a given string.
+    def digest(string)
+      cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                    BCrypt::Engine.cost
+      BCrypt::Password.create(string, cost: cost)
+    end
+
+    # Generates a new random token.
+    def new_token
+      SecureRandom.urlsafe_base64
+    end
+  end
 
   # Registers the valid_uni_module as having been selected by this user.
   def select_module(valid_uni_module)
     uni_modules << valid_uni_module
   end
 
-  private
+  # Marks the user as persistenly logged in.
+  # This method handles the server-side part of a persistent login by saving
+  # the digest of a user's unique remember token, similar to how passwords are
+  # handled.
+  # Placing permanent cookies on the user's machine is also necessary.
+  # See SessionsHelper#remember for the full mechanism of persistent logins.
+  def remember
+    self.remember_token = User.new_token
+    update_attribute(:remember_digest, User.digest(remember_token))
+  end
 
+  # Forgets the unique token that allows a user to be persistently logged in.
+  # It is also good practice to remove any client-side cookies along with
+  # calling this method.
+  # See SessionsHelper#forget for the full mechanism of forgetting a user.
+  def forget
+    update_attribute(:remember_token, nil)
+  end
+
+  # Checks whether the digest correlated to a given attribute matches the one
+  # generated from the passed authentication_token.
+  # The attribute is a symbol or string correlating to a database attribute_digest.
+  # i.e. passing :remember as the attribute will correlate to remember_digest.
+  # The authentication_token is the user-unique token that is used to check
+  # authenticity.
+  def authenticated?(attribute, authentication_token)
+    return false if authentication_token.nil?
+    digest = send("#{attribute}_digest")
+    BCrypt::Password.new(digest).is_password?(authentication_token)
+  end
+
+  private
   def downcase_email
     self.email.downcase!
   end
