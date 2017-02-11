@@ -34,13 +34,13 @@ class UniModule < ApplicationRecord
       if match_tag
         search(tag_name).each do |uni_module|
           # if the module was previously matched with a tag, store the current tag to the module's matched tags
-          if results.key?(uni_module.name)
-            matched_tags_array = results[uni_module.name]
+          if results.key?(uni_module)
+            matched_tags_array = results[uni_module]
             matched_tags_array << match_tag.name
-            results[uni_module.name] = matched_tags_array
+            results[uni_module] = matched_tags_array
           # if this is first matched tag, then store the tag in an array
           else
-            results[uni_module.name] = [match_tag.name]
+            results[uni_module] = [match_tag.name]
           end
         end
       # else if the tag is not found, try look for a matching module name or code
@@ -56,18 +56,18 @@ class UniModule < ApplicationRecord
         # if module found with either code or name, then add module to array of matched tags
         if match_module
           # if the module was previously matched with a tag, store the current module to the module's matched tags
-          if results.key?(match_module.name)
-            matched_tags_array = results[match_module.name]
-            matched_tags_array << match_module.name
-            results[match_module.name] = matched_tags_array
+          if results.key?(match_module)
+            matched_tags_array = results[match_module]
+            matched_tags_array << match_module.code
+            results[match_module] = matched_tags_array
           # if this is first matched tag, then store the module in an array
           else
-            results[match_module.name] = [match_module.name]
+            results[match_module] = [match_module.code]
           end
 
           # store the module in an array to keep track of which modules have been searched for
-          unless module_match_array.include? match_module.name
-            module_match_array << match_module.name
+          unless module_match_array.include? match_module
+            module_match_array << match_module
           end
         end
 
@@ -75,10 +75,12 @@ class UniModule < ApplicationRecord
     end
 
     # sorted array with elements containing a module and an array of matched tags
-    results = Array(results.sort_by {|key, value| value.size}.reverse)
+    results = results.sort_by {|key, value| value.size}.reverse
 
-    result_with_matched_module = []
+    # results that contain the modules that have only tags in the value list
     result_with_only_matched_tags = []
+    # results that contain the modules that are searched for either by name or code, and also have tags in the value list
+    result_with_matched_module = []
 
     # split the results into modules that have only matched tags, and modules that also have a module matched
     results.each do |result|
@@ -91,7 +93,15 @@ class UniModule < ApplicationRecord
     end
 
     # join the two results into one, with results with a module matched at the TOP
-    return result_with_matched_module << result_with_only_matched_tags
+    if result_with_matched_module.empty? && result_with_only_matched_tags.empty?
+      return []
+    elsif result_with_matched_module.empty?
+      return result_with_only_matched_tags
+    elsif result_with_only_matched_tags.empty?
+      return result_with_matched_module
+    else
+      return result_with_matched_module << result_with_only_matched_tags
+    end
 
   end
 
