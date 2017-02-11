@@ -87,24 +87,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context "when username is blank" do
-      before do
-        user.username = nil
-      end
-      it "evaluates to false" do
-        expect(user.valid?).to eq false
-      end
-    end
-
-    context "when username is already taken" do
-      before do
-        create(:user, username: user.username)
-      end
-      it "evaluates to false" do
-        expect(user.valid?). to eq false
-      end
-    end
-
     context "when user_level is one digit long" do
       context "but not 1|2|3" do
         before do

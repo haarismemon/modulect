@@ -10,13 +10,14 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false },
                     format: { with: VALID_EMAIL_REGEX }
 
-  validates :username, presence: true, uniqueness: true
-
   validates :user_level, length: { is: 1 }, inclusion: { in: [1, 2, 3] }
 
   validates :year_of_study, presence: true,
                             length: { is: 1 },
                             inclusion: { in: [1, 2, 3, 4, 5, 6] }
+
+  has_secure_password
+  validates :password, presence: true, length: {minimum: 6}
 
   has_and_belongs_to_many :uni_modules
 
