@@ -1,9 +1,5 @@
-require 'test/spec'
+require 'rails_helper'
 
-context 'My context' do
-
-  specify 'should do something' do
-
-    true.should == false
-  end
+RSpec.describe "users/edit.html.erb", type: :view do
+  pending "add some examples to (or delete) #{__FILE__}"
 end

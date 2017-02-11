@@ -1,11 +1,5 @@
-require 'test/spec'
+require 'rails_helper'
 
-describe '"users/new.html.erb"' do
-context 'My context' do
-
-  specify 'should do something' do
-
-    true.should == false
-  end
+RSpec.describe "users/new.html.erb", type: :view do
+  pending "add some examples to (or delete) #{__FILE__}"
 end
-  end
