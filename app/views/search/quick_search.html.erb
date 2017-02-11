@@ -1,0 +1,9 @@
+<h1>Search#quick_search</h1>
+<p>Find me in app/views/search/quick_search.html.erb</p>
+<p><i>aloha pagan</i></p>
+
+<%= form_tag("/search/view_results", method: "get") do %>
+    <%= label_tag(:chosen_tags, "Search for:") %>
+    <%= text_field_tag(:chosen_tags) %>
+    <%= submit_tag "send"  %>
+<%end%>
