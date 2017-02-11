@@ -22,8 +22,16 @@
    	<div class="banner">
    		<div class="row">
 	   		<div class="container">
-	   			<div class="col-md-8">
-	   				<h1>Hi Alice. Lets find your perfect module...</h1>
+	   			<div class="col-md-12">
+	   				<?php if($login == "true" && $ftLogin == "false") { ?>
+	   					<h1>Hi Alice. Lets find your perfect module...</h1>
+	   				<?php }
+            else if($login == "false") {
+            ?>
+            	<h1>Hi Stranger. Lets find your perfect module...</h1>
+            <?php
+            }
+            ?>
 	   			</div>
 	   		</div>
 	   	</div>
