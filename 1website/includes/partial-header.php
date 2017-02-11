@@ -27,7 +27,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/"><img style="height:50px;" src="assets/modulect-logo.png"></a>
+          <a class="navbar-brand" href="/"><img style="height:50px;" src="/assets/images/modulect-logo.png"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
