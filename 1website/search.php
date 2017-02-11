@@ -11,11 +11,6 @@
 	<head>
 		<title> Search | Modulect </title>
 		<?php include 'includes/assets.php'; ?>
-		<link rel="stylesheet" type="text/css" href="assets/bootstrap-tagsinput.css">
-		<link rel="stylesheet" type="text/css" href="assets/searchStyle.css">
-		<script type="text/javascript" src="../includes/bootstrap-tagsinput.js"></script>
-		<script type="text/javascript" src="../includes/typeahead.bundle.js"></script>
-		<script type="text/javascript" src="../includes/bloodhound.js"></script>
 	</head>
 	<body>
   	<?php include 'includes/partial-header.php'; ?>
@@ -26,7 +21,7 @@
 	   				<?php if($login == "true" && $ftLogin == "false") { ?>
 	   					<h1>Hi Alice. Lets find your perfect module...</h1>
 	   				<?php }
-            else if($login == "false") {
+            else {
             ?>
             	<h1>Hi Stranger. Lets find your perfect module...</h1>
             <?php
