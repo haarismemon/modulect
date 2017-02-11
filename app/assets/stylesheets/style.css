@@ -31,9 +31,14 @@ footer {
 #page {
     min-height: 800px;
     background: #f9f9f9;
-    padding-top: 90px;
     padding-bottom: 20px;
 }
+
+.modulect-container {
+    background: #f9f9f9;
+    padding-top:90px;
+}
+
 .login-card {
     background-color: #fff;
     -webkit-transition: .3s ease-in-out;
