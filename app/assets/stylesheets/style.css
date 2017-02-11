@@ -92,7 +92,7 @@ input:focus,
 .form-group {
     margin-bottom: 20px;
 }
-.flash-alert {
+.flash-alert, .alert {
     padding: 15px;
     border: 1px solid #e8e8e8;
     background: #fff;
@@ -102,17 +102,17 @@ input:focus,
     border-radius: .25rem;
     font-family: "Open Sans";
 }
-.flash-alert-error {
+.flash-alert-error, .alert-danger {
     border-left-color: #cb5234;
 }
-.flash-alert-error i {
+.flash-alert-error i, .alert-danger i {
     color: #cb5234;
     margin-right: 8px;
 }
-.flash-alert-success {
+.flash-alert-success, .alert-success {
     border-left-color: #2ab27b;
 }
-.flash-alert-success i {
+.flash-alert-success i, .alert-success i {
     color: #2ab27b;
     margin-right: 8px;
 }
