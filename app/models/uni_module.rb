@@ -25,6 +25,8 @@ class UniModule < ApplicationRecord
     # store the search results in a hash. modules => [array of matched tags]
     results = {}
 
+    module_match_array = []
+
     # for each tag, search for the modules that contain the tag name
     tags_array.each do |tag_name|
       # store the tag object relating to the tag name
@@ -62,13 +64,35 @@ class UniModule < ApplicationRecord
           else
             results[match_module.name] = [match_module.name]
           end
+
+          # store the module in an array to keep track of which modules have been searched for
+          unless module_match_array.include? match_module.name
+            module_match_array << match_module.name
+          end
         end
 
       end
     end
 
-    # return a sorted array with elements containing a module and an array of matched tags
-    return results.sort_by {|key, value| value.size}.reverse
+    # sorted array with elements containing a module and an array of matched tags
+    results = Array(results.sort_by {|key, value| value.size}.reverse)
+
+    result_with_matched_module = []
+    result_with_only_matched_tags = []
+
+    # split the results into modules that have only matched tags, and modules that also have a module matched
+    results.each do |result|
+      result_module = result[0]
+      if module_match_array.include? result_module
+        result_with_matched_module << result
+      else
+        result_with_only_matched_tags << result
+      end
+    end
+
+    # join the two results into one, with results with a module matched at the TOP
+    return result_with_matched_module << result_with_only_matched_tags
+
   end
 
 end
