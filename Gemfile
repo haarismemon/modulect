@@ -7,7 +7,6 @@ end
 # if version doesn't work, use rvm to switch your ruby version
 ruby '2.3.3'
 gem 'sass-rails',             '~> 5.0'
-gem 'bcrypt-ruby', 		  		   '3.0.1'
 gem 'bootstrap-sass'
 gem 'materialize-sass'
 gem 'rails',                  '~> 5.0.1'
@@ -21,7 +20,7 @@ gem 'coffee-script-source',   '1.8.0'
 gem 'wdm',                    '>= 0.1.0' if Gem.win_platform?
 gem 'default_value_for',      '~> 3.0', '>= 3.0.2'
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 
 group :development, :test do
   gem 'sqlite3'
