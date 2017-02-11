@@ -7,7 +7,7 @@ end
 # if version doesn't work, use rvm to switch your ruby version
 ruby '2.3.3'
 gem 'sass-rails',             '~> 5.0'
-gem 'bcrypt', 		  		      '3.1.11'
+gem 'bcrypt-ruby', 		  		   '3.0.1'
 gem 'bootstrap-sass'
 gem 'materialize-sass'
 gem 'rails',                  '~> 5.0.1'
