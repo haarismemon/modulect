@@ -9,7 +9,7 @@
             <%= render 'shared/error_messages', object: f.object %>
             <div class="form-group" style="margin-top:10px;">
                <label for="inputName" class="sr-only">First name</label>
-               <%= f.text_field :first_name, placeholder: 'First name', class: 'form-control' %>
+               <%= f.text_field :first_name, placeholder: 'First name', class: 'form-control', autofocus: 'true' %>
             </div>
             <div class="form-group">
                <label for="inputName" class="sr-only">Last name</label>
