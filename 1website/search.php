@@ -84,7 +84,7 @@
 					</div>
 				</div>
 				<?php if($login == "true" && $ftLogin == "false") { ?>
-				<div class="row" style="margin-top: 20px">
+				<div class="row" style="margin-top: 40px">
 					<div class="col-md-4">
 						<div class="form-group">
 							<button id='pathwayButton' class="btn btn-lg btn-block" type="submit">Pathway Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
