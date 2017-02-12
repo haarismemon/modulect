@@ -1,188 +1,131 @@
 <% provide(:title, 'Search Results') %>
 <style>
-         @media print {
-         .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
-         .collapse{display:block;}
-         }
-      </style>
-      <div class="banner" style="margin-top: -20px;padding-top:30px;">
-         <div class="container">
-            <h1>Results</h1>
-            <h1>Search bar goes here <%= @temp_array%></h1>
-         </div>
-      </div>
-
-
-
-
-
- <div id="page" style="padding-top:30px;">
-         <div class="container">
-
-
-
+   @media print {
+   .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
+   .collapse{display:block;}
+   }
+</style>
+<div class="banner" style="margin-top: -20px;padding-top:30px;">
+   <div class="container">
+      <h1>Results</h1>
+      <h1>Search bar goes here <%= @temp_array%></h1>
+   </div>
+</div>
+<div id="page" style="padding-top:30px;">
+<div class="container">
 <% if @results.length == 0 %>
 <div class="row" style="margin-bottom:20px;">
-               <div class="col-md-10 col-md-offset-1 text-center">
-                  <h1>No modules found :(</h1>
-               </div>
-            </div>
+   <div class="col-md-10 col-md-offset-1 text-center">
+      <h1>No modules found :(</h1>
+   </div>
+</div>
 <% else %>
-
 <div class="row here-what" style="margin-bottom:20px;">
-               <div class="col-md-6 col-md-offset-1">
-                  <h1>Here's what we found:</h1>
-                  <h5>Showing <%= @results.length %> modules</h5>
-               </div>
-               <div class="col-md-4 text-right" style="padding-top:30px;">
-                  <div class="sort-area">
-                     Sort by: &nbsp;&nbsp;
-                     <select class="selectpicker">
-                        <option value="tags" selected>Tag match %</option>
-                        <option value="coursework">Coursework weighting</option>
-                        <option value="exam">Exam weighting</option>
-                        <option value="pass">Pass rate</option>
-                     </select>
-                  </div>
-               </div>
-            </div>
-            <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
-               <div class="col-md-10 col-md-offset-1 text-right">
-                  <ul class="results-page-options">
-                     <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
-                     <?php if($login == "true") { ?>
-                     <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email advisor</a> </li>
-                     <?php } ?>
-                  </ul>
-               </div>
-            </div>
-
-
+   <div class="col-md-6 col-md-offset-1">
+      <h1>Here's what we found:</h1>
+      <h5>Showing <%= @results.length %> modules</h5>
+   </div>
+   <div class="col-md-4 text-right" style="padding-top:30px;">
+      <div class="sort-area">
+         Sort by: &nbsp;&nbsp;
+         <select class="selectpicker">
+            <option value="tags" selected>Tag match %</option>
+            <option value="coursework">Coursework weighting</option>
+            <option value="exam">Exam weighting</option>
+            <option value="pass">Pass rate</option>
+         </select>
+      </div>
+   </div>
+</div>
+<div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
+   <div class="col-md-10 col-md-offset-1 text-right">
+      <ul class="results-page-options">
+         <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
+         <?php if($login == "true") { ?>
+         <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email advisor</a> </li>
+         <?php } ?>
+      </ul>
+   </div>
+</div>
 <div class="row">
-               <div class="col-md-10 col-md-offset-1">
-
-
-<% @results.each do |r| %>
-  <% unimodule = r.first %>
-  <% tagsmatched = r.second %>
-
-
-
- <!--BEGIN CARD -->
-                  <div class="col-md-12 login-card res-card result-card-green" >
-                     <div class="row">
-                        <div class="col-md-9 result-card-main">
-                           <h2><%= unimodule.code %> <%= unimodule.name %></h2>
-                           <h4>Second Year, <%= unimodule.semester %> - <%= unimodule.credits %> credits</h4>
-                           <div style="margin-top:30px">
-                             
-                              <a href="#" class="btn btn-lg btn-small save-button"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
-                             
-                              <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= unimodule.code %>-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                           </div>
-                        </div>
-                        <div class="col-md-3 result-side-column result-card-side">
-                           <div class="row">
-                              <h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
-
-<% if direct_search_check unimodule.code, tagsmatched, @temp_array %>
-<p>You searched for this directly.</p>
-<% else %>
-
-                              <div class="tag-match-figure" style="font-size:18px;">
-                              	<%= percentage_tag tagsmatched.length, @temp_array.length %>
-                              </div>
-                              <p><%= count_tag tagsmatched.length, @temp_array.length %></p>
-<% end %>
-
-
-
-
-
-                           </div>
-                           <div class="row" style="margin-top:10px">
-                              <style>
-                              </style>
-                              <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
-                              <div class="tags-area">
-
-				<% tagsmatched.each do |t| %>
- <span title="" href="" class="color5"><%= t %></span>
-<% end %>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div id="result-<%= unimodule.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
-                        <div class="col-md-12" style="margin-bottom:15px;">
-                           <h5>Description</h5>
-                           <p><%= size_check unimodule.description %></p>
-                        </div>
-                        <div class="col-md-4" style="margin-bottom:15px;">
-                           <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
-                           <p>TO DO IN NEXT SPRINT</p>
-                        </div>
-                        <div class="col-md-4" style="margin-bottom:15px;">
-                           <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
-                           <p>TO DO IN NEXT SPRINT</p>
-                        </div>
-                        <div class="col-md-4" style="margin-bottom:15px;">
-                           <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
-                           <p><%= size_check unimodule.lecturers %></p>
-                        </div>
-                        <div class="col-md-4" style="margin-bottom:15px;">
-                           <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
-                           <p><%= size_check unimodule.assessment_methods %></p>
-                        </div>
-                        <div class="col-md-4" style="margin-bottom:15px;">
-                           <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
-                           <p>
-                           <% if unimodule.exam_percentage.nil? || unimodule.coursework_percentage.nil? || unimodule.exam_percentage.length == 0 || unimodule.coursework_percentage == 0 %>
-                           		No data available
-                           <% else %>
-                           	
-                           <%= unimodule.exam_percentage %>:<%= unimodule.coursework_percentage %>
-                           <% end %>
-                           	
-
-
-                           </p>
-                        </div>
-                        <div class="col-md-4" style="margin-bottom:15px;">
-                           <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate</h5>
-                           <p><%= size_check unimodule.pass_rate %></p>
-                        </div>
-                     </div>
+   <div class="col-md-10 col-md-offset-1">
+      <% @results.each do |r| %>
+      <% unimodule = r.first %>
+      <% tagsmatched = r.second %>
+      <!--BEGIN CARD -->
+      <div class="col-md-12 login-card res-card result-card-green" >
+         <div class="row">
+            <div class="col-md-9 result-card-main">
+               <h2><%= unimodule.code %> <%= unimodule.name %></h2>
+               <h4>Second Year, <%= unimodule.semester %> - <%= unimodule.credits %> credits</h4>
+               <div style="margin-top:30px">
+                  <a href="#" class="btn btn-lg btn-small save-button"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+                  <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= unimodule.code %>-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+               </div>
+            </div>
+            <div class="col-md-3 result-side-column result-card-side">
+               <div class="row">
+                  <h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
+                  <% if direct_search_check unimodule.code, tagsmatched, @temp_array %>
+                  <p>You searched for this directly.</p>
+                  <% else %>
+                  <div class="tag-match-figure" style="font-size:18px;">
+                     <%= percentage_tag tagsmatched.length, @temp_array.length %>
                   </div>
-                  <!--END CARD -->
-
-
-
-<% end %>
-
-
-
-
-
-
+                  <p><%= count_tag tagsmatched.length, @temp_array.length %></p>
+                  <% end %>
+               </div>
+               <div class="row" style="margin-top:10px">
+                  <style>
+                  </style>
+                  <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
+                  <div class="tags-area">
+                     <% tagsmatched.each do |t| %>
+                     <span title="" href="" class="color5"><%= t %></span>
+                     <% end %>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div id="result-<%= unimodule.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
+            <div class="col-md-12" style="margin-bottom:15px;">
+               <h5>Description</h5>
+               <p><%= size_check unimodule.description %></p>
+            </div>
+            <div class="col-md-4" style="margin-bottom:15px;">
+               <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
+               <p>TO DO IN NEXT SPRINT</p>
+            </div>
+            <div class="col-md-4" style="margin-bottom:15px;">
+               <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
+               <p>TO DO IN NEXT SPRINT</p>
+            </div>
+            <div class="col-md-4" style="margin-bottom:15px;">
+               <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
+               <p><%= size_check unimodule.lecturers %></p>
+            </div>
+            <div class="col-md-4" style="margin-bottom:15px;">
+               <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
+               <p><%= size_check unimodule.assessment_methods %></p>
+            </div>
+            <div class="col-md-4" style="margin-bottom:15px;">
+               <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
+               <p>
+                  <% if unimodule.exam_percentage.nil? || unimodule.coursework_percentage.nil? || unimodule.exam_percentage.length == 0 || unimodule.coursework_percentage == 0 %>
+                  No data available
+                  <% else %>
+                  <%= unimodule.exam_percentage %>:<%= unimodule.coursework_percentage %>
+                  <% end %>
+               </p>
+            </div>
+            <div class="col-md-4" style="margin-bottom:15px;">
+               <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate</h5>
+               <p><%= size_check unimodule.pass_rate %></p>
+            </div>
+         </div>
+      </div>
+      <!--END CARD -->
+      <% end %>
+   </div>
 </div>
-</div>
-
-
-
-
-
-
-
-
 <% end %>
-
-
-
-
-
-
-
-
-
-
