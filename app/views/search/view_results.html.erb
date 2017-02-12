@@ -50,7 +50,7 @@
       <% @results.each do |r| %>
       <% unimodule = r.first %>
       <% tagsmatched = r.second %>
-      <div class="col-md-12 login-card res-card result-card-green" >
+      <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
          <div class="row">
             <div class="col-md-9 result-card-main">
                <h2><%= size_check unimodule.code %> <%= size_check unimodule.name %></h2>
