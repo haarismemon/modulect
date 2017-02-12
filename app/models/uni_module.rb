@@ -102,7 +102,7 @@ class UniModule < ApplicationRecord
     elsif result_with_only_matched_tags.empty?
       return result_with_matched_module
     else
-      return result_with_matched_module << result_with_only_matched_tags
+      return result_with_matched_module.concat result_with_only_matched_tags
     end
 
   end
