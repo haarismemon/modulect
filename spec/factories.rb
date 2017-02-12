@@ -39,6 +39,5 @@ FactoryGirl.define do
     password_confirmation   "password"
     user_level              3
     entered_before          false
-    year_of_study           2
   end
 end

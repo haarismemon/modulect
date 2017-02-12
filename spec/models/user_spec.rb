@@ -168,31 +168,11 @@ RSpec.describe User, type: :model do
     end
 
     context "when year_of_study is one digit long" do
-      context "and is one of 1|2|3|4|5|6" do
-        before do
-          user.year_of_study = 1
-        end
-        it "evaluates to true" do
-          expect(user.valid?).to eq true
-        end
-      end
-
-      context "and is not one of 1|2|3|4|5|6" do
-        before do
-          user.year_of_study = 7
-        end
-        it "evaluates to false" do
-          expect(user.valid?).to eq false
-        end
-      end
-    end
-
-    context "when year_of_study is blank" do
       before do
-        user.year_of_study = nil
+        user.year_of_study = 1
       end
-      it "evaluates to false" do
-        expect(user.valid?).to eq false
+      it "evaluates to true" do
+        expect(user.valid?).to eq true
       end
     end
 
