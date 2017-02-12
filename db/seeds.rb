@@ -6,8 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-prp = UniModule.create(name: "Programming Practice", code: "4CCS1PRA")
-pra = UniModule.create(name: "Programming Applications", code: "4CCS1PRP")
+prp = UniModule.create(name: "Programming Practice", code: "4CCS1PRP")
+pra = UniModule.create(name: "Programming Applications", code: "4CCS1PRA")
 fc1 = UniModule.create(name: "Foundations of Computing 1", code: "4CCS1FC1")
 cs1 = UniModule.create(name: "Computer Systems", code: "4CCS1CS1")
 iai = UniModule.create(name: "Artificial Intelligence", code: "4CCS1IAI")
@@ -45,6 +45,10 @@ dbs.tags << database_engineer
 cs1.tags << hardware_engineer
 pra.tags << front_end_developer
 
+pra.requirements << prp
+iai.requirements << cs1
+ins.requirements << cs1
+fc2.requirements << fc1
 
 # User seeds
 User.create(first_name:  "Vlad",

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   root 'static_pages#home'
   get '/about', to: 'static_pages#about'
 
@@ -11,6 +12,13 @@ Rails.application.routes.draw do
   # Signup
   get '/signup', to: 'users#new', as: 'signup'
   post 'signup', to: 'users#create'
+
+  # Uni Modules
+  resources :uni_modules do
+    member do
+      get :delete
+    end
+  end
 
   resources :users, except: [:index]
   post "users/new"
