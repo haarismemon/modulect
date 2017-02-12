@@ -14,8 +14,8 @@ module SearchHelper
 	# returns percentage tag match on input
 	# written by Aqib
 	def percentage_tag(module_matched, total)
-		percentage = (module_matched / total) * 100
-		"#{percentage}%"
+		percentage = (Float(module_matched) / total) * 100
+		"#{percentage.round}%"
 	end
 
 	# returns percentage tag match on input
@@ -25,6 +25,7 @@ module SearchHelper
 	end
 
 	# returns true if searched directly for a module in search
+	# written by Aqib
 	def direct_search_check(module_code, module_matched_list, tags_matched_list)
 		if module_matched_list.include?(module_code) && 
 			tags_matched_list.include?(module_code) 
