@@ -4,6 +4,23 @@ RSpec.describe User, type: :model do
 
   let(:user) { build(:user) }
 
+  describe "when created into the database" do
+    before do
+      user.save
+    end
+    it "has an activation token" do
+      expect(user.activation_token).not_to be_blank
+    end
+    it "has an activation digest" do
+      expect(user.activation_digest).not_to be_blank
+    end
+    it "has a matching token for the digest" do
+        expect(user.authenticated?(:activation,
+                                    user.activation_token
+                                    )).to eq true
+    end
+  end
+
   describe "before save" do
     context "when email contains capital letters" do
       before do
@@ -52,7 +69,8 @@ RSpec.describe User, type: :model do
       context "and the user's remember_token is passed" do
         it "returns true" do
           expect(user.authenticated?(:remember,
-                                      user.remember_token)).to eq true
+                                      user.remember_token
+                                      )).to eq true
         end
       end
 

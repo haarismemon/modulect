@@ -37,6 +37,8 @@ FactoryGirl.define do
     email                   "allison_wonderland@eemail.com"
     password                "password"
     password_confirmation   "password"
+    activated               true
+    activated_at            Time.zone.now
     user_level              3
     entered_before          false
   end

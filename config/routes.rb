@@ -18,6 +18,10 @@ Rails.application.routes.draw do
   # Password resets
   resources :password_resets, only: [:new, :create, :edit, :update]
 
+  # Account activations
+  resources :account_activations, only: [:edit]
+
+  # Search
   get 'search/quick_search'
   get 'search/smart_search'
   get 'search/view_results'

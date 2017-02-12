@@ -135,7 +135,7 @@ input:focus,
     font-family: "Varela Round";
     font-size: 16px;
     /*  box-shadow: 0px 10px 0px 0px #D3D3D3;*/
-    
+
     border-bottom: 1px solid #D3D3D3;
     border-radius: 0px;
 }
@@ -276,7 +276,7 @@ input:focus,
     color: #2AB27B;
     font-family: "Varela Round";
     /*font-size: 20px;*/
-    
+
     float: right;
     margin-top: 5px
 }
@@ -490,7 +490,8 @@ input:focus,
     border-radius: 4px;
     line-height: 35px;
     cursor: text;
-    display: inline-block, width: auto;
+    display: inline-block;
+    width: auto;
     margin: auto 0;
     width: 100% !important;
 }
@@ -498,10 +499,12 @@ input:focus,
     border: none;
     box-shadow: none;
     outline: none;
-    display: inline-block background-color: transparent;
+    display: inline-block;
+    background-color: transparent;
     padding: 0 6px;
     margin: 0;
-    font-size: 18px border-color: none !important;
+    font-size: 18px;
+    border-color: none !important;
     box-shadow: none !important;
     outline: none !important;
     text-overflow: ellipsis;

@@ -21,7 +21,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.user_level = 3
     if @user.save
-      flash[:success] = "Account created successfully"
+      UserMailer.account_activation(@user).deliver_now
+      flash[:success] = "Please check your email to activate your account."
       redirect_to @user
     else
       render 'new'

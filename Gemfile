@@ -24,6 +24,7 @@ gem 'default_value_for',      '~> 3.0', '>= 3.0.2'
 group :development, :test do
   gem 'sqlite3'
   gem 'factory_girl_rails'
+  gem 'capybara'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug',      '9.0.0', platform: :mri
   gem 'rspec-rails', '~> 3.5'
