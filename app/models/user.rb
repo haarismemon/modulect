@@ -1,5 +1,10 @@
 class User < ApplicationRecord
 
+  attr_accessor :remember_token, :activation_token
+
+  before_save :downcase_email
+  before_create :create_activation_digest
+
   has_and_belongs_to_many :uni_modules
 
   validates :first_name, presence: true, length: { maximum: 70 }
@@ -15,13 +20,7 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: {minimum: 6}
 
-  before_save :downcase_email
-
-  attr_accessor :remember_token
-
-  # Static methods
   class << self
-
     # Returns the hash digest of a given string.
     def digest(string)
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -71,8 +70,18 @@ class User < ApplicationRecord
     BCrypt::Password.new(digest).is_password?(authentication_token)
   end
 
+  # Activates an account.
+  def activate
+    update_columns(activated: true, activated_at: Time.zone.now)
+  end
+
   private
   def downcase_email
     self.email.downcase!
+  end
+
+  def create_activation_digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
   end
 end
