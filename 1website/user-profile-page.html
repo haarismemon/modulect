@@ -67,11 +67,11 @@
   				<form>
             <div class="form-group">
               <label for="inputName">Name</label>
-              <input type="text" id="inputName" class="form-control" placeholder="Alice Wonderland" required autofocus>
+              <input type="text" id="inputName" class="form-control" value="Alice Wonderland" readonly autofocus>
             </div>
             <div class="form-group">
               <label for="inputEmail">Email address</label>
-              <input type="email" id="inputEmail" class="form-control" placeholder="alice_in_wonderland@kcl.ac.uk" required>
+              <input type="email" id="inputEmail" class="form-control" value="alice_in_wonderland@kcl.ac.uk" readonly>
             </div>
             <div class="form-group">
               <label for="inputPassword">Password</label>
@@ -92,7 +92,7 @@
   				<form>
           <div class="form-group">
             <label for="year-of-study">Year Of Study</label>
-            <select class="form-control" id="year-of-study">
+            <select class="form-control" id="year-of-study" required>
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -103,14 +103,14 @@
           </div>
           <div class="form-group">
             <label for="faculty">Faculty</label>
-            <select class="form-control" id="faculty">
+            <select class="form-control" id="faculty" required>
               <option>Faculty of Natural &amp; Mathematical Sciences</option>
               <option>Faculty of Life Sciences &amp; Medicine</option>
             </select>
           </div>
           <div class="form-group">
             <label for="department">Department</label>
-            <select class="form-control" id="department">
+            <select class="form-control" id="department" required>
               <option>Department of Mathematics</option>
               <option>Department of Informatics</option>
               <option>Department of Chemistry</option>
@@ -118,7 +118,7 @@
           </div>
           <div class="form-group">
             <label for="course">Course/Programme</label>
-            <select class="form-control" id="course">
+            <select class="form-control" id="course" required>
               <option>Computer Science BSc</option>
               <option>Biochemistry MSci</option>
             </select>
