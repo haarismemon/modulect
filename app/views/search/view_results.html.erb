@@ -104,7 +104,7 @@
                      <div id="result-1-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
                         <div class="col-md-12" style="margin-bottom:15px;">
                            <h5>Description</h5>
-                           <p><%= unimodule.description %></p>
+                           <p><%= size_check unimodule.description %></p>
                         </div>
                         <div class="col-md-4" style="margin-bottom:15px;">
                            <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
@@ -116,19 +116,29 @@
                         </div>
                         <div class="col-md-4" style="margin-bottom:15px;">
                            <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
-                           <p><%= unimodule.lecturers %></p>
+                           <p><%= size_check unimodule.lecturers %></p>
                         </div>
                         <div class="col-md-4" style="margin-bottom:15px;">
                            <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
-                           <p><%= unimodule.assessment_methods %></p>
+                           <p><%= size_check unimodule.assessment_methods %></p>
                         </div>
                         <div class="col-md-4" style="margin-bottom:15px;">
                            <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
-                           <p><%= unimodule.exam_percentage %>:<%= unimodule.coursework_percentage %></p>
+                           <p>
+                           <% if unimodule.exam_percentage.nil? || unimodule.coursework_percentage.nil? || unimodule.exam_percentage.length == 0 || unimodule.coursework_percentage == 0 %>
+                           		No data available
+                           <% else %>
+                           	
+                           <%= unimodule.exam_percentage %>:<%= unimodule.coursework_percentage %>
+                           <% end %>
+                           	
+
+
+                           </p>
                         </div>
                         <div class="col-md-4" style="margin-bottom:15px;">
                            <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate</h5>
-                           <p><%= unimodule.pass_rate %></p>
+                           <p><%= size_check unimodule.pass_rate %></p>
                         </div>
                      </div>
                   </div>
