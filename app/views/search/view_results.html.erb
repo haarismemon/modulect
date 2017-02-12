@@ -56,8 +56,8 @@
       <div class="col-md-12 login-card res-card result-card-green" >
          <div class="row">
             <div class="col-md-9 result-card-main">
-               <h2><%= unimodule.code %> <%= unimodule.name %></h2>
-               <h4>Second Year, <%= unimodule.semester %> - <%= unimodule.credits %> credits</h4>
+               <h2><%= size_check unimodule.code %> <%= size_check unimodule.name %></h2>
+               <h4><%= size_check unimodule.semester %> - <%= size_check unimodule.credits %> credits</h4>
                <div style="margin-top:30px">
                   <a href="#" class="btn btn-lg btn-small save-button"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
                   <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= unimodule.code %>-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
