@@ -3,6 +3,8 @@ class UniModule < ApplicationRecord
   validates :name, presence: true
   validates :code, presence: true, length: { is: 8 }, uniqueness: true
 
+  has_many :requirements, class_name: "UniModule", foreign_key: "requirements_id"
+  # belongs_to :parent, class_name: "UniModule", foreign_key: "requirements_id"
   has_and_belongs_to_many :users
   has_and_belongs_to_many :tags
 
