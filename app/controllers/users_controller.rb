@@ -22,10 +22,14 @@ class UsersController < ApplicationController
     @user.user_level = 3
     if @user.save
       flash[:success] = "Account created successfully"
-      redirect_to users_url
+      redirect_to @user
     else
       render 'new'
     end
+  end
+
+  # Shows the profile of a user.
+  def show
   end
 
   def destroy
