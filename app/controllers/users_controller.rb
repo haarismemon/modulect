@@ -5,9 +5,14 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  # Display signup form.
+  # Displays signup form.
+  # Signup forms will be posted to new instead of create to preserve /signup url.
   def new
-    @user = User.new
+    if user_params
+      create
+    else
+      @user = User.new
+    end
   end
 
   # Handle signup form submission.
@@ -28,6 +33,9 @@ class UsersController < ApplicationController
 
   private
     def user_params
+      if params[:user].blank?
+        return nil
+      end
       #!add params that want to be recognized by this application
       params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level)
     end

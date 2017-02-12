@@ -5,7 +5,7 @@
       <div class="col-md-12  login-card">
          <h2>Sign up</h2>
          <div id="login-area">
-            <%= form_for(@user) do |f| %>
+            <%= form_for @user, url: { action: :new } do |f| %>
             <%= render 'shared/error_messages', object: f.object %>
             <div class="form-group" style="margin-top:10px;">
                <label for="inputName" class="sr-only">First name</label>
