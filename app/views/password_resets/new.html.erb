@@ -9,10 +9,14 @@
             <%= form_for(:password_reset, url: password_resets_path) do |f| %>
             <div class="form-group">
                <label for="inputEmail" class="sr-only">Email address</label>
-               <input type="email" id="inputEmail" class="form-control" placeholder="Email: first.last@kcl.ac.uk" required autofocus>
+               <%= f.email_field :email, id: "inputEmail",
+                                         class: "form-control",
+                                         placeholder: "first.last@kcl.ac.uk",
+                                         autofocus: true %>
             </div>
             <div class="form-group">
-               <button class="btn btn-lg btn-block" type="submit">Reset password&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
+               <button class="btn btn-lg btn-block" type="submit">
+                 Reset password&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
                </button>
             </div>
             <div class="form-group">
@@ -24,3 +28,17 @@
       </div>
    </div>
 </div>
+<!--
+<% provide(:title, "Forgot password") %>
+<h1>Forgot password</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(:password_reset, url: password_resets_path) do |f| %>
+      <%= f.label :email %>
+      <%= f.email_field :email, class: 'form-control' %>
+
+      <%= f.submit "Sumbit", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div> -->
