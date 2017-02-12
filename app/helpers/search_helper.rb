@@ -14,7 +14,8 @@ module SearchHelper
 	# returns percentage tag match on input
 	# written by Aqib
 	def percentage_tag(module_matched, total)
-		(module_matched / total) * 100
+		percentage = (module_matched / total) * 100
+		"#{percentage}%"
 	end
 
 	# returns percentage tag match on input
