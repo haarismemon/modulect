@@ -5,21 +5,33 @@
          .collapse{display:block;}
          }
       </style>
-      <div class="banner" style="margin-top: -20px;">
+      <div class="banner" style="margin-top: -20px;padding-top:30px;">
          <div class="container">
             <h1>Results</h1>
+            <h1>Search bar goes here</h1>
          </div>
       </div>
+
+
+
+
 
  <div id="page" style="padding-top:30px;">
          <div class="container">
 
 
+
+<% if @results.length == 0 %>
 <div class="row" style="margin-bottom:20px;">
                <div class="col-md-10 col-md-offset-1 text-center">
                   <h1>No modules found :(</h1>
                </div>
             </div>
+<% else %>
+
+We got results!
+
+<% end %>
 
 
 
@@ -34,3 +46,8 @@
 </br>
 <p>results: </p>
 <%= @results%>
+
+
+
+
+
