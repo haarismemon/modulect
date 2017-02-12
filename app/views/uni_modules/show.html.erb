@@ -1,0 +1,29 @@
+<%= link_to("Back to list", uni_modules_path, :class => 'back-link') %>
+<div class = "uni module show">
+	<h2><%= @uni_module.name %></h2>
+	<table>
+		<tr>
+			<th>Code</th>
+			<td><%= @uni_module.code %></td>
+		</tr>
+		<tr>
+			<th>Description</th>
+			<td><%= @uni_module.description %></td>
+		</tr>
+
+		<tr>
+			<th>Lecturers</th>
+			<td><%= @uni_module.lecturers %></td>
+		</tr>
+
+		<tr>
+			<th>Created at</th>
+			<td><%= @uni_module.created_at %></td>
+		</tr>
+
+		<tr>
+			<th>Undated at</th>
+			<td><%= @uni_module.updated_at %></td>
+		</tr>
+	</table>
+</div>
