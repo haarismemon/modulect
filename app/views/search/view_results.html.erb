@@ -41,9 +41,7 @@
    <div class="col-md-10 col-md-offset-1 text-right">
       <ul class="results-page-options">
          <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
-         <?php if($login == "true") { ?>
          <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email advisor</a> </li>
-         <?php } ?>
       </ul>
    </div>
 </div>
@@ -52,7 +50,6 @@
       <% @results.each do |r| %>
       <% unimodule = r.first %>
       <% tagsmatched = r.second %>
-      <!--BEGIN CARD -->
       <div class="col-md-12 login-card res-card result-card-green" >
          <div class="row">
             <div class="col-md-9 result-card-main">
@@ -67,7 +64,7 @@
                <div class="row">
                   <h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
                   <% if direct_search_check unimodule.code, tagsmatched, @temp_array %>
-                  <p>You searched for this directly.</p>
+                  <p>You searched for this directly</p>
                   <% else %>
                   <div class="tag-match-figure" style="font-size:18px;">
                      <%= percentage_tag tagsmatched.length, @temp_array.length %>
@@ -124,7 +121,6 @@
             </div>
          </div>
       </div>
-      <!--END CARD -->
       <% end %>
    </div>
 </div>
