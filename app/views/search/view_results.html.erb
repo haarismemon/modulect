@@ -61,13 +61,14 @@
 <div class="row">
                <div class="col-md-10 col-md-offset-1">
 
+  <%= @temp_array %>
 
 
 <% @results.each do |r| %>
   <% unimodule = r.first %>
   <% tagsmatched = r.second %>
 
-  
+
 
  <!--BEGIN CARD -->
                   <div class="col-md-12 login-card res-card result-card-green" >
@@ -85,18 +86,31 @@
                         <div class="col-md-3 result-side-column result-card-side">
                            <div class="row">
                               <h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
-                              <div class="tag-match-figure" style="font-size:18px;">80%</div>
-                              <p>4 out of 5</p>
+
+<% if direct_search_check unimodule.code, tagsmatched, @temp_array %>
+<p>You searched for this directly.</p>
+<% else %>
+
+                              <div class="tag-match-figure" style="font-size:18px;">
+                              	<%= percentage_tag tagsmatched.length, @temp_array.length %>
+                              </div>
+                              <p><%= count_tag tagsmatched.length, @temp_array.length %></p>
+<% end %>
+
+
+
+
+
                            </div>
                            <div class="row" style="margin-top:10px">
                               <style>
                               </style>
                               <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
                               <div class="tags-area">
-                                 <span title="" href="" class="color5">Internet</span>
-                                 <span title="" href="" class="color5">Web servers</span>
-                                 <span title="" href="" class="color5">Engineer</span>
-                                 <span title="" href="" class="color5">Networks</span>
+
+				<% tagsmatched.each do |t| %>
+ <span title="" href="" class="color5"><%= t %></span>
+<% end %>
                               </div>
                            </div>
                         </div>
@@ -143,11 +157,6 @@
                      </div>
                   </div>
                   <!--END CARD -->
-
-
-
-
-
 
 
 
