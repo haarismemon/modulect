@@ -39,6 +39,11 @@ class User < ApplicationRecord
     uni_modules << valid_uni_module
   end
 
+  # Removes the valid_uni_module as having been de-selected by this user (unsaved).
+  def unsave_module(valid_uni_module)
+    uni_modules.delete(valid_uni_module)
+  end
+
   # Marks the user as persistenly logged in.
   # This method handles the server-side part of a persistent login by saving
   # the digest of a user's unique remember token, similar to how passwords are
