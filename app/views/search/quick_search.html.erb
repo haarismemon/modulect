@@ -12,9 +12,7 @@
 		<div class="row" style="margin-top: 15px">
 			<div id="quick-search">
 				<div class="col-md-8">
-					<form>
-						<div class="form-group">
-							<input type="text" data-role="tagsinput" placeholder='Search anything (like modules, careers, interests, etc.)' required autofocus/>
+					    <%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
 							<script>9
 								var modules = <%= raw create_tag_json(@tag_names, @module_names, @module_code) %>
 								var modules = new Bloodhound({
@@ -36,8 +34,6 @@
 
 								$('input').focus();
 							</script>
-						</div>
-					</form>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
@@ -76,7 +72,7 @@
 		<div class="row" style="margin-top: 40px">
 			<div class="col-md-4">
 				<div class="form-group">
-					<form action="/">
+					<form action="/login">
 						<button id='loginRegButton' class="btn btn-lg btn-block" type="submit">Login or Register
 						</button>
 					</form>
