@@ -13,7 +13,7 @@
 			<div id="quick-search">
 				<div class="col-md-8">
 					<%= form_tag("/search/view_results", method: "get") do %>
-					    <%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
+					    <%= text_field_tag(:chosen_tags, nil, :id => "search", :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}) %>
 							<script>
 								var modules = <%= raw create_tag_json(@tag_names, @module_names, @module_code) %>
 								var modules = new Bloodhound({
@@ -23,7 +23,7 @@
 								});
 								modules.initialize();
 
-								$('input').tagsinput({
+								$('#search.input').tagsinput({
 									typeaheadjs: {
 										name: 'modules',
 										displayKey: 'name',
@@ -33,7 +33,7 @@
 									freeInput: false
 								});
 
-								$('input').focus();
+								$('#search.input').focus();
 							</script>
 				</div>
 				<div class="col-md-4">
