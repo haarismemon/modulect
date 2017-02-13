@@ -37,7 +37,7 @@ software_engineer = CareerTag.create(name: "Software Engineer")
 network_engineer = CareerTag.create(name: "Network Engineer")
 logic_engineer = CareerTag.create(name: "Logic Engineer")
 database_engineer = CareerTag.create(name: "Database Engineer")
-hardware_engineer = CareerTag.create(name: "Database Engineer")
+hardware_engineer = CareerTag.create(name: "Hardware Engineer")
 front_end_developer = CareerTag.create(name: "Front-end Developer")
 
 prp.tags << programming
@@ -55,6 +55,16 @@ ela.tags << logic_engineer
 dbs.tags << database_engineer
 cs1.tags << hardware_engineer
 pra.tags << front_end_developer
+
+
+pra
+prp
+fc2
+iai
+
+fc1
+dst
+
 
 pra.requirements << prp
 iai.requirements << cs1
