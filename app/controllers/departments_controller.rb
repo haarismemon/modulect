@@ -12,7 +12,7 @@ class DepartmentsController < ApplicationController
     @department = Department.new  
   end
 
-  def creare
+  def create
     @department = Department.new(department_params)
     if @department.save
       flash[:success] = "Department created"
@@ -52,7 +52,7 @@ class DepartmentsController < ApplicationController
   private
 
   def department_params
-    params.requite(:department).permit(:name)
+    params.require(:department).permit(:name)
   end
 
 end
