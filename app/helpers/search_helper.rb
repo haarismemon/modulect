@@ -45,7 +45,7 @@ module SearchHelper
 		end
 	end
 
-	# retuns a string used to colour code card based on number of tags matched
+	# returns a string used to colour code card based on number of tags matched
 	# inputs are a string and lists
 	# written by Aqib
 	def colour_code_card(module_code, module_matched_list, tags_matched_list)
@@ -55,7 +55,34 @@ module SearchHelper
 		else
 			"orange"
 		end
-	end	
+	end
+
+  # returns an array of results sorted according to the sort by category
+  # inputs are the array of unsorted results, and a string of the category to sort by
+  # written by Haaris
+	def sort_by(results_array, sort_by_category)
+    if(results_array.is_a?(Array))
+      results_array = Array(results_array)
+    end
+
+    if results_array.empty?
+      return []
+    end
+
+    modules_with_weightings = []
+    modules_with_pass_rate = []
+
+    results_array.each do |result|
+      uni_module = result[0]
+      if uni_module.exam_percentage && uni_module.coursework_percentage
+        modules_with_weightings << result
+      end
+      if uni_module.pass_rate
+        modules_with_pass_rate << result
+      end
+    end
+
+  end
 
 
 end
