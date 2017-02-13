@@ -49,7 +49,13 @@
    <div class="col-md-10 col-md-offset-1">
       <% @results.each do |r| %>
       <% unimodule = r.first %>
-      <% tagsmatched = r.second %>
+      <% tagsmatched = r.second %>    
+      <% careers = [] %>               
+      <% unimodule.tags.each do |moduletag| %>
+         <% if moduletag.type == "CareerTag" %>
+            <% careers.push(moduletag.name) %>
+         <% end %>
+      <% end %>
       <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
          <div class="row">
             <div class="col-md-9 result-card-main">
@@ -91,7 +97,9 @@
             </div>
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
-               <p>TO DO IN NEXT SPRINT</p>
+               <p>
+                  <%= size_check careers.join(", ") %>
+               </p>
             </div>
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
