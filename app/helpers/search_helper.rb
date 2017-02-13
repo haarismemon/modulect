@@ -70,30 +70,45 @@ module SearchHelper
     end
 
     modules_with_weightings = []
+    modules_with_no_weightings = []
     modules_with_pass_rate = []
+    modules_with_no_pass_rate = []
 
     results_array.each do |result|
       uni_module = result[0]
+      # if module has exam + coursework percentage that are not nil, then store in array for weightings
       if uni_module.exam_percentage && uni_module.coursework_percentage
         modules_with_weightings << result
+      else
+        modules_with_no_weightings << result
       end
+
+      # if module has pass rate that is not nil, then store in array for pass rate
       if uni_module.pass_rate
         modules_with_pass_rate << result
+      else
+        modules_with_no_pass_rate << result
       end
     end
 
-    if sort_by_category == "coursework_weighting"
+    if sort_by_category == "coursework"
       # sorted results according to coursework percentage
-      results = modules_with_weightings.sort_by {|result| result[0].coursework_percentage}.reverse
-      return results
-    elsif sort_by_category == "exam_weighting"
+      results_with_attribute = modules_with_weightings.sort_by {|result| result[0].coursework_percentage}.reverse
+      # sort the remaining modules (without the exam/coursework attribute) according to number of tags matched
+      results_without_attribute = modules_with_no_weightings.sort_by {|result| result[1].size}.reverse
+      return results_with_attribute.concat results_without_attribute
+    elsif sort_by_category == "exam"
       # sorted results according to exam percentage
-      results = modules_with_weightings.sort_by {|result| result[0].exam_percentage}.reverse
-      return results
-    elsif sort_by_category == "pass_rate"
+      results_with_attribute = modules_with_weightings.sort_by {|result| result[0].exam_percentage}.reverse
+      # sort the remaining modules (without the exam/coursework attribute) according to number of tags matched
+      results_without_attribute = modules_with_no_weightings.sort_by {|result| result[1].size}.reverse
+      return results_with_attribute.concat results_without_attribute
+    elsif sort_by_category == "pass"
       # sorted results according to pass rate
-      results = modules_with_pass_rate.sort_by {|result| result[0].pass_rate}.reverse
-      return results
+      results_with_attribute = modules_with_pass_rate.sort_by {|result| result[0].pass_rate}.reverse
+      # sort the remaining modules (without the pass rate attribute) according to number of tags matched
+      results_without_attribute = modules_with_no_pass_rate.sort_by {|result| result[1].size}.reverse
+      return results_with_attribute.concat results_without_attribute
     end
 
     return results_array
