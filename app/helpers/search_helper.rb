@@ -65,8 +65,8 @@ module SearchHelper
       results_array = Array(results_array)
     end
 
-    if results_array.empty?
-      return []
+    if results_array.empty? || sort_by_category == ""
+      return results_array
     end
 
     modules_with_weightings = []
@@ -80,6 +80,12 @@ module SearchHelper
       if uni_module.pass_rate
         modules_with_pass_rate << result
       end
+    end
+
+    if sort_by_category == "coursework_weighting"
+      # sorted results according to coursework percentage
+      results = modules_with_weightings.sort_by {|result| result[0].coursework_percentage}.reverse
+      return results
     end
 
   end
