@@ -12,8 +12,9 @@
 		<div class="row" style="margin-top: 15px">
 			<div id="quick-search">
 				<div class="col-md-8">
+					<%= form_tag("/search/view_results", method: "get") do %>
 					    <%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
-							<script>9
+							<script>
 								var modules = <%= raw create_tag_json(@tag_names, @module_names, @module_code) %>
 								var modules = new Bloodhound({
 									datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
@@ -41,6 +42,7 @@
 						</button>
 					</div>
 				</div>
+				<% end %>
 			</div>
 		</div>
 	</div>
