@@ -90,6 +90,10 @@ module SearchHelper
       # sorted results according to exam percentage
       results = modules_with_weightings.sort_by {|result| result[0].exam_percentage}.reverse
       return results
+    elsif sort_by_category == "pass_rate"
+      # sorted results according to pass rate
+      results = modules_with_pass_rate.sort_by {|result| result[0].pass_rate}.reverse
+      return results
     end
 
     return results_array
