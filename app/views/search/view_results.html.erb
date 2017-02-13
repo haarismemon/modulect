@@ -118,7 +118,7 @@
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
                <p>
-                  <% if unimodule.exam_percentage.nil? || unimodule.coursework_percentage.nil? || unimodule.exam_percentage.length == 0 || unimodule.coursework_percentage == 0 %>
+                  <% if unimodule.exam_percentage.nil? || unimodule.coursework_percentage.nil?%>
                   No data available
                   <% else %>
                   <%= unimodule.exam_percentage %>:<%= unimodule.coursework_percentage %>
