@@ -1,9 +1,9 @@
 class SearchController < ApplicationController
 
   def quick_search
-    @tag_names = Tag.select(:name)
-    @module_names = UniModule.select(:name)
-    @module_code = UniModule.select(:code)
+    @tag_names = Tag.pluck(:name)
+    @module_names = UniModule.pluck(:name)
+    @module_code = UniModule.pluck(:code) 
   end
 
   def smart_search

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   root 'search#quick_search'
+
   get '/about', to: 'static_pages#about'
 
   # Authentication
@@ -14,6 +15,13 @@ Rails.application.routes.draw do
 
   # Uni Modules
   resources :uni_modules do
+    member do
+      get :delete
+    end
+  end
+
+  # Departments
+  resources :departments do
     member do
       get :delete
     end

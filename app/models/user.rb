@@ -1,6 +1,6 @@
 class User < ApplicationRecord
 
-  attr_accessor :remember_token, :activation_token
+  attr_accessor :remember_token, :activation_token, :reset_token
 
   before_save :downcase_email
   before_create :create_activation_digest
@@ -34,9 +34,14 @@ class User < ApplicationRecord
     end
   end
 
-  # Registers the valid_uni_module as having been selected by this user.
-  def select_module(valid_uni_module)
+  # Registers the valid_uni_module as having been saved by this user.
+  def save_module(valid_uni_module)
     uni_modules << valid_uni_module
+  end
+
+  # Removes the valid_uni_module as having been de-selected by this user (unsaved).
+  def unsave_module(valid_uni_module)
+    uni_modules.delete(valid_uni_module)
   end
 
   # Marks the user as persistenly logged in.
@@ -73,6 +78,22 @@ class User < ApplicationRecord
   # Activates an account.
   def activate
     update_columns(activated: true, activated_at: Time.zone.now)
+  end
+
+  # Sets the password digest attribute.
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update_columns(reset_digest: User.digest(reset_token), reset_sent_at: Time.zone.now)
+  end
+
+  # Returns true if a password reset has expired.
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
+  end
+
+  # Sends the password reset email.
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
   end
 
   private

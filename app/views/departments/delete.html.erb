@@ -1,0 +1,8 @@
+<%= link_to("Back to list", departments_path, :class => 'back-link') %>
+<div>
+	<h2>Delete department</h2>
+	<%= form_for(@department, :url => department_path(@department), :method => 'delete') do |m| %>
+		<p>Are you sure you want to delete department <%= @department.name %></p>
+		<%= m.submit("Delete department") %>
+	<% end %>
+</div>

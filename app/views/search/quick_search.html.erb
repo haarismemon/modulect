@@ -1,9 +1,85 @@
-<h1>Search#quick_search</h1>
-<p>Find me in app/views/search/quick_search.html.erb</p>
-<p><i>aloha pagan</i></p>
+<% provide(:title, 'Search') %>
+<div class="banner" style="margin-top: -30px;padding-top:40px;">
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<% if logged_in? %>
+			<h1>Hi <%= current_user.first_name %>. Let's find your perfect module...</h1>
+			<% else %>
+			<h1>Hi. Let's find your perfect module...</h1>
+			<% end %>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 15px">
+		<div id="quick-search">
+			<div class="col-md-8">
+				<form action="<%= search_view_results_path %>", method="get">
+					<%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
+					<script>
+						var tags = <%=  raw @tag_names + @module_names + @module_code %>;
+						var tags = new Bloodhound({
+							datumTokenizer: Bloodhound.tokenizers.whitespace,
+							queryTokenizer: Bloodhound.tokenizers.whitespace,
+							local: tags
+						});
 
-<%= form_tag("/search/view_results", method: "get") do %>
-    <%= label_tag(:chosen_tags, "Search for:") %>
-    <%= text_field_tag(:chosen_tags) %>
-    <%= submit_tag "send"  %>
-<%end%>
+						tags.initialize();
+
+						$('input').tagsinput({
+							typeaheadjs: {
+								name: 'tags',
+								source: tags.ttAdapter()
+							},
+							freeInput: false
+						});
+
+						$('input').focus();
+					</script>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+
+<div id="page" style="padding-top: 30px">
+<div class="container login-card">
+	<div class="col-md-12">
+		<div class="row">
+			<h1>Start a Pathway Search</h1>
+			<h3 style="margin-top: 20px">Let us assist you in finding the right modules which suit your interests and career aspirations.</h3>
+		</div>
+	</div>
+	<% if logged_in? %>
+	<div class="row" style="margin-top: 40px">
+		<div class="col-md-4">
+			<div class="form-group">
+				<button id='pathwayButton' class="btn btn-lg btn-block" type="submit">Pathway Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+	<% else %>
+	<div class="row" style="margin-top: 20px">
+		<div class="col-md-12">
+			<h4>In order to fully make use of the Modulect system please Register or Login</h4>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 40px">
+		<div class="col-md-4">
+			<div class="form-group">
+				<form action="/login">
+					<button id='loginRegButton' class="btn btn-lg btn-block" type="submit">Login or Register
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<% end %>
+

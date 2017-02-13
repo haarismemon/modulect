@@ -29,6 +29,8 @@ FactoryGirl.define do
     description   "PRA is aimed to further develop the Java programming
                   skills of first year students"
     lecturers     "Dr. Steffen Zschaler, Dr. Martin Chapman"
+    semester      "2"
+    credits       15
   end
 
   factory :user do

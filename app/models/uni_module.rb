@@ -2,6 +2,8 @@ class UniModule < ApplicationRecord
 
   validates :name, presence: true
   validates :code, presence: true, length: { is: 8 }, uniqueness: true
+  validates :semester, presence: true
+  validates :credits, presence: true
 
   has_many :requirements, class_name: "UniModule", foreign_key: "requirements_id"
   # belongs_to :parent, class_name: "UniModule", foreign_key: "requirements_id"
@@ -11,6 +13,20 @@ class UniModule < ApplicationRecord
   scope :search, lambda {|tag|
     joins(:tags).where(["tags.name = ?", tag])
   }
+
+  # Filters the array of tags for type CareerTag
+  def career_tags
+    Array(tags).keep_if  do |tag|
+      tag.type == "CareerTag"
+    end
+  end
+
+  # Filters the array of tags for type InterestTag
+  def interest_tags
+    Array(tags).keep_if  do |tag|
+      tag.type == "InterestTag"
+    end
+  end
 
   # Registers this module as having been tagged with the valid_tag.
   def add_tag(valid_tag)
@@ -102,7 +118,7 @@ class UniModule < ApplicationRecord
     elsif result_with_only_matched_tags.empty?
       return result_with_matched_module
     else
-      return result_with_matched_module << result_with_only_matched_tags
+      return result_with_matched_module.concat result_with_only_matched_tags
     end
 
   end

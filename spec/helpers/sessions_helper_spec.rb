@@ -20,6 +20,19 @@ RSpec.describe SessionsHelper, type: :helper do
     end
     it "stores the user's id into the session hash" do
       expect(session[:user_id]).to eq user.id
+      expect(current_user).not_to be_nil
+    end
+  end
+
+  describe "#log_out" do
+    it "logs out the user" do
+      log_in(user)
+      remember(user)
+      log_out
+      expect(current_user).to be_nil
+      expect(session[:user_id]).to be_blank
+      expect(cookies.permanent.signed[:user_id]).to be_blank
+      expect(cookies.permanent[:remember_token]).to be_blank
     end
   end
 
@@ -73,7 +86,7 @@ RSpec.describe SessionsHelper, type: :helper do
     end
   end
 
-  describe "current_user" do
+  describe "#current_user" do
     context "when no user is logged in" do
       before do
         log_out

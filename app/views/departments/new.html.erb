@@ -1,0 +1,15 @@
+<%= link_to("Back to list", departments_path, :class => 'back-link') %>
+
+<div>
+<h2>Create department</h2>
+	<%= form_for(@department) do |m| %>
+		<table>
+			<tr>
+				<th>Name</th>
+				<td><%= m.text_field(:name) %> </td>
+			</tr>
+		</table>
+		<%= m.submit("Create Department") %>
+	<% end %>
+
+</div>
