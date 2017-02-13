@@ -6,16 +6,27 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-prp = UniModule.create(name: "Programming Practice", code: "4CCS1PRP", semester: "1", credits: 15)
-pra = UniModule.create(name: "Programming Applications", code: "4CCS1PRA", semester: "2", credits: 15)
-fc1 = UniModule.create(name: "Foundations of Computing 1", code: "4CCS1FC1", semester: "1", credits: 15)
-cs1 = UniModule.create(name: "Computer Systems", code: "4CCS1CS1", semester: "1", credits: 15)
-iai = UniModule.create(name: "Artificial Intelligence", code: "4CCS1IAI", semester: "2", credits: 15)
-dst = UniModule.create(name: "Data Structures", code: "4CCS1DST", semester: "2", credits: 15)
-dbs = UniModule.create(name: "Database Systems", code: "4CCS1DBS", semester: "2", credits: 15)
-ela = UniModule.create(name: "Elementary Logic With Applications", code: "4CCS1ELA", semester: "1", credits: 15)
-ins = UniModule.create(name: "Internet Systems", code: "5CCS2INS", semester: "1", credits: 15)
-fc2 = UniModule.create(name: "Foundations of Computing 2", code: "5CCS2FC2", semester: "2", credits: 15)
+# pass rates are all fictional, assigned to help with sorting according to pass rate
+prp = UniModule.create(name: "Programming Practice", code: "4CCS1PRP", semester: "1",
+                       credits: 15, pass_rate: 40)
+pra = UniModule.create(name: "Programming Applications", code: "4CCS1PRA", semester: "2",
+											 credits: 15, exam_percentage: 75, coursework_percentage: 25, pass_rate: 50)
+fc1 = UniModule.create(name: "Foundations of Computing 1", code: "4CCS1FC1", semester: "1",
+											 credits: 15, exam_percentage: 90, coursework_percentage: 10)
+cs1 = UniModule.create(name: "Computer Systems", code: "4CCS1CS1", semester: "1",
+											 credits: 15, exam_percentage: 85, coursework_percentage: 15, pass_rate: 45)
+iai = UniModule.create(name: "Artificial Intelligence", code: "4CCS1IAI", semester: "2",
+											 credits: 15, exam_percentage: 70, coursework_percentage: 30)
+dst = UniModule.create(name: "Data Structures", code: "4CCS1DST", semester: "2",
+											 credits: 15, exam_percentage: 85, coursework_percentage: 15, pass_rate: 30)
+dbs = UniModule.create(name: "Database Systems", code: "4CCS1DBS", semester: "2",
+											 credits: 15, exam_percentage: 85, coursework_percentage: 15, pass_rate: 45)
+ela = UniModule.create(name: "Elementary Logic With Applications", code: "4CCS1ELA", semester: "1",
+											 credits: 15, pass_rate: 30)
+ins = UniModule.create(name: "Internet Systems", code: "5CCS2INS", semester: "1",
+											 credits: 15, exam_percentage: 80, coursework_percentage: 20, pass_rate: 60)
+fc2 = UniModule.create(name: "Foundations of Computing 2", code: "5CCS2FC2", semester: "2",
+											 credits: 15, exam_percentage: 100, coursework_percentage: 0, pass_rate: 70)
 
 programming = InterestTag.create(name: "Programming")
 maths = InterestTag.create(name: "Maths")
@@ -26,7 +37,7 @@ software_engineer = CareerTag.create(name: "Software Engineer")
 network_engineer = CareerTag.create(name: "Network Engineer")
 logic_engineer = CareerTag.create(name: "Logic Engineer")
 database_engineer = CareerTag.create(name: "Database Engineer")
-hardware_engineer = CareerTag.create(name: "Database Engineer")
+hardware_engineer = CareerTag.create(name: "Hardware Engineer")
 front_end_developer = CareerTag.create(name: "Front-end Developer")
 
 prp.tags << programming
@@ -44,6 +55,16 @@ ela.tags << logic_engineer
 dbs.tags << database_engineer
 cs1.tags << hardware_engineer
 pra.tags << front_end_developer
+
+
+pra
+prp
+fc2
+iai
+
+fc1
+dst
+
 
 pra.requirements << prp
 iai.requirements << cs1
