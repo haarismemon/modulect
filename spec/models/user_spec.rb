@@ -204,18 +204,34 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#select_module" do
+  describe "#save_module" do
     let(:valid_uni_module) { create(:uni_module) }
 
     context "when passed a valid uni_module" do
       before do
         user.save
-        user.select_module(valid_uni_module)
+        user.save_module(valid_uni_module)
       end
 
-      it "registers the uni modules as having been selected" do
+      it "registers the uni modules as having been saved" do
         expect(user.uni_modules.include?(valid_uni_module)).to eq true
       end
     end
   end
+
+  describe "#unsave_module" do
+    let(:valid_uni_module) { create(:uni_module) }
+
+    context "when passed a valid uni_module" do
+      before do
+        user.save
+        user.unsave_module(valid_uni_module)
+      end
+
+      it "registers the uni modules as having been saved" do
+        expect(user.uni_modules.exclude?(valid_uni_module)).to eq true
+      end
+    end
+  end
+
 end

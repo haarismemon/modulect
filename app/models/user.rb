@@ -34,9 +34,14 @@ class User < ApplicationRecord
     end
   end
 
-  # Registers the valid_uni_module as having been selected by this user.
-  def select_module(valid_uni_module)
+  # Registers the valid_uni_module as having been saved by this user.
+  def save_module(valid_uni_module)
     uni_modules << valid_uni_module
+  end
+
+  # Removes the valid_uni_module as having been de-selected by this user (unsaved).
+  def unsave_module(valid_uni_module)
+    uni_modules.delete(valid_uni_module)
   end
 
   # Marks the user as persistenly logged in.
