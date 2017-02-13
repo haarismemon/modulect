@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
 
-  root 'static_pages#home'
+  root 'search/quick_search'
   get '/about', to: 'static_pages#about'
 
   # Authentication
