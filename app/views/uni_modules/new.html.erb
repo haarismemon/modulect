@@ -1,13 +1,6 @@
-<h1>New module</h1>
 <%= link_to("Back to list", uni_modules_path, :class => 'back-link') %>
 
-<% if !flash[:notice].blank? %>
-	<div class = "notice">
-		<%= flash[:notice]  %>
-	</div>
-<% end %>
-
-<div class = "uni module new">
+<div>
 <h2>Create module</h2>
 
 	<%= form_for(@uni_module) do |m| %>

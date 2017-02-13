@@ -24,7 +24,7 @@ RSpec.describe SessionsHelper, type: :helper do
     end
   end
 
-  describe "#logout" do
+  describe "#log_out" do
     it "logs out the user" do
       log_in(user)
       remember(user)

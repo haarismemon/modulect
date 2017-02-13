@@ -4,6 +4,19 @@ feature "Logging in" do
 
   given(:user) { create(:user) }
 
+  scenario "when already logged in" do
+    visit login_path
+    within("#login-area") do
+      fill_in "session_email",    with: user.email
+      fill_in "session_password", with: "password"
+    end
+    click_button "Log in"
+
+    visit login_path
+    # Title of the root page
+    expect(page).to have_title "Modulect"
+  end
+
   scenario "as an activated user" do
     visit login_path
     within("#login-area") do

@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+
+  before_action :already_logged_in, only: [:new, :create]
+
   def new
   end
 
@@ -25,5 +28,12 @@ class SessionsController < ApplicationController
   def destroy
     log_out if logged_in?
     redirect_to root_url
+  end
+
+  def already_logged_in
+    if logged_in?
+      flash[:warning] = "You're already logged in"
+      redirect_to root_url
+    end
   end
 end

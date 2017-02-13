@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-
   root 'static_pages#home'
   get '/about', to: 'static_pages#about'
 
@@ -15,6 +14,13 @@ Rails.application.routes.draw do
 
   # Uni Modules
   resources :uni_modules do
+    member do
+      get :delete
+    end
+  end
+
+  # Departments
+  resources :departments do
     member do
       get :delete
     end
