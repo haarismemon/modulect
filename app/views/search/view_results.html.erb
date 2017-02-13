@@ -1,6 +1,6 @@
 <% provide(:title, 'Search Results') %>
 <% sortby = request.query_parameters["sort_by"] %>
-<% module_results = @results %>
+<% module_results = sort_by(@results, sortby) %>
 <style>
    @media print {
    .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
