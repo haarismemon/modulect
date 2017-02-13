@@ -58,7 +58,7 @@
          <div class="row">
             <div class="col-md-9 result-card-main">
                <h2><%= size_check unimodule.code %> <%= size_check unimodule.name %></h2>
-               <h4><%= size_check unimodule.semester %> - <%= size_check unimodule.credits %> credits</h4>
+               <h4>Semester <%= size_check unimodule.semester %> - <%= unimodule.credits %> credits</h4>
                <div style="margin-top:30px">
                   <% if logged_in? %>
                     <a href="#" class="btn btn-lg btn-small save-button"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
