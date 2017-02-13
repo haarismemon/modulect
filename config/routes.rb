@@ -36,7 +36,6 @@ Rails.application.routes.draw do
   resources :account_activations, only: [:edit]
 
   # Search
-  get 'search/quick_search'
   get 'search/smart_search'
   get 'search/view_results'
   get 'search/view_saved'
