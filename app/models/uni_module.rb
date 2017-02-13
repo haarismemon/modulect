@@ -12,9 +12,17 @@ class UniModule < ApplicationRecord
     joins(:tags).where(["tags.name = ?", tag])
   }
 
+  # Filters the array of tags for type CareerTag
   def career_tags
     Array(tags).keep_if  do |tag|
       tag.type == "CareerTag"
+    end
+  end
+
+  # Filters the array of tags for type InterestTag
+  def interest_tags
+    Array(tags).keep_if  do |tag|
+      tag.type == "InterestTag"
     end
   end
 
