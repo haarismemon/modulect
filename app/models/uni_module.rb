@@ -2,6 +2,8 @@ class UniModule < ApplicationRecord
 
   validates :name, presence: true
   validates :code, presence: true, length: { is: 8 }, uniqueness: true
+  validates :semester, presence: true
+  validates :credits, presence: true
 
   has_many :requirements, class_name: "UniModule", foreign_key: "requirements_id"
   # belongs_to :parent, class_name: "UniModule", foreign_key: "requirements_id"
