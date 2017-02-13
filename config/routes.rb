@@ -1,6 +1,16 @@
 Rails.application.routes.draw do
 
 
+  get 'departments/index'
+
+  get 'departments/show'
+
+  get 'departments/new'
+
+  get 'departments/edit'
+
+  get 'departments/delete'
+
   root 'static_pages#home'
   get '/about', to: 'static_pages#about'
 
