@@ -14,17 +14,15 @@ module SessionsHelper
 
 	# Forget a user from their persistent session.
 	def forget(user)
-		user.forget
-		cookies.delete(:user_id)
-		cookies.delete(:remember_token)
+		if user
+			user.forget
+			cookies.delete(:user_id)
+			cookies.delete(:remember_token)
+		end
 	end
 
-	# Returns true if the user is logged in, false otherwise.
-	def logged_in?
-		!current_user.nil?
-	end
 
-	# Returns the currently logged in user.
+	# Returns the current logged in user.
 	def current_user
 		if (user_id = session[:user_id])
 			@current_user ||= User.find_by(id: user_id)
@@ -37,20 +35,30 @@ module SessionsHelper
 		end
 	end
 
+	# Logs out a user.
+	def log_out
+		forget current_user
+		session.delete(:user_id)
+		@current_user = nil
+	end
+
+	# Returns true if the user is logged in, false otherwise.
+	def logged_in?
+		!current_user.nil?
+	end
+
 	# Returns true if the user to check is the same as the user currently
 	# logged in; false otherwise
 	def current_user?(user)
 		user == current_user
 	end
 
-	# Logs out a user.
-	def log_out
-		session.delete(:user_id)
-		@current_user = nil
-	end
-
 	def redirect_back_or(default)
 		redirect_to(session[:forwarding_url] || default)
 		session.delete(:forwarding_url)
+	end
+
+	def store_location
+		session[:forwarding_url] = request.original_url if request.get?
 	end
 end
