@@ -12,6 +12,12 @@ class UniModule < ApplicationRecord
     joins(:tags).where(["tags.name = ?", tag])
   }
 
+  def career_tags
+    Array(tags).keep_if  do |tag|
+      tag.type == "CareerTag"
+    end
+  end
+
   # Registers this module as having been tagged with the valid_tag.
   def add_tag(valid_tag)
     tags << valid_tag
