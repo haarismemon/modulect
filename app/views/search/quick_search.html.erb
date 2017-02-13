@@ -12,7 +12,7 @@
 		<div class="row" style="margin-top: 15px">
 			<div id="quick-search">
 				<div class="col-md-8">
-					<%= form_tag("/search/view_results", method: "get") do %>
+					<form action="<%= search_view_results_path %>", method="get">
 						<%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
 						<script>
 							var tags = <%=  raw @tag_names + @module_names + @module_code %>;
@@ -41,7 +41,7 @@
 						</button>
 					</div>
 				</div>
-				<% end %>
+				</form>
 			</div>
 		</div>
 	</div>
