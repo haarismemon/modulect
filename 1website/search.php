@@ -36,30 +36,28 @@
 								<div class="form-group">
 									<input type="text" data-role="tagsinput" placeholder='Search anything (like modules, careers, interests, etc.)' required autofocus/>
 									<script>
-										var modules = new Bloodhound({
-											datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-											queryTokenizer: Bloodhound.tokenizers.whitespace,
-											prefetch: {
-												url: 'assets/module-list.json',
-												filter: function(list) {
-													return $.map(list, function(modules) {
-														return { name: modules }; });
-												}
-											}
-										});
-										modules.initialize();
+										
+								var tags = ["Programming", "Maths", "Robotics", "Algorithms", "Artificial Intelligence", "Software Engineer", "Network Engineer", "Logic Engineer", "Database Engineer", "Database Engineer", "Front-end Developer", "Programming Practice", "Programming Applications", "Foundations of Computing 1", "Computer Systems", "Artificial Intelligence", "Data Structures", "Database Systems", "Elementary Logic With Applications", "Internet Systems", "Foundations of Computing 2", "4CCS1PRP", "4CCS1PRA", "4CCS1FC1", "4CCS1CS1", "4CCS1IAI", "4CCS1DST", "4CCS1DBS", "4CCS1ELA", "5CCS2INS", "5CCS2FC2"];
+								var tags = new Bloodhound({
+								    datumTokenizer: Bloodhound.tokenizers.whitespace,
+								    queryTokenizer: Bloodhound.tokenizers.whitespace,
+								    local: tags
+								});
 
-										$('input').tagsinput({
-											typeaheadjs: {
-												name: 'modules',
-												displayKey: 'name',
-												valueKey: 'name',
-												source: modules.ttAdapter()
-											},
-											freeInput: false
-										});
+								tags.initialize();
 
-										$('input').focus();
+								$('input').tagsinput({
+								    typeaheadjs: {
+								        name: 'tags',
+								        source: tags.ttAdapter()
+								    },
+								    freeInput: false
+
+								});
+
+								$('input').focus();
+							</script>
+							
 									</script>
 								</div>
 							</form>
