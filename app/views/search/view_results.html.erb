@@ -11,7 +11,7 @@
       <div id="quick-search">
          <form action="<%= search_view_results_path %>", method="get">
             <div class="col-md-8">
-               <%= text_field_tag(:chosen_tags, @temp_array, :placeholder => '', data: {:role => "tagsinput"}, :required => true) %>
+               <%= text_field_tag(:chosen_tags, @temp_array.join(','), :placeholder => '', data: {:role => "tagsinput"}, :required => true) %>
                <script>
                   var tags = <%=  raw @tag_names + @module_names + @module_code %>;
                   var tags = new Bloodhound({
