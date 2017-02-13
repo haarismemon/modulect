@@ -8,21 +8,21 @@
 
 # pass rates are all fictional, assigned to help with sorting according to pass rate
 prp = UniModule.create(name: "Programming Practice", code: "4CCS1PRP", semester: "1",
-                       credits: 15, exam_percentage: 85, coursework_percentage: 15, pass_rate: 40)
+                       credits: 15, pass_rate: 40)
 pra = UniModule.create(name: "Programming Applications", code: "4CCS1PRA", semester: "2",
 											 credits: 15, exam_percentage: 75, coursework_percentage: 25, pass_rate: 50)
 fc1 = UniModule.create(name: "Foundations of Computing 1", code: "4CCS1FC1", semester: "1",
-											 credits: 15, exam_percentage: 90, coursework_percentage: 10, pass_rate: 40)
+											 credits: 15, exam_percentage: 90, coursework_percentage: 10)
 cs1 = UniModule.create(name: "Computer Systems", code: "4CCS1CS1", semester: "1",
 											 credits: 15, exam_percentage: 85, coursework_percentage: 15, pass_rate: 45)
 iai = UniModule.create(name: "Artificial Intelligence", code: "4CCS1IAI", semester: "2",
-											 credits: 15, exam_percentage: 70, coursework_percentage: 30, pass_rate: 40)
+											 credits: 15, exam_percentage: 70, coursework_percentage: 30)
 dst = UniModule.create(name: "Data Structures", code: "4CCS1DST", semester: "2",
 											 credits: 15, exam_percentage: 85, coursework_percentage: 15, pass_rate: 30)
 dbs = UniModule.create(name: "Database Systems", code: "4CCS1DBS", semester: "2",
 											 credits: 15, exam_percentage: 85, coursework_percentage: 15, pass_rate: 45)
 ela = UniModule.create(name: "Elementary Logic With Applications", code: "4CCS1ELA", semester: "1",
-											 credits: 15, exam_percentage: 85, coursework_percentage: 15, pass_rate: 30)
+											 credits: 15, pass_rate: 30)
 ins = UniModule.create(name: "Internet Systems", code: "5CCS2INS", semester: "1",
 											 credits: 15, exam_percentage: 80, coursework_percentage: 20, pass_rate: 60)
 fc2 = UniModule.create(name: "Foundations of Computing 2", code: "5CCS2FC2", semester: "2",
