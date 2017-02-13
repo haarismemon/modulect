@@ -1,13 +1,6 @@
-<% if !flash[:notice].blank? %>
-	<div class = "notice">
-		<%= flash[:notice]  %>
-	</div>
-<% end %>
-
-<div class = "uni modules index">
+<div>
 	<h2>Uni Modules</h2>
 	<%= link_to("Add New Module", new_uni_module_path, :class => 'action new') %>
-
 	<table>
 		<tr>
 			<th>ID</th>

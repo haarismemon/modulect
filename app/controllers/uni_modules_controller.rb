@@ -18,7 +18,7 @@ class UniModulesController < ApplicationController
       flash[:success] = "Module created"
       redirect_to(uni_modules_path)
     else
-      flash[:error] = @uni_module.errors.full_messages
+      flash[:danger] = @uni_module.errors.full_messages
       render('new')
     end
   end
@@ -33,7 +33,7 @@ class UniModulesController < ApplicationController
       flash[:success] = "Module updated"
       redirect_to(uni_module_path(@uni_module))
     else
-      flash[:error] = @uni_module.errors.full_messages
+      flash[:danger] = @uni_module.errors.full_messages
       render('edit')
     end
   end
