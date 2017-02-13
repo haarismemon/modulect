@@ -34,8 +34,8 @@ class User < ApplicationRecord
     end
   end
 
-  # Registers the valid_uni_module as having been selected by this user.
-  def select_module(valid_uni_module)
+  # Registers the valid_uni_module as having been saved by this user.
+  def save_module(valid_uni_module)
     uni_modules << valid_uni_module
   end
 
