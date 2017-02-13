@@ -18,7 +18,7 @@ class SearchController < ApplicationController
       @temp_array = params[:chosen_tags].split(",")
       @results = UniModule.basic_search(@temp_array)
     else
-  #   redirect_to "/"
+     redirect_to "/"
     end
   end
 
