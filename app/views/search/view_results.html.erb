@@ -1,4 +1,6 @@
 <% provide(:title, 'Search Results') %>
+<% sortby = request.query_parameters["sort_by"] %>
+<% module_results = @results %>
 <style>
    @media print {
    .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
@@ -13,7 +15,7 @@
 </div>
 <div id="page" style="padding-top:30px;">
 <div class="container">
-<% if @results.length == 0 %>
+<% if module_results.length == 0 %>
 <div class="row" style="margin-bottom:20px;">
    <div class="col-md-10 col-md-offset-1 text-center">
       <h1>No modules found :(</h1>
@@ -23,17 +25,26 @@
 <div class="row here-what" style="margin-bottom:20px;">
    <div class="col-md-6 col-md-offset-1">
       <h1>Here's what we found:</h1>
-      <h5>Showing <%= @results.length %> modules</h5>
+      <h5>Showing <%= module_results.length %> modules</h5>
    </div>
    <div class="col-md-4 text-right" style="padding-top:30px;">
-      <div class="sort-area">
+      <div class="sort-area">    
+      <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
          Sort by: &nbsp;&nbsp;
-         <select class="selectpicker">
-            <option value="tags" selected>Tag match %</option>
-            <option value="coursework">Coursework weighting</option>
-            <option value="exam">Exam weighting</option>
-            <option value="pass">Pass rate</option>
+         <form action="<%= search_view_results_path %>" style="display:inline-block;" method="GET">
+         <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
+         <% sorting_options.each do |option| %> 
+            <option value="<%= option.first %>" 
+            <% if sortby == option.first %>
+               selected
+            <% end %>
+            >
+            <%= option.second %>
+            </option>
+         <% end %>
          </select>
+         <input type="hidden" name="chosen_tags" value="<%= @temp_array.join(",")%>">
+         </form>
       </div>
    </div>
 </div>
@@ -47,7 +58,7 @@
 </div>
 <div class="row">
    <div class="col-md-10 col-md-offset-1">
-      <% @results.each do |r| %>
+      <% module_results.each do |r| %>
       <% unimodule = r.first %>
       <% tagsmatched = r.second %>    
       <% careers = [] %>               
