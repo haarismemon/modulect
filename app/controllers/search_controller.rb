@@ -6,7 +6,7 @@ class SearchController < ApplicationController
     @module_code = UniModule.pluck(:code) 
   end
 
-  def smart_search
+  def pathway_search
     @tag_names = Tag.select(:name)
     @module_names = UniModule.select(:name)
     @module_code = UniModule.select(:code)
