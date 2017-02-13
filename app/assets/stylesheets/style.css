@@ -11,7 +11,12 @@
     background: rgba(61, 201, 179, 0.6);
     /* Gecko Browsers */
 }
+html,body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
 body {
+    overflow-y: hidden;
     font-family: "Varela Round";
     color: #555459;
     font-size: 14px;
@@ -426,7 +431,7 @@ input:focus,
     color: #2ab27b;
 }
 .btnQuick:active {
-    background: #808080;
+    background: #dfe2e1;
     box-shadow: 0px 3px 0px 0px #a8a8a8;
 }
 .banner {

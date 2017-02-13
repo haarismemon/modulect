@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root 'static_pages#home'
+  root 'search#quick_search'
   get '/about', to: 'static_pages#about'
 
   # Authentication
@@ -36,7 +36,6 @@ Rails.application.routes.draw do
   resources :account_activations, only: [:edit]
 
   # Search
-  get 'search/quick_search'
   get 'search/smart_search'
   get 'search/view_results'
   get 'search/view_saved'
