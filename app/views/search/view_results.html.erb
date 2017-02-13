@@ -7,8 +7,42 @@
 </style>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
    <div class="container">
-      <h1>Results</h1>
-      <h1>Search bar goes here <%= @temp_array%></h1>
+      <h1>Your Search:</h1>
+      <div class="row" style="margin-top: 15px">
+         <div id="quick-search">
+            <form action="<%= search_view_results_path %>", method="get">
+               <div class="col-md-8">
+                  <%= text_field_tag(:chosen_tags, @temp_array.join(','), :placeholder => '', data: {:role => "tagsinput"}, :required => true) %>
+                  <script>
+                     var tags = <%=  raw @tag_names + @module_names + @module_code %>;
+                     var tags = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        local: tags
+                     });
+
+                     tags.initialize();
+
+                     $('input').tagsinput({
+                        typeaheadjs: {
+                           name: 'tags',
+                           source: tags.ttAdapter()
+                        },
+                        freeInput: false
+                     });
+
+                     $('input').focus();
+                  </script>
+               </div>
+               <div class="col-md-4">
+                  <div class="form-group">
+                     <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
+                     </button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
    </div>
 </div>
 <div id="page" style="padding-top:30px;">
