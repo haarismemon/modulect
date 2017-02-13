@@ -1,4 +1,5 @@
 class UniModulesController < ApplicationController
+
   def index
     @uni_modules = UniModule.all
   end
@@ -12,7 +13,6 @@ class UniModulesController < ApplicationController
   end
 
   def create
-    # @uni_module = UniModule.new(uni_module_params)
     @uni_module = UniModule.new(uni_module_params)
     if @uni_module.save
       flash[:success] = "Module created"
@@ -38,7 +38,6 @@ class UniModulesController < ApplicationController
     end
   end
 
-
   def delete
     @uni_module = UniModule.find(params[:id])
   end
@@ -55,4 +54,5 @@ class UniModulesController < ApplicationController
   def uni_module_params
     params.require(:uni_module).permit(:name, :code, :description, :lecturers)
   end
+
 end
