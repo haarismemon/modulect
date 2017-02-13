@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   root 'search#quick_search'
   get '/about', to: 'static_pages#about'
+  get '/search', to: 'search#quick_search'
 
   # Authentication
   get     '/login',   to: 'sessions#new'

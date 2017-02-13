@@ -1,2 +1,7 @@
-<h1>Search#view_saved</h1>
-<p>Find me in app/views/search/view_saved.html.erb</p>
+
+<h1>saved modules</h1>
+
+
+<% current_user.uni_modules.each do |m| %>
+	<%= m.name %>
+<% end %>
