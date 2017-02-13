@@ -57,10 +57,5 @@ module SearchHelper
 		end
 	end	
 
-	def create_tag_json(tag_names, module_names, module_code)
-		array = []
-		array = (tag_names + module_names + module_code).to_json
-	end
-
 
 end
