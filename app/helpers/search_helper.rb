@@ -86,7 +86,13 @@ module SearchHelper
       # sorted results according to coursework percentage
       results = modules_with_weightings.sort_by {|result| result[0].coursework_percentage}.reverse
       return results
+    elsif sort_by_category == "exam_weighting"
+      # sorted results according to exam percentage
+      results = modules_with_weightings.sort_by {|result| result[0].exam_percentage}.reverse
+      return results
     end
+
+    return results_array
 
   end
 
