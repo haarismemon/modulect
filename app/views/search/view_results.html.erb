@@ -51,10 +51,8 @@
       <% unimodule = r.first %>
       <% tagsmatched = r.second %>    
       <% careers = [] %>               
-      <% unimodule.tags.each do |moduletag| %>
-         <% if moduletag.type == "CareerTag" %>
-            <% careers.push(moduletag.name) %>
-         <% end %>
+      <% unimodule.career_tags.each do |careertag| %>
+            <% careers.push(careertag.name) %>
       <% end %>
       <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
          <div class="row">
