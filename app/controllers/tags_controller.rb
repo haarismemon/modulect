@@ -55,4 +55,11 @@ class TagsController < ApplicationController
     @tag = Tag.find(params[:id])
   end
 
+  private
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def tags_params
+    params.require(:tag).permit(:name, :type)
+  end
+
 end
