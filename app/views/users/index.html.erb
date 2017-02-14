@@ -2,23 +2,48 @@
 <div class="ui very padded fluid vertical segment">
   <table class="ui celled padded table">
     <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Year of study</th>
-        <th>User level</th>
-      </tr>
-    </thead>
-
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Year of study</th>
+      <th>User level</th>
+    </tr></thead>
     <tbody>
-      <%= render @users %>
+    <% @users.each do |s| %>
+
+        <tr>
+          <td>
+            <h2 class="ui center aligned header"><%= s.full_name %></h2>
+          </td>
+
+          <td>
+            <%= s.email%>
+
+          </td>
+          <td><%=s.year_of_study%></td>
+          <td>
+            <% case s.user_level
+                 when 3 %>
+                Student rights
+            <% when 2 %>
+                Department admin rights
+            <% when 1 %>
+                Super admin rights
+            <% end %>
+
+          </td>
+          <td><%= link_to("delete",{:action=>:destroy,id=>s.id})%>   <%= link_to("edit",{:action=>:edit,:id=>s.id})%></td>
+        </tr>
+
+    <%end%>
     </tbody>
   </table>
-
-  <%= form_for(:users, url: { :action => :new },
-                       html: { :method => 'GET' } ) do |f| %>
-      <%= submit_tag "Add User",
-                     class: "ui blue right float medium large button" %>
+  <%= form_for(:users,:url=>{:action => :new},:html => { :method => 'GET' }) do |f| %>
+      <%= submit_tag("Add User",:class=>"ui blue right float  medium large button")%>
   <% end%>
 
 </div>
+
+
+
+

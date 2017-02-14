@@ -96,6 +96,12 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
+
+  #format first and second name of user into a string
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   private
   def downcase_email
     self.email.downcase!
@@ -106,8 +112,4 @@ class User < ApplicationRecord
     self.activation_digest = User.digest(activation_token)
   end
 
-  #format first and second name of user into a string
-  def full_name
-    "#{first_name} #{last_name}"
-  end
 end
