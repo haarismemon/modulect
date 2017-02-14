@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
   def create_by_admin
     # Instantiate a new object using form parameters
-    @user = User.new(user_creation_params)
+    @user = User.new(user_params)
     # Save the object
     if @user.save
       # If save succeeds, redirect to the index action
@@ -47,6 +47,26 @@ class UsersController < ApplicationController
   # Shows the profile of a user.
   def show
   end
+
+  def edit
+    #! allows for template's form to be ready populated with the associated users data ready for modification by admin
+    @user = User.find(params[:id])
+  end
+
+  def update
+    # Find a  object using id parameters
+    @user = User.find(params[:id])
+    # Update the object
+    if @user.update_attributes(user_params)
+      # If save succeeds, redirect to the index action
+      flash[:notice] = "Successfully updated "+ @user.full_name
+      redirect_to(users_path) and return
+    else
+      # If save fails, redisplay the form so user can fix problems
+      render('edit')
+    end
+  end
+
 
   def destroy
   end
