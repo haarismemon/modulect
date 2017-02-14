@@ -17,4 +17,19 @@ class TagsController < ApplicationController
     end
   end
 
+  def update
+    # Find a new object using form parameters
+    @tag = Tag.find(params[:id])
+    # Update the object
+    if @tag.update_attributes(tags_params)
+      # If save succeeds, redirect to the show action
+      flash[:notice] = @tag.name+" was updated successfully."
+      redirect_to(tag_path(@tag))
+    else
+      # If save fails, redisplay the form so user can fix problems
+      render('edit')
+    end
+  end
+
+
 end
