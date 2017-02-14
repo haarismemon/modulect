@@ -25,7 +25,7 @@
 
                      tags.initialize();
 
-                     $('input').tagsinput({
+                     $('input#chosen_tags').tagsinput({
                         typeaheadjs: {
                            name: 'tags',
                            source: tags.ttAdapter()
@@ -33,7 +33,7 @@
                         freeInput: false
                      });
 
-                     $('input').focus();
+                     $('input#chosen_tags').focus();
                   </script>
                </div>
                <div class="col-md-4">
@@ -42,6 +42,7 @@
                      </button>
                   </div>
                </div>
+         <input type="hidden" name="sort_by" value="<%= sortby %>">
             </form>
          </div>
       </div>
@@ -86,7 +87,7 @@
    <div class="col-md-10 col-md-offset-1 text-right">
       <ul class="results-page-options">
          <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
-         <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email advisor</a> </li>
+         <li><a href="javascript:void()"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email advisor</a> </li>
       </ul>
    </div>
 </div>
