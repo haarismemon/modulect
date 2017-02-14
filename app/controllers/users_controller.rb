@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
 
-  # Display a list of all signed up users
   def index
-    @users = User.all
+    #returns all users by order of last_name
+    @users = User.alphabetically_order_by(:last_name)
   end
+
 
   # Displays signup form.
   # Signup forms will be posted to new instead of create to preserve /signup url.
