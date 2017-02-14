@@ -102,8 +102,20 @@
       <% end %>
 
 
-<%= link_to 'Call Action', search_save_module_path(module_par: unimodule), method: :post %>
-
+<button id="savemeee">test</button>
+<script>
+$("button#savemeee").on("click", function(){
+    $.ajax({
+       type: "POST",
+        url: "<%=search_save_module_path(module_par: unimodule) %>",
+        context: document.body
+    }).done(
+        function() {
+            $( this ).addClass( "done" );
+        }
+    );
+});
+</script>
 
 
       <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
