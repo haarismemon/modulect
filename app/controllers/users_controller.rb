@@ -70,6 +70,13 @@ class UsersController < ApplicationController
 
 
   def destroy
+    #find by id
+    @user = User.find(params[:id])
+    #delete tuple object from db
+    @user.destroy
+    flash[:notice] = @user.full_name+" has been deleted successfully."
+    #redirect to action which displays all users
+    redirect_to(users_path)
   end
 
   private
