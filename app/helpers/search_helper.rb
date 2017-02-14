@@ -116,4 +116,17 @@ module SearchHelper
   end
 
 
+
+  # converts an input array into a results type (Haaris')
+  # written by Aqib
+  def convert_to_results_array(input)
+    results = {}
+    input.each do |unimodule|
+      results[unimodule] = []
+    end
+	results
+  end
+
+
+
 end
