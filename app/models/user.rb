@@ -105,4 +105,9 @@ class User < ApplicationRecord
     self.activation_token = User.new_token
     self.activation_digest = User.digest(activation_token)
   end
+
+  #format first and second name of user into a string
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end
