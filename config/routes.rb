@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post 'users/create_by_admin'
 
   root 'search#quick_search'
   get '/about', to: 'static_pages#about'
@@ -27,7 +28,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, except: [:index]
+  resources :users
   post "users/new"
 
   # Password resets
