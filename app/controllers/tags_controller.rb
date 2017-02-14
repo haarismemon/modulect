@@ -36,4 +36,13 @@ class TagsController < ApplicationController
     @tag = Tag.find(params[:id])
   end
 
+  def destroy
+    #find by id
+    @tag = Tag.find(params[:id])
+    #delete tuple object from db
+    @tag.destroy
+    flash[:notice] =  @tag.name+"was deleted successfully."
+    #redirect to action which displays all tags
+    redirect_to(tags_path)
+  end
 end
