@@ -20,6 +20,8 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: {minimum: 6}
 
+  default_value_for :user_level, 3  #student #(needs testing)
+  default_value_for :entered_before, false  #(needs testing)
 
 
   class << self
