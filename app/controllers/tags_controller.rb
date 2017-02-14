@@ -31,5 +31,9 @@ class TagsController < ApplicationController
     end
   end
 
+  def edit
+    #! looks for object to ready populate form with the associated tag's data ready for modification by admin
+    @tag = Tag.find(params[:id])
+  end
 
 end
