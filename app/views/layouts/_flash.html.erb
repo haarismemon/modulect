@@ -1,0 +1,20 @@
+<div class="container">
+   <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+         <% flash.each do |message_type, message| %>
+         <% if message_type == "danger" %>
+         <div class="flash-alert flash-alert-error">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <%= content_tag(:span, message) %>
+         </div>
+         <% end %>
+         <% if message_type == "success" %>
+         <div class="flash-alert flash-alert-success">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <%= content_tag(:span, message) %>
+         </div>
+         <% end %>
+         <% end %>
+      </div>
+   </div>
+</div>

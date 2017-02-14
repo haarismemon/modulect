@@ -6,26 +6,31 @@ git_source(:github) do |repo_name|
 end
 # if version doesn't work, use rvm to switch your ruby version
 ruby '2.3.3'
-gem 'sass-rails', '~> 5.0'
-# Material design > bootstrap
+gem 'sass-rails',             '~> 5.0'
+gem 'bcrypt',                 '~> 3.1.7'
+gem 'bootstrap-sass'
 gem 'materialize-sass'
-gem 'rails', '~> 5.0.1'
-gem 'puma', '~> 3.0'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.2'
+gem 'rails',                  '~> 5.0.1'
+gem 'puma',                   '~> 3.0'
+gem 'uglifier',               '>= 1.3.0'
+gem 'coffee-rails',           '~> 4.2'
 gem 'jquery-rails'
-gem 'turbolinks', '~> 5'
-gem 'jbuilder', '~> 2.5'
-gem 'wdm', '>= 0.1.0' if Gem.win_platform?
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'turbolinks',             '~> 5'
+gem 'jbuilder',               '~> 2.5'
+gem 'coffee-script-source',   '1.8.0'
+gem 'wdm',                    '>= 0.1.0' if Gem.win_platform?
+gem 'default_value_for',      '~> 3.0', '>= 3.0.2'
+gem 'default_value_for', '~> 3.0', '>= 3.0.2'
 
 group :development, :test do
   gem 'sqlite3'
   gem 'factory_girl_rails'
+  gem 'capybara'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug',      '9.0.0', platform: :mri
   gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-mocks', '~> 3.4', '>= 3.4.1'
+  gem 'rails-controller-testing'
 end
 
 

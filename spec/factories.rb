@@ -1,29 +1,47 @@
 # Build mock objects for testing purposes here.
 # The name of a factory needs to be the same as the model's that it is building.
 FactoryGirl.define do
-  factory :tag do
-    name "Arbitrary Tag"
-    type "Career"
+
+  factory :course do
+    name "BA Geography"
   end
 
-  factory :career do
+  factory :department do
+    name "Mathematics"
+  end
+
+  factory :tag do
+    name "Arbitrary Tag"
+    type "CareerTag"
+  end
+
+  factory :career_tag do
     name "Software Engineer"
   end
 
-  factory :interest do
+  factory :interest_tag do
     name "Medicine"
   end
 
   factory :uni_module do
-    name "Programming Applications"
-    code "4CCS1PRA"
-    description "PRA is aimed to further develop the Java programming
-    skills of first year students"
-    lecturers "Dr. Steffen Zschaler, Dr. Martin Chapman"
+    name          "Programming Applications"
+    code          "4CCS1PRA"
+    description   "PRA is aimed to further develop the Java programming
+                  skills of first year students"
+    lecturers     "Dr. Steffen Zschaler, Dr. Martin Chapman"
+    semester      "2"
+    credits       15
   end
 
-  factory :tagging do
-    tag
-    uni_module
+  factory :user do
+    first_name              "Allison"
+    last_name               "Wonderland"
+    email                   "allison_wonderland@eemail.com"
+    password                "password"
+    password_confirmation   "password"
+    activated               true
+    activated_at            Time.zone.now
+    user_level              3
+    entered_before          false
   end
 end

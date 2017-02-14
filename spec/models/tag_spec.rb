@@ -1,46 +1,46 @@
 require 'rails_helper'
 
 RSpec.describe Tag, type: :model do
-  # Using FactoryGirl to build a test object
-  let (:career) { build(:career, name: "Software QA Tester") }
-  let (:interest) { build(:interest, name: "Finance") }
+  # Using FactoryGirl to build test objects
+  let (:career_tag) { build(:career_tag, name: "Software QA Tester") }
+  let (:interest_tag) { build(:interest_tag, name: "Finance") }
 
-  context "when describing a career" do
+  context "when describing a career_tag" do
     context "that has a non-blank name" do
       it "is valid" do
-        expect(career.valid?).to eq true
+        expect(career_tag.valid?).to eq true
       end
     end
 
     context "that has a blank name" do
       before do
-        career.name = ""
+        career_tag.name = ""
       end
 
       it "is invalid" do
-        expect(career.valid?).to eq false
+        expect(career_tag.valid?).to eq false
       end
     end
   end
 
-  context "when describing an interest" do
+  context "when describing an interest_tag" do
     context "that has a non-blank name" do
       it "is valid" do
-        expect(interest.valid?).to eq true
+        expect(interest_tag.valid?).to eq true
       end
     end
 
     context "that has a blank name" do
       before do
-        interest.name = ""
+        interest_tag.name = ""
       end
       it "is invalid" do
-        expect(interest.valid?).to eq false
+        expect(interest_tag.valid?).to eq false
       end
     end
   end
 
-  context "when not describing a career or interest" do
+  context "when not describing a career_tag or interest_tag" do
     let (:invalid_tag) { build(:tag, type: "Arbitrary string") }
     it "is invalid" do
       expect(invalid_tag.valid?).to eq false
@@ -53,12 +53,12 @@ RSpec.describe Tag, type: :model do
 
     context "when passed a valid module" do
       before do
-        career.save
-        career.add_module(valid_module)
+        career_tag.save
+        career_tag.add_module(valid_module)
       end
 
       it "adds the module to the tag's list of modules" do
-        expect(career.modules.include?(valid_module)).to eq true
+        expect(career_tag.uni_modules.include?(valid_module)).to eq true
       end
     end
   end

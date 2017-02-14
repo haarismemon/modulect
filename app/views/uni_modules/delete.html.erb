@@ -1,0 +1,8 @@
+<%= link_to("Back to list", uni_modules_path, :class => 'back-link') %>
+<div>
+	<h2>Delete module</h2>
+	<%= form_for(@uni_module, :url => uni_module_path(@uni_module), :method => 'delete') do |m| %>
+		<p>Are you sure you want to delete module <%= @uni_module.name + "(" + @uni_module.code + ")" %></p>
+		<%= m.submit("Delete Module") %>
+	<% end %>
+</div>

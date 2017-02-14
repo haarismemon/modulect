@@ -1,0 +1,75 @@
+<% if @user && @user.errors.size > 0 %>
+    <div id="error-explanation" class="alert alert-danger fade in">
+      <h2><%= pluralize(@user.errors.size, "error") %> prohibited this record from being saved</h2>
+      <p>There were problems with the following fields:</p>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+<%end%>
+<div class="ui container">
+  <%= form_for(@user) do |f|%>
+
+
+
+      <div class="container ui vertical segment">
+        <div class=" field">
+          <label>Modify first name</label>
+          <div class="ui left input" id="name">
+            <%= f.text_field(:first_name,:placeholder => "Modify Subject") %>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container ui vertical segment">
+
+        <div class=" field" id="position">
+          <label>Modify last name</label>
+          <div class="ui left input">
+            <%= f.text_field(:last_name,:placeholder => "Modify Position") %>
+          </div>
+        </div>
+      </div>
+
+
+        <div class="container ui vertical segment">
+          <div class=" field" id="visible">
+            <label>Enter new password</label>
+            <div class="ui left input">
+              <%= f.text_field(:password,:placeholder => "Enter new password") %>
+            </div>
+          </div>
+        </div>
+        <div class="ui vertical segment">
+
+
+          <div class="container ui vertical segment">
+            <div class=" field" id="visible">
+              <label>Modify Email</label>
+              <div class="ui left input">
+                <%= f.text_field(:email,:placeholder => "Modify Visible") %>
+              </div>
+            </div>
+          </div>
+          <div class="ui vertical segment">
+
+
+            <div class="container ui vertical segment">
+              <div class=" field" id="visible">
+
+                <div class="ui left input">
+                  <%= f.submit("Finalize change",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"btn btn-secondary " )  %>
+                </div>
+              </div>
+            </div>
+            <div class="ui vertical segment">
+
+      </div>
+
+
+  <%end%>
+
+</div>

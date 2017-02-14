@@ -1,0 +1,24 @@
+<div>
+	<h2>Uni Modules</h2>
+	<%= link_to("Add New Module", new_uni_module_path, :class => 'action new') %>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Code</th>
+			<th>Actions</th>
+		</tr>
+		<% @uni_modules.each do |m| %>
+		<tr>
+			<td><%= m.id %></td>
+			<td><%= m.name %></td>
+			<td><%= m.code %></td>
+			<td>
+				<%= link_to("Show", uni_module_path(m), :class => 'action show') %>
+				<%= link_to("Edit", edit_uni_module_path(m), :class => 'action edit') %>
+				<%= link_to("Delete", delete_uni_module_path(m), :class => 'action delete') %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+</div>

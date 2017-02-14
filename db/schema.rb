@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209124133) do
+ActiveRecord::Schema.define(version: 20170213192947) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -31,12 +31,6 @@ ActiveRecord::Schema.define(version: 20170209124133) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "modules_users", id: false, force: :cascade do |t|
-    t.integer "uni_module__id"
-    t.integer "user_id"
-    t.index ["uni_module__id", "user_id"], name: "index_modules_users_on_uni_module__id_and_user_id"
-  end
-
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
     t.integer  "uni_module_id"
@@ -54,27 +48,53 @@ ActiveRecord::Schema.define(version: 20170209124133) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tags_uni_modules", id: false, force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "uni_module_id"
+    t.index ["tag_id", "uni_module_id"], name: "index_tags_uni_modules_on_tag_id_and_uni_module_id"
+  end
+
   create_table "uni_modules", force: :cascade do |t|
     t.string   "name"
     t.string   "code"
     t.string   "description"
     t.string   "lecturers"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "pass_rate"
+    t.string   "assessment_methods"
+    t.string   "semester"
+    t.integer  "credits"
+    t.integer  "exam_percentage"
+    t.integer  "coursework_percentage"
+    t.integer  "requirements_id"
+    t.string   "more_info_url"
+    t.boolean  "compulsory",            default: false
+  end
+
+  create_table "uni_modules_users", id: false, force: :cascade do |t|
+    t.integer "uni_module__id"
+    t.integer "user_id"
+    t.index ["uni_module__id", "user_id"], name: "index_uni_modules_users_on_uni_module__id_and_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
-    t.string   "username"
     t.string   "password_digest"
     t.integer  "user_level"
     t.boolean  "entered_before"
     t.integer  "year_of_study"
     t.string   "course_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "remember_digest"
+    t.string   "activation_digest"
+    t.boolean  "activated",         default: false
+    t.datetime "activated_at"
+    t.string   "reset_digest"
+    t.datetime "reset_sent_at"
   end
 
 end
