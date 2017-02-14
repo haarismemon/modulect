@@ -45,4 +45,10 @@ class TagsController < ApplicationController
     #redirect to action which displays all tags
     redirect_to(tags_path)
   end
+
+  def index
+    #returns all tags by order of tag name
+    @tags = Tag.alphabetically_order_by("name")
+  end
+
 end
