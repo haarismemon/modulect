@@ -100,6 +100,12 @@
       <% unimodule.career_tags.each do |careertag| %>
             <% careers.push(careertag.name) %>
       <% end %>
+
+
+<%= link_to 'Call Action', search_favourite_path(module_par: unimodule), method: :post %>
+
+
+
       <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
          <div class="row">
             <div class="col-md-9 result-card-main">

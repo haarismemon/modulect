@@ -28,4 +28,13 @@ class SearchController < ApplicationController
   def view_saved
 
   end
+
+
+  def favourite
+      uni_module = UniModule.find(params[:module_par])
+      current_user.save_module(uni_module)
+  end
+
+
+
 end
