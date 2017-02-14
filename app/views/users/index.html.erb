@@ -32,7 +32,7 @@
             <% end %>
 
           </td>
-          <td><%= link_to("delete",{:action=>:destroy,id=>s.id})%>   <%= link_to("edit",{:action=>:edit,:id=>s.id})%></td>
+          <td><%= link_to("delete",{:action=>:destroy,:id=>s.id},:method => 'delete')%>   <%= link_to("edit",{:action=>:edit,:id=>s.id})%></td>
         </tr>
 
     <%end%>

@@ -1,9 +1,22 @@
+<% if @user && @user.errors.size > 0 %>
+    <div id="error-explanation" class="alert alert-danger fade in">
+      <h2><%= pluralize(@user.errors.size, "error") %> prohibited this record from being saved</h2>
+      <p>There were problems with the following fields:</p>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+<%end%>
 <div class="ui container">
   <%= form_for(@user) do |f|%>
 
-      <div class="ui vertical segment">
+
+
+      <div class="container ui vertical segment">
         <div class=" field">
-          <label>First_name</label>
+          <label>Modify first name</label>
           <div class="ui left input" id="name">
             <%= f.text_field(:first_name,:placeholder => "Modify Subject") %>
           </div>
@@ -11,52 +24,49 @@
 
       </div>
 
-      <div class="ui vertical segment">
+      <div class="container ui vertical segment">
 
         <div class=" field" id="position">
-          <label>Last_name</label>
+          <label>Modify last name</label>
           <div class="ui left input">
-            <%= f.text_field(:last_name,:placeholder => "Enter Position") %>
+            <%= f.text_field(:last_name,:placeholder => "Modify Position") %>
           </div>
         </div>
       </div>
 
 
-      <div class="ui vertical segment">
-        <div class=" field" id="visible">
-          <label>Enter Username</label>
-          <div class="ui left input">
-            <%= f.text_field(:username,:placeholder => "Enter Visible") %>
-          </div>
-        </div>
-      </div>
-      <div class="ui vertical segment">
-
-
-        <div class="ui vertical segment">
+        <div class="container ui vertical segment">
           <div class=" field" id="visible">
-            <label>Enter Password</label>
+            <label>Enter new password</label>
             <div class="ui left input">
-              <%= f.text_field(:password_digest,:placeholder => "Enter Visible") %>
+              <%= f.text_field(:password,:placeholder => "Enter new password") %>
             </div>
           </div>
         </div>
         <div class="ui vertical segment">
 
 
-          <div class="ui vertical segment">
+          <div class="container ui vertical segment">
             <div class=" field" id="visible">
-              <label>Enter Email</label>
+              <label>Modify Email</label>
               <div class="ui left input">
-                <%= f.text_field(:email,:placeholder => "Enter Visible") %>
+                <%= f.text_field(:email,:placeholder => "Modify Visible") %>
               </div>
             </div>
           </div>
           <div class="ui vertical segment">
 
 
+            <div class="container ui vertical segment">
+              <div class=" field" id="visible">
 
-          <%= f.submit("Finalize change",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"ui button" )  %>
+                <div class="ui left input">
+                  <%= f.submit("Finalize change",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"btn btn-secondary " )  %>
+                </div>
+              </div>
+            </div>
+            <div class="ui vertical segment">
+
       </div>
 
 
