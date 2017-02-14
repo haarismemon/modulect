@@ -51,4 +51,8 @@ class TagsController < ApplicationController
     @tags = Tag.alphabetically_order_by("name")
   end
 
+  def show
+    @tag = Tag.find(params[:id])
+  end
+
 end
