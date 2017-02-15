@@ -14,10 +14,10 @@
           <div class="col-md-12 login-card">
             <h3>Login Details</h3>
             <br>
-            <%= form_for(@user) do |f|%>
+            <%= form_for @user, :url=>{:action => :update},:html => { :method => 'POST' } do |f|%>
             <div class="form-group">
               <label for="inputName">Name</label>
-              <input type="text" id="inputName" class="form-control" value=<%= @user.first_name + " " + @user.last_name %> readonly>
+              <input type="text" id="inputName" class="form-control" value="<%= full_name_for(@user) %>" readonly>
             </div>
             <div class="form-group">
               <label for="inputEmail">Email address</label>
@@ -32,7 +32,9 @@
               <%= f.text_field(:password_confirmation, class: 'form-control', :required => true) %>
             </div>
             <div class="form-group">
-              <%= f.submit('SAVE  <i class="fa fa-angle-right" aria-hidden="true"></i>'.html_safe, :url=>{:action => :update},:html => { :method => 'POST' },:class=>"btn btn-lg btn-block" )  %>
+              <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </button>
             </div>
             <% end %>
           </div>
@@ -41,30 +43,31 @@
           <div class="col-md-12 login-card">
             <h3>Department &amp; Course Details</h3>
             <br>
-            <%= form_for(@user) do |f|%>
+            <%= form_for @user, :url=>{:action => :update},:html => { :method => 'POST' } do |f|%>
             <div class="form-group">
               <label for="year-of-study">Year Of Study</label>
-              <%= f.select(:year_of_study, "<option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>".html_safe, class: 'form-control', :required => true ) %>
+              <%= f.select(:year_of_study, ['1','2','3','4','5','6'], {}, { :class => 'form-control', :required => true } )%>
               </div>
               <div class="form-group">
                 <label for="faculty">Faculty</label>
-                <%= select(:faculty, options_from_collection_for_select(@faculties, "id", "name"), class: 'form-control', :required => true) %>
+                <%= select_tag(:f, options_for_select(@faculties), :class => 'form-control', :required => true) %>
               </div>
               <div class="form-group">
                 <label for="department">Department</label>
-                <%= select(:department, options_from_collection_for_select(@departments, "id", "name"), class: 'form-control', :required => true) %>
               </div>
               <div class="form-group">
                 <label for="course">Course/Programme</label>
-                <%= f.select(:course_id, options_from_collection_for_select(@courses, "id", "name"), class: 'form-control', :required => true) %>
+                <%= select_tag(:f, options_for_select(@courses), :class => 'form-control', :required => true) %>
               </div>
+              <script type="text/javascript">
+                var t = <%= raw @faculties %>;
+                var b = <%= raw @departments %>;
+                var c = <%= raw @courses %>;
+              </script>
               <div class="form-group">
-                <%= f.submit('SAVE <i class="fa fa-angle-right" aria-hidden="true"></i>'.html_safe, :url=>{:action => :update},:html => { :method => 'POST' },:class=>"btn btn-lg btn-block" )  %>
+                <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </button>
               </div>
               <% end %>
               <br>

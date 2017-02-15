@@ -45,13 +45,12 @@ class UsersController < ApplicationController
     end
   end
 
-  # Shows the profile of a user.
-  def show
-  end
-
   def edit
     #! allows for template's form to be ready populated with the associated users data ready for modification by admin
     @user = User.find(params[:id])
+    @faculties = Faculty.pluck(:name)
+    @departments = Department.pluck(:name)
+    @courses = Course.pluck(:name)
   end
 
   def update
