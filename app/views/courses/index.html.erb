@@ -7,7 +7,7 @@
         <th>Description</th>
       </tr></thead>
       <tbody>
-      <% @tags.each do |s| %>
+      <% @courses.each do |s| %>
 
           <tr>
             <td>
@@ -22,7 +22,7 @@
       <%end%>
       </tbody>
     </table>
-    <%= form_for(:tags,:url=>{:action => :new},:html => { :method => 'GET' }) do |f| %>
+    <%= form_for(:courses,:url=>{:action => :new},:html => { :method => 'GET' }) do |f| %>
         <%= submit_tag("Add Course",:class=>"ui blue right float  medium btn large button")%>
     <% end%>
 
