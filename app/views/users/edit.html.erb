@@ -1,75 +1,86 @@
-<% if @user && @user.errors.size > 0 %>
-    <div id="error-explanation" class="alert alert-danger fade in">
-      <h2><%= pluralize(@user.errors.size, "error") %> prohibited this record from being saved</h2>
-      <p>There were problems with the following fields:</p>
-      <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-        <% end %>
-      </ul>
+<% provide(:title, 'Search') %>
+<div class="container">
+  <!-- Banner -->
+  <div class="banner">
+      <div class="container">
+        <h1>My Details</h1>
+      </div>
+  </div>
+
+  <div id="page" style="padding-top:30px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+          <div class="col-md-12 login-card">
+            <h3>Login Details</h3>
+            <br>
+            <%= form_for(@user) do |f|%>
+              <div class="form-group">
+                <label for="inputName">Name</label>
+                <input type="text" id="inputName" class="form-control" value=<%= @user.first_name + " " + @user.last_name %> readonly>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail">Email address</label>
+                <input type="email" id="inputEmail" class="form-control" value=<%= @user.email %> readonly>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <%= f.text_field(:password, class: 'form-control', :required => true) %>
+              </div>
+              <div class="form-group">
+                <label for="inputCPassword">Confirm Password</label>
+                <%= f.text_field(:password, class: 'form-control', :required => true) %>
+              </div>
+              <div class="form-group">
+                <%= f.submit("SUBMIT",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"btn btn-lg btn-block" )  %>
+              </div>
+            <% end %>
+          </div>
+        </div>  
+        <div class="col-md-5">
+          <div class="col-md-12 login-card">
+            <h3>Department &amp; Course Details</h3>
+            <br>
+            <form>
+            <div class="form-group">
+              <label for="year-of-study">Year Of Study</label>
+              <select class="form-control" id="year-of-study" required>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="faculty">Faculty</label>
+              <select class="form-control" id="faculty" required>
+                <option>Faculty of Natural &amp; Mathematical Sciences</option>
+                <option>Faculty of Life Sciences &amp; Medicine</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="department">Department</label>
+              <select class="form-control" id="department" required>
+                <option>Department of Mathematics</option>
+                <option>Department of Informatics</option>
+                <option>Department of Chemistry</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="course">Course/Programme</label>
+              <select class="form-control" id="course" required>
+                <option>Computer Science BSc</option>
+                <option>Biochemistry MSci</option>
+              </select>
+            </div>
+            <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;
+              <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </button>
+          </form>
+          <br>
+        </div>
+      </div>
     </div>
-<%end%>
-<div class="ui container">
-  <%= form_for(@user) do |f|%>
-
-
-
-      <div class="container ui vertical segment">
-        <div class=" field">
-          <label>Modify first name</label>
-          <div class="ui left input" id="name">
-            <%= f.text_field(:first_name,:placeholder => "Modify Subject") %>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="container ui vertical segment">
-
-        <div class=" field" id="position">
-          <label>Modify last name</label>
-          <div class="ui left input">
-            <%= f.text_field(:last_name,:placeholder => "Modify Position") %>
-          </div>
-        </div>
-      </div>
-
-
-        <div class="container ui vertical segment">
-          <div class=" field" id="visible">
-            <label>Enter new password</label>
-            <div class="ui left input">
-              <%= f.text_field(:password,:placeholder => "Enter new password") %>
-            </div>
-          </div>
-        </div>
-        <div class="ui vertical segment">
-
-
-          <div class="container ui vertical segment">
-            <div class=" field" id="visible">
-              <label>Modify Email</label>
-              <div class="ui left input">
-                <%= f.text_field(:email,:placeholder => "Modify Visible") %>
-              </div>
-            </div>
-          </div>
-          <div class="ui vertical segment">
-
-
-            <div class="container ui vertical segment">
-              <div class=" field" id="visible">
-
-                <div class="ui left input">
-                  <%= f.submit("Finalize change",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"btn btn-secondary " )  %>
-                </div>
-              </div>
-            </div>
-            <div class="ui vertical segment">
-
-      </div>
-
-
-  <%end%>
-
-</div>
+  </div>
