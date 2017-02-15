@@ -118,7 +118,7 @@ input:focus,
     border-left-color: #2ab27b;
 }
 .flash-alert-success i, .alert-success i {
-    color: orange;
+    color: #2ab27b;
     margin-right: 8px;
 }
 
