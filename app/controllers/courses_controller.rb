@@ -1,15 +1,14 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy]
 
   # GET /courses
   # GET /courses.json
   def index
-    @courses = Course.all
+    #returns all tags by order of tag name
+    @courses = Course.alphabetically_order_by("name")
   end
 
-  # GET /courses/1
-  # GET /courses/1.json
   def show
+    @courses = Course.find(params[:id])
   end
 
   # GET /courses/new
