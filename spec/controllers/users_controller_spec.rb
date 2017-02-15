@@ -32,7 +32,7 @@ RSpec.describe UsersController, type: :controller do
 
     let (:user) { create(:user) }
 
-    it "retrieves param id and users it to looks for correct user and the deletes it" do
+    it "retrieves param id and uses it to looks for correct user and then deletes it" do
       delete :destroy,:id => user.id
       expect( assigns[:user].destroyed?).to eq(true)
       expect(flash[:notice].present?).to eq true
@@ -51,7 +51,7 @@ RSpec.describe UsersController, type: :controller do
     let (:user) { create(:user) }
 
     context "valid attributes" do
-      it "located the requested @contact" do
+      it "located the requested @user" do
         put :update, id: user.id,user: FactoryGirl.attributes_for(:user)
         expect(assigns(:user)).to eq(user)
       end
@@ -73,7 +73,7 @@ RSpec.describe UsersController, type: :controller do
     context "invalid attributes" do
 
 
-      it "does not change @contact's attributes" do
+      it "does not change @user's attributes" do
         put :update, id: user.id,user: FactoryGirl.attributes_for(:user, year_of_study: "not_a_value", email: nil)
         expect(assigns(:user).year_of_study).not_to eq "not_a_value"
         expect(assigns(:user).email).not_to eq nil
