@@ -121,6 +121,20 @@ input:focus,
     color: #2ab27b;
     margin-right: 8px;
 }
+
+
+.flash-alert-notice, .alert-notice {
+    border-left-color: #f5a108;
+}
+.flash-alert-notice i, .alert-notice i {
+    color: #f5a108;
+    margin-right: 8px;
+}
+
+#flash-container{
+    margin-bottom:35px;
+}
+
 /** Feras' header stuff **/
 /* header */
 

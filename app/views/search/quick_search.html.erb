@@ -17,6 +17,8 @@
 						<%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
 						<script>
 							var tags = <%=  raw @tag_names + @module_names + @module_code %>;
+							// Remove the previously rendered search bar
+							$("div.bootstrap-tagsinput").remove();
 							var tags = new Bloodhound({
 								datumTokenizer: Bloodhound.tokenizers.whitespace,
 								queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -25,7 +27,7 @@
 
 							tags.initialize();
 
-							$('input').tagsinput({
+							$('input#chosen_tags').tagsinput({
 								typeaheadjs: {
 									name: 'tags',
 									source: tags.ttAdapter()
@@ -33,7 +35,7 @@
 								freeInput: false
 							});
 
-							$('input').focus();
+							$('input#chosen_tags').focus();
 						</script>
 					</div>
 					<div class="col-md-4">

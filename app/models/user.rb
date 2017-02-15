@@ -20,6 +20,10 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: {minimum: 6}
 
+  default_value_for :user_level, 3  #student #(needs testing)
+  default_value_for :entered_before, false  #(needs testing)
+
+
   class << self
     # Returns the hash digest of a given string.
     def digest(string)
@@ -96,6 +100,12 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
+
+  #format first and second name of user into a string
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   private
   def downcase_email
     self.email.downcase!
@@ -105,4 +115,5 @@ class User < ApplicationRecord
     self.activation_token = User.new_token
     self.activation_digest = User.digest(activation_token)
   end
+
 end

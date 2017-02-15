@@ -1,0 +1,35 @@
+<div class="center container center-align">
+<div class="ui very padded fluid vertical segment">
+  <table class="ui celled padded table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+    </tr></thead>
+    <tbody>
+    <% @tags.each do |s| %>
+
+        <tr>
+          <td>
+            <h2 class="ui"><%= s.name %></h2>
+          </td>
+          <td class="single center-align center line">
+            <%= s.type %>
+          </td>
+          <td><%= link_to("delete",{:action=>:destroy,:id=>s.id},:method => :delete)%>   <%= link_to("edit",{:action=>:edit,:id=>s.id})%>  <%= link_to("show",{:action=>:show,:id=>s.id})%></td>
+        </tr>
+
+    <%end%>
+    </tbody>
+  </table>
+  <%= form_for(:tags,:url=>{:action => :new},:html => { :method => 'GET' }) do |f| %>
+      <%= submit_tag("Add Tag",:class=>"ui blue right float  medium btn large button")%>
+  <% end%>
+
+</div>
+
+</div>
+
+
+
+

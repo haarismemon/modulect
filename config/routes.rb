@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
   resources :departments
+  post 'users/create_by_admin'
+  resources :tags
+  resources :courses
   root 'search#quick_search'
   get '/about', to: 'static_pages#about'
   get '/search', to: 'search#quick_search'
@@ -9,6 +12,7 @@ Rails.application.routes.draw do
   get     '/login',   to: 'sessions#new'
   post    '/login',   to: 'sessions#create'
   delete  '/logout',  to: 'sessions#destroy'
+  post 'search/save_module'
 
   # Signup
   get '/signup', to: 'users#new', as: 'signup'
