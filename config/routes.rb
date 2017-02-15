@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users
+  resources :users, except: [:show, :index]
   post "users/new"
 
   # Password resets
