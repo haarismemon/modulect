@@ -25,6 +25,7 @@ RSpec.describe UsersController, type: :controller do
       expect(assigns[:user].first_name).to eq 'Amin'
     end
 
+
   end
 
   describe "DELETE destroy"  do
