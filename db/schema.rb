@@ -31,16 +31,6 @@ ActiveRecord::Schema.define(version: 20170213192947) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "taggings", force: :cascade do |t|
-    t.integer  "tag_id"
-    t.integer  "uni_module_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.index ["tag_id", "uni_module_id"], name: "index_taggings_on_tag_id_and_uni_module_id"
-    t.index ["tag_id"], name: "index_taggings_on_tag_id"
-    t.index ["uni_module_id"], name: "index_taggings_on_uni_module_id"
-  end
-
   create_table "tags", force: :cascade do |t|
     t.string   "name"
     t.string   "type"
@@ -73,9 +63,9 @@ ActiveRecord::Schema.define(version: 20170213192947) do
   end
 
   create_table "uni_modules_users", id: false, force: :cascade do |t|
-    t.integer "uni_module__id"
+    t.integer "uni_module_id"
     t.integer "user_id"
-    t.index ["uni_module__id", "user_id"], name: "index_uni_modules_users_on_uni_module__id_and_user_id"
+    t.index ["uni_module_id", "user_id"], name: "index_uni_modules_users_on_uni_module_id_and_user_id"
   end
 
   create_table "users", force: :cascade do |t|
