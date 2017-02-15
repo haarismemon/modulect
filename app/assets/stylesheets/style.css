@@ -118,9 +118,19 @@ input:focus,
     border-left-color: #2ab27b;
 }
 .flash-alert-success i, .alert-success i {
-    color: #2ab27b;
+    color: orange;
     margin-right: 8px;
 }
+
+
+.flash-alert-notice, .alert-notice {
+    border-left-color: #f5a108;
+}
+.flash-alert-notice i, .alert-notice i {
+    color: #f5a108;
+    margin-right: 8px;
+}
+
 /** Feras' header stuff **/
 /* header */
 

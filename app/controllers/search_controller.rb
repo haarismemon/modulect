@@ -28,7 +28,9 @@ class SearchController < ApplicationController
   # written by Aqib
   def view_saved
     if !logged_in?
-      redirect_to "/"
+
+     redirect_to "/"
+      flash[:notice] = "You must be logged in to view saved modules."
     end
   end
 
