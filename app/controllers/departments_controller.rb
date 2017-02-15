@@ -14,7 +14,7 @@ class DepartmentsController < ApplicationController
   end
 
   def create
-    @department = Department.new(tags_params)
+    @department = Department.new(department_params)
     # Save the object
     if @department.save
       # If save succeeds, redirect to the index action

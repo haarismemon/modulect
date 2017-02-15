@@ -1,3 +1,14 @@
+<% if @department && @department.errors.size > 0 %>
+    <div id="error-explanation" class="alert alert-danger fade in">
+      <h2><%= pluralize(@department.errors.size, "error") %> prohibited this record from being saved</h2>
+      <p>There were problems with the following fields:</p>
+      <ul>
+        <% @department.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+<%end%>
 <div class="ui container">
   <%= form_for(@department) do |f|%>
 
