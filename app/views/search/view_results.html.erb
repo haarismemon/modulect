@@ -17,6 +17,8 @@
                   <%= text_field_tag(:chosen_tags, @temp_array.join(','), :placeholder => '', data: {:role => "tagsinput"}, :required => true) %>
                   <script>
                      var tags = <%=  raw @tag_names + @module_names + @module_code %>;
+                     // Remove the previously rendered search bar
+                     $("div.bootstrap-tagsinput").remove();
                      var tags = new Bloodhound({
                         datumTokenizer: Bloodhound.tokenizers.whitespace,
                         queryTokenizer: Bloodhound.tokenizers.whitespace,
