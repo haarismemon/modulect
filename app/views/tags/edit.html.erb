@@ -20,7 +20,7 @@
         <label for="inputName" class="sr-only">Type</label>
         <%= f.select(:type, [ 'InterestTag', 'CareerTag' ], {}) %>
       </div>
-      <%= f.submit("Finalize change",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"btn btn-secondary " )  %>
+<%= f.submit("Finalize change",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"btn btn-secondary " )  %>
 
 
 
