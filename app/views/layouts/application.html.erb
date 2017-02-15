@@ -10,13 +10,21 @@
     <%= favicon_link_tag 'favicon.ico' %>
     <script>
       var $=jQuery.noConflict();
-    </script>
+      
+      $(document).ready(function(){
+       setTimeout(fade_out, 5000);
+          function fade_out() {
+            $("#flash-container").fadeOut().empty();
+            $("#flash-container").css("margin-bottom", "0px");
+          }
+      });
+  </script>
   </head>
 
   <body>
     <%= render 'layouts/header' %> 
     <div class="modulect-container">
-        <%= render 'layouts/flash' %>
+        <%= render 'layouts/flash' if !flash.empty? %>
         <%= yield %>
         <%= render 'layouts/after_content' %>
         </div>

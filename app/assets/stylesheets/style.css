@@ -131,6 +131,10 @@ input:focus,
     margin-right: 8px;
 }
 
+#flash-container{
+    margin-bottom:35px;
+}
+
 /** Feras' header stuff **/
 /* header */
 
