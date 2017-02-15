@@ -1,22 +1,30 @@
-<div>
-	<h2>Departments</h2>
-	<%= link_to("Add New Department", new_department_path, :class => 'action new') %>
-	<table>
-		<tr>
-			<th>ID</th>
-			<th>Name</th>
-			<th>Actions</th>
-		</tr>
-		<% @departments.each do |m| %>
-		<tr>
-			<td><%= m.id %></td>
-			<td><%= m.name %></td>
-			<td>
-				<%= link_to("Show", department_path(m), :class => 'action show') %>
-				<%= link_to("Edit", edit_department_path(m), :class => 'action edit') %>
-				<%= link_to("Delete", delete_department_path(m), :class => 'action delete') %>
-			</td>
-		</tr>
-		<% end %>
-	</table>
+
+<div class="ui very padded fluid vertical segment">
+  <table class="ui celled padded table">
+    <thead>
+    <tr>
+      <th>Name</th>
+    </tr></thead>
+    <tbody>
+    <% @departments.each do |s| %>
+
+        <tr>
+          <td>
+            <h2 class="ui center aligned header"><%= s.name %></h2>
+          </td>
+
+          <td><%= link_to("delete",{:action=>:destroy,:id=>s.id})%>   <%= link_to("edit",{:action=>:edit,:id=>s.id})%></td>
+        </tr>
+
+    <%end%>
+    </tbody>
+  </table>
+  <%= form_for(:users,:url=>{:action => :new},:html => { :method => 'GET' }) do |f| %>
+      <%= submit_tag("Add Department",:class=>"ui blue right float  medium large button")%>
+  <% end%>
+
 </div>
+
+
+
+

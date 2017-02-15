@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  resources :departments
   post 'users/create_by_admin'
   resources :tags
   resources :courses
@@ -30,7 +32,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, except: [:show, :index]
+  resources :users, except: [:index]
   post "users/new"
 
   # Password resets
