@@ -1,1 +1,31 @@
-This is the show page for a user.
+<div class="center container center-align">
+  <div class="ui very padded fluid vertical segment">
+    <table class="ui celled padded table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>code</th>
+      </tr></thead>
+      <tbody>
+      <% @list_of_modules = @tag.uni_modules %>
+      <% @list_of_modules.each do |s| %>
+
+          <tr>
+            <td>
+              <h2 class="ui"><%= s.name %></h2>
+            </td>
+            <td class="single center-align center line">
+              <%= s.code %>
+            </td>
+          </tr>
+
+      <%end%>
+      </tbody>
+    </table>
+    <%= form_for(:tags,:url=>{:action => :index},:html => { :method => 'GET' }) do |f| %>
+        <%= submit_tag("Back",:class=>"ui blue right float  medium btn large button")%>
+    <% end%>
+
+  </div>
+
+</div>

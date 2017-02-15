@@ -22,7 +22,7 @@
     <%end%>
     </tbody>
   </table>
-  <%= form_for(:users,:url=>{:action => :new},:html => { :method => 'GET' }) do |f| %>
+  <%= form_for(:tags,:url=>{:action => :new},:html => { :method => 'GET' }) do |f| %>
       <%= submit_tag("Add Tag",:class=>"ui blue right float  medium btn large button")%>
   <% end%>
 
