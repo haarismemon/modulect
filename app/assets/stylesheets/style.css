@@ -385,7 +385,6 @@ input:focus,
 }
 .btn-disabled {
     opacity: 0.5;
-    cursor: default
 }
 .tooltip {
     text-align: left;
