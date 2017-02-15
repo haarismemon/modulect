@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
     if @course.update_attributes(course_params)
       # If save succeeds, redirect to the show action
       flash[:notice] = @course.name+" was updated successfully."
-      redirect_to(course_path(@course))
+      redirect_to(courses_path)
     else
       # If save fails, redisplay the form so user can fix problems
       render('edit')
