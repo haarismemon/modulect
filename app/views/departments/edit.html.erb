@@ -1,14 +1,24 @@
-<%= link_to("Back to list", departments_path, :class => 'back-link') %>
-<div>
-<h2>Udpate department</h2>
-	<%= form_for(@department) do |m| %>
-		<table>
-			<tr>
-				<th>Name</th>
-				<td><%= m.text_field(:name) %> </td>
-			</tr>
-		</table>
+<div class="ui container">
+  <%= form_for(@department) do |f|%>
 
-		<%= m.submit("Edit Department") %>
-	<% end %>
-</div>
+      <div class="ui vertical segment">
+        <div class=" field">
+          <label>Name</label>
+          <div class="ui left input" id="name">
+            <%= f.text_field(:name,:placeholder => "Modify department name") %>
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+
+      <%= f.submit("Finalize change",:url=>{:action => :update},:html => { :method => 'POST' },:class=>"ui button" )  %>
+      </div>
+
+
+  <%end%>
+
+  </div>

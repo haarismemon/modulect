@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :departments
   root 'search#quick_search'
   get '/about', to: 'static_pages#about'
   get '/search', to: 'search#quick_search'

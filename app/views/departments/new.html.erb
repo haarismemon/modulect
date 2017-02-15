@@ -1,15 +1,18 @@
-<%= link_to("Back to list", departments_path, :class => 'back-link') %>
+r<div class="ui container">
+  <%= form_for(@department,:url=>{:action => :create},:html => { :method => 'POST' }) do |f|%>
 
-<div>
-<h2>Create department</h2>
-	<%= form_for(@department) do |m| %>
-		<table>
-			<tr>
-				<th>Name</th>
-				<td><%= m.text_field(:name) %> </td>
-			</tr>
-		</table>
-		<%= m.submit("Create Department") %>
-	<% end %>
+      <div class="ui vertical segment">
+        <div class=" field">
+          <label>Name</label>
+          <div class="ui left input" id="name">
+            <%= f.text_field(:name,:placeholder => "Enter name") %>
+          </div>
+        </div>
 
-</div>
+      </div>
+      <%= f.submit("Finalize change")  %>
+
+
+  <%end%>
+
+  </div>
