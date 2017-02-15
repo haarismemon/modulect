@@ -46,7 +46,7 @@
             <%= form_for @user, :url=>{:action => :update},:html => { :method => 'POST' } do |f|%>
             <div class="form-group">
               <label for="year-of-study">Year Of Study</label>
-              <%= f.select(:year_of_study, ['1','2','3','4','5','6'], {}, { :class => 'form-control', :required => true } )%>
+              <%= f.select(:year_of_study, [1,2,3,4,5,6], {}, { :class => 'form-control', :required => true } )%>
               </div>
               <div class="form-group">
                 <label for="faculty">Faculty</label>
@@ -54,16 +54,12 @@
               </div>
               <div class="form-group">
                 <label for="department">Department</label>
+                <%= select_tag(:d, options_for_select(@departments), :class => 'form-control', :required => true) %>
               </div>
               <div class="form-group">
                 <label for="course">Course/Programme</label>
-                <%= select_tag(:f, options_for_select(@courses), :class => 'form-control', :required => true) %>
+                <%= f.select(:course_id, @courses, {}, { :class => 'form-control', :required => true }) %>
               </div>
-              <script type="text/javascript">
-                var t = <%= raw @faculties %>;
-                var b = <%= raw @departments %>;
-                var c = <%= raw @courses %>;
-              </script>
               <div class="form-group">
                 <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
