@@ -10,6 +10,10 @@ FactoryGirl.define do
     name "Mathematics"
   end
 
+  factory :faculty do
+    name "Natural and Mathematical Sciences"
+  end
+
   factory :tag do
     name "Arbitrary Tag"
     type "CareerTag"
