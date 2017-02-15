@@ -48,6 +48,7 @@ class UsersController < ApplicationController
   def edit
     #! allows for template's form to be ready populated with the associated users data ready for modification by admin
     @user = User.find(params[:id])
+    # Get arrays to use for profiles
     @faculties = Faculty.pluck(:name)
     @departments = Department.pluck(:name)
     @courses = Course.pluck(:name)

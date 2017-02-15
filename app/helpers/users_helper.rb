@@ -15,4 +15,14 @@ module UsersHelper
       "System Administrator"
     end
   end
+
+  # Returns an array containing all departments in a specified faculty
+  def departments_of(faculty)
+    @depts = Department.pluck(faculty)
+  end
+
+  # Returns an array containing all courses in a specified department
+  def courses_of(department) 
+    @course = Course.pluck(department)
+  end
 end
