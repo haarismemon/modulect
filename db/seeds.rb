@@ -56,16 +56,6 @@ dbs.tags << database_engineer
 cs1.tags << hardware_engineer
 pra.tags << front_end_developer
 
-
-pra
-prp
-fc2
-iai
-
-fc1
-dst
-
-
 pra.requirements << prp
 iai.requirements << cs1
 ins.requirements << cs1
@@ -89,3 +79,22 @@ User.create(first_name:  "Bob",
             activated_at: Time.zone.now,
             user_level: 3,
             year_of_study: 1)
+
+# Course seeds
+Course.create(name: "BSc Computer Science")
+Course.create(name: "BSc Mathematics")
+
+# Department seeds
+informatics = Department.create(name: "Informatics")
+mathematics = Department.create(name: "Mathematics")
+physics = Department.create(name: "Physics")
+chemistry = Department.create(name: "Chemistry")
+
+# Faculty seed
+nms = Faculty.create(name: "Natural and Mathematical Sciences")
+
+# Faculty-Department One to many assocation
+nms.departments << informatics
+nms.departments << mathematics
+nms.departments << physics
+nms.departments << chemistry
