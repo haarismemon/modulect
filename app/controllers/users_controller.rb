@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
 
+  skip_before_filter :store_location,
+                      only: [:new, :edit]
+
   def index
     #returns all users by order of last_name
     @users = User.alphabetically_order_by(:last_name)
@@ -68,7 +71,6 @@ class UsersController < ApplicationController
     end
   end
 
-
   def destroy
     #find by id
     @user = User.find(params[:id])
@@ -76,7 +78,7 @@ class UsersController < ApplicationController
     @user.destroy
     flash[:notice] = @user.full_name+" has been deleted successfully."
     #redirect to action which displays all users
-    redirect_to(users_path)
+    redirect_back_or users_path
   end
 
   private

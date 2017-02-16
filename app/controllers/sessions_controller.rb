@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
 
+  skip_before_filter :store_location
   before_action :already_logged_in, only: [:new, :create]
 
   def new
@@ -7,12 +8,11 @@ class SessionsController < ApplicationController
 
   def create
     @user = User.find_by(email: params[:session][:email].downcase)
-    destination = params[:dest]
     if @user && @user.authenticate(params[:session][:password])
       if @user.activated?
         log_in @user
         params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
-        redirect_to destination
+        redirect_back_or root_url
       else
         message = "Account not activated."
         message += "Check your email for the activation link."
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
 
   def destroy
     log_out if logged_in?
-    redirect_to root_url
+    redirect_back_or root_url
   end
 
   def already_logged_in
