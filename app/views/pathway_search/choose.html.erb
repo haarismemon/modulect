@@ -1,2 +1,25 @@
 <% provide(:title, 'choose tags') %>
-choose tags
+<!--Aqib -->
+<h1>choose tags</h1>
+
+okay so you're a <%= @year_of_study.to_i.ordinalize %> year <%= @course %> student
+
+<h2>let's choose some tags</h2>
+
+<form action="<%= pathway_search_view_results_path %>" method="get">
+
+pretend they picked something
+
+
+<input type="hidden" name="chosen_tags" value="Maths,Logic Engineer">
+<br />
+okay you picked Maths and Logic Engineer
+
+
+
+<input type="hidden" value="<%= @year_of_study %>" name="year">
+<input type="hidden" value="<%= @course %>" name="course">
+
+<br />
+<button type="submit">results</button>
+</form>
