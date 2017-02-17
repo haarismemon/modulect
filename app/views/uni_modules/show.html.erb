@@ -33,7 +33,7 @@
                      $("button#save-<%= @uni_module.code%>").on("click", function(){
                          $.ajax({
                             type: "POST",
-                             url: "<%=search_save_module_path(module_par: @uni_module) %>",
+                             url: "<%=application_save_module_path(module_par: @uni_module) %>",
                              context: document.body
                          })
                      

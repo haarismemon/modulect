@@ -80,7 +80,7 @@
                      $("button#save-<%= unimodule.code%>").on("click", function(){
                          $.ajax({
                             type: "POST",
-                             url: "<%=search_save_module_path(module_par: unimodule) %>",
+                             url: "<%=application_save_module_path(module_par: unimodule) %>",
                              context: document.body
                          })
                      
