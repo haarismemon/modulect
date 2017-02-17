@@ -36,6 +36,10 @@
 					<h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course %> student.
 					</h5>
 				</div>
+
+
+				<form action="<%= pathway_search_view_results_path %>", method="get">
+
 						<%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
 						<script>
 							var tags = <%=  raw @tag_names + @module_names %>;
