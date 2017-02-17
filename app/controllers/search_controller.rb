@@ -1,15 +1,9 @@
 class SearchController < ApplicationController
 
-  def quick_search
+  def home
     @tag_names = Tag.pluck(:name)
     @module_names = UniModule.pluck(:name)
     @module_code = UniModule.pluck(:code) 
-  end
-
-  def pathway_search
-    @tag_names = Tag.select(:name)
-    @module_names = UniModule.select(:name)
-    @module_code = UniModule.select(:code)
   end
 
   def view_results
@@ -25,16 +19,7 @@ class SearchController < ApplicationController
     end
   end
 
-  # written by Aqib
-  def view_saved
-    if !logged_in?
-
-     redirect_to "/"
-      flash[:notice] = "You must be logged in to view saved modules."
-    end
-  end
-
-  # written by Aqib
+  
   def save_module
       uni_module = UniModule.find(params[:module_par])
       if(current_user.uni_modules.include?(uni_module))
