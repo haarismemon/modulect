@@ -30,18 +30,56 @@
 <div id="page">
 
 	<div class="container">
-		<div class="col-md-12 login-card">
+		<div class="col-md-10 login-card col-md-offset-1">
 			<div class="col-md-12">
-Begin<br />
-<h1>Your details</h1>
-Let's say I'm a 2nd year, computer science student
+
+            <div class="row">
+
+
+  <h1>Let's get started</h1>
+            <% if logged_in? %>
+                    <h4>Check that your details below are correct. If so, click "Next".</h4>
+<% else %>
+                    <h4>Please enter the details below. Once done, click "Next".</h4>
+
+<% end %>
+
+
+                </div>
 
 
 <form action="<%= pathway_search_choose_path %>" method="get">
+
+
+
+    <div class="row" >
+(Feras' form will go here)<br />
 Year of study <input type="text" value="2" name="year"><br />
 Course <input type="text" value="BSc Computer Science" name="course"><br />
-<button type="submit">next</button>
+</div>
+
+
+
+
+    <div class="row" >
+                <div class="col-md-12" style="margin-top: 30px;padding-left:0px">
+                    <div class="form-group">
+
+<button class="btn btn-lg"  type="submit">Next ></button>
+
+
+</div>
+</div>
+</div>
+
+
 </form>
+
+
+
+
+
+
 </div>
 </div>
 </div>
