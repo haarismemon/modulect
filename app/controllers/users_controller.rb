@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   skip_before_filter :store_location,
                       only: [:new, :edit]
 
-  def index
+
     #returns all users by order of last_name
     @users = User.alphabetically_order_by(:last_name)
   end
