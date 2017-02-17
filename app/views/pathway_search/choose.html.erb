@@ -51,16 +51,14 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
 <form action="<%= pathway_search_view_results_path %>" method="get">
+
+
+
+
+<div class="row" >
+                <div class="col-md-12" style="margin-top: 30px;padding-left:0px">
+                    <div class="form-group">
 
 pretend they picked something
 
@@ -71,10 +69,16 @@ okay you picked Maths and Logic Engineer
 
 
 
-<input type="hidden" value="<%= @year_of_study %>" name="year">
-<input type="hidden" value="<%= @course %>" name="course">
 
-<br />
+</div>
+
+</div>
+</div>
+
+
+
+
+
 
 
 
@@ -82,10 +86,23 @@ okay you picked Maths and Logic Engineer
                 <div class="col-md-12" style="margin-top: 30px;padding-left:0px">
                     <div class="form-group">
 
-<button class="btn btn-lg"  type="submit">View results ></button>
+
+<input type="hidden" value="<%= @year_of_study %>" name="year">
+<input type="hidden" value="<%= @course %>" name="course">
+<button class="btn btn-lg"  type="submit">View results ></button><br />
+
 
 
 </div>
+
+ <div class="form-group">
+
+<%= link_to "< Back to previous page", request.referer.present? ? request.referer : default_path %>
+
+
+
+</div>
+
 </div>
 </div>
 
