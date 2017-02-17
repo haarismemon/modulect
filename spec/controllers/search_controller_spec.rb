@@ -9,25 +9,26 @@ RSpec.describe SearchController, type: :controller do
     end
   end
 
-  describe "GET #smart_search" do
+  describe "GET #pathway_search" do
     it "returns http success" do
-      get :smart_search
+      get :pathway_search
       expect(response).to have_http_status(:success)
     end
   end
 
   describe "GET #view_results" do
-    it "returns http success" do
+    it "redirects when no search params are given" do
       get :view_results
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(:redirect)
     end
   end
 
   describe "GET #view_saved" do
-    it "returns http success" do
-      get :view_saved
-      expect(response).to have_http_status(:success)
+    context "when not logged in" do
+      it "redirects to another page" do
+        get :view_saved
+        expect(response).to have_http_status(:redirect)
+      end
     end
   end
-
 end

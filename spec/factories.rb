@@ -17,6 +17,7 @@ FactoryGirl.define do
 
   factory :department do
     name "Mathematics"
+    faculty
   end
 
   factory :faculty do

@@ -7,11 +7,11 @@ RSpec.describe TagsController, type: :controller do
 
     it "should redirect to index with a notice on successful save" do
       allow(tag).to receive(:valid?) { true }
-      post 'create',tag: FactoryGirl.attributes_for(tag)
+      post 'create', tag: FactoryGirl.attributes_for(tag)
       expect(flash[:notice].present?).to eq true
       expect(response).to redirect_to(tags_path)
     end
-    #
+    
     it "should re-render new template on failed save" do
       post "create", :tag =>{:name => "Fun"}
       expect(flash[:notice].present?).to eq false
@@ -68,7 +68,6 @@ RSpec.describe TagsController, type: :controller do
     end
 
     context "invalid attributes" do
-
 
       it "does not change @tag's attributes" do
         put :update, id: tag.id,tag: FactoryGirl.attributes_for(:tag, name: nil, type:"module")
@@ -149,8 +148,4 @@ RSpec.describe TagsController, type: :controller do
     end
 
   end
-
-
-
-
 end

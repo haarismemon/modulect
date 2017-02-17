@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
 
-  skip_before_filter :store_location
+  skip_before_action :store_location
   before_action :already_logged_in, only: [:new, :create]
 
   def new

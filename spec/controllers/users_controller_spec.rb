@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
 
-
   ## still to test create_by_sign_in
   describe "POST create_by_admin" do
     let (:user) { build(:user) }
@@ -119,21 +118,6 @@ RSpec.describe UsersController, type: :controller do
       expect(response.status).to eq 200
     end
   end
-
-  describe "GET index"  do
-    let(:users){User.alphabetically_order_by(:last_name)}
-
-    it "retrieves and assigns ALL users to @users" do
-      get :index
-      expect(assigns['users']).to eq(users)
-    end
-
-    it "renders correct index template" do
-      get :index
-      expect(response).to render_template("index")
-    end
-  end
-
 
   describe "GET new"  do
     it "creates a empty new user object and stores it in @user" do
