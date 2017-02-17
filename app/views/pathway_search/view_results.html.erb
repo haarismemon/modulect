@@ -19,7 +19,8 @@ who picked
 
 <% @results.each do |result| %>
 
-<%= result %> <br /> <br /> <br />
+<%= result %> <br />   
+               <%= link_to "Open page >", result.first, method: :get, class: "btn btn-lg btn-small" %><br /> <br />     <br /> <br />     
 
 <% end %>
 
