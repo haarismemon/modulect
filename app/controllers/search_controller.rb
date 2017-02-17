@@ -6,12 +6,6 @@ class SearchController < ApplicationController
     @module_code = UniModule.pluck(:code) 
   end
 
-  def pathway_search
-    @tag_names = Tag.select(:name)
-    @module_names = UniModule.select(:name)
-    @module_code = UniModule.select(:code)
-  end
-
   def view_results
     @tag_names = Tag.pluck(:name)
     @module_names = UniModule.pluck(:name)
