@@ -1,8 +1,4 @@
 <% provide(:title, @uni_module.code + " " +@uni_module.name) %>
-<% careers = [] %>               
-<% @uni_module.career_tags.each do |careertag| %>
-<% careers.push(careertag.name) %>
-<% end %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
    <div class="container">
       <h1>Module details</h1>  
@@ -37,7 +33,7 @@
                      $("button#save-<%= @uni_module.code%>").on("click", function(){
                          $.ajax({
                             type: "POST",
-                             url: "<%=search_save_module_path(module_par: @uni_module) %>",
+                             url: "<%=application_save_module_path(module_par: @uni_module) %>",
                              context: document.body
                          })
                      
@@ -74,7 +70,7 @@
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
                <p>
-                  <%= size_check careers.sort.join(", ") %>
+                  <%= size_check get_careers_for_module(@uni_module).sort.join(", ") %>
                </p>
             </div>
             <div class="col-md-4" style="margin-bottom:15px;">

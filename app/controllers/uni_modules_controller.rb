@@ -49,16 +49,6 @@ class UniModulesController < ApplicationController
     redirect_to(uni_modules_path)
   end
 
- # to favourites
- def save_module
-      uni_module = UniModule.find(params[:module_par])
-      if(current_user.uni_modules.include?(uni_module))
-        current_user.unsave_module(uni_module)
-      else
-        current_user.save_module(uni_module)
-      end
-  end
-
 
   private
 

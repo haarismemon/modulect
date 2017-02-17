@@ -12,4 +12,16 @@ class ApplicationController < ActionController::Base
       redirect_to login_path
     end
   end
+
+
+ # Save module to favourites
+ def save_module
+      uni_module = UniModule.find(params[:module_par])
+      if(current_user.uni_modules.include?(uni_module))
+        current_user.unsave_module(uni_module)
+      else
+        current_user.save_module(uni_module)
+      end
+  end
+
 end
