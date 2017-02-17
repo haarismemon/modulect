@@ -57,11 +57,12 @@
               <div class="form-group">
                 <label for="department">Department</label>
                 <%= select_tag(:department_id, options_for_select(@departments.collect { |department|
-    [department.name.titleize, department.id] }, 0), :class => 'form-control', :required => true) %>
+    [department.name.titleize, department.id] }, 0), :class => 'form-control', :required => true, :id => "departments_select") %>
               </div>
               <div class="form-group">
                 <label for="course">Course/Programme</label>
-                <%= f.select(:course_id, courses_of(:d), {}, { :class => 'form-control', :required => true }) %>
+                <%= f.select(:course_id, options_for_select(@courses.collect { |course|
+    [course.name.titleize, course.id] }, 0), {}, { :class => 'form-control', :required => true }) %>
               </div>
               <div class="form-group">
                 <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;

@@ -81,8 +81,8 @@ User.create(first_name:  "Bob",
             year_of_study: 1)
 
 # Course seeds
-Course.create(name: "BSc Computer Science")
-Course.create(name: "BSc Mathematics")
+computer_science = Course.create(name: "BSc Computer Science")
+maths = Course.create(name: "BSc Mathematics")
 
 # Department seeds
 informatics = Department.create(name: "Informatics")
@@ -98,3 +98,7 @@ nms.departments << informatics
 nms.departments << mathematics
 nms.departments << physics
 nms.departments << chemistry
+
+# Department-Course many to many association
+informatics.courses << computer_science
+mathematics.courses << maths
