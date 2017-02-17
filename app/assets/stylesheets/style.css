@@ -114,6 +114,13 @@ input:focus,
     color: #cb5234;
     margin-right: 8px;
 }
+.flash-alert-error, .alert-error {
+    border-left-color: #cb5234;
+}
+.flash-alert-error i, .alert-error i {
+    color: #cb5234;
+    margin-right: 8px;
+}
 .flash-alert-success, .alert-success {
     border-left-color: #2ab27b;
 }
