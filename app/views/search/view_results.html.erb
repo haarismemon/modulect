@@ -98,11 +98,6 @@
       <% module_results.each do |r| %>
       <% unimodule = r.first %>
       <% tagsmatched = r.second %>
-      <% careers = [] %>
-      <% unimodule.career_tags.each do |careertag| %>
-      <% careers.push(careertag.name) %>
-      <% end %>
-
       <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
          <div class="row">
             <div class="col-md-9 result-card-main">
@@ -180,7 +175,7 @@
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
                <p>
-                  <%= size_check careers.sort.join(", ") %>
+                  <%= size_check get_careers_for_module(unimodule).sort.join(", ") %>
                </p>
             </div>
             <div class="col-md-4" style="margin-bottom:15px;">
