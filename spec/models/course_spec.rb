@@ -6,26 +6,30 @@ RSpec.describe Course, type: :model do
 
   describe "#valid?" do
 
-    context "when name is present" do
-      context "and unique" do
-        it "evaluates to true" do
-          expect(course.valid?).to eq true
-        end
+    context "when built by FactoryGirl" do
+      it "evaluates to true" do
+        expect(course.valid?).to eq true
       end
+    end
 
-      context "but already taken" do
-        before do
-          create(:course, name: course.name)
-        end
-        it "evaluates to false" do
-          expect(course.valid?).to eq false
-        end
+    context "when name is present" do
+      it "evaluates to true" do
+        expect(course.valid?).to eq true
       end
     end
 
     context "when name is blank" do
       before do
         course.name = nil
+      end
+      it "evaluates to false" do
+        expect(course.valid?).to eq false
+      end
+    end
+
+    context "when there is another course with same name and year" do
+      before do
+        create(:course, name: course.name, year: course.year)
       end
       it "evaluates to false" do
         expect(course.valid?).to eq false

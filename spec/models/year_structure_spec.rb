@@ -19,7 +19,7 @@ RSpec.describe YearStructure, type: :model do
         expect(year_structure.valid?).to eq false
       end
     end
-    
+
     context "when not belonging to a course" do
       before do
         year_structure.course = nil
