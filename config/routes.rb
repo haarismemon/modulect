@@ -1,13 +1,14 @@
 Rails.application.routes.draw do
 
-  resources :departments
-  post 'users/create_by_admin'
-  resources :tags
-  resources :courses
   root 'search#home'
   get '/about', to: 'static_pages#about'
   get '/search', to: 'search#home'
   get 'saved', to: 'saved#view'
+
+  resources :departments
+  resources :tags
+  resources :courses
+  post 'users/create_by_admin'
 
   # Authentication
   get     '/login',   to: 'sessions#new'
