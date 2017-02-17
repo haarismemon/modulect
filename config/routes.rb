@@ -17,7 +17,9 @@ Rails.application.routes.draw do
   post 'signup', to: 'users#create'
 
   # Profile
-  get 'users/update_departments', as: 'update_departments'
+  get '/*all/update_departments', to: 'users#update_departments'
+  get '/*all/update_courses', to: 'users#update_courses'
+
 
   # Uni Modules
   resources :uni_modules do

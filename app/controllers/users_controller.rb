@@ -50,9 +50,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     # Get arrays to use for profiles
     @faculties = Faculty.pluck(:name)
-    @departments = Department.where("faculty_id = ?", Department.first.id)
-    d = Department.find(1)
-    @courses = d.courses.where("department_id = ?", Course.first.id)
+    @departments = {}
+    @courses = {}
   end
 
   def update_departments 

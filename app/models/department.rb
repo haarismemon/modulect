@@ -9,4 +9,5 @@ class Department < ApplicationRecord
   def add_course(valid_course)
     courses << valid_course
   end
+
 end
