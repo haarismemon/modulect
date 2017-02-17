@@ -103,7 +103,7 @@
       <% careers.push(careertag.name) %>
       <% end %>
 
-<%= link_to "Module", unimodule %>
+<%= link_to "Module", unimodule, method: :get %>
 
 
       <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
