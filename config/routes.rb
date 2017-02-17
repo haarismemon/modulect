@@ -4,9 +4,10 @@ Rails.application.routes.draw do
   post 'users/create_by_admin'
   resources :tags
   resources :courses
-  root 'search#quick_search'
+  root 'search#home'
   get '/about', to: 'static_pages#about'
-  get '/search', to: 'search#quick_search'
+  get '/search', to: 'search#home'
+  get 'saved', to: 'saved#view'
 
   # Authentication
   get     '/login',   to: 'sessions#new'
