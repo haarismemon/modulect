@@ -32,7 +32,7 @@
                         <button class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome <%= current_user.first_name %> <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><%= link_to "My Details", edit_user_path(current_user) %></a>
+                            <li><%= link_to "My Details", edit_user_path(current_user), method: :get %></a>
                             <li role="separator" class="divider"></li>
                             <li>
                                 <%= link_to "Log out", logout_path, method: "delete" %>
