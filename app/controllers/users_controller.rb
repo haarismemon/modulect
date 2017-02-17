@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     # Save the object
     if @user.save
       # If save succeeds, redirect to the index action
-      flash[:notice] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
+      flash[:success] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
       redirect_to(users_path)
     else
       # If save fails, redisplay the form so user can fix problems
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     # Update the object
     if @user.update_attributes(user_params)
       # If save succeeds, redirect to the index action
-      flash[:notice] = "Successfully updated "+ @user.full_name
+      flash[:success] = "Successfully updated "+ @user.full_name
       redirect_to(users_path) and return
     else
       # If save fails, redisplay the form so user can fix problems
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     #delete tuple object from db
     @user.destroy
-    flash[:notice] = @user.full_name+" has been deleted successfully."
+    flash[:success] = @user.full_name+" has been deleted successfully."
     #redirect to action which displays all users
     redirect_back_or users_path
   end
