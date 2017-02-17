@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  skip_before_filter :store_location,
+  skip_before_action :store_location,
                       only: [:new, :edit]
 
   def index

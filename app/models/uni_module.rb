@@ -8,6 +8,8 @@ class UniModule < ApplicationRecord
   has_many :requirements, class_name: "UniModule", foreign_key: "requirements_id"
   # belongs_to :parent, class_name: "UniModule", foreign_key: "requirements_id"
   has_and_belongs_to_many :users
+  has_and_belongs_to_many :groups
+  has_and_belongs_to_many :departments
   has_and_belongs_to_many :tags
 
   scope :search, lambda {|tag|

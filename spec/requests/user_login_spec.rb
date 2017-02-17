@@ -24,7 +24,7 @@ feature "Logging in" do
       fill_in "session_password", with: "password"
     end
     click_button "Log in"
-    expect(page).to have_content "Logged in"
+    expect(page).to have_current_path(root_path)
   end
 
   scenario "as a user that has not been activated" do
