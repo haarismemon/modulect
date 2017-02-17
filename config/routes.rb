@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   root 'search#home'
   get '/about', to: 'static_pages#about'
   get '/search', to: 'search#home'
-  get 'saved', to: 'saved#view'
+  get '/saved', to: 'saved#view'
+  get '/pathway-search', to: 'pathway_search#begin'
 
   resources :departments
   resources :tags
@@ -46,5 +47,11 @@ Rails.application.routes.draw do
   # Search
   get 'search/pathway_search'
   get 'search/view_results'
-  get 'search/view_saved'
+
+  # Pathway search
+  get 'pathway-search/begin'
+  get 'pathway-search/choose'
+  get 'pathway-search/view_results'
+
+
 end
