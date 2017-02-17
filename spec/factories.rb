@@ -13,6 +13,7 @@ FactoryGirl.define do
 
   factory :course do
     name "BA Geography"
+    year 2016
   end
 
   factory :department do

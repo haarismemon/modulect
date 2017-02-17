@@ -1,6 +1,7 @@
 class Course < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
+  validates :year, presence: true
 
   has_and_belongs_to_many :departments
   has_many :year_structures
