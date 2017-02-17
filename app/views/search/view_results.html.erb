@@ -102,6 +102,7 @@
       <% unimodule.career_tags.each do |careertag| %>
       <% careers.push(careertag.name) %>
       <% end %>
+
       <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
          <div class="row">
             <div class="col-md-9 result-card-main">
@@ -208,6 +209,9 @@
                <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
                <p><%= size_check unimodule.pass_rate %></p>
             </div>
+             <div class="col-md-12 text-right" style="margin-bottom:15px;">         
+               <%= link_to "Open page >", unimodule, method: :get, class: "btn btn-lg btn-small" %>
+             </div>
          </div>
       </div>
       <% end %>
