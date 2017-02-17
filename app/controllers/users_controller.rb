@@ -82,9 +82,8 @@ class UsersController < ApplicationController
       redirect_to(root_path) and return
     else
       # If save fails, restart form and notify user
-      #flash[:error] = "Please check that you have entered your details correctly and try again"
-      #redirect_to(edit_user_path)
-      render('edit')
+      flash[:error] = "Please check that you have entered your details correctly and try again."
+      redirect_to(edit_user_path)
     end
   end
 

@@ -16,6 +16,7 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX }
   validates :user_level, length: { is: 1 }, inclusion: { in: [1, 2, 3] }
   validates :year_of_study, length: { maximum: 1 }
+  validates :course_id, length: { maximum: 1 } #not tested
 
   has_secure_password
   validates :password, presence: true, length: {minimum: 6}
