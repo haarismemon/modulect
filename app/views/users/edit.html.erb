@@ -16,7 +16,7 @@
           <div class="col-md-12 login-card">
             <h3>Login Details</h3>
             <br>
-            <%= form_for @user, :url=>{:action => :update},:html => { :method => 'POST' } do |f|%>
+            <%= form_for @user, url: { action: :update } do |f|%>
             <div class="form-group">
               <label for="inputName">Name</label>
               <input type="text" id="inputName" class="form-control" value="<%= full_name_for(@user) %>" readonly>
@@ -27,11 +27,11 @@
             </div>
             <div class="form-group">
               <label for="inputPassword">Password</label>
-              <%= f.text_field(:password, class: 'form-control', :required => true) %>
+              <%= f.password_field(:password, class: 'form-control', :required => true, :autocomplete => "off") %>
             </div>
             <div class="form-group">
               <label for="inputCPassword">Confirm Password</label>
-              <%= f.text_field(:password_confirmation, class: 'form-control', :required => true) %>
+              <%= f.password_field(:password_confirmation, class: 'form-control', :required => true, :autocomplete => "off") %>
             </div>
             <div class="form-group">
               <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;
@@ -45,25 +45,25 @@
           <div class="col-md-12 login-card">
             <h3>Department &amp; Course Details</h3>
             <br>
-            <%= form_for @user, :url=>{:action => :update},:html => { :method => 'POST' } do |f|%>
+            <%= form_for @user, url: { action: :update } do |f|%>
             <div class="form-group">
               <label for="year-of-study">Year Of Study</label>
-              <%= f.select(:year_of_study, [1,2,3,4,5,6], {}, { :class => 'form-control', :required => true } )%>
+              <%= f.select(:year_of_study, options_for_select(1..7), {}, { :class => 'form-control', :required => true, :autocomplete => "off" } )%>
               </div>
               <div class="form-group">
                 <label for="faculty">Faculty</label>
-                <%= select_tag(:faculty_id, options_for_select(@faculties.collect { |faculty|
-    [faculty.name.titleize, faculty.id] }, 0), :include_blank => true, :class => 'form-control', :required => true, :id => "faculties_select") %>
+                <%= select_tag(nil, options_for_select(@faculties.collect { |faculty|
+    [faculty.name.titleize, faculty.id] }, 0), :include_blank => true, :class => 'form-control', :required => true, :id => "faculties_select", :autocomplete => "off" ) %>
               </div>
               <div class="form-group">
                 <label for="department">Department</label>
-                <%= select_tag(:department_id, options_for_select(@departments.collect { |department|
-    [department.name.titleize, department.id] }, 0), :include_blank => true, :class => 'form-control', :required => true, :id => "departments_select") %>
+                <%= select_tag(nil, options_for_select(@departments.collect { |department|
+    [department.name.titleize, department.id] }, 0), :include_blank => true, :class => 'form-control', :required => true, :id => "departments_select", :autocomplete => "off" ) %>
               </div>
               <div class="form-group">
                 <label for="course">Course/Programme</label>
                 <%= f.select(:course_id, options_for_select(@courses.collect { |course|
-    [course.name.titleize, course.id] }, 0), {}, { :class => 'form-control', :required => true, :id => "courses_select"}) %>
+    [course.name.titleize, course.id] }, 0), {}, { :class => 'form-control', :required => true, :id => "courses_select", :autocomplete => "off" }) %>
               </div>
               <div class="form-group">
                 <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;

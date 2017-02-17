@@ -50,10 +50,12 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     # Get arrays to use for profiles
     @faculties = Faculty.all
+    #Initialise departments and courses to be empty
     @departments = {}
     @courses = {}
   end
 
+  # Change the value of @departments if faculty changes
   def update_departments 
     @departments = Department.where("faculty_id = ?", params[:faculty_id])
                   respond_to do |format|
@@ -61,6 +63,7 @@ class UsersController < ApplicationController
                   end
   end
 
+  # Change the value of @courses if department changes
   def update_courses
     d = Department.find(params[:department_id])
     @courses = d.courses.where("department_id = ?", params[:department_id])
@@ -76,9 +79,11 @@ class UsersController < ApplicationController
     if @user.update_attributes(user_params)
       # If save succeeds, redirect to the index action
       flash[:notice] = "Successfully updated "+ @user.full_name
-      redirect_to(users_path) and return
+      redirect_to(root_path) and return
     else
-      # If save fails, redisplay the form so user can fix problems
+      # If save fails, restart form and notify user
+      #flash[:error] = "Please check that you have entered your details correctly and try again"
+      #redirect_to(edit_user_path)
       render('edit')
     end
   end
@@ -100,6 +105,6 @@ class UsersController < ApplicationController
         return nil
       end
       #!add params that want to be recognized by this application
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study, :user_level, :course_id)
     end
 end
