@@ -1,119 +1,81 @@
 <% provide(:title, 'Interests & Careers - Pathway Search') %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
-   <div class="container">
-      <h1>Pathway Search</h1>  
-   </div>
+	<div class="container">
+		<h1>Pathway Search</h1>
+	</div>
 </div>
 <div id="white-strip-pathway">
-    <div class="container">
-        <div class="col-md-12">
-            <div class="row">
-
-                <div class="col-md-4 step">
-                    <div class="numberCircle">1</div> My Details
-                </div>
-
-                <div class="col-md-4 step current">
-                    <div class="numberCircle current-circle">2</div> Choose Interests & Careers
-                </div>
-
-                <div class="col-md-4 step">
-                    <div class="numberCircle">3</div> Results and selection
-                </div>
-
-            </div>
-        </div>
-
-    </div>
+	<div class="container">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-4 step">
+					<div class="numberCircle">1</div> My Details
+                
+				</div>
+				<div class="col-md-4 step current">
+					<div class="numberCircle current-circle">2</div> Choose Interests & Careers
+                
+				</div>
+				<div class="col-md-4 step">
+					<div class="numberCircle">3</div> Results and selection
+                
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
-
 <div id="page">
-
 	<div class="container">
 		<div class="col-md-10 login-card col-md-offset-1">
 			<div class="col-md-12">
+				<div class="row">
+					<h1>Let's find out about your interests and aspirations.</h1>
+					<h4>Use the search bar below to look for things. When done, click "View results".</h4>
+				</div>
+				<div class="row">
+					<h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course %> student.
+					</h5>
+				</div>
+						<%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
+						<script>
+							var tags = <%=  raw @tag_names + @module_names %>;
+							// Remove the previously rendered search bar
+							$("div.bootstrap-tagsinput").remove();
+							var tags = new Bloodhound({
+								datumTokenizer: Bloodhound.tokenizers.whitespace,
+								queryTokenizer: Bloodhound.tokenizers.whitespace,
+								local: tags
+							});
 
-   <div class="row">
+							tags.initialize();
 
-  <h1>Let's find out about your interests and aspirations.</h1>
-                    <h4>Use the search bar below to look for things. When done, click "View results".</h4>
+							$('input#chosen_tags').tagsinput({
+								typeaheadjs: {
+									name: 'tags',
+									source: tags.ttAdapter()
+								},
+								freeInput: false
+							});
 
-
-
-                </div>
-
-
-<div class="row">
-
-<h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course %> student.</h5>
-
-</div>
-
-
-<form action="<%= pathway_search_view_results_path %>" method="get">
-
-
-
-
-<div class="row" >
-                <div class="col-md-12" style="margin-top: 30px;padding-left:0px">
-                    <div class="form-group">
-
-pretend they picked something
-
-
-<input type="hidden" name="chosen_tags" value="Maths,Logic Engineer">
-<br />
-okay you picked Maths and Logic Engineer
+							$('input#chosen_tags').focus();
+						</script>
 
 
 
-
-</div>
-
-</div>
-</div>
-
-
-
-
-
-
-
-
-<div class="row" >
-                <div class="col-md-12" style="margin-top: 30px;padding-left:0px">
-                    <div class="form-group">
-
-
-<input type="hidden" value="<%= @year_of_study %>" name="year">
-<input type="hidden" value="<%= @course %>" name="course">
-<button class="btn btn-lg"  type="submit">View results ></button><br />
-
-
-
-</div>
-
- <div class="form-group">
-
-<%= link_to "< Back to previous page", request.referer.present? ? request.referer : default_path %>
-
-
-
-</div>
-
-</div>
-</div>
-
-
-</form>
-
-
-
-
-
-</div>
-</div>
-</div>
-</div>
+						<div class="row" >
+							<div class="col-md-12" style="margin-top: 30px;padding-left:0px">
+								<div class="form-group">
+									<input type="hidden" value="<%= @year_of_study %>" name="year">
+										<input type="hidden" value="<%= @course %>" name="course">
+											<button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>
+											<br />
+										</div>
+										<div class="form-group"><%= link_to "< Back to previous page", request.referer.present? ? request.referer : default_path %>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>

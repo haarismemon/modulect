@@ -4,6 +4,9 @@ class PathwaySearchController < ApplicationController
 	end
 
 	def choose
+		@tag_names = Tag.pluck(:name)
+	    @module_names = UniModule.pluck(:name)
+	    @module_code = UniModule.pluck(:code) 
 		if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
 	      @year_of_study = params[:year]
 	      @course = params[:course]
