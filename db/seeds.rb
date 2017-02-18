@@ -128,3 +128,9 @@ cs1_semester_2.uni_modules << dbs
 cs1_semester_2.uni_modules << iai
 cs2_semester_1.uni_modules << ins
 cs2_semester_2.uni_modules << fc2
+
+# Group-YearStructure association
+cs_year1.groups << cs1_semester_1
+cs_year1.groups << cs1_semester_2
+cs_year2.groups << cs2_semester_1
+cs_year2.groups << cs2_semester_2
