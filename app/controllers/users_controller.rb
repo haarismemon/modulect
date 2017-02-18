@@ -53,8 +53,6 @@ class UsersController < ApplicationController
     #Initialise departments and courses to be empty
     @departments = {}
     @courses = {}
-    #Get all courses to reference the users current course
-    @courses_all = Course.all
   end
 
   # Change the value of @departments if faculty changes

@@ -26,4 +26,35 @@ module UsersHelper
     @course = Course.pluck(department)
   end
 
+  # Returns the year of study of the current user, or empty if one has not been set
+  def year_of_study_for(user)
+    "#{user.year_of_study}"
+  end
+
+  def faculty_for(user)
+    if(user.faculty_id.present?)
+      fac = Faculty.find(user.faculty_id)
+      "#{fac.name}"
+    else
+      " "
+    end
+  end
+
+  def department_for(user)
+    if(user.department_id.present?)
+      dep = Department.find(user.department_id)
+      "#{dep.name}"
+    else
+      " "
+    end
+  end
+
+  def course_for(user)
+    if(user.course_id.present?)
+      cou = Course.find(user.course_id)
+      "#{cou.name}"
+    else
+      " "
+    end
+  end
 end
