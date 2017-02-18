@@ -5,8 +5,6 @@ class UniModule < ApplicationRecord
   validates :semester, presence: true
   validates :credits, presence: true
 
-  has_many :requirements, class_name: "UniModule", foreign_key: "requirements_id"
-  # belongs_to :parent, class_name: "UniModule", foreign_key: "requirements_id"
   has_and_belongs_to_many :users
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :departments
