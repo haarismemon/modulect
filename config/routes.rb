@@ -20,6 +20,12 @@ Rails.application.routes.draw do
   get '/signup', to: 'users#new', as: 'signup'
   post 'signup', to: 'users#create'
 
+  # Profile
+  get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }
+  get '/*all/update_courses', to: 'users#update_courses', defaults: { format: 'js' }
+  post '/users/*all', to: 'users#update'
+
+
   # Uni Modules
   resources :uni_modules do
     member do

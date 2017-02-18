@@ -1,5 +1,5 @@
 class YearStructure < ApplicationRecord
-  belongs_to :course
+  belongs_to :course, optional: true
   has_many :groups
   validates :year_of_study, presence: true
   enum year_of_study: { first_year: 1, second_year: 2, third_year: 3,

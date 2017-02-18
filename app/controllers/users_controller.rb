@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     # Save the object
     if @user.save
       # If save succeeds, redirect to the index action
-      flash[:notice] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
+      flash[:success] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
       redirect_to(users_path)
     else
       # If save fails, redisplay the form so user can fix problems
@@ -48,26 +48,52 @@ class UsersController < ApplicationController
     end
   end
 
-  # Shows the profile of a user.
-  def show
-  end
-
   def edit
     #! allows for template's form to be ready populated with the associated users data ready for modification by admin
     @user = User.find(params[:id])
+    # Get arrays to use for profiles
+    @faculties = Faculty.all
+    #Initialise departments and courses to be empty unless previously selected
+    if(@user.department_id.present?)
+      @departments = Department.where("id = ?", @user.department_id)
+    else
+      @departments = {}
+    end
+    if(@user.course_id.present?)
+      @courses = Course.where("id = ?", @user.course_id)
+    else
+      @courses = {}
+    end
+  end
+
+  # Change the value of @departments if faculty changes
+  def update_departments
+    @departments = Department.where("faculty_id = ?", params[:faculty_id])
+                  respond_to do |format|
+                    format.js
+                  end
+  end
+
+  # Change the value of @courses if department changes
+  def update_courses
+    d = Department.find(params[:department_id])
+    @courses = d.courses.where("department_id = ?", params[:department_id])
+                    respond_to do |format|
+                      format.js
+                    end
   end
 
   def update
-    # Find a  object using id parameters
     @user = User.find(params[:id])
-    # Update the object
-    if @user.update_attributes(user_params)
+    @user.updating_password = false
+    if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
-      flash[:notice] = "Successfully updated "+ @user.full_name
-      redirect_to(users_path) and return
+      flash[:success] = "Successfully updated "+ @user.full_name
+      redirect_to(edit_user_path)
     else
-      # If save fails, redisplay the form so user can fix problems
-      render('edit')
+      # If save fails, restart form and notify user
+      flash[:error] = "Please check that you have entered your details correctly and try again."
+      render 'edit'
     end
   end
 
@@ -76,7 +102,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     #delete tuple object from db
     @user.destroy
-    flash[:notice] = @user.full_name+" has been deleted successfully."
+    flash[:success] = @user.full_name+" has been deleted successfully."
     #redirect to action which displays all users
     redirect_back_or users_path
   end
@@ -87,6 +113,11 @@ class UsersController < ApplicationController
         return nil
       end
       #!add params that want to be recognized by this application
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study, :user_level, :course_id)
+    end
+
+    # Used when updating the profile
+    def update_params
+      params.require(:user).permit(:password, :faculty_id, :department_id, :course_id, :year_of_study)
     end
 end

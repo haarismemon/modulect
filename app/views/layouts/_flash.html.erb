@@ -20,6 +20,12 @@
             <%= content_tag(:span, message) %>
          </div>
          <% end %>
+          <% if message_type == "error" %>
+         <div class="flash-alert flash-alert-notice">
+            <i class="fa fa-info" aria-hidden="true"></i>
+            <%= content_tag(:span, message) %>
+         </div>
+         <% end %>
          <% end %>
       </div>
    </div>
