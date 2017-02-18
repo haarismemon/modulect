@@ -1,25 +1,109 @@
-<% provide(:title, 'choose tags') %>
-<!--Aqib -->
-<h1>choose tags</h1>
+<% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
+<% if logged_in? %>
+<% @year_of_study = current_user.year_of_study %>
+<% @course = current_user.course_id %>
+<% end %>
 
-okay so you're a <%= @year_of_study.to_i.ordinalize %> year <%= @course %> student
+<div class="banner" style="margin-top: -30px;padding-top:40px;">
+	<div class="container">
+		<h1>Pathway Search</h1>
+	</div>
+</div>
+<div id="white-strip-pathway">
+	<div class="container">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-4 step">
+					<div class="numberCircle">1</div> My Details
+                
+				
+				</div>
+				<div class="col-md-4 step current">
+					<div class="numberCircle current-circle">2</div> Choose Interests & Careers
+                
+				
+				</div>
+				<div class="col-md-4 step">
+					<div class="numberCircle">3</div> Results and selection
+                
+				
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% if @course_obj.nil? || @year_of_study.to_i < 1 || @year_of_study.to_i > 7 %>
+<div id="page">
+	<div class="container">
+		<div class="col-md-10 login-card col-md-offset-1">
+			<div class="col-md-12">
+				<div class="row">
+					<h1>Something went wrong.</h1>
+					<h4>Please try again.</h4>
+				</div>
+			</div>
+		</div>
 
-<h2>let's choose some tags</h2>
-
-<form action="<%= pathway_search_view_results_path %>" method="get">
-
-pretend they picked something
+		</div>
+<% else %>
 
 
-<input type="hidden" name="chosen_tags" value="Maths,Logic Engineer">
-<br />
-okay you picked Maths and Logic Engineer
+<div id="page">
+	<div class="container">
+		<div class="col-md-10 login-card col-md-offset-1">
+			<div class="col-md-12">
+				<div class="row">
+					<h1>Let's find out about your interests and aspirations.</h1>
+					<h4>Use the search bar below to look for things. When done, click "View results".</h4>
+				</div>
+				<div class="row">
+					<h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course_obj.name %> student.
+					
+					</h5>
+				</div>
+				<form action="<%= pathway_search_view_results_path %>", method="get">
+					<div class="row" >
+						<div class="col-md-12" style="margin-top: 20px;padding-left:0px"><%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}, :required => true) %>
+							<script>
+							var tags = <%=  raw all_tag_name_of_course @course_obj %>;
+							// Remove the previously rendered search bar
+							$("div.bootstrap-tagsinput").remove();
+							var tags = new Bloodhound({
+								datumTokenizer: Bloodhound.tokenizers.whitespace,
+								queryTokenizer: Bloodhound.tokenizers.whitespace,
+								local: tags
+							});
 
+							tags.initialize();
 
+							$('input#chosen_tags').tagsinput({
+								typeaheadjs: {
+									name: 'tags',
+									source: tags.ttAdapter()
+								},
+								freeInput: false
+							});
 
-<input type="hidden" value="<%= @year_of_study %>" name="year">
-<input type="hidden" value="<%= @course %>" name="course">
-
-<br />
-<button type="submit">results</button>
-</form>
+							$('input#chosen_tags').focus();
+						
+							</script>
+						</div>
+					</div>
+					<div class="row" style="border-top:1px dotted #dfe2e1;margin-top:50px;" >
+						<div class="col-md-12" style="margin-top: 30px;padding-left:0px">
+							<div class="form-group">
+								<input type="hidden" value="<%= @year_of_study %>" name="year">
+									<input type="hidden" value="<%= @course %>" name="course">
+										<button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>
+										<br />
+									</div>
+									<div class="form-group"><%= link_to "< Back to previous page", "#", method: :get %>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<% end %>

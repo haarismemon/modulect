@@ -1,48 +1,116 @@
-<% provide(:title, 'Details - Pathway Search') %>
+<% provide(:title, 'My Details - Pathway Search') %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
    <div class="container">
-      <h1>Pathway Search</h1>  
+      <h1>Pathway Search</h1>
    </div>
 </div>
 <div id="white-strip-pathway">
-    <div class="container">
-        <div class="col-md-12">
-            <div class="row">
-
-                <div class="col-md-4 step current">
-                    <div class="numberCircle current-circle">1</div> My Details
-                </div>
-
-                <div class="col-md-4 step">
-                    <div class="numberCircle">2</div> Choose Interests and Careers
-                </div>
-
-                <div class="col-md-4 step">
-                    <div class="numberCircle">3</div> Results and selection
-                </div>
-
+   <div class="container">
+      <div class="col-md-12">
+         <div class="row">
+            <div class="col-md-4 step current">
+               <div class="numberCircle current-circle">1</div>
+               My Details
             </div>
-        </div>
-
-    </div>
+            <div class="col-md-4 step">
+               <div class="numberCircle">2</div>
+               Choose Interests and Careers
+            </div>
+            <div class="col-md-4 step">
+               <div class="numberCircle">3</div>
+               Results and selection
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
-
 <div id="page">
-
-	<div class="container">
-		<div class="col-md-12 login-card">
-			<div class="col-md-12">
-Begin<br />
-<h1>Your details</h1>
-Let's say I'm a 2nd year, computer science student
-
-
-<form action="<%= pathway_search_choose_path %>" method="get">
-Year of study <input type="text" value="2" name="year"><br />
-Course <input type="text" value="BSc Computer Science" name="course"><br />
-<button type="submit">next</button>
-</form>
-</div>
-</div>
+   <div class="container">
+      <div class="col-md-10 login-card col-md-offset-1">
+         <div class="col-md-12">
+            <div class="row" style="margin-bottom:20px">
+               <h1>Let's get started</h1>
+               <% if logged_in? %>
+               <h4>Check that your details below are correct - we've auto-filled where we can. If so, click "Next".</h4>
+               <% else %>
+               <h4>Please enter the details below. Once done, click "Next".</h4>
+               <% end %>
+            </div>
+            <div class="row" >
+               <% if logged_in? %>
+               <%= form_for @user do |f|%>
+               <%= render 'shared/error_messages', object: f.object %>
+               <div class="form-group">
+                  <label for="year-of-study">Year Of Study <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify which year you are studying in e.g. 1st year of degree">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                  <%= f.select(:year_of_study, options_for_select(1..7, @user.year_of_study), {:include_blank => true}, {:class => 'form-control', :autocomplete => "off" , :required => true} )%>
+               </div>
+               <div class="form-group">
+                  <label for="faculty">Faculty <label for="faculty">Faculty <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the faculty to which your course's department belongs">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label></label>
+                  <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
+                     [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  , :required => true }) %>
+               </div>
+               <div class="form-group">
+                  <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the department to which you belong">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                  <%= f.select(:department_id, options_for_select(@departments.collect { |department|
+                     [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"  , :required => true }) %>
+               </div>
+               <div class="form-group">
+                  <label for="course">Course/Programme <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the course/degree you are taking">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                  <%= f.select(:course_id, options_for_select(@courses.collect { |course|
+                     [course.name, course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
+               </div>
+               <input type="hidden" name="dest" value="<%= pathway_search_choose_path %>" >
+            </div>
+            <div class="row" >
+               <div class="col-md-12" style="margin-top: 30px;padding-left:0px">
+                  <div class="form-group">
+                     <button class="btn btn-lg"  type="submit">Next ></button>
+                  </div>
+               </div>
+            </div>
+            <% end %>
+            <% else %>
+            <form action="<%= pathway_search_choose_path %>" method="get">
+               <div class="form-group">
+                  <label for="year-of-study">Year Of Study <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify which year you are studying in e.g. 1st year of degree">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                  <%= select_tag(:year, options_for_select(1..7), {:include_blank => true, :class => 'form-control', :id => "year_of_study_select", :autocomplete => "off"  , :required => true }) %>
+               </div>
+               <div id="dontsubmit">
+                  <div class="form-group">
+                     <label for="faculty">Faculty <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the faculty to which your course's department belongs">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                     <%= select_tag(:faculty_id, options_for_select(@faculties.collect {|faculty|
+                        [faculty.name.titleize, faculty.id]}, 0), {:include_blank => true, :class => 'form-control', :id => "faculties_select", :autocomplete => "off"  , :required => true }) %>
+                  </div>
+                  <div class="form-group">
+                     <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the department to which you belong">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                     <%= select_tag(:department_id, options_for_select(@departments.collect {|department|
+                        [department.name.titleize, department.id]}, 0), {:include_blank => true, :class => 'form-control', :id => "departments_select", :autocomplete => "off"  , :required => true }) %>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label for="course">Course/Programme <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the course/degree you are taking">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                  <%= select_tag(:course, options_for_select(@courses.collect {|course|
+                     [course.name, course.id]}, 0), {:include_blank => true, :class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
+               </div>
+         </div>
+         <script>
+            $("form").submit(function() {
+            
+               $(this).children('#dontsubmit').remove();
+            
+            });
+            
+         </script>
+         <div class="row" >
+         <div class="col-md-12" style="margin-top: 30px;padding-left:0px">
+         <div class="form-group">
+         <button class="btn btn-lg"  type="submit">Next ></button>
+         </div>
+         </div>
+         </div>
+         </form> 
+         <% end %>
+      </div>
+   </div>
 </div>
 </div>

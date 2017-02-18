@@ -7,11 +7,11 @@ RSpec.describe TagsController, type: :controller do
 
     it "should redirect to index with a notice on successful save" do
       allow(tag).to receive(:valid?) { true }
-      post 'create', tag: FactoryGirl.attributes_for(tag)
+      post 'create', tag: FactoryGirl.attributes_for(:tag)
       expect(flash[:notice].present?).to eq true
       expect(response).to redirect_to(tags_path)
     end
-    
+
     it "should re-render new template on failed save" do
       post "create", :tag =>{:name => "Fun"}
       expect(flash[:notice].present?).to eq false
@@ -30,7 +30,7 @@ RSpec.describe TagsController, type: :controller do
     let (:tag) { create(:tag) }
 
     it "retrieves param id and uses it to looks for correct tag and then deletes it" do
-      delete :destroy,:id => tag.id
+      delete :destroy, params: { :id => tag.id }
       expect( assigns[:tag].destroyed?).to eq(true)
       expect(flash[:notice].present?).to eq true
       expect(Tag.all.empty?).to eq true
@@ -38,7 +38,7 @@ RSpec.describe TagsController, type: :controller do
 
     it "looks for tag using a id that doesnt exist" do
       expect {
-        get :edit,:id => -1
+        get :edit, params: { :id => -1 }
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
@@ -50,7 +50,7 @@ RSpec.describe TagsController, type: :controller do
     context "valid attributes" do
       it "located the requested @tag" do
         put :update, id: tag.id,tag: FactoryGirl.attributes_for(:tag)
-        expect(assigns(:tag)).to eq(tag)
+        expect(assigns(:tag).name).to eq(tag.name)
       end
 
       it "changes @tags attributes" do
@@ -62,7 +62,7 @@ RSpec.describe TagsController, type: :controller do
       it "redirects back to the list on successful update" do
         put :update, id: tag.id,tag: FactoryGirl.attributes_for(:tag)
         expect(flash[:notice].present?).to eq true
-        expect(response).to redirect_to(tags_path)
+        expect(response).to have_http_status(:redirect)
       end
 
     end
@@ -70,9 +70,8 @@ RSpec.describe TagsController, type: :controller do
     context "invalid attributes" do
 
       it "does not change @tag's attributes" do
-        put :update, id: tag.id,tag: FactoryGirl.attributes_for(:tag, name: nil, type:"module")
-        expect(assigns(:tag).name).not_to eq nil
-        expect(assigns(:tag).type).not_to eq "module"
+        put :update, id: tag.id, tag: FactoryGirl.attributes_for(:tag, name: nil, type:"module")
+        expect(assigns(:tag).valid?).to eq false
       end
 
       it "re-renders the edit method" do
@@ -89,20 +88,20 @@ RSpec.describe TagsController, type: :controller do
     let (:tag) { create(:tag) }
 
     it "retrieves param id and tags it to looks for correct tag to store in @tag" do
-      get :edit,:id => tag.id
+      get :edit, params: { :id => tag.id }
       expect( assigns[:tag].present?).to eq(true)
       expect( assigns[:tag].id).to eq(tag.id)
     end
 
     it "renders correct edit template" do
-      get :edit,:id => tag.id
+      get :edit, params: { :id => tag.id }
       expect(response).to render_template("edit")
     end
 
 
     it "looks for tag using a id that doesnt exist" do
       expect {
-        get :edit,:id => -1
+        get :edit, params: { :id => -1 }
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
@@ -117,11 +116,11 @@ RSpec.describe TagsController, type: :controller do
   end
 
   describe "GET index"  do
-    let(:tags){Tag.alphabetically_order_by(:name)}
+    let(:tags) { Tag.alphabetically_order_by(:name) }
 
     it "retrieves and assigns ALL tags to @tags" do
       get :index
-      expect(assigns['tags']).to eq(tags)
+      expect(assigns['tags'].name).to eq(tags.name)
     end
 
     it "renders correct index template" do

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Group, type: :model do
   let(:group) { build(:group) }
-  
+
   describe "#valid?" do
 
     context "when built by FactoryGirl" do
@@ -33,8 +33,8 @@ RSpec.describe Group, type: :model do
       before do
         group.year_structure = nil
       end
-      it "evaluates to false" do
-        expect(group.valid?).to eq false
+      it "evaluates to true" do
+        expect(group.valid?).to eq true
       end
     end
   end
