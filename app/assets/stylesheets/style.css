@@ -143,6 +143,14 @@ select.form-control{
     margin-right: 8px;
 }
 
+.flash-alert-warning, .alert-warning {
+    border-left-color: #f5a108;
+}
+.flash-alert-warning i, .alert-warning i {
+    color: #f5a108;
+    margin-right: 8px;
+}
+
 #flash-container{
     margin-bottom:35px;
 }
