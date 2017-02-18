@@ -68,7 +68,7 @@
 					<div class="row" >
 						<div class="col-md-12" style="margin-top: 20px;padding-left:0px"><%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}, :required => true) %>
 							<script>
-							var tags = <%=  raw @tag_names %>;
+							var tags = <%=  raw all_tag_name_of_course @course_obj %>;
 							// Remove the previously rendered search bar
 							$("div.bootstrap-tagsinput").remove();
 							var tags = new Bloodhound({

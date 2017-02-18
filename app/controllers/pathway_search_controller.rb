@@ -24,7 +24,6 @@ class PathwaySearchController < ApplicationController
 		# the variables are only used if the user is not logged in
 		# because in that case I read it directly
 		# from the user model
-		@tag_names = Tag.pluck(:name)
 	    @module_names = UniModule.pluck(:name)
 	    @module_code = UniModule.pluck(:code) 
 		if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
