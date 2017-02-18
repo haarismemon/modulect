@@ -56,7 +56,7 @@ class UsersController < ApplicationController
   end
 
   # Change the value of @departments if faculty changes
-  def update_departments 
+  def update_departments
     @departments = Department.where("faculty_id = ?", params[:faculty_id])
                   respond_to do |format|
                     format.js
@@ -73,12 +73,11 @@ class UsersController < ApplicationController
   end
 
   def update
-    # Find a  object using id parameters
     @user = User.find(params[:id])
-    # Update the object
-    if @user.update_attributes(user_params)
+    @user.updating_password = false
+    if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
-      flash[:notice] = "Successfully updated "+ @user.full_name
+      flash[:success] = "Successfully updated "+ @user.full_name
       redirect_to(root_path) and return
     else
       # If save fails, restart form and notify user
@@ -105,5 +104,9 @@ class UsersController < ApplicationController
       end
       #!add params that want to be recognized by this application
       params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study, :user_level, :course_id)
+    end
+
+    def update_params
+      params.require(:user).permit(:password, :course_id, :year_of_study)
     end
 end
