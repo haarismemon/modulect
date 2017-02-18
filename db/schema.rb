@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170218115117) do
+ActiveRecord::Schema.define(version: 20170218164759) do
 
   create_table "Departments_UniModules", id: false, force: :cascade do |t|
     t.integer "department_id", null: false
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20170218115117) do
     t.integer  "requirements_id"
     t.string   "more_info_url"
     t.boolean  "compulsory",            default: false
+    t.string   "requirements"
   end
 
   create_table "uni_modules_users", id: false, force: :cascade do |t|
