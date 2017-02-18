@@ -1,13 +1,17 @@
 class UsersController < ApplicationController
-
+  before_action :logged_in_user, only: [:edit, :update]
+  before_action :correct_user,   only: [:edit, :update]
   skip_before_action :store_location,
                       only: [:new, :edit]
 
   def index
     #returns all users by order of last_name
-    @users = User.alphabetically_order_by(:last_name)
+    #@users = User.alphabetically_order_by(:last_name)
   end
 
+  def show
+    redirect_to(edit_user_path)
+  end
 
   # Displays signup form.
   # Signup forms will be posted to new instead of create to preserve /signup url.
@@ -120,4 +124,12 @@ class UsersController < ApplicationController
     def update_params
       params.require(:user).permit(:password, :faculty_id, :department_id, :course_id, :year_of_study)
     end
+
+    # Confirms the correct user.
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless current_user?(@user)
+    end
+
+
 end
