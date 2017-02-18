@@ -75,7 +75,7 @@ class UsersController < ApplicationController
     @departments = Department.where("faculty_id = ?", params[:faculty_id])
                   respond_to do |format|
                     format.js
-                  end
+                  end 
   end
 
   # Change the value of @courses if department changes
