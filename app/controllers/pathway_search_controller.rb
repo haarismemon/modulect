@@ -18,6 +18,8 @@ class PathwaySearchController < ApplicationController
 		end
 	end
 
+	
+
 	def choose
 		# the variables are only used if the user is not logged in
 		# because in that case I read it directly
