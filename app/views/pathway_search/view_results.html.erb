@@ -17,39 +17,71 @@
         <!--groups-->
         <% @groups.each do |group| %>       
         <div class="col-md-4 col-md-offset-1 login-card">
-          <h3><%= @group.name %></h3>
+          <h3><%= group.name %></h3>
           <!--choices as buttons, once a button is clicked next group shows-->
         </div>
         <% end %>
       </div>
-      <!--Change to course id when aqib pushes-->
-      <%= if exists_next_year_for(1, 1) %>
-        <h1>hi</h1>
-      <% end %>
-
-
-
-
-
-
-        <%= @year_of_study.to_i.ordinalize %> year <%= @course %> student <br />
-
-        who picked
-
-        <br />
-
-        <%= @chosen_tags %> <br />
-
-        <br />
-
-        <h1>Results</h1> <br />
-
-        <br />
-
-        <% @results.each do |result| %>
-
-        <%= result %> <br />   
-        <%= link_to "Open page >", result.first, method: :get, class: "btn btn-lg btn-small" %><br /> <br />     <br /> <br />     
-
+      <div style="margin-top:30px">
+        <% if logged_in? %>
+        <div class="row">
+          <form>
+            <div class="col-md-4">
+              <button type="submit" class="btn btn-lg btn-small save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
+              </button>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" id="save=name" placeholder="Name your Pathway" required>
+            </div>
+          </div>
+        </form>
+        <script>
+          $(window).load(function() {
+            $("#save").click(function() {
+              /* get html path */
+            })
+          })
+        </script>
+        <% else %>
+        <form action="/login" method="get">
+          <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in." id="save"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
+          </button>
+        </form>
         <% end %>
+
+      <!--Change to course id when aqib pushes-->
+      <% if exists_next_year_for(1, 1) %>
+      <%= link_to "Go to next year >", "javascript:void()", method: :get, class: "btn btn-lg btn-small" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<!--
+<%= @year_of_study.to_i.ordinalize %> year <%= @course %> student <br />
+
+who picked
+
+<br />
+
+<%= @chosen_tags %> <br />
+
+<br />
+
+<h1>Results</h1> <br />
+
+<br />
+
+<% @results.each do |result| %>
+
+<%= result %> <br />   
+<%= link_to "Open page >", result.first, method: :get, class: "btn btn-lg btn-small" %><br /> <br />     <br /> <br />     
+
+<% end %>
+
+-->
 
