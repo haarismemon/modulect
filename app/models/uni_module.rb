@@ -125,4 +125,13 @@ class UniModule < ApplicationRecord
 
   end
 
+  # Searches for Modules in a course and year with matching tags
+  def self.pathway_search(course_name, year, tags_array)
+    results = basic_search(tags_array)
+
+    results.each do
+      uni_module = results[0]
+    end
+  end
+
 end
