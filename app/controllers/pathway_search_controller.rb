@@ -1,26 +1,21 @@
 class PathwaySearchController < ApplicationController
 
-		# Change the value of @departments if faculty changes
-	  def update_departments
-	    @departments = Department.where("faculty_id = ?", params[:faculty_id])
-	                  respond_to do |format|
-	                    format.js
-	                  end
-	  end
-
-	  # Change the value of @courses if department changes
-	  def update_courses
-	    d = Department.find(params[:department_id])
-	    @courses = d.courses.where("department_id = ?", params[:department_id])
-	                    respond_to do |format|
-	                      format.js
-	                    end
-	  end
 
 	def begin
     	@faculties = Faculty.all
-    	@departments = Department.all
-    	@courses = Course.all
+    	@departments = {}
+    	@courses = {}
+
+    	if logged_in?
+    		@user = current_user
+		    #Initialise departments and courses to be empty unless previously selected
+		    if(@user.department_id.present?)
+		      @departments = Department.where("id = ?", @user.department_id)
+		    end
+		    if(@user.course_id.present?)
+		      @courses = Course.where("id = ?", @user.course_id)
+		    end
+		end
 	end
 
 	def choose
