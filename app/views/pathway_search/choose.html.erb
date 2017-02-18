@@ -1,4 +1,10 @@
 <% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
+<% if logged_in? %>
+<% @year_of_study = current_user.year_of_study %>
+<% @course = current_user.course_id %>
+<% end %>
+
+
   <script src="https://maxfavilli.com/managed/tagmanager.js"></script>
 
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
@@ -29,6 +35,22 @@
 		</div>
 	</div>
 </div>
+<% if @course_obj.nil? || @year_of_study.to_i < 1 || @year_of_study.to_i > 7 %>
+<div id="page">
+	<div class="container">
+		<div class="col-md-10 login-card col-md-offset-1">
+			<div class="col-md-12">
+				<div class="row">
+					<h1>Something went wrong.</h1>
+					<h4>Please try again.</h4>
+				</div>
+			</div>
+		</div>
+
+		</div>
+<% else %>
+
+
 <div id="page">
 	<div class="container">
 		<div class="col-md-10 login-card col-md-offset-1">
@@ -38,7 +60,7 @@
 					<h4>Use the search bar below to look for things. When done, click "View results".</h4>
 				</div>
 				<div class="row">
-					<h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course %> student.
+					<h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course_obj.name %> student.
 					
 					</h5>
 				</div>
@@ -78,7 +100,7 @@
 										<button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>
 										<br />
 									</div>
-									<div class="form-group"><%= link_to "< Back to previous page", request.referer.present? ? request.referer : default_path, method: :get %>
+									<div class="form-group"><%= link_to "< Back to previous page", "#", method: :get %>
 									</div>
 								</div>
 							</div>
@@ -87,3 +109,4 @@
 				</div>
 			</div>
 		</div>
+		<% end %>
