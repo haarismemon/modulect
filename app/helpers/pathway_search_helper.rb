@@ -26,7 +26,12 @@ module PathwaySearchHelper
 
   # uses above helper to get all the tag names
   def all_tag_name_of_course(course)
-    all_tags_of_course(course).pluck(:name)
+    @all_tags = all_tags_of_course(course)
+    if !@all_tags.nil?
+      @all_tags = @all_tags.pluck(:name)
+    else
+      @all_tags = {}
+    end
   end
 
 end
