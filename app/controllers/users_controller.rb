@@ -89,7 +89,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
       flash[:success] = "Successfully updated "+ @user.full_name
-      redirect_to(edit_user_path)
+      redirect_to user_path
     else
       # If save fails, restart form and notify user
       flash[:error] = "Please check that you have entered your details correctly and try again."
