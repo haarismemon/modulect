@@ -29,6 +29,13 @@ a:focus,
 a:active {
     text-decoration: none;
 }
+
+.help-tooltip{
+    cursor: pointer;
+    font-weight: normal;
+    -webkit-user-select:none;
+}
+
 footer {
     height: 60px;
     border-top: 1px solid #dfe2e1;
