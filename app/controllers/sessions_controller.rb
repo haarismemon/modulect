@@ -27,7 +27,8 @@ class SessionsController < ApplicationController
 
   def destroy
     log_out if logged_in?
-    redirect_back_or root_url
+    # redirect_back_or root_url
+    redirect_to "/"
   end
 
   def already_logged_in

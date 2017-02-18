@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:edit, :update]
   skip_before_action :store_location,
                       only: [:new, :edit]
+  protect_from_forgery except: [:update_departments, :update_courses]
 
   def index
     #returns all users by order of last_name
