@@ -1,9 +1,32 @@
 class PathwaySearchController < ApplicationController
 
+		# Change the value of @departments if faculty changes
+	  def update_departments
+	    @departments = Department.where("faculty_id = ?", params[:faculty_id])
+	                  respond_to do |format|
+	                    format.js
+	                  end
+	  end
+
+	  # Change the value of @courses if department changes
+	  def update_courses
+	    d = Department.find(params[:department_id])
+	    @courses = d.courses.where("department_id = ?", params[:department_id])
+	                    respond_to do |format|
+	                      format.js
+	                    end
+	  end
+
 	def begin
+    	@faculties = Faculty.all
+    	@departments = Department.all
+    	@courses = Course.all
 	end
 
 	def choose
+		# the variables are only used if the user is not logged in
+		# because in that case I read it directly
+		# from the user model
 		@tag_names = Tag.pluck(:name)
 	    @module_names = UniModule.pluck(:name)
 	    @module_code = UniModule.pluck(:code) 
