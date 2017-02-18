@@ -63,14 +63,6 @@ ActiveRecord::Schema.define(version: 20170218115117) do
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
   end
 
-  create_table "pathways", force: :cascade do |t|
-    t.integer  "year"
-    t.integer  "course_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_pathways_on_course_id"
-  end
-
   create_table "tags", force: :cascade do |t|
     t.string   "name"
     t.string   "type"
