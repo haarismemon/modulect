@@ -77,11 +77,11 @@ class UsersController < ApplicationController
     @user.updating_password = false
     if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
-      flash[:notice] = "Successfully updated "+ @user.full_name
+      flash[:success] = "Successfully updated "+ @user.full_name
       redirect_to(root_path) and return
     else
       # If save fails, restart form and notify user
-      flash.now[:error] = "Please check that you have entered your details correctly and try again."
+      flash[:error] = "Please check that you have entered your details correctly and try again."
       redirect_to(edit_user_path)
     end
   end
