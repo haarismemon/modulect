@@ -139,7 +139,9 @@ class UniModule < ApplicationRecord
           course_of_result_module = group.year_structure.course
 
           if course.id == course_of_result_module.id
-            pathway_results << result
+            if pathway_results.exclude? result
+              pathway_results << result
+            end
           end
 
         end
