@@ -14,6 +14,10 @@ class UniModule < ApplicationRecord
     joins(:tags).where(["tags.name = ?", tag])
   }
 
+  scope :all_modules_in_group, lambda {|group|
+    joins(:groups).where(["groups.id = ?", group.id])
+  }
+
   # Filters the array of tags for type CareerTag
   def career_tags
     Array(tags).keep_if  do |tag|
