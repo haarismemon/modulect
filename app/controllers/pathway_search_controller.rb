@@ -42,8 +42,7 @@ class PathwaySearchController < ApplicationController
       @course = params[:course]
       @chosen_tags = params[:chosen_tags].split(",")
 
-      #change to course_id once available
-      @structure = YearStructure.where("course_id = ? AND year_of_study = ?", 1, params[:year])
+      @structure = YearStructure.where("course_id = ? AND year_of_study = ?", @course, @year_of_study)
       @groups = Group.where("year_structure_id = ?", @structure.ids)
 
 		  @course_obj = Course.find_by_id(@course) 
@@ -52,7 +51,7 @@ class PathwaySearchController < ApplicationController
       	else
       	 	@results = {}
       	end
-        
+
 	    else
 	     redirect_to "/pathway-search/"
 	    end

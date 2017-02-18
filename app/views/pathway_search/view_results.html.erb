@@ -50,7 +50,7 @@
         <% end %>
 
       <!--Change to course id when aqib pushes-->
-      <% if exists_next_year_for(1, 1) %>
+      <% if exists_next_year_for(@course, @year_of_study) %>
       <%= link_to "Go to next year >", "javascript:void()", method: :get, class: "btn btn-lg btn-small" %>
       <% end %>
     </div>
