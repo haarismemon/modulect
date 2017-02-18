@@ -89,9 +89,9 @@ ActiveRecord::Schema.define(version: 20170218170115) do
     t.integer  "credits"
     t.integer  "exam_percentage"
     t.integer  "coursework_percentage"
-    t.integer  "requirements_id"
     t.string   "more_info_url"
     t.boolean  "compulsory",            default: false
+    t.string   "requirements"
   end
 
   create_table "uni_modules_users", id: false, force: :cascade do |t|
