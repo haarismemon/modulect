@@ -37,22 +37,22 @@
              <%= render 'shared/error_messages', object: f.object %>
             <div class="form-group">
               <label for="year-of-study">Year Of Study</label>
-              <%= f.select(:year_of_study, options_for_select(1..7), {:prompt => year_of_study_for(@user)}, {:class => 'form-control', :required => true, :autocomplete => "off" } )%>
+              <%= f.select(:year_of_study, options_for_select(1..7), {:include_blank => year_of_study_for(@user)}, {:class => 'form-control', :required => true, :autocomplete => "off" } )%>
               </div>
               <div class="form-group">
                 <label for="faculty">Faculty</label>
                 <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
-    [faculty.name.titleize, faculty.id] }, 0), {:prompt => faculty_for(@user)}, { :include_blank => true, :class => 'form-control', :required => true, :id => "faculties_select", :autocomplete => "off" }) %>
+    [faculty.name.titleize, faculty.id]}, 0), {:include_blank => faculty_for(@user)}, {:class => 'form-control', :required => true, :id => "faculties_select", :autocomplete => "off" }) %>
               </div>
               <div class="form-group">
                 <label for="department">Department</label>
                 <%= f.select(:department_id, options_for_select(@departments.collect { |department|
-    [department.name.titleize, department.id] }, 0), {:prompt => department_for(@user)}, {:include_blank => true, :class => 'form-control', :required => true, :id => "departments_select", :autocomplete => "off" }) %>
+    [department.name.titleize, department.id] }, 0), {:include_blank => department_for(@user)}, {:include_blank => true, :class => 'form-control', :required => true, :id => "departments_select", :autocomplete => "off" }) %>
               </div>
               <div class="form-group">
                 <label for="course">Course/Programme</label>
                 <%= f.select(:course_id, options_for_select(@courses.collect { |course|
-    [course.name.titleize, course.id] }, 0), {:prompt => course_for(@user)}, { :class => 'form-control', :required => true, :id => "courses_select", :autocomplete => "off" }) %>
+    [course.name.titleize, course.id] }, 0), {:include_blank => course_for(@user)}, { :class => 'form-control', :required => true, :id => "courses_select", :autocomplete => "off" }) %>
               </div>
               <div class="form-group">
                 <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;

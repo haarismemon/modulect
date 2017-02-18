@@ -106,7 +106,8 @@ class UsersController < ApplicationController
       params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study, :user_level, :course_id)
     end
 
+    # Used when updating the profile
     def update_params
-      params.require(:user).permit(:password, :course_id, :year_of_study)
+      params.require(:user).permit(:password, :faculty_id, :department_id, :course_id, :year_of_study)
     end
 end

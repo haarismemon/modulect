@@ -31,6 +31,7 @@ module UsersHelper
     "#{user.year_of_study}"
   end
 
+  # Returns the faculty of the current user, or empty if one has not been set
   def faculty_for(user)
     if(user.faculty_id.present?)
       fac = Faculty.find(user.faculty_id)
@@ -40,6 +41,7 @@ module UsersHelper
     end
   end
 
+  # Returns the department of the current user, or empty if one has not been set
   def department_for(user)
     if(user.department_id.present?)
       dep = Department.find(user.department_id)
@@ -49,12 +51,13 @@ module UsersHelper
     end
   end
 
+  # Returns the course of the current user, or empty if one has not been set
   def course_for(user)
     if(user.course_id.present?)
       cou = Course.find(user.course_id)
       "#{cou.name}"
     else
-      " "
+      "test"
     end
   end
 end
