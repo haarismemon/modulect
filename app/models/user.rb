@@ -1,6 +1,7 @@
 class User < ApplicationRecord
 
   attr_accessor :remember_token, :activation_token, :reset_token
+  attr_accessor :updating_password
 
   before_save :downcase_email
   before_create :create_activation_digest
@@ -19,7 +20,9 @@ class User < ApplicationRecord
   validates :course_id, length: { maximum: 1 } #not tested
 
   has_secure_password
-  validates :password, presence: true, length: {minimum: 6}
+  validates :password, presence: true,
+                       length: {minimum: 6},
+                       if: :should_validate_password?
 
   default_value_for :user_level, 3  #student #(needs testing)
   default_value_for :entered_before, false  #(needs testing)
@@ -117,4 +120,7 @@ class User < ApplicationRecord
     self.activation_digest = User.digest(activation_token)
   end
 
+  def should_validate_password?
+    updating_password || new_record?
+  end
 end
