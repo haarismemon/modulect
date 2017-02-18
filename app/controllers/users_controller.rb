@@ -48,26 +48,44 @@ class UsersController < ApplicationController
     end
   end
 
-  # Shows the profile of a user.
-  def show
-  end
-
   def edit
     #! allows for template's form to be ready populated with the associated users data ready for modification by admin
     @user = User.find(params[:id])
+    # Get arrays to use for profiles
+    @faculties = Faculty.all
+    #Initialise departments and courses to be empty
+    @departments = {}
+    @courses = {}
+  end
+
+  # Change the value of @departments if faculty changes
+  def update_departments
+    @departments = Department.where("faculty_id = ?", params[:faculty_id])
+                  respond_to do |format|
+                    format.js
+                  end
+  end
+
+  # Change the value of @courses if department changes
+  def update_courses
+    d = Department.find(params[:department_id])
+    @courses = d.courses.where("department_id = ?", params[:department_id])
+                    respond_to do |format|
+                      format.js
+                    end
   end
 
   def update
-    # Find a  object using id parameters
     @user = User.find(params[:id])
-    # Update the object
-    if @user.update_attributes(user_params)
+    @user.updating_password = false
+    if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
       flash[:success] = "Successfully updated "+ @user.full_name
-      redirect_to(users_path) and return
+      redirect_to(root_path) and return
     else
-      # If save fails, redisplay the form so user can fix problems
-      render('edit')
+      # If save fails, restart form and notify user
+      flash[:error] = "Please check that you have entered your details correctly and try again."
+      render 'edit'
     end
   end
 
@@ -87,6 +105,11 @@ class UsersController < ApplicationController
         return nil
       end
       #!add params that want to be recognized by this application
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study, :user_level, :course_id)
+    end
+
+    # Used when updating the profile
+    def update_params
+      params.require(:user).permit(:password, :faculty_id, :department_id, :course_id, :year_of_study)
     end
 end
