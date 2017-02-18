@@ -15,7 +15,7 @@ RSpec.describe Department, type: :model do
 
       context "but already taken" do
         before do
-          create(:department, name: department.name)
+          department.dup.save
         end
         it "evaluates to false" do
           expect(department.valid?).to eq false

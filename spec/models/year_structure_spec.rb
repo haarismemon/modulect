@@ -24,8 +24,8 @@ RSpec.describe YearStructure, type: :model do
       before do
         year_structure.course = nil
       end
-      it "evaluates to false" do
-        expect(year_structure.valid?).to eq false
+      it "evaluates to true, as it is optional" do
+        expect(year_structure.valid?).to eq true
       end
     end
   end
