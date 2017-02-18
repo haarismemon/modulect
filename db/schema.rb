@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170217115203) do
+ActiveRecord::Schema.define(version: 20170218170115) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -100,6 +100,13 @@ ActiveRecord::Schema.define(version: 20170217115203) do
     t.index ["uni_module_id", "user_id"], name: "index_uni_modules_users_on_uni_module_id_and_user_id"
   end
 
+  create_table "user_pathways", force: :cascade do |t|
+    t.integer "user_id"
+    t.string  "saved_name"
+    t.string  "saved_pathway"
+    t.index ["user_id"], name: "index_user_pathways_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -117,6 +124,8 @@ ActiveRecord::Schema.define(version: 20170217115203) do
     t.datetime "activated_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
+    t.integer  "department_id"
+    t.integer  "faculty_id"
   end
 
   create_table "year_structures", force: :cascade do |t|
