@@ -57,7 +57,7 @@ module UsersHelper
       cou = Course.find(user.course_id)
       "#{cou.name}"
     else
-      "test"
+      " "
     end
   end
 end
