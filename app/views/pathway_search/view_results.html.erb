@@ -1,26 +1,43 @@
-<% provide(:title, 'view results') %>
-<!--Feras and Alex -->
-Results
+<% provide(:title, 'Pathway Results') %>
+<div class="banner" style="margin-top: -30px;padding-top:40px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Select Modules</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="page" style="padding-top:30px;">
+  <div class="container">
+    <div class="row">
+     <div class="col-md-12 col-md-offset-1">
+      <div class="col-md-12 login-card">
+        <h3>%= @year_of_study.to_i.ordinalize %> Year</h3>
+        <!--groups-->
 
 
-<%= @year_of_study.to_i.ordinalize %> year <%= @course %> student <br />
 
-who picked
 
-<br />
 
-<%= @chosen_tags %> <br />
+        <%= @year_of_study.to_i.ordinalize %> year <%= @course %> student <br />
 
-<br />
+        who picked
 
-<h1>Results</h1> <br />
+        <br />
 
-<br />
+        <%= @chosen_tags %> <br />
 
-<% @results.each do |result| %>
+        <br />
 
-<%= result %> <br />   
-               <%= link_to "Open page >", result.first, method: :get, class: "btn btn-lg btn-small" %><br /> <br />     <br /> <br />     
+        <h1>Results</h1> <br />
 
-<% end %>
+        <br />
+
+        <% @results.each do |result| %>
+
+        <%= result %> <br />   
+        <%= link_to "Open page >", result.first, method: :get, class: "btn btn-lg btn-small" %><br /> <br />     <br /> <br />     
+
+        <% end %>
 
