@@ -78,25 +78,34 @@ User.create(first_name:  "Bob",
 # Course seeds
 computer_science_15 = Course.create(name: "BSc Computer Science", year: 2015)
 maths = Course.create(name: "BSc Mathematics", year: 2015)
+jmc = Course.create(name: "BSc Joint Mathematics and Computer Science", year: 2015)
+elec_eng = Course.create(name: "BSc Electronic Engineering", year: 2015)
+medicine = Course.create(name: "Medicine", year: 2015)
 
 # Department seeds
 informatics = Department.create(name: "Informatics")
 mathematics = Department.create(name: "Mathematics")
 physics = Department.create(name: "Physics")
 chemistry = Department.create(name: "Chemistry")
+gkt = Department.create(name: "GKT School of Medical Education"   )
 
 # Faculty seed
 nms = Faculty.create(name: "Natural and Mathematical Sciences")
+lsm = Faculty.create(name: "Life Sciences and Medicine")
 
 # Faculty-Department One to many assocation
 nms.departments << informatics
 nms.departments << mathematics
 nms.departments << physics
 nms.departments << chemistry
+lsm << gkt
 
 # Department-Course many to many association
 informatics.courses << computer_science_15
 mathematics.courses << maths
+mathematics.courses << jmc
+informatics.courses << elec_eng
+gkt.courses << medicine
 
 # Year Structure seeds
 cs_year1 = YearStructure.create(year_of_study: 1)
