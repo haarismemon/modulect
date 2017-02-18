@@ -19,7 +19,9 @@ class PathwaySearchController < ApplicationController
 	      @course = params[:course]
 	      @chosen_tags = params[:chosen_tags].split(",")
 
-	      @structure = YearStructure.find(params[:course],params[:year])
+	      #change to course_id once available
+	      @structure = YearStructure.where("course_id = ? AND year_of_study = ?", 1, params[:year])
+	      @groups = Group.where("year_structure_id = ?", @structure.ids)
 
 	      # results will be calculated here using haaris' function in the model
 	      # right now i'll just use the existing basic search method

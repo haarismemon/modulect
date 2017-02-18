@@ -87,7 +87,7 @@ informatics = Department.create(name: "Informatics")
 mathematics = Department.create(name: "Mathematics")
 physics = Department.create(name: "Physics")
 chemistry = Department.create(name: "Chemistry")
-gkt = Department.create(name: "GKT School of Medical Education"   )
+gkt = Department.create(name: "GKT School of Medical Education")
 
 # Faculty seed
 nms = Faculty.create(name: "Natural and Mathematical Sciences")
@@ -98,7 +98,7 @@ nms.departments << informatics
 nms.departments << mathematics
 nms.departments << physics
 nms.departments << chemistry
-lsm << gkt
+lsm.departments << gkt
 
 # Department-Course many to many association
 informatics.courses << computer_science_15
