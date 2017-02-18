@@ -25,4 +25,5 @@ module UsersHelper
   def courses_of(department) 
     @course = Course.pluck(department)
   end
+
 end

@@ -53,6 +53,8 @@ class UsersController < ApplicationController
     #Initialise departments and courses to be empty
     @departments = {}
     @courses = {}
+    #Get all courses to reference the users current course
+    @courses_all = Course.all
   end
 
   # Change the value of @departments if faculty changes
@@ -83,7 +85,7 @@ class UsersController < ApplicationController
     else
       # If save fails, restart form and notify user
       flash[:error] = "Please check that you have entered your details correctly and try again."
-      redirect_to(edit_user_path)
+      render 'edit'
     end
   end
 
