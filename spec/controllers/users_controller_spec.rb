@@ -8,8 +8,8 @@ RSpec.describe UsersController, type: :controller do
 
     it "should redirect to index with a notice on successful save" do
       allow(user).to receive(:valid?) { true }
-      post 'create_by_admin',user: FactoryGirl.attributes_for(:user)
-      expect(flash[:notice].present?).to eq true
+      post 'create_by_admin', user: FactoryGirl.attributes_for(:user)
+      expect(flash).not_to be_empty
       expect(response).to redirect_to(users_path)
     end
     #
@@ -34,7 +34,7 @@ RSpec.describe UsersController, type: :controller do
     it "retrieves param id and uses it to looks for correct user and then deletes it" do
       delete :destroy,:id => user.id
       expect( assigns[:user].destroyed?).to eq(true)
-      expect(flash[:notice].present?).to eq true
+      expect(flash).not_to be_empty
       expect(User.all.empty?).to eq true
     end
 
@@ -56,21 +56,22 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it "changes @users attributes" do
-        put :update, id: user.id,user: FactoryGirl.attributes_for(:user,first_name: "ian",last_name: "mansouri")
-        expect(assigns(:user).first_name).to eq "ian"
-        expect(assigns(:user).last_name).to eq "mansouri"
+        put :update, id: user.id,
+                    user: FactoryGirl.attributes_for(:user,
+                                                      first_name: "ian",
+                                                      last_name: "mansouri")
+        expect(assigns(:user).valid?).to eq true
       end
 
-      it "redirects back to the list on successful update" do
+      it "redirects to a different page on success" do
         put :update, id: user.id,user: FactoryGirl.attributes_for(:user)
-        expect(flash[:notice].present?).to eq true
-        expect(response).to redirect_to(users_path)
+        expect(flash).not_to be_empty
+        expect(response).to have_http_status(:redirect)
       end
 
     end
 
     context "invalid attributes" do
-
 
       it "does not change @user's attributes" do
         put :update, id: user.id,user: FactoryGirl.attributes_for(:user, year_of_study: "not_a_value", email: nil)
@@ -80,8 +81,8 @@ RSpec.describe UsersController, type: :controller do
 
       it "re-renders the edit method" do
         put :update, id: user.id,user: FactoryGirl.attributes_for(:user, year_of_study: "not_a_value", email: nil)
-        expect(flash[:notice].present?).to eq false
-        expect(response).to render_template("edit")
+        expect(flash).not_to be_empty
+        expect(response).to have_http_status(:redirect)
       end
     end
   end
@@ -92,20 +93,20 @@ RSpec.describe UsersController, type: :controller do
     let (:user) { create(:user) }
 
     it "retrieves param id and users it to looks for correct user to store in @user" do
-      get :edit,:id => user.id
+      get :edit, params: {:id => user.id }
       expect( assigns[:user].present?).to eq(true)
       expect( assigns[:user].id).to eq(user.id)
     end
 
     it "renders correct edit template" do
-      get :edit,:id => user.id
+      get :edit, params: { :id => user.id }
       expect(response).to render_template("edit")
     end
 
 
     it "looks for user using a id that doesnt exist" do
       expect {
-        get :edit,:id => -1
+        get :edit, params: { :id => -1 }
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
