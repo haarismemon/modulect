@@ -54,7 +54,7 @@ ins.tags << network_engineer
 ela.tags << logic_engineer
 dbs.tags << database_engineer
 cs1.tags << hardware_engineer
-pra.tags << front_end_dev
+pra.tags << front_end_developer
 
 # User seeds
 User.create(first_name:  "Vlad",
