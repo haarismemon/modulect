@@ -102,3 +102,17 @@ nms.departments << chemistry
 # Department-Course many to many association
 informatics.courses << computer_science
 mathematics.courses << maths
+
+# Group seeds
+cs1_semester_1 = Group.create(name: "Semester 1", total_credits: 60)
+cs1_semester_2 = Group.create(name: "Semester 2", total_credits: 60)
+
+# Group-Modules assocation
+cs1_semester_1.uni_modules << prp
+cs1_semester_1.uni_modules << ela
+cs1_semester_1.uni_modules << fc1
+cs1_semester_1.uni_modules << cs1
+cs1_semester_2.uni_modules << pra
+cs1_semester_2.uni_modules << dst
+cs1_semester_2.uni_modules << dbs
+cs1_semester_2.uni_modules << iai
