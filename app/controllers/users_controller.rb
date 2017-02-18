@@ -53,9 +53,17 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     # Get arrays to use for profiles
     @faculties = Faculty.all
-    #Initialise departments and courses to be empty
-    @departments = {}
-    @courses = {}
+    #Initialise departments and courses to be empty unless previously selected
+    if(@user.department_id.present?)
+      @departments = Department.where("id = ?", @user.department_id)
+    else
+      @departments = {}
+    end
+    if(@user.course_id.present?)
+      @courses = Course.where("id = ?", @user.course_id)
+    else
+      @courses = {}
+    end
   end
 
   # Change the value of @departments if faculty changes
