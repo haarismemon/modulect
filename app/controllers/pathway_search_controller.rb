@@ -24,14 +24,14 @@ class PathwaySearchController < ApplicationController
 		# the variables are only used if the user is not logged in
 		# because in that case I read it directly
 		# from the user model
-		@tag_names = Tag.pluck(:name)
 	    @module_names = UniModule.pluck(:name)
 	    @module_code = UniModule.pluck(:code) 
 		if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
 	      @year_of_study = params[:year]
 	      @course = params[:course]
+	      @course_obj = Course.find_by_id(@course) 
 	    else
-	     redirect_to "/"
+	     redirect_to "/pathway-search/"
 	    end
 	end
 
@@ -42,13 +42,15 @@ class PathwaySearchController < ApplicationController
 	      @course = params[:course]
 	      @chosen_tags = params[:chosen_tags].split(",")
 
-	      # results will be calculated here using haaris' function in the model
-	      # right now i'll just use the existing basic search method
-
-      		@results = UniModule.basic_search(@chosen_tags) # this will change!
+		 @course_obj = Course.find_by_id(@course) 
+      	 if !@course_obj.nil?
+      	 	@results = UniModule.pathway_search(@chosen_tags, @course_obj) 
+      	 else
+      	 	@results = {}
+      	 end
 
 	    else
-	     redirect_to "/"
+	     redirect_to "/pathway-search/"
 	    end
 
 	end

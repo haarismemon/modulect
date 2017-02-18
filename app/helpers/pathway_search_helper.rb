@@ -24,4 +24,9 @@ module PathwaySearchHelper
     all_tags.uniq!
   end
 
+  # uses above helper to get all the tag names
+  def all_tag_name_of_course(course)
+    all_tags_of_course(course).pluck(:name)
+  end
+
 end
