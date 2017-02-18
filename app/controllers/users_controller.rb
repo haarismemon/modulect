@@ -92,7 +92,7 @@ class UsersController < ApplicationController
     @user.updating_password = false
     if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
-      flash[:success] = "Successfully updated "+ @user.full_name
+      flash[:success] = "Successfully updated your account"
       if params.has_key?(:dest) && !params[:dest].empty? 
         redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s 
       else  
