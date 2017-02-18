@@ -81,8 +81,8 @@ User.create(first_name:  "Bob",
             year_of_study: 1)
 
 # Course seeds
-computer_science = Course.create(name: "BSc Computer Science")
-maths = Course.create(name: "BSc Mathematics")
+computer_science_15 = Course.create(name: "BSc Computer Science", year: 2015)
+maths = Course.create(name: "BSc Mathematics", year: 2015)
 
 # Department seeds
 informatics = Department.create(name: "Informatics")
@@ -100,5 +100,44 @@ nms.departments << physics
 nms.departments << chemistry
 
 # Department-Course many to many association
-informatics.courses << computer_science
+informatics.courses << computer_science_15
 mathematics.courses << maths
+
+# Year Structure seeds
+cs_year1 = YearStructure.create(year_of_study: 1)
+cs_year2 = YearStructure.create(year_of_study: 2)
+
+# Course-YearStructure association
+computer_science_15.year_structures << cs_year1
+computer_science_15.year_structures << cs_year2
+
+# Group seeds
+cs1_semester_1 = Group.create(name: "Semester 1", total_credits: 60)
+cs1_semester_2 = Group.create(name: "Semester 2", total_credits: 60)
+cs2_semester_1 = Group.create(name: "Semester 1", total_credits: 60)
+cs2_semester_2 = Group.create(name: "Semester 2", total_credits: 60)
+
+maths_group = Group.create(name: "Maths", total_credits: 60)
+
+# Group-Modules association
+cs1_semester_1.uni_modules << prp
+cs1_semester_1.uni_modules << ela
+cs1_semester_1.uni_modules << fc1
+cs1_semester_1.uni_modules << cs1
+cs1_semester_2.uni_modules << pra
+cs1_semester_2.uni_modules << dst
+cs1_semester_2.uni_modules << dbs
+cs1_semester_2.uni_modules << iai
+cs2_semester_1.uni_modules << ins
+cs2_semester_2.uni_modules << fc2
+
+maths_group.uni_modules << fc1
+maths_group.uni_modules << ela
+
+# Group-YearStructure association
+cs_year1.groups << cs1_semester_1
+cs_year1.groups << cs1_semester_2
+cs_year2.groups << cs2_semester_1
+cs_year2.groups << cs2_semester_2
+
+cs_year1.groups << maths_group

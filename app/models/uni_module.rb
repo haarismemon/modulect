@@ -125,4 +125,30 @@ class UniModule < ApplicationRecord
 
   end
 
+  # Searches for Modules in a course and year with matching tags
+  def self.pathway_search(tags_array, course)
+    basic_results = basic_search(tags_array)
+    pathway_results = []
+
+    basic_results.each do |result|
+      uni_module = result[0]
+      groups_that_contain_module = Group.search_by_module(uni_module.code)
+
+      groups_that_contain_module.each do |group|
+        if group.year_structure && group.year_structure.course
+          course_of_result_module = group.year_structure.course
+
+          if course.id == course_of_result_module.id
+            if pathway_results.exclude? result
+              pathway_results << result
+            end
+          end
+
+        end
+      end
+    end
+
+    return pathway_results
+  end
+
 end

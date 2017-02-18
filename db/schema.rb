@@ -10,21 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170218115117) do
-
-  create_table "Departments_UniModules", id: false, force: :cascade do |t|
-    t.integer "department_id", null: false
-    t.integer "uni_module_id", null: false
-    t.index ["department_id", "uni_module_id"], name: "index_department_uni_module"
-    t.index ["uni_module_id", "department_id"], name: "index_uni_module_department"
-  end
-
-  create_table "Groups_UniModules", id: false, force: :cascade do |t|
-    t.integer "group_id",      null: false
-    t.integer "uni_module_id", null: false
-    t.index ["group_id", "uni_module_id"], name: "index_Groups_UniModules_on_group_id_and_uni_module_id"
-    t.index ["uni_module_id", "group_id"], name: "index_Groups_UniModules_on_uni_module_id_and_group_id"
-  end
+ActiveRecord::Schema.define(version: 20170217115203) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -48,6 +34,13 @@ ActiveRecord::Schema.define(version: 20170218115117) do
     t.index ["faculty_id"], name: "index_departments_on_faculty_id"
   end
 
+  create_table "departments_uni_modules", id: false, force: :cascade do |t|
+    t.integer "department_id", null: false
+    t.integer "uni_module_id", null: false
+    t.index ["department_id", "uni_module_id"], name: "index_department_uni_module"
+    t.index ["uni_module_id", "department_id"], name: "index_uni_module_department"
+  end
+
   create_table "faculties", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -63,12 +56,11 @@ ActiveRecord::Schema.define(version: 20170218115117) do
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
   end
 
-  create_table "pathways", force: :cascade do |t|
-    t.integer  "year"
-    t.integer  "course_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_pathways_on_course_id"
+  create_table "groups_uni_modules", id: false, force: :cascade do |t|
+    t.integer "group_id",      null: false
+    t.integer "uni_module_id", null: false
+    t.index ["group_id", "uni_module_id"], name: "index_groups_uni_modules_on_group_id_and_uni_module_id"
+    t.index ["uni_module_id", "group_id"], name: "index_groups_uni_modules_on_uni_module_id_and_group_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -125,8 +117,6 @@ ActiveRecord::Schema.define(version: 20170218115117) do
     t.datetime "activated_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
-    t.integer  "department_id"
-    t.integer  "faculty_id"
   end
 
   create_table "year_structures", force: :cascade do |t|
