@@ -8,7 +8,7 @@
 
 # pass rates are all fictional, assigned to help with sorting according to pass rate
 prp = UniModule.create(name: "Programming Practice", code: "4CCS1PRP", semester: "1",
-                       credits: 15, pass_rate: 40)
+                       credits: 15, pass_rate: 40, more_info_link:"http://www.kcl.ac.uk/nms/depts/informatics/study/current/handbook/progs/Modules/4CCS1PRP.aspx" )
 pra = UniModule.create(name: "Programming Applications", code: "4CCS1PRA", semester: "2",
 											 credits: 15, exam_percentage: 75, coursework_percentage: 25, pass_rate: 50)
 fc1 = UniModule.create(name: "Foundations of Computing 1", code: "4CCS1FC1", semester: "1",
