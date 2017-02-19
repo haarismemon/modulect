@@ -6,6 +6,7 @@ class User < ApplicationRecord
   before_save :downcase_email
   before_create :create_activation_digest
 
+  # A user has many saved modules.
   has_and_belongs_to_many :uni_modules
 
   validates :first_name, presence: true, length: { maximum: 70 }
