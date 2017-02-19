@@ -1,4 +1,50 @@
 <% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
+<style>
+.bootstrap-tagsinput {
+    background-color: none;
+    box-shadow: 0 0 0;
+    border-radius:0;
+    border:0;
+    position:relative;
+}
+.bootstrap-tagsinput input, .bootstrap-tagsinput input:focus {
+    border:1px solid #ddd;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+    border-radius:4px;
+    min-width:90px !important;
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+}
+
+.twitter-typeahead{
+	width:100%;
+}
+.twitter-typeahead input{
+	padding:7px 10px;margin-bottom:15px
+}
+
+</style>
+<script type="text/javascript">
+$(window).load(function(){
+	$(".twitter-typeahead").on('click', function(){    
+	    if ($(".twitter-typeahead").length){
+	        $(".bootstrap-tagsinput").prepend($(".twitter-typeahead"))
+	    }
+	});
+	$(".twitter-typeahead").keydown(function(e) {
+		if(e.which == 13) {
+	   		if ($(".twitter-typeahead").length){
+		        $(".bootstrap-tagsinput").prepend($(".twitter-typeahead"))
+		    }
+  		}
+	   
+	});
+});
+
+</script>
 <% if logged_in? %>
 <% @year_of_study = current_user.year_of_study %>
 <% @course = current_user.course_id %>
