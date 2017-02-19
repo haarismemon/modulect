@@ -27,6 +27,24 @@
 }
 
 </style>
+<script type="text/javascript">
+$(window).load(function(){
+	$(".twitter-typeahead").on('click', function(){    
+	    if ($(".twitter-typeahead").length){
+	        $(".bootstrap-tagsinput").prepend($(".twitter-typeahead"))
+	    }
+	});
+	$(".twitter-typeahead").keydown(function(e) {
+		if(e.which == 13) {
+	   		if ($(".twitter-typeahead").length){
+		        $(".bootstrap-tagsinput").prepend($(".twitter-typeahead"))
+		    }
+  		}
+	   
+	});
+});
+
+</script>
 <% if logged_in? %>
 <% @year_of_study = current_user.year_of_study %>
 <% @course = current_user.course_id %>
