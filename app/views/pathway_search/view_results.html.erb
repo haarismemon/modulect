@@ -33,13 +33,14 @@
         <h3><%= @year_of_study.to_i.ordinalize %> Year</h3>
         <!--groups-->
         <% @groups.each do |group| %>       
-        <div class="col-md-4 login-card">
+        <div class="col-md-5 login-card">
           <h3><%= group.name %></h3>
           <!--choices as buttons, once a button is clicked next show a column for the remaining choices in the group or the group shows-->
           <% UniModule.all_modules_in_group(group).each do |mod| %>
             <% if @results.include? mod.code %>
                 <% tagsmatched = @results.find_by_id(mod).second %>
               <div class="row login-card res-card result-card-<%= colour_code_card tagsmatched, @chosen_tags %>" >
+
                 <p> <%= mod.name %> </p>
               </div>
             <% else %>

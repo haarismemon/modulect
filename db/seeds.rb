@@ -121,8 +121,6 @@ cs1_semester_2 = Group.create(name: "Semester 2", total_credits: 60)
 cs2_semester_1 = Group.create(name: "Semester 1", total_credits: 60)
 cs2_semester_2 = Group.create(name: "Semester 2", total_credits: 60)
 
-maths_group = Group.create(name: "Maths", total_credits: 60)
-
 # Group-Modules association
 cs1_semester_1.uni_modules << prp
 cs1_semester_1.uni_modules << ela
@@ -135,13 +133,8 @@ cs1_semester_2.uni_modules << iai
 cs2_semester_1.uni_modules << ins
 cs2_semester_2.uni_modules << fc2
 
-maths_group.uni_modules << fc1
-maths_group.uni_modules << ela
-
 # Group-YearStructure association
 cs_year1.groups << cs1_semester_1
 cs_year1.groups << cs1_semester_2
 cs_year2.groups << cs2_semester_1
 cs_year2.groups << cs2_semester_2
-
-cs_year1.groups << maths_group
