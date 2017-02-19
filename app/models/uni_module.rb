@@ -5,6 +5,7 @@ class UniModule < ApplicationRecord
   validates :semester, presence: true
   validates :credits, presence: true
 
+  # A UniModule has been saved as a favourite by many users.
   has_and_belongs_to_many :users
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :departments
@@ -38,7 +39,7 @@ class UniModule < ApplicationRecord
   end
 
   # Registers a user as having selected this module.
-  def add_user(valid_user)
+  def select_by_user(valid_user)
     users << valid_user
   end
 
