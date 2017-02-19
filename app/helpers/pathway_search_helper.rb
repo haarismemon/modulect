@@ -1,5 +1,15 @@
 module PathwaySearchHelper
 
+  # returns a boolean if the next year of the course is defined and iterates the current year to that year
+	def exists_next_year_for(course_id, current_year)
+		if !YearStructure.where("course_id = ? AND year_of_study = ?", course_id, ++current_year).empty?
+      ++@year_of_study
+			true
+		else
+			false
+		end
+	end
+
   # returns an array of all tags relating to a course
   # input is a course object
   # written by Haaris
@@ -31,6 +41,24 @@ module PathwaySearchHelper
       @all_tags = @all_tags.pluck(:name)
     else
       @all_tags = {}
+    end
+  end
+
+  # returns percentage matched as a float
+  # inputs are numbers
+  # written by Aqib
+  def percentage(module_matched, total)
+    (Float(module_matched) / total) * 100
+  end
+
+  # returns a string used to colour code card based on number of tags matched
+  # inputs are a string and lists
+  # written by Aqib adapted by Feras
+  def colour_code_card(module_matched_list, tags_matched_list)
+    if percentage(module_matched_list.length, tags_matched_list.length) >= 60.0
+      "green"
+    else
+      "orange"
     end
   end
 

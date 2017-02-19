@@ -42,16 +42,19 @@ class PathwaySearchController < ApplicationController
 	def view_results
 
 		if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? && params.has_key?(:chosen_tags) && !params[:chosen_tags].empty?
-	      @year_of_study = params[:year]
-	      @course = params[:course]
-	      @chosen_tags = params[:chosen_tags].split(",")
+      @year_of_study = params[:year]
+      @course = params[:course]
+      @chosen_tags = params[:chosen_tags].split(",")
 
-		 @course_obj = Course.find_by_id(@course) 
-      	 if !@course_obj.nil?
-      	 	@results = UniModule.pathway_search(@chosen_tags, @course_obj) 
-      	 else
+      @structure = YearStructure.where("course_id = ? AND year_of_study = ?", @course, @year_of_study)
+      @groups = Group.where("year_structure_id = ?", @structure.ids)
+
+		  @course_obj = Course.find_by_id(@course) 
+      	if !@course_obj.nil?
+      		@results = UniModule.pathway_search(@chosen_tags, @course_obj) 
+      	else
       	 	@results = {}
-      	 end
+      	end
 
 	    else
 	     redirect_to "/pathway-search/"

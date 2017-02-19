@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170218170115) do
+ActiveRecord::Schema.define(version: 20170218215233) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20170218170115) do
   create_table "groups_uni_modules", id: false, force: :cascade do |t|
     t.integer "group_id",      null: false
     t.integer "uni_module_id", null: false
+    t.boolean "compulsory"
     t.index ["group_id", "uni_module_id"], name: "index_groups_uni_modules_on_group_id_and_uni_module_id"
     t.index ["uni_module_id", "group_id"], name: "index_groups_uni_modules_on_uni_module_id_and_group_id"
   end
@@ -81,8 +82,8 @@ ActiveRecord::Schema.define(version: 20170218170115) do
     t.string   "code"
     t.string   "description"
     t.string   "lecturers"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.string   "pass_rate"
     t.string   "assessment_methods"
     t.string   "semester"
@@ -90,7 +91,6 @@ ActiveRecord::Schema.define(version: 20170218170115) do
     t.integer  "exam_percentage"
     t.integer  "coursework_percentage"
     t.string   "more_info_url"
-    t.boolean  "compulsory",            default: false
     t.string   "requirements"
   end
 
