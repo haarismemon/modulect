@@ -10,7 +10,7 @@
 </div>
 <div id="white-strip-pathway">
   <div class="container">
-    <div class="col-md-12">
+    <div class="col-md-12 col-md-offset-1">
       <div class="row">
         <div class="col-md-4 step">
           <div class="numberCircle">1</div> My Details
@@ -37,15 +37,19 @@
           <h3><%= group.name %></h3>
           <!--choices as buttons, once a button is clicked next show a column for the remaining choices in the group or the group shows-->
           <% UniModule.all_modules_in_group(group).each do |mod| %>
-            <% uni_module = @results.select{ |uni_module, tagsmatched| uni_module.id = mod.id} %>
-            <% if uni_module.present? %>
-                <% tagsmatched = uni_module.second %>
-              <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %>" style="padding-bottom: 5px; padding-left: 5px">
-
+            <% uni_mod = @results.select{ |uni_module, tagsmatched| uni_module.id == mod.id}.first %>
+            <% if uni_mod.present? %>
+                <% tagsmatched = uni_mod.second %>
+              <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %>" style="padding-bottom: 5px; padding-left: 5px; padding-right: 10px">
+              <div class="col-md-4" style="width: 80%">
                 <p> <%= mod.name %> </p>
                 <div class="tag-match-figure" style="font-size:18px;">
                      <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
                 </div>
+              </div>
+              <div class="col-md-1" style="font-size: 18px; float: right">
+                <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, uni_mod.first, method: :get %>
+              </div>
               </div>
             <% else %>
               <div class="row login-card res-card result-card-orange" style="padding-bottom: 5px; padding-left: 5px">
