@@ -37,15 +37,21 @@
           <h3><%= group.name %></h3>
           <!--choices as buttons, once a button is clicked next show a column for the remaining choices in the group or the group shows-->
           <% UniModule.all_modules_in_group(group).each do |mod| %>
-            <% if @results.include? mod.code %>
-                <% tagsmatched = @results.find_by_id(mod).second %>
-              <div class="row login-card res-card result-card-<%= colour_code_card tagsmatched, @chosen_tags %>" >
+            <% uni_module = @results.select{ |uni_module, tagsmatched| uni_module.id = mod.id} %>
+            <% if uni_module.present? %>
+                <% tagsmatched = uni_module.second %>
+              <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %>" style="padding-bottom: 5px; padding-left: 5px">
 
                 <p> <%= mod.name %> </p>
+                <div class="tag-match-figure" style="font-size:18px;">
+                     <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
+                </div>
               </div>
             <% else %>
-              <div class="row login-card res-card result-card-orange">
+              <div class="row login-card res-card result-card-orange" style="padding-bottom: 5px; padding-left: 5px">
                 <p> <%= mod.name %> </p>
+                <p> 0&#37; </p>
+
               </div>
             <% end %>
           <% end %>

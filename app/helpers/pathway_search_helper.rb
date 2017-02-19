@@ -39,17 +39,10 @@ module PathwaySearchHelper
     all_tags_of_course(course).pluck(:name)
   end
 
-  # returns percentage matched as a float
-  # inputs are numbers
-  # written by Aqib
-  def percentage(module_matched, total)
-    (Float(module_matched) / total) * 100
-  end
-
   # returns a string used to colour code card based on number of tags matched
   # inputs are a string and lists
   # written by Aqib adapted by Feras
-  def colour_code_card(module_matched_list, tags_matched_list)
+  def colour_code_card_group(module_matched_list, tags_matched_list)
     if percentage(module_matched_list.length, tags_matched_list.length) >= 60.0
       "green"
     else
