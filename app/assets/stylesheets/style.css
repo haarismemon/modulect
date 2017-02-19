@@ -283,8 +283,14 @@ select.form-control{
 @media (max-width: 768px) {
     .navbar {
         position: absolute;
+        padding-bottom: 0px;
         /*padding: 12px 5px;*/
     }
+
+    .navbar-header{
+        padding-bottom: 12px;
+    }
+
     [class*="col-"] {
         margin-bottom: 15px;
     }
@@ -312,7 +318,7 @@ select.form-control{
         color: #14563b;
         box-shadow: none;
         border: none;
-        text-decoration: underline;
+        text-decoration: none;
         background: transparent;
     }
     #modulect-nav .btn-drop:active {
@@ -671,7 +677,7 @@ select.form-control{
         color: #14563b;
         box-shadow: none;
         border: none;
-        text-decoration: underline;
+        text-decoration: none;
         background: transparent;
     }
     #modulect-nav .btn-drop:active {
