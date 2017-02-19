@@ -204,7 +204,10 @@
                <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
                <p><%= size_check unimodule.pass_rate %></p>
             </div>
-             <div class="col-md-12 text-right" style="margin-bottom:15px;">         
+             <div class="col-md-12 text-right" style="margin-bottom:15px;">
+             <% if !unimodule.more_info_link.nil? || unimodule.more_info_link.length != 0 %>
+               <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, unimodule.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
+            <% end %>
                <%= link_to "Open page >", unimodule, method: :get, class: "btn btn-lg btn-small" %>
              </div>
          </div>
