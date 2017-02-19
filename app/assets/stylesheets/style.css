@@ -29,6 +29,17 @@ a:focus,
 a:active {
     text-decoration: none;
 }
+
+.help-tooltip{
+    cursor: pointer;
+    font-weight: normal;
+    -webkit-user-select:none;
+}
+
+.external-module-link{
+    margin-right: 15px;
+}
+
 footer {
     height: 60px;
     border-top: 1px solid #dfe2e1;
@@ -66,11 +77,16 @@ label {
 }
 textarea:focus,
 input:focus,
+select:focus,
 .uneditable-input:focus {
     border-color: rgba(42, 178, 123, 0.8) !important;
     box-shadow: 0 0.4px 0.4px rgba(42, 178, 123, 0.075) inset, 0 0 6px rgba(42, 178, 123, 0.6) !important;
     outline: 0 none !important;
 }
+select.form-control{
+    padding:15px;
+    height:52px ;
+  }
 .btn-default {
     border: 0px;
 }
@@ -114,6 +130,13 @@ input:focus,
     color: #cb5234;
     margin-right: 8px;
 }
+.flash-alert-error, .alert-error {
+    border-left-color: #cb5234;
+}
+.flash-alert-error i, .alert-error i {
+    color: #cb5234;
+    margin-right: 8px;
+}
 .flash-alert-success, .alert-success {
     border-left-color: #2ab27b;
 }
@@ -121,6 +144,28 @@ input:focus,
     color: #2ab27b;
     margin-right: 8px;
 }
+
+
+.flash-alert-notice, .alert-notice {
+    border-left-color: #f5a108;
+}
+.flash-alert-notice i, .alert-notice i {
+    color: #f5a108;
+    margin-right: 8px;
+}
+
+.flash-alert-warning, .alert-warning {
+    border-left-color: #f5a108;
+}
+.flash-alert-warning i, .alert-warning i {
+    color: #f5a108;
+    margin-right: 8px;
+}
+
+#flash-container{
+    margin-bottom:35px;
+}
+
 /** Feras' header stuff **/
 /* header */
 
@@ -371,7 +416,6 @@ input:focus,
 }
 .btn-disabled {
     opacity: 0.5;
-    cursor: default
 }
 .tooltip {
     text-align: left;
@@ -552,6 +596,37 @@ input:focus,
 
 .mobile-12-margin {
     margin-left:12px;
+}
+
+.step {
+    color: #999;
+}
+.numberCircle {
+    border-radius: 50%;
+    margin-right: 10px;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    display: inline-block;
+    background: #fff;
+    border: 2px solid #999;
+    color: #666;
+    text-align: center;
+}
+.current-circle {
+    background: #2ab27b;
+    border: 2px solid #2ab27b;
+    color: #fff;
+}
+.current {
+    color: #333
+}
+
+#white-strip-pathway {
+    margin-bottom:15px;
+    background:#fff;
+    padding:15px 0px;
+    -webkit-user-select:none;
 }
 
 @media only screen and (max-width: 560px) {

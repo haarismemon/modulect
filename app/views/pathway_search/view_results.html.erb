@@ -1,0 +1,120 @@
+<% provide(:title, 'Pathway Results') %>
+<div class="banner" style="margin-top: -30px;padding-top:40px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Pathway Search</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="white-strip-pathway">
+  <div class="container">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4 step">
+          <div class="numberCircle">1</div> My Details
+        </div>
+        <div class="col-md-4 step">
+          <div class="numberCircle">2</div> Choose Interests & Careers
+        </div>
+        <div class="col-md-4 step current">
+          <div class="numberCircle current-circle">3</div> Results and selection
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="page" style="padding-top:30px;">
+  <div class="container">
+    <div class="col-md-10 login-card col-md-offset-1">
+      <div class="col-md-12">
+        <div class="row">
+        <h3><%= @year_of_study.to_i.ordinalize %> Year</h3>
+        <!--groups-->
+        <% @groups.each do |group| %>       
+        <div class="col-md-4 login-card">
+          <h3><%= group.name %></h3>
+          <!--choices as buttons, once a button is clicked next show a column for the remaining choices in the group or the group shows-->
+          <% UniModule.all_modules_in_group(group).each do |mod| %>
+            <% if @results.include? mod.code %>
+                <% tagsmatched = @results.find_by_id(mod).second %>
+              <div class="row login-card res-card result-card-<%= colour_code_card tagsmatched, @chosen_tags %>" >
+                <p> <%= mod.name %> </p>
+              </div>
+            <% else %>
+              <div class="row login-card res-card result-card-orange">
+                <p> <%= mod.name %> </p>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <% end %>
+      </div>
+      <div class="row" style="margin-top: 60px">
+        <% if logged_in? %>
+          <form>
+            <div class="col-md-4">
+              <button type="submit" class="btn btn-lg save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>  Save Pathway</span>
+              </button>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" id="save=name" placeholder="Name your Pathway" required>
+            </div>
+          </form>
+          <script>
+            $(window).load(function() {
+              $("#save").click(function() {
+                /* get html path */
+              })
+            })
+          </script>
+        <% else %>
+        <form action="/login" method="get">
+          <button type="submit" class="btn btn-lg btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in." id="save"><span><i class="fa fa-star-o" aria-hidden="true"></i>  Save Pathway</span>
+          </button>
+        </form>
+        <% end %>
+      </div>
+
+      <!--Change to course id when aqib pushes-->
+      <% if exists_next_year_for(@course, @year_of_study) %>
+      <div class="form-group" style="margin-top: 30px">
+        <%= link_to "Go to next year >", "javascript:void()", method: :get, class: "btn btn-lg" %>
+      </div>
+      <% end %>
+      <div class="form-group" style="margin-top: 30px">
+        <%= link_to "< Back to previous page", "#", method: :get %>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<!--
+<%= @year_of_study.to_i.ordinalize %> year <%= @course %> student <br />
+
+who picked
+
+<br />
+
+<%= @chosen_tags %> <br />
+
+<br />
+
+<h1>Results</h1> <br />
+
+<br />
+
+<% @results.each do |result| %>
+
+<%= result %> <br />   
+<%= link_to "Open page >", result.first, method: :get, class: "btn btn-lg btn-small" %><br /> <br />     <br /> <br />     
+
+<% end %>
+
+-->
+

@@ -1,15 +1,9 @@
 class SearchController < ApplicationController
 
-  def quick_search
+  def home
     @tag_names = Tag.pluck(:name)
     @module_names = UniModule.pluck(:name)
     @module_code = UniModule.pluck(:code) 
-  end
-
-  def pathway_search
-    @tag_names = Tag.select(:name)
-    @module_names = UniModule.select(:name)
-    @module_code = UniModule.select(:code)
   end
 
   def view_results
@@ -25,7 +19,4 @@ class SearchController < ApplicationController
     end
   end
 
-  def view_saved
-
-  end
 end

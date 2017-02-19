@@ -1,13 +1,29 @@
 # Build mock objects for testing purposes here.
 # The name of a factory needs to be the same as the model's that it is building.
 FactoryGirl.define do
+  factory :group do
+    name "Semester 1"
+    total_credits 120
+    year_structure
+  end
+
+  factory :year_structure do
+    year_of_study 1
+    course
+  end
 
   factory :course do
     name "BA Geography"
+    year 2016
   end
 
   factory :department do
     name "Mathematics"
+    faculty
+  end
+
+  factory :faculty do
+    name "Natural and Mathematical Sciences"
   end
 
   factory :tag do

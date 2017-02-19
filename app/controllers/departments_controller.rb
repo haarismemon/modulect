@@ -1,7 +1,8 @@
 class DepartmentsController < ApplicationController
  
   def index
-    @departments = Department.all
+    #returns all departments by order of name
+    @departments = Department.alphabetically_order_by("name")
   end
 
   def show
@@ -14,38 +15,40 @@ class DepartmentsController < ApplicationController
 
   def create
     @department = Department.new(department_params)
+    # Save the object
     if @department.save
-      flash[:success] = "Department created"
+      # If save succeeds, redirect to the index action
+      flash[:notice] = @department.name+" was created successfully."
       redirect_to(departments_path)
     else
-      flash[:danger] = @department.errors.full_messages
+      # If save fails, redisplay the form so user can fix problems
       render('new')
     end
   end
 
   def edit
+    #! looks for object to ready populate form with the associated department's data ready for modification by admin
     @department = Department.find(params[:id])
   end
 
   def update
+    # Find a new object using form parameters
     @department = Department.find(params[:id])
+    # Update the object
     if @department.update_attributes(department_params)
-      flash[:success] = "Department updated"
+      # If save succeeds, redirect to the show action
+      flash[:notice] = @department.name+" was updated successfully."
       redirect_to(department_path(@department))
     else
-      flash[:danger] = @department.errors.full_messages
+      # If save fails, redisplay the form so user can fix problems
       render('edit')
     end
-  end
-
-  def delete
-    @department = Department.find(params[:id])
   end
 
   def destroy
     @department = Department.find(params[:id])
     @department.destroy
-    flash[:success] = "Department deleted"
+    flash[:notice] =  @department.name+"was deleted successfully."
     redirect_to(departments_path)
   end
 

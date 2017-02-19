@@ -67,13 +67,13 @@ RSpec.describe UniModule, type: :model do
     end
   end
 
-  describe "#add_user" do
+  describe "#select_by_user" do
     let(:valid_user) { create(:user) }
 
     context "when passed a valid user" do
       before do
         uni_module.save
-        uni_module.add_user(valid_user)
+        uni_module.select_by_user(valid_user)
       end
 
       it "records the user as having selected this module" do
