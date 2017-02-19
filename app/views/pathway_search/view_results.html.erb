@@ -41,7 +41,7 @@
             <% if uni_mod.present? %>
                 <% tagsmatched = uni_mod.second %>
               <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %>" style="padding-bottom: 5px; padding-left: 5px; padding-right: 10px">
-              <div class="col-md-4" style="width: 80%">
+              <div class="col-md-4" style="width: 90%">
                 <p> <%= mod.name %> </p>
                 <div class="tag-match-figure" style="font-size:18px;">
                      <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
@@ -52,10 +52,14 @@
               </div>
               </div>
             <% else %>
-              <div class="row login-card res-card result-card-orange" style="padding-bottom: 5px; padding-left: 5px">
-                <p> <%= mod.name %> </p>
-                <p> 0&#37; </p>
-
+              <div class="row login-card res-card result-card-orange" style="padding-bottom: 5px; padding-left: 5px; padding-right: 10px">
+                <div class="col-md-4" style="width: 90%">
+                  <p> <%= mod.name %> </p>
+                  <p> 0&#37; </p>
+                </div>
+                <div class="col-md-1" style="font-size: 18px; float: right">
+                  <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, (UniModule.find(mod)), method: :get %>
+                </div>
               </div>
             <% end %>
           <% end %>
