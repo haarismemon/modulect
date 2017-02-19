@@ -1,5 +1,20 @@
 Rails.application.routes.draw do
 
+  namespace :admin do
+    resources :courses
+resources :departments
+resources :faculties
+resources :groups
+resources :tags
+resources :uni_modules
+resources :users
+resources :year_structures
+resources :career_tags
+resources :interest_tags
+
+    root to: "courses#index"
+  end
+
   root 'search#home'
   get '/about', to: 'static_pages#about'
   get '/search', to: 'search#home'
