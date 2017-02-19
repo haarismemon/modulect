@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   get 'search/view_results'
 
   # Pathway search
+  get '/pathway-search', to: 'pathway_search#begin'
   get 'pathway-search/begin'
   get 'pathway-search/choose'
   get 'pathway-search/view_results'

@@ -29,6 +29,13 @@ a:focus,
 a:active {
     text-decoration: none;
 }
+
+.help-tooltip{
+    cursor: pointer;
+    font-weight: normal;
+    -webkit-user-select:none;
+}
+
 footer {
     height: 60px;
     border-top: 1px solid #dfe2e1;
@@ -139,6 +146,14 @@ select.form-control{
     border-left-color: #f5a108;
 }
 .flash-alert-notice i, .alert-notice i {
+    color: #f5a108;
+    margin-right: 8px;
+}
+
+.flash-alert-warning, .alert-warning {
+    border-left-color: #f5a108;
+}
+.flash-alert-warning i, .alert-warning i {
     color: #f5a108;
     margin-right: 8px;
 }

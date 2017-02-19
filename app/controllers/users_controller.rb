@@ -1,13 +1,18 @@
 class UsersController < ApplicationController
-
+  before_action :logged_in_user, only: [:edit, :update]
+  before_action :correct_user,   only: [:edit, :update]
   skip_before_action :store_location,
                       only: [:new, :edit]
+  protect_from_forgery except: [:update_departments, :update_courses]
 
   def index
     #returns all users by order of last_name
-    @users = User.alphabetically_order_by(:last_name)
+    #@users = User.alphabetically_order_by(:last_name)
   end
 
+  def show
+    redirect_to(edit_user_path)
+  end
 
   # Displays signup form.
   # Signup forms will be posted to new instead of create to preserve /signup url.
@@ -53,9 +58,17 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     # Get arrays to use for profiles
     @faculties = Faculty.all
-    #Initialise departments and courses to be empty
-    @departments = {}
-    @courses = {}
+    #Initialise departments and courses to be empty unless previously selected
+    if(@user.department_id.present?)
+      @departments = Faculty.find_by_id(@user.faculty_id).departments
+    else
+      @departments = {}
+    end
+    if(@user.department_id.present? && @user.course_id.present?)
+      @courses = Department.find_by_id(@user.department_id).courses
+    else
+      @courses = {}
+    end
   end
 
   # Change the value of @departments if faculty changes
@@ -63,7 +76,7 @@ class UsersController < ApplicationController
     @departments = Department.where("faculty_id = ?", params[:faculty_id])
                   respond_to do |format|
                     format.js
-                  end
+                  end 
   end
 
   # Change the value of @courses if department changes
@@ -80,8 +93,12 @@ class UsersController < ApplicationController
     @user.updating_password = false
     if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
-      flash[:success] = "Successfully updated "+ @user.full_name
-      redirect_to(root_path) and return
+      flash[:success] = "Successfully updated your account"
+      if params.has_key?(:dest) && !params[:dest].empty? 
+        redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s 
+      else  
+        redirect_to(edit_user_path)
+      end
     else
       # If save fails, restart form and notify user
       flash[:error] = "Please check that you have entered your details correctly and try again."
@@ -112,4 +129,12 @@ class UsersController < ApplicationController
     def update_params
       params.require(:user).permit(:password, :faculty_id, :department_id, :course_id, :year_of_study)
     end
+
+    # Confirms the correct user.
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless current_user?(@user)
+    end
+
+
 end
