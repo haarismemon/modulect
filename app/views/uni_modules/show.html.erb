@@ -10,7 +10,7 @@
    <div class="col-md-10 col-md-offset-1">
 <div class="row" style="margin-bottom:20px">
 <div class="col-md-6">
-<%= link_to "< Back", request.referer.present? ? request.referer : default_path, class: "btn btn-default navbar-btn", method: :get %>
+<a onclick="window.history.back();" class="btn btn-default navbar-btn">< Back</a>
 </div>
 
 <div class="col-md-6 text-right">
@@ -99,6 +99,11 @@
                <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
                <p><%= size_check @uni_module.pass_rate %></p>
             </div>
+             <div class="col-md-12 text-right" style="margin-bottom:15px;">
+             <% if !@uni_module.more_info_link.nil? %>
+               <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, @uni_module.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
+            <% end %>
+             </div>
          </div>
       </div>
 
