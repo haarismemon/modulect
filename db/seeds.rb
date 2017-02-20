@@ -148,7 +148,7 @@ cs_year1.groups << maths_group
 # Pathway seeds
 p1 = Pathway.create(name: "Software Engineering", data: "1:23;45/2:37;38#")
 p2 = Pathway.create(data: "1:43;55/2:97;98#")
-p3 = Pathway.create(data: "My pathway", "1:2;5/2:9;10#")
+p3 = Pathway.create(name: "My pathway", data: "1:2;5/2:9;10#")
 
 # Pathway-User association
 bob.pathways << p1
