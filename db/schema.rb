@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170219190612) do
+ActiveRecord::Schema.define(version: 20170220184423) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -77,6 +77,11 @@ ActiveRecord::Schema.define(version: 20170219190612) do
     t.index ["tag_id", "uni_module_id"], name: "index_tags_uni_modules_on_tag_id_and_uni_module_id"
   end
 
+  create_table "uni_module_requirements", id: false, force: :cascade do |t|
+    t.integer "uni_module_id",          null: false
+    t.integer "required_uni_module_id", null: false
+  end
+
   create_table "uni_modules", force: :cascade do |t|
     t.string   "name"
     t.string   "code"
@@ -91,7 +96,6 @@ ActiveRecord::Schema.define(version: 20170219190612) do
     t.integer  "exam_percentage"
     t.integer  "coursework_percentage"
     t.string   "more_info_url"
-    t.string   "requirements"
     t.string   "more_info_link"
   end
 
@@ -127,6 +131,7 @@ ActiveRecord::Schema.define(version: 20170219190612) do
     t.datetime "reset_sent_at"
     t.integer  "department_id"
     t.integer  "faculty_id"
+    t.string   "tutor_link"
   end
 
   create_table "year_structures", force: :cascade do |t|

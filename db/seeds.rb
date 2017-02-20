@@ -26,7 +26,7 @@ ela = UniModule.create(name: "Elementary Logic With Applications", code: "4CCS1E
 ins = UniModule.create(name: "Internet Systems", code: "5CCS2INS", semester: "1",
 											 credits: 15, exam_percentage: 80, coursework_percentage: 20, pass_rate: 60)
 fc2 = UniModule.create(name: "Foundations of Computing 2", code: "5CCS2FC2", semester: "2",
-											 credits: 15, exam_percentage: 100, coursework_percentage: 0, pass_rate: 70, requirements: "Must have done FC1 in 1st year")
+											 credits: 15, exam_percentage: 100, coursework_percentage: 0, pass_rate: 70)
 
 programming = InterestTag.create(name: "Programming")
 maths = InterestTag.create(name: "Maths")
