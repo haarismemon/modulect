@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170219190612) do
+ActiveRecord::Schema.define(version: 20170220175548) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -91,7 +91,6 @@ ActiveRecord::Schema.define(version: 20170219190612) do
     t.integer  "exam_percentage"
     t.integer  "coursework_percentage"
     t.string   "more_info_url"
-    t.string   "requirements"
     t.string   "more_info_link"
   end
 
@@ -127,6 +126,7 @@ ActiveRecord::Schema.define(version: 20170219190612) do
     t.datetime "reset_sent_at"
     t.integer  "department_id"
     t.integer  "faculty_id"
+    t.string   "tutor_link"
   end
 
   create_table "year_structures", force: :cascade do |t|
