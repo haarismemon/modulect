@@ -73,7 +73,8 @@ User.create(first_name:  "Bob",
             activated: true,
             activated_at: Time.zone.now,
             user_level: 3,
-            year_of_study: 1)
+            year_of_study: 1,
+            tutor_link: "bill.gates@kcl.ac.uk")
 
 # Course seeds
 computer_science_15 = Course.create(name: "BSc Computer Science", year: 2015)
