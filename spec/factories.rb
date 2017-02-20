@@ -60,4 +60,9 @@ FactoryGirl.define do
     user_level              3
     entered_before          false
   end
+
+  factory :pathway do
+    data "1:23;45/2:37;38#"
+  end
+
 end

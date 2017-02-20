@@ -73,11 +73,25 @@ module ApplicationHelper
 	      return (results_without_attribute.concat results_with_attribute).reverse
 	    end
 
-    return results_array
+      return results_array
 
   	end
 
+    # returns the sorted array of pathways of a user
+    # inputs are the user object and a string of the way to sort the pathways
+    # written by Haaris
+    def sort_pathways(user, ways)
+      user_pathways = Array(user.pathways)
+      result = []
 
+      if ways == "name"
+        result = user_pathways.sort_by { |pathway| pathway.name }
+      elsif ways == "date_created"
+        result = user_pathways.sort_by { |pathway| pathway.created_at }.reverse
+      end
+
+      result
+    end
 
   	# converts an input array into a results type (Haaris')
   	# written by Aqib
