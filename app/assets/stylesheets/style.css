@@ -454,6 +454,17 @@ select.form-control{
 }
 /** Search stuff by Feras **/
 
+.res-btn {
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 10px;
+}
+.res-btn:active,
+.res-btn:hover,
+.res-btn:focus {
+    background-color: #E9E9E9;
+}
+
 .btnQuick {
     color: #2ab27b;
     background: #FFFFFF;
