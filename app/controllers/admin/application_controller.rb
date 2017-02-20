@@ -8,8 +8,15 @@ module Admin
   class ApplicationController < Administrate::ApplicationController
     before_action :authenticate_admin
 
+    include SessionsHelper
+
     def authenticate_admin
       # TODO Add authentication logic here.
+      if !admin_user
+        store_location
+        flash[:success] = "Plese provide your administrator credentials"
+        redirect_to login_path
+      end
     end
 
     # Override this value to specify the number of elements to display at a time

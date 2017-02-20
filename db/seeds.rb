@@ -60,19 +60,19 @@ pra.tags << front_end_developer
 User.create(first_name:  "Vlad",
             last_name:   "Nedelscu",
             email:       "nedelescu.vlad@gmail.com",
-            password: 							"foobar",
+            password:              "foobar",
             password_confirmation: "foobar",
             user_level: 3,
             year_of_study: 1
             )
 User.create(first_name:  "Bob",
             last_name:   "Ross",
-					  email:       "example@example.com",
-					  password: 							"foobar",
-					  password_confirmation: "foobar",
+            email:       "example@example.com",
+            password: 	 "foobar",
+            password_confirmation: "foobar",
             activated: true,
             activated_at: Time.zone.now,
-            user_level: 3,
+            user_level: 1,
             year_of_study: 1)
 
 # Course seeds
