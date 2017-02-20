@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220203402) do
+ActiveRecord::Schema.define(version: 20170220214355) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -64,6 +64,14 @@ ActiveRecord::Schema.define(version: 20170220203402) do
     t.index ["uni_module_id", "group_id"], name: "index_groups_uni_modules_on_uni_module_id_and_group_id"
   end
 
+  create_table "pathways", force: :cascade do |t|
+    t.string   "name",       default: "Pathway"
+    t.string   "data"
+    t.integer  "user_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string   "name"
     t.string   "type"
@@ -103,13 +111,6 @@ ActiveRecord::Schema.define(version: 20170220203402) do
     t.integer "uni_module_id"
     t.integer "user_id"
     t.index ["uni_module_id", "user_id"], name: "index_uni_modules_users_on_uni_module_id_and_user_id"
-  end
-
-  create_table "user_pathways", force: :cascade do |t|
-    t.integer "user_id"
-    t.string  "saved_name"
-    t.string  "saved_pathway"
-    t.index ["user_id"], name: "index_user_pathways_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
