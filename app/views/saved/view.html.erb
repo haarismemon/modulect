@@ -1,5 +1,15 @@
 <% provide(:title, 'Saved Modules') %>
 <% if logged_in? %>
+<script type="text/javascript">
+$(function () {
+    var hashTab = window.location.hash;
+    if (hashTab != '') {
+        $('.nav-tabs a[href="' + hashTab + '"]').tab('show');
+        $(hashTab).addClass('active');
+    }
+});
+
+</script>
 <% saved_modules = current_user.uni_modules %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
    <div class="container">
@@ -34,7 +44,7 @@
                         <div class="sort-area">
                            <% sorting_options = {"tags" => "Tag match (remembered)", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
                            Sort by: &nbsp;&nbsp;
-                           <form action="<%= saved_path %>" style="display:inline-block;" method="GET">
+                           <form action="<%= saved_path %>#modules" style="display:inline-block;" method="GET">
                               <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
                                  <% sorting_options.each do |option| %> 
                                  <option value="<%= option.first %>" 
@@ -162,7 +172,68 @@
             </div>
             <div id="pathways" class="tab-pane fade">
                <div class="col-md-12">
-                  pathwayss
+<% mesize = 1 %>                  
+     <% if mesize == 0 %>
+                  <div class="row" style="margin-bottom:20px;">
+                     <div class="col-md-10 col-md-offset-1 text-center">
+                        <h1>You haven't saved any pathways :(</h1>
+                     </div>
+                  </div>
+                  <% else %>                 
+                  <div class="row here-what" style="margin-bottom:40px;">
+                     <div class="col-md-7">
+                        <h1>Your saved pathways:</h1>
+                        <h5>Saved <%= mesize %> pathways</h5>
+                     </div>
+                     <div class="col-md-5 text-right" style="padding-top:30px;">
+                        <div class="sort-area">
+                           <% sorting_options = {"date_saved" => "Date saved", "name" => "Name"} %>
+                           Sort by: &nbsp;&nbsp;
+                           <form action="<%= saved_path %>#pathways" style="display:inline-block;" method="GET">
+                              <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
+                                 <% sorting_options.each do |option| %> 
+                                 <option value="<%= option.first %>" 
+                                    <% if sortby == option.first %>
+                                    selected
+                                    <% end %>
+                                    >
+                                    <%= option.second %>
+                                 </option>
+                                 <% end %>
+                              </select>
+                           </form>
+                        </div>
+                  </div>
+                  
+                  <div class="row">
+                     <div class="col-md-12">
+                        <% saved_modules.each do |r| %>
+                        <% unimodule = r.first %> 
+                        <div class="col-md-12 login-card res-card" >
+                           <div class="row">
+                              <div class="col-md-12 result-card-main">
+                                 <h2><%= size_check "Pathway (no name)" %></h2>
+                                 <h4>Saved on <%= size_check "20/2/2017 at 16:32pm" %></h4>
+                                 <div style="margin-top:30px">
+                                    <a href="" class="btn btn-lg btn-small save-button" id="save-5CCS2FC2"><span>Open ></span>
+                                    </a>
+                                    <div style="float:right;">
+                                    <a href="" class="btn btn-small btn-lg red-btn"><span><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;Delete</span>
+                                    </a>
+                                    </span>
+                                 </div>
+                              </div>
+                           </div>
+                           
+                        </div>
+                        <% end %>
+                     </div>
+                  </div>
+                  <% end %>
+
+
+
+
                </div>
             </div>
          </div>
