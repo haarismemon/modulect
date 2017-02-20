@@ -107,6 +107,10 @@ select.form-control{
     color: #fff;
 }
 
+.btn:active {
+    background: #14563b;
+    box-shadow: 0px 3px 0px 0px #228e62;
+}
 .red-btn {
     background: #c55252;
     box-shadow: 0px 3px 0px 0px #502b2b;
@@ -114,12 +118,15 @@ select.form-control{
 
 .red-btn:hover, .red-btn:focus{
     background: rgba(197, 82, 82, 0.71);
+    box-shadow: 0px 3px 0px 0px #502b2b;
 }
 
-.btn:active {
-    background: #14563b;
-    box-shadow: 0px 3px 0px 0px #228e62;
+.red-btn:active{
+    background: #923e3e;
+    box-shadow: 0px 3px 0px 0px #502b2b;
 }
+
+
 .form-group {
     margin-bottom: 20px;
 }

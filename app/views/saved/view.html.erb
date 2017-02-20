@@ -1,4 +1,4 @@
-<% provide(:title, 'Saved Modules') %>
+<% provide(:title, 'Saved Modules & Pathways') %>
 <% if logged_in? %>
 <script type="text/javascript">
 $(function () {
@@ -13,7 +13,7 @@ $(function () {
 <% saved_modules = current_user.uni_modules %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
    <div class="container">
-      <h1>Saved modules</h1>
+      <h1>Saved Modules & Pathways</h1>
    </div>
 </div>
 <div id="page" style="padding-top:30px;">
@@ -21,7 +21,7 @@ $(function () {
       <div id="saved-page" class="col-md-10 col-md-offset-1">
          <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#modules">Saved Modules</a></li>
-            <li><a data-toggle="tab" href="#pathways">Saved pathways</a></li>
+            <li><a data-toggle="tab" href="#pathways">Saved Pathways</a></li>
          </ul>
          <div class="tab-content" style="margin-top:30px;">
             <div id="modules" class="tab-pane fade in active">
@@ -215,7 +215,7 @@ $(function () {
                                  <h2><%= size_check "Pathway (no name)" %></h2>
                                  <h4>Saved on <%= size_check "20/2/2017 at 16:32pm" %></h4>
                                  <div style="margin-top:30px">
-                                    <a href="" class="btn btn-lg btn-small save-button" id="save-5CCS2FC2"><span>Open ></span>
+                                    <a href="" class="btn btn-lg btn-small"><span>Open ></span>
                                     </a>
                                     <div style="float:right;">
                                     <a href="" class="btn btn-small btn-lg red-btn"><span><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;Delete</span>
