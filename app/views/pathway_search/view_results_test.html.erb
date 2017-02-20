@@ -1,0 +1,51 @@
+<div align="center" style="margin-top: 10px">
+	<button id="btnYr1" class="btn btn-lg btn-block" type="button">year 1</button>
+	<div id="year_1">Year 1</div>
+	<button id="btnYr2" class="btn btn-lg btn-block" type="button">year 2</button>
+	<div id="year_2">Year 2</div>
+	<button id="btnYr3" class="btn btn-lg btn-block" type="button">year 3</button>
+	<div id="year_3">Year 3</div>
+	<button id="btnAll" class="btn btn-lg btn-block" type="button">show all</button>
+</div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#year_1').hide();
+		$('#year_2').hide();
+		$('#year_3').hide();
+		var current_year = 1;
+
+		$('#year_'+current_year).show();
+
+		$("#btnYr1").click(function () {
+			$('#year_2').slideUp();
+			$('#year_3').slideUp();
+			if($('#year_1').is(':hidden')){
+				$('#year_1').slideUp();
+				$('#year_1').slideDown();
+			}
+		});		
+		$("#btnYr2").click(function () {
+			$('#year_1').slideUp();
+			$('#year_3').slideUp();
+			if($('#year_2').is(':hidden')){
+				$('#year_2').slideUp();
+				$('#year_2').slideDown();
+			}
+		});
+		$("#btnYr3").click(function () {
+			$('#year_1').slideUp();
+			$('#year_2').slideUp();
+			if($('#year_3').is(':hidden')){
+				$('#year_3').slideUp();
+				$('#year_3').slideDown();
+			}
+		});
+		$("#btnAll").click(function () {
+			$('#year_1').slideDown();
+			$('#year_2').slideDown();
+			$('#year_3').slideDown();
+		});
+	});
+</script>
