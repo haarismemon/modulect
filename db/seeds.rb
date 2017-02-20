@@ -151,4 +151,4 @@ p2 = Pathway.create(data: "1:43;55/2:97;98#")
 
 # Pathway-User association
 vlad.pathways << p1
-p2.user = vlad
+vlad.pathways << p2
