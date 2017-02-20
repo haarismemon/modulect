@@ -11,6 +11,7 @@ $(function () {
 
 </script>
 <% saved_modules = current_user.uni_modules %>
+<% saved_pathways = current_user.pathways %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
    <div class="container">
       <h1>Saved Modules & Pathways</h1>
@@ -171,23 +172,27 @@ $(function () {
                </div>
             </div>
             <div id="pathways" class="tab-pane fade">
-               <div class="col-md-12">
-<% mesize = 1 %>                  
-     <% if mesize == 0 %>
+               <div class="col-md-12"> 
+     <% if saved_pathways.size == 0 %>
                   <div class="row" style="margin-bottom:20px;">
                      <div class="col-md-10 col-md-offset-1 text-center">
                         <h1>You haven't saved any pathways :(</h1>
                      </div>
                   </div>
-                  <% else %>                 
+                  <% else %>    
+
+                  <% sortby = request.query_parameters["sort_by"] %>
+                  <% if !sortby.nil? %>
+                     <% saved_pathways = sort_pathways(current_user, sortby) %> 
+                  <% end %>            
                   <div class="row here-what" style="margin-bottom:40px;">
                      <div class="col-md-7">
                         <h1>Your saved pathways:</h1>
-                        <h5>Saved <%= mesize %> pathways</h5>
+                        <h5>Saved <%= saved_pathways.size %> pathways</h5>
                      </div>
                      <div class="col-md-5 text-right" style="padding-top:30px;">
                         <div class="sort-area">
-                           <% sorting_options = {"date_saved" => "Date saved", "name" => "Name"} %>
+                           <% sorting_options = {"date_created" => "Date saved", "name" => "Name"} %>
                            Sort by: &nbsp;&nbsp;
                            <form action="<%= saved_path %>#pathways" style="display:inline-block;" method="GET">
                               <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
@@ -207,13 +212,12 @@ $(function () {
                   
                   <div class="row">
                      <div class="col-md-12">
-                        <% saved_modules.each do |r| %>
-                        <% unimodule = r.first %> 
+                        <% saved_pathways.each do |pathway| %>
                         <div class="col-md-12 login-card res-card" >
                            <div class="row">
                               <div class="col-md-12 result-card-main">
-                                 <h2><%= size_check "Pathway (no name)" %></h2>
-                                 <h4>Saved on <%= size_check "20/2/2017 at 16:32pm" %></h4>
+                                 <h2><%= size_check check_pathway_name pathway.name %></h2>
+                                 <h4>Saved on <%= pathway.created_at %></h4>
                                  <div style="margin-top:30px">
                                     <a href="" class="btn btn-lg btn-small"><span>Open ></span>
                                     </a>
@@ -223,6 +227,7 @@ $(function () {
                                     </span>
                                  </div>
                               </div>
+                           </div>
                            </div>
                            
                         </div>

@@ -150,5 +150,5 @@ p1 = Pathway.create(name: "Software Engineering", data: "1:23;45/2:37;38#")
 p2 = Pathway.create(data: "1:43;55/2:97;98#")
 
 # Pathway-User association
-vlad.pathways << p1
-vlad.pathways << p2
+bob.pathways << p1
+bob.pathways << p2

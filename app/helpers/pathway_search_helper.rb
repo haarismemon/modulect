@@ -62,4 +62,14 @@ module PathwaySearchHelper
     end
   end
 
+  # retuns a default string if name not set
+  def check_pathway_name(input)
+    if input == "Pathway"
+      "Pathway (no name)"
+    else
+      input
+    end
+  end
+
+
 end
