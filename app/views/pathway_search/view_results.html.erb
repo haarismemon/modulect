@@ -29,6 +29,15 @@
   <div class="container">
     <div class="col-md-10 login-card col-md-offset-1">
       <div class="col-md-12">
+        <div class="row" style="padding-top: 30px">
+          <div class="login-card" id="selected">
+            <h2>Your Selection:</h2>
+            <% @groups.each do |group| %>
+              <p> <%= compulsory_modules_of_group(group) %> </p>
+            <% end %>
+          </div>
+        </div>
+
         <div class="row">
           <h3><%= @year_of_study.to_i.ordinalize %> Year</h3>
           <!--groups-->
@@ -134,28 +143,4 @@
 
 
 
-
-<!--
-<%= @year_of_study.to_i.ordinalize %> year <%= @course %> student <br />
-
-who picked
-
-<br />
-
-<%= @chosen_tags %> <br />
-
-<br />
-
-<h1>Results</h1> <br />
-
-<br />
-
-<% @results.each do |result| %>
-
-<%= result %> <br />   
-<%= link_to "Open page >", result.first, method: :get, class: "btn btn-lg btn-small" %><br /> <br />     <br /> <br />     
-
-<% end %>
-
--->
 
