@@ -24,4 +24,20 @@ class ApplicationController < ActionController::Base
       end
   end
 
+  # Save pathway to favourites
+  # Feras, the pathway has a name "Pathway" by default
+  # so you might need to modify this function accordingly or whatever
+  # delete this comment afterwards please
+  def save_pathway
+    pathway_name = params[:name]
+    pathway_data = params[:data]
+    current_user.pathways << Pathway.create(name: pathway_name, data: pathway_data)
+  end
+
+  # delete pathway from user's favourites
+  def delete_pathway
+    pathway = Pathway.find(params[:pathway_par])
+    current_user.pathways.delete(pathway)
+  end
+
 end

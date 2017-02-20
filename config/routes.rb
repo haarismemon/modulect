@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   post    '/login',   to: 'sessions#create'
   delete  '/logout',  to: 'sessions#destroy'
   post 'application/save_module'
+  post 'application/save_pathway'
+  post 'application/delete_pathway'
 
   # Signup
   get '/signup', to: 'users#new', as: 'signup'
