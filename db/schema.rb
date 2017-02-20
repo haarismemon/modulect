@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220212450) do
+ActiveRecord::Schema.define(version: 20170220214355) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -62,6 +62,14 @@ ActiveRecord::Schema.define(version: 20170220212450) do
     t.boolean "compulsory"
     t.index ["group_id", "uni_module_id"], name: "index_groups_uni_modules_on_group_id_and_uni_module_id"
     t.index ["uni_module_id", "group_id"], name: "index_groups_uni_modules_on_uni_module_id_and_group_id"
+  end
+
+  create_table "pathways", force: :cascade do |t|
+    t.string   "name",       default: "Pathway"
+    t.string   "data"
+    t.integer  "user_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "tags", force: :cascade do |t|
