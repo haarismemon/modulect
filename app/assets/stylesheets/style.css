@@ -183,25 +183,31 @@ select.form-control{
     margin-bottom:35px;
 }
 
-#saved-page .nav-tabs {
+#saved-page .nav-tabs, #choose-page .nav-tabs {
     border-bottom: 0px;
 }
 #saved-page .nav-tabs>li.active>a,
 #saved-page .nav-tabs>li.active>a:focus,
-#saved-page .nav-tabs>li.active>a:hover {
+#saved-page .nav-tabs>li.active>a:hover,
+#choose-page .nav-tabs>li.active>a,
+#choose-page .nav-tabs>li.active>a:focus,
+#choose-page .nav-tabs>li.active>a:hover {
     background: transparent;
     border: 0px;
     color: #2ab27b;
     border-bottom: 2px solid #2ab27b;
     text-decoration: none
 }
-#saved-page .nav-tabs>li>a {
+#saved-page .nav-tabs>li>a,
+#choose-page .nav-tabs>li>a {
     border: 0px;
     border-bottom: 1px solid #f9f9f9;
     color: #555459;
 }
 #saved-page .nav>li>a:focus,
-#saved-page .nav>li>a:hover {
+#saved-page .nav>li>a:hover
+#choose-page .nav>li>a:focus,
+#choose-page .nav>li>a:hover {
     background: transparent;
     text-decoration: underline;
 }

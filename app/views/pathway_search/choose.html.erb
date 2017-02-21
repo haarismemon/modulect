@@ -108,8 +108,19 @@ $(window).load(function(){
 					</h5>
 				</div>
 				<form action="<%= pathway_search_view_results_path %>", method="get">
-					<div class="row" >
-						<div class="col-md-12" style="margin-top: 20px;padding-left:0px"><%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}, :required => true) %>
+
+<div class="row" style="margin-top:20px;">
+<div id="choose-page">
+ <ul class="nav nav-tabs">
+         <li class="active"><a data-toggle="tab" href="#choose">Choose tags directly</a></li>
+         <li><a data-toggle="tab" href="#search">Search for tags</a></li>
+      </ul>
+      <div class="tab-content" style="margin-top:30px;">
+         <div id="choose" class="tab-pane fade in active">
+            test
+         </div>
+         <div id="search" class="tab-pane fade">
+            <div class="col-md-12" style="padding-left:0px"><%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}, :required => true) %>
 							<script>
 							var tags = <%=  raw all_tag_name_of_course @course_obj %>;
 							// Remove the previously rendered search bar
@@ -134,7 +145,21 @@ $(window).load(function(){
 						
 							</script>
 						</div>
-					</div>
+         </div>
+      </div>
+      </div>
+</div>
+
+					
+
+
+
+
+
+
+
+
+
 					<div class="row" style="border-top:1px dotted #dfe2e1;margin-top:50px;" >
 						<div class="col-md-12" style="margin-top: 30px;padding-left:0px">
 							<div class="form-group">
