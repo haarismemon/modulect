@@ -26,7 +26,7 @@ ela = UniModule.create(name: "Elementary Logic With Applications", code: "4CCS1E
 ins = UniModule.create(name: "Internet Systems", code: "5CCS2INS", semester: "1",
 											 credits: 15, exam_percentage: 80, coursework_percentage: 20, pass_rate: 60)
 fc2 = UniModule.create(name: "Foundations of Computing 2", code: "5CCS2FC2", semester: "2",
-											 credits: 15, exam_percentage: 100, coursework_percentage: 0, pass_rate: 70, requirements: "Must have done FC1 in 1st year")
+											 credits: 15, exam_percentage: 100, coursework_percentage: 0, pass_rate: 70)
 
 programming = InterestTag.create(name: "Programming")
 maths = InterestTag.create(name: "Maths")
@@ -57,14 +57,6 @@ cs1.tags << hardware_engineer
 pra.tags << front_end_developer
 
 # User seeds
-User.create(first_name:  "Vlad",
-            last_name:   "Nedelscu",
-            email:       "nedelescu.vlad@gmail.com",
-            password:              "foobar",
-            password_confirmation: "foobar",
-            user_level: 3,
-            year_of_study: 1
-            )
 User.create(first_name:  "Bob",
             last_name:   "Ross",
             email:       "example@example.com",
@@ -145,3 +137,13 @@ cs_year2.groups << cs2_semester_1
 cs_year2.groups << cs2_semester_2
 
 cs_year1.groups << maths_group
+
+# Pathway seeds
+p1 = Pathway.create(name: "Software Engineering", data: "1:23;45/2:37;38#")
+p2 = Pathway.create(data: "1:43;55/2:97;98#")
+p3 = Pathway.create(name: "My pathway", data: "1:2;5/2:9;10#")
+
+# Pathway-User association
+bob.pathways << p1
+bob.pathways << p2
+bob.pathways << p3
