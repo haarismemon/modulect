@@ -24,6 +24,7 @@ class CourseDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
+      :name,
     :departments,
     :year_structures,
     :id,
@@ -47,17 +48,19 @@ class CourseDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
+      :name,
     :departments,
     :year_structures,
-    :name,
-    :description,
+      :description,
     :year,
   ].freeze
 
   # Overwrite this method to customize how courses are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(course)
-  #   "Course ##{course.id}"
-  # end
+   def display_resource(course)
+     "#{course.name}"
+   end
+
+
 end
