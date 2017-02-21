@@ -57,7 +57,7 @@ cs1.tags << hardware_engineer
 pra.tags << front_end_developer
 
 # User seeds
-User.create(first_name:  "Bob",
+bob = User.create(first_name:  "Bob",
             last_name:   "Ross",
             email:       "example@example.com",
             password: 	 "foobar",
