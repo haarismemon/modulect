@@ -71,11 +71,8 @@ class PathwaySearchController < ApplicationController
 	      else
 	       	@results = {}
 	      end
-	    	
-
-
 	    else
-	    # redirect_to "/pathway-search/"
+	     redirect_to "/pathway-search/"
 	    end
 
 	end
