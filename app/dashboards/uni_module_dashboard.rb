@@ -26,7 +26,6 @@ class UniModuleDashboard < Administrate::BaseDashboard
     exam_percentage: Field::Number,
     coursework_percentage: Field::Number,
     more_info_url: Field::String,
-    requirements: Field::String,
     more_info_link: Field::String,
   }.freeze
 
@@ -86,7 +85,6 @@ class UniModuleDashboard < Administrate::BaseDashboard
     :exam_percentage,
     :coursework_percentage,
     :more_info_url,
-    :requirements,
     :more_info_link,
   ].freeze
 
