@@ -73,7 +73,9 @@ class PathwaySearchController < ApplicationController
 	       	@results = {}
 	      end
 	    else
-	     redirect_to "/pathway-search/"
+	    # disabling this redireect because alex's idea
+	    # of viewing the structure without any data
+	    # redirect_to "/pathway-search/"
 	    end
 
 	end

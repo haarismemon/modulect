@@ -680,6 +680,62 @@ select.form-control{
     padding:15px 0px;
     -webkit-user-select:none;
 }
+#choose-page input.chk-btn {
+    display: none;
+}
+#choose-page input.chk-btn + label {
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 2px;
+    color: #696969;
+    background: #eee;
+    font-size: 15px;
+    margin-bottom: 13px;
+    border: 1px solid #eee;
+    font-weight: normal;
+}
+#choose-page input.chk-btn:not(:checked) + label:hover {
+    border: 1px solid #333;
+    color: #333;
+}
+#choose-page input.chk-btn + label:active,
+#choose-page input.chk-btn:checked + label {
+    border: 1px solid #2ab27b;
+    background: #2ab27b;
+    color: #fff;
+}
+#tags-area ul {
+    list-style-type: none;
+    padding: 0;
+}
+#tags-area li {
+    list-style: none;
+    display: inline-block;
+}
+#quick-filter-bar {
+    box-shadow: none;
+    outline: none;
+    display: inline-block;
+    padding: 7px 6px;
+    margin: 0;
+    font-size: 18px;
+    outline: none !important;
+    text-overflow: ellipsis;
+    width: 100% !important;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 7px 6px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 4px;
+    line-height: 35px;
+}
+#quick-filter-bar:focus {
+    box-shadow: 0 0.4px 0.4px rgba(42, 178, 123, 0) inset, 0 0 6px rgba(42, 178, 123, 0) !important;
+    border: 1px solid #2ab27b;
+}
 
 @media only screen and (max-width: 560px) {
     #footer-logo {
