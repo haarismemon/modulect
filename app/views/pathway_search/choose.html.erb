@@ -114,6 +114,7 @@ $(window).load(function(){
  <ul class="nav nav-tabs">
          <li class="active"><a data-toggle="tab" href="#choose">Choose tags directly</a></li>
          <li><a data-toggle="tab" href="#search">Search for tags</a></li>
+         <li style="float:right;"><a href="javascript:void()" onclick="window.location.reload()" style="border-bottom: 0px;"><i class="fa fa-times" aria-hidden="true"></i> RESET SEARCH</a></li>
       </ul>
 
 <style>
@@ -143,18 +144,71 @@ $(window).load(function(){
   background: #2ab27b;
   color:#fff;
 }
-</style>
+#tags-area ul{list-style-type: none; padding: 0;}
+#tags-area li{list-style: none; display:inline-block;}
 
+#quick-filter-bar {
+    box-shadow: none;
+    outline: none;
+    display: inline-block;
+    padding: 7px 6px;
+    margin: 0;
+    font-size: 18px;
+    outline: none !important;
+    text-overflow: ellipsis;
+    width: 100% !important;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 7px 6px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 4px;
+    line-height: 35px;
+}
+#quick-filter-bar:focus {
+    box-shadow: 0 0.4px 0.4px rgba(42, 178, 123, 0) inset, 0 0 6px rgba(42, 178, 123, 0	) !important;
+    
+  border:1px solid #2ab27b;
+}
+</style>
+<script>
+function myFunction() {
+    // Declare variables
+    var input, filter, ul, li, a, i;
+    input = document.getElementById('quick-filter-bar');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("modulect-tags");
+    li = ul.getElementsByTagName('li');
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("label")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
 
       <div class="tab-content" style="margin-top:30px;">
          <div id="choose" class="tab-pane fade in active">
+         <input type="text" id="quick-filter-bar" onkeyup="myFunction()" placeholder="Quick filter tags">
+
+         <div id="tags-area">
+         	<ul id="modulect-tags">
             <%  all_tag_name_of_course(@course_obj).sort.each do |tag| %>
 
+            	<li>
             	<input type="checkbox" name="chosen_tags_c[]" id="<%= tag %>" value="<%= tag %>"class="chk-btn">
             	<label for="<%= tag %>"><%= tag %></label>
-
+            	</li>
 
             <% end %>
+            </ul>
+            </div>
          </div>
          <div id="search" class="tab-pane fade">
             <div class="col-md-12" style="padding-left:0px"><%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}) %>
