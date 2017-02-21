@@ -1,4 +1,5 @@
 <% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
+<% tag_names = all_tag_name_of_course(@course_obj) %>
 <style>
    .bootstrap-tagsinput {
    background-color: none;
@@ -25,8 +26,8 @@
    padding:7px 10px;margin-bottom:15px
    }
    .hidden {
-  display: none;
-}
+   display: none;
+   }
 </style>
 <script type="text/javascript">
    $(window).load(function(){
@@ -101,6 +102,11 @@
                </h5>
             </div>
             <form action="<%= pathway_search_view_results_path %>", method="get">
+               <% if tag_names.size == 0 %>
+               <div class="row" style="margin-top:20px;">
+                  <h4 style="margin:30px 0px" class="text-center">Unfortunately, we couldn't find any tags for you at this time. Please try again later.</h4>
+               </div>
+               <% else %>
                <div class="row" style="margin-top:20px;">
                   <div id="choose-page">
                      <ul class="nav nav-tabs">
@@ -108,10 +114,6 @@
                         <li><a data-toggle="tab" href="#search">Search for tags</a></li>
                         <li style="float:right;"><a href="javascript:void()" onclick="window.location.reload()" style="border-bottom: 0px;"><i class="fa fa-times" aria-hidden="true"></i> RESET SEARCH</a></li>
                      </ul>
-
-
-
-
                      <script>
                         function myFunction() {
                             // Declare variables
@@ -134,103 +136,92 @@
                      </script>
                      <div class="tab-content" style="margin-top:30px;">
                         <div id="choose" class="tab-pane fade in active">
-                        <div class="row">
-                        <div class="col-md-9">
-                           <input type="text" id="quick-filter-bar" onkeyup="myFunction()" placeholder="Quick filter tags">
-</div>
-<div class="col-md-3" style="padding-left:0px;">
-<div style="margin-bottom:5px;font-size:13px">Select tag types:</div>
-<form>
-<select class="tag-type-select selectpicker" >
-  <option value="all">All</option>
-  <option value="CareerTag">Careers</option>
-  <option value="InterestTag">Interests</option>
-</select>
-</form>
-</div>
-</div>
-
-<script type="text/javascript">
-$( ".tag-type-select" ).change(function() {
-  var selectedEventType = this.options[this.selectedIndex].value;
-  if (selectedEventType == "all") {
-    $('#modulect-tags li').removeClass('hidden');
-  } else {
-    $('#modulect-tags li').addClass('hidden');
-    $('#modulect-tags li[data-eventtype="' + selectedEventType + '"]').removeClass('hidden');
-  }
-});
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-                           <div id="tags-area" style="margin-top:20px;">
-                              <ul id="modulect-tags">
-                                 <%  all_tag_name_of_course(@course_obj).sort.each do |tag| %>
-                                 <li data-eventtype="<%= Tag.find_by_name(tag).type%>">
-                                    <input type="checkbox" name="chosen_tags_c[]" id="<%= tag %>" value="<%= tag %>"class="chk-btn">
-                                    <label for="<%= tag %>"><%= tag %></label>
-                                 </li>
-                                 <% end %>
-                              </ul>
-                           </div>
-                        </div>
-                        <div id="search" class="tab-pane fade">
-                           <div class="col-md-12" style="padding-left:0px">
-                              <%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}) %>
-                              <script>
-                                 var tags = <%=  raw all_tag_name_of_course @course_obj %>;
-                                 // Remove the previously rendered search bar
-                                 $("div.bootstrap-tagsinput").remove();
-                                 var tags = new Bloodhound({
-                                 	datumTokenizer: Bloodhound.tokenizers.whitespace,
-                                 	queryTokenizer: Bloodhound.tokenizers.whitespace,
-                                 	local: tags
-                                 });
-                                 
-                                 tags.initialize();
-                                 
-                                 $('input#chosen_tags').tagsinput({
-                                 	typeaheadjs: {
-                                 		name: 'tags',
-                                 		source: tags.ttAdapter()
-                                 	},
-                                 	freeInput: false
-                                 });
-                                 
-                                 $('input#chosen_tags').focus();
-                                 
-                              </script>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="row" style="margin-top:30px;" >
+                           <div class="row">
+                              <div class="col-md-9">
+                                 <input type="text" id="quick-filter-bar" onkeyup="myFunction()" placeholder="Quick filter tags">
+                              </div>
+                              <div class="col-md-3" style="padding-left:0px;">
+                                 <div style="margin-bottom:5px;font-size:13px">Select tag types:</div>
+            <form>
+            <select class="tag-type-select selectpicker" >
+            <option value="all">All</option>
+            <option value="CareerTag">Careers</option>
+            <option value="InterestTag">Interests</option>
+            </select>
+            </form>
+            </div>
+            </div>
+            <script type="text/javascript">
+               $( ".tag-type-select" ).change(function() {
+                 var selectedEventType = this.options[this.selectedIndex].value;
+                 if (selectedEventType == "all") {
+                   $('#modulect-tags li').removeClass('hidden');
+                 } else {
+                   $('#modulect-tags li').addClass('hidden');
+                   $('#modulect-tags li[data-eventtype="' + selectedEventType + '"]').removeClass('hidden');
+                 }
+               });
+            </script>
+            <div id="tags-area" style="margin-top:20px;">
+            <ul id="modulect-tags">
+            <%  tag_names.sort.each do |tag| %>
+            <li data-eventtype="<%= Tag.find_by_name(tag).type%>">
+            <input type="checkbox" name="chosen_tags_c[]" id="<%= tag %>" value="<%= tag %>"class="chk-btn">
+            <label for="<%= tag %>"><%= tag %></label>
+            </li>
+            <% end %>
+            </ul>
+            </div>
+            </div>
+            <div id="search" class="tab-pane fade">
+            <div class="col-md-12" style="padding-left:0px">
+            <%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}) %>
+            <script>
+               var tags = <%=  raw tag_names %>;
+               // Remove the previously rendered search bar
+               $("div.bootstrap-tagsinput").remove();
+               var tags = new Bloodhound({
+               	datumTokenizer: Bloodhound.tokenizers.whitespace,
+               	queryTokenizer: Bloodhound.tokenizers.whitespace,
+               	local: tags
+               });
+               
+               tags.initialize();
+               
+               $('input#chosen_tags').tagsinput({
+               	typeaheadjs: {
+               		name: 'tags',
+               		source: tags.ttAdapter()
+               	},
+               	freeInput: false
+               });
+               
+               $('input#chosen_tags').focus();
+               
+            </script>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            <% end %>
+            <div class="row" style="margin-top:30px;" >
                <div class="col-md-12 text-right">
-
-                        <a href="<%= pathway_search_view_results_path %>?year=<%=@year_of_study%>&course=<%= @course %>">Want to view your course's structure?</a>
-                        </div>
-                  <div class="col-md-12" style="border-top:1px dotted #dfe2e1;padding-top:15px;margin-top: 10px;padding-left:0px">
-                     <div class="form-group">
-                        <input type="hidden" value="<%= @year_of_study %>" name="year">
-                        <input type="hidden" value="<%= @course %>" name="course">
-                        <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;
-                        <br />
-                     </div>
-                     <div class="form-group"><%= link_to "< Back to previous page", pathway_search_begin_path, method: :get %>
-                     </div>
+                  <a href="<%= pathway_search_view_results_path %>?year=<%=@year_of_study%>&course=<%= @course %>">Want to view your course's structure?</a>
+               </div>
+               <div class="col-md-12" style="border-top:1px dotted #dfe2e1;padding-top:15px;margin-top: 10px;padding-left:0px">
+                  <% if tag_names.size > 0 %>
+                  <div class="form-group">
+                     <input type="hidden" value="<%= @year_of_study %>" name="year">
+                     <input type="hidden" value="<%= @course %>" name="course">
+                     <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;
+                     <br />
+                  </div>
+                  <% end %>
+                  <div class="form-group"><%= link_to "< Back to previous page", pathway_search_begin_path, method: :get %>
                   </div>
                </div>
+            </div>
             </form>
          </div>
       </div>
