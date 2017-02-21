@@ -1,4 +1,6 @@
 <h1><%= @course.name %><br/></h1>
+<% year = 2 %>
+<% group = 1 %>
 <div id = "log"></div>
 <div align="center" style="margin-top: 10px">
 	<%  @course.year_structures.each do |y| %> 
@@ -42,9 +44,55 @@
 		$(divs[year]).slideDown();
 	}
 
+	function updateUI(tableArea){
+		var log = document.getElementById("log");
+		log.innerHTML += "creating table";
+		tableArea.innerHTML += "here";
+		var js_year = 0;
+		var data = '<%=raw @course.to_json(
+			include:
+				{year_structures:
+					{include:
+						{groups:
+							{:include => :uni_modules}}}}).sub("'", "\\\\'") %>';
+		//data = data.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+		var js_course = jQuery.parseJSON(data);
+
+		var total_required_modules  = 
+			Number('<%= @course.year_structures.all[year].groups.all[0].uni_modules.all.size %>');
+		var total_optional_groups = 
+			Number('<%= @course.year_structures.all[year].groups.all.size-1 %>');
+		var required_modules = jQuery.parseJSON('<%=raw @course.year_structures.all[year].groups.all[0].uni_modules.all.to_json %>');
+		var optional_modules_array = [];
+
+		for(i=1; i<1+total_optional_groups; i++){
+			var optional_modules = jQuery.parseJSON('<%=raw @course.year_structures.all[year].groups.all[group].uni_modules.all.to_json %>');
+			optional_modules_array.push(optional_modules);
+				<% group += 0 %>
+		}
+		<% group = 1 %>
+		var myTable = "";
+		myTable = JSON.stringify(js_course);
+		/*myTable += "Required modules in this year: " + total_required_modules + "<br/>";
+		myTable += "Optional modules groups: " + (total_optional_groups) + "<br/>";
+		myTable += "Requred: " + JSON.stringify(required_modules, ["name", "credits"]) + "<br/>";
+		for (i=0; i<total_optional_groups; i++){
+			myTable += "Optional group " + i + ": " + JSON.stringify(optional_modules_array[i], ["name", "credits"]) + "<br/>";
+		}
+    	myTable+=
+    	"<table>"+
+    		"<tr>"+
+    			"<th>Semester 1</th>"+
+				"<th>Semester 2</th>"+
+			"</tr>"+
+		"</table>";*/
+
+		tableArea.innerHTML = myTable;
+	}
+
 
 	$(document).ready(function(){
-		var log = document.getElementById("log");
+
 		var total_years = 0;
 		var btns = [];
 		var divs = [];
@@ -72,5 +120,8 @@
 				$(divs[i]).slideDown();
 			}
 		});
+
+		var tableArea = document.getElementById('div_year_1');
+		updateUI(tableArea);
 	});
 </script>
