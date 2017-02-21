@@ -21,7 +21,6 @@ gem 'coffee-script-source',   '1.8.0'
 gem 'wdm',                    '>= 0.1.0' if Gem.win_platform?
 gem 'default_value_for',      '~> 3.0', '>= 3.0.2'
 gem 'default_value_for', '~> 3.0', '>= 3.0.2'
-gem 'rails_admin', '~> 1.0'
 
 group :development, :test do
   gem 'sqlite3'

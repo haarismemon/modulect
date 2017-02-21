@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root 'search#home'
   get '/about', to: 'static_pages#about'
   get '/search', to: 'search#home'
