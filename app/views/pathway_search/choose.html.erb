@@ -117,10 +117,15 @@ $(window).load(function(){
       </ul>
       <div class="tab-content" style="margin-top:30px;">
          <div id="choose" class="tab-pane fade in active">
-            test
+            <%  all_tag_name_of_course(@course_obj).sort.each do |tag| %>
+
+            	<input type="checkbox" name="chosen_tags_c[]" value="<%= tag %>"> <%= tag %> <br />
+
+
+            <% end %>
          </div>
          <div id="search" class="tab-pane fade">
-            <div class="col-md-12" style="padding-left:0px"><%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}, :required => true) %>
+            <div class="col-md-12" style="padding-left:0px"><%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}) %>
 							<script>
 							var tags = <%=  raw all_tag_name_of_course @course_obj %>;
 							// Remove the previously rendered search bar
