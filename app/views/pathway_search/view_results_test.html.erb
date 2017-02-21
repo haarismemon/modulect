@@ -45,10 +45,6 @@
 	}
 
 	function updateUI(tableArea){
-		var log = document.getElementById("log");
-		log.innerHTML += "creating table";
-		tableArea.innerHTML += "here";
-		var js_year = 0;
 		var data = '<%=raw @course.to_json(
 			include:
 				{year_structures:
@@ -58,36 +54,39 @@
 		//data = data.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 		var js_course = jQuery.parseJSON(data);
 
-		var total_required_modules  = 
-			Number('<%= @course.year_structures.all[year].groups.all[0].uni_modules.all.size %>');
-		var total_optional_groups = 
-			Number('<%= @course.year_structures.all[year].groups.all.size-1 %>');
-		var required_modules = jQuery.parseJSON('<%=raw @course.year_structures.all[year].groups.all[0].uni_modules.all.to_json %>');
-		var optional_modules_array = [];
+		for(year=1; year<=js_course.year_structures.length; year++){
+			var targetDiv = document.getElementById("div_year_" + (year)); //div_year_i
+			targetDiv.innerHTML = "Requied modules in year " + year + "<br/>";
+			var required_group = js_course.year_structures[year-1].groups[0].uni_modules;
+			var modules_year_long = [];
+			var modules_fisrt_semester = [];
+			var modules_second_semester = [];
+			var modules_any_semester = [];
+			for(module=0; module<required_group.length; module++){
+				if(required_group[module].semester == 3){
+					modules_year_long.push(required_group[module]);
+				}else if(required_group[module].semester == 2){
+					modules_second_semester.push(required_group[module]);
+				}else if(required_group[module].semester == 1){
+					modules_fisrt_semester.push(required_group[module]);
+				}else{
+					modules_any_semester.push(required_group[module]);
+				}
+				targetDiv.innerHTML += required_group[module].name + " (" + required_group[module].credits + " credits)<br/>";
+			}
+			targetDiv.innerHTML += "1st semester: " + modules_fisrt_semester.length + "<br/>";
+			targetDiv.innerHTML += "2nd semester: " + modules_second_semester.length + "<br/>";
+			targetDiv.innerHTML += "Year long: " + modules_year_long.length + "<br/>";
+			targetDiv.innerHTML += "Any semester: " + modules_any_semester.length + "<br/>";
+		}
 
-		for(i=1; i<1+total_optional_groups; i++){
-			var optional_modules = jQuery.parseJSON('<%=raw @course.year_structures.all[year].groups.all[group].uni_modules.all.to_json %>');
-			optional_modules_array.push(optional_modules);
-				<% group += 0 %>
-		}
-		<% group = 1 %>
-		var myTable = "";
-		myTable = JSON.stringify(js_course);
-		/*myTable += "Required modules in this year: " + total_required_modules + "<br/>";
-		myTable += "Optional modules groups: " + (total_optional_groups) + "<br/>";
-		myTable += "Requred: " + JSON.stringify(required_modules, ["name", "credits"]) + "<br/>";
-		for (i=0; i<total_optional_groups; i++){
-			myTable += "Optional group " + i + ": " + JSON.stringify(optional_modules_array[i], ["name", "credits"]) + "<br/>";
-		}
-    	myTable+=
+	   	/*myTable+=
     	"<table>"+
     		"<tr>"+
     			"<th>Semester 1</th>"+
 				"<th>Semester 2</th>"+
 			"</tr>"+
 		"</table>";*/
-
-		tableArea.innerHTML = myTable;
 	}
 
 
