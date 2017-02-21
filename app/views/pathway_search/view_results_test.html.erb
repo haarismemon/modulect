@@ -1,58 +1,76 @@
 <h1><%= @course.name %><br/></h1>
+<div id = "log"></div>
 <div align="center" style="margin-top: 10px">
-	<button id="btnYr1" class="btn btn-lg btn-block" type="button">year 1</button>
-	<div id="year_1">
-		
-	</div>
-	<button id="btnYr2" class="btn btn-lg btn-block" type="button">year 2</button>
-	<div id="year_2">
-		
-	</div>
-	<button id="btnYr3" class="btn btn-lg btn-block" type="button">year 3</button>
-	<div id="year_3">
-		
-	</div>
-	<button id="btnAll" class="btn btn-lg btn-block" type="button">show all</button>
+	<%  @course.year_structures.each do |y| %> 
+		<button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button">
+			<%= y.year_of_study %>
+		</button>
+		<div id=<%= "div_year_#{y.read_attribute_before_type_cast('year_of_study')}" %>>
+			Required modules<br/>
+			<% y.groups.each do |grp| %>
+				<% if grp.name == "required" %>
+					<% grp.uni_modules.each do |y_req_module| %>
+						<%= " - #{y_req_module[:name]} (#{y_req_module[:credits]} credits)" %> <br/>
+					<% end %>
+				<% end %>
+			<% end %>
+			<% y.groups.each do |grp| %>
+				<% if grp.name == "optional" %>
+					<br/>
+					<%= "Select #{grp.total_credits} credits from #{grp.uni_modules.size} modules" %>
+					<br/>
+					<% grp.uni_modules.each do |y_opt_module| %>
+						<%= " - #{y_opt_module[:name]} (#{y_opt_module[:credits]} credits)" %> <br/>
+					<% end %>
+				<% end %>
+			<% end %>
+		</div>
+	<%  end %>
+	<button id="btn_all_years" class="btn btn-lg btn-block" type="button">show all</button>
 </div>
 
 
 <script type="text/javascript">
+	function doLog(logObj, message){
+		logObj.innerHTML += message;
+	}
+
+	function showYear(divs, year, logObj){
+		for(i=0; i<divs.length; i++){
+			if(i!=year)	$(divs[i]).slideUp();
+		}
+		$(divs[year]).slideDown();
+	}
+
+
 	$(document).ready(function(){
-		$('#year_1').hide();
-		$('#year_2').hide();
-		$('#year_3').hide();
-		var current_year = 1;
+		var log = document.getElementById("log");
+		var total_years = 0;
+		var btns = [];
+		var divs = [];
+		for(i=1; i<10; i++){
+			var btn = document.getElementById("btn_year_"+i);
+			var div = document.getElementById("div_year_"+i);
+			if(!btn) break;
+			else{
+				$(div).hide();
+				total_years = i;
+				divs.push(div);
+				btns.push(btn);
+			}
 
-		$('#year_'+current_year).show();
-
-		$("#btnYr1").click(function () {
-			$('#year_2').slideUp();
-			$('#year_3').slideUp();
-			if($('#year_1').is(':hidden')){
-				$('#year_1').slideUp();
-				$('#year_1').slideDown();
+		}
+		for(var i=0; i<btns.length; i++){
+			(function(_i){
+				$(btns[_i]).click(function () {
+						showYear(divs, _i, log);
+				});
+			})(i);
+		}
+		$("#btn_all_years").click(function () {
+			for(i=0; i<divs.length; i++){
+				$(divs[i]).slideDown();
 			}
-		});		
-		$("#btnYr2").click(function () {
-			$('#year_1').slideUp();
-			$('#year_3').slideUp();
-			if($('#year_2').is(':hidden')){
-				$('#year_2').slideUp();
-				$('#year_2').slideDown();
-			}
-		});
-		$("#btnYr3").click(function () {
-			$('#year_1').slideUp();
-			$('#year_2').slideUp();
-			if($('#year_3').is(':hidden')){
-				$('#year_3').slideUp();
-				$('#year_3').slideDown();
-			}
-		});
-		$("#btnAll").click(function () {
-			$('#year_1').slideDown();
-			$('#year_2').slideDown();
-			$('#year_3').slideDown();
 		});
 	});
 </script>
