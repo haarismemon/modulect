@@ -12,21 +12,22 @@ class UniModuleDashboard < Administrate::BaseDashboard
     groups: Field::HasMany,
     departments: Field::HasMany,
     tags: Field::HasMany,
-    # id: Field::Number,
+    id: Field::Number,
     name: Field::String,
     code: Field::String,
     description: Field::String,
     lecturers: Field::String,
-    # created_at: Field::DateTime,
-    # updated_at: Field::DateTime,
-    # pass_rate: Field::String,
-    # assessment_methods: Field::String,
-    # semester: Field::String,
-    # credits: Field::Number,
-    # exam_percentage: Field::Number,
-    # coursework_percentage: Field::Number,
-    # more_info_url: Field::String,
-    # more_info_link: Field::String,
+    created_at: Field::DateTime,
+    updated_at: Field::DateTime,
+    pass_rate: Field::String,
+    assessment_methods: Field::String,
+    semester: Field::String,
+    credits: Field::Number,
+    exam_percentage: Field::Number,
+    coursework_percentage: Field::Number,
+    more_info_url: Field::String,
+    requirements: Field::String,
+    more_info_link: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -35,10 +36,9 @@ class UniModuleDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :users,
-    :groups,
-    :departments,
-    :tags,
+    :name,
+    :code,
+    :lecturers
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -85,6 +85,7 @@ class UniModuleDashboard < Administrate::BaseDashboard
     :exam_percentage,
     :coursework_percentage,
     :more_info_url,
+    :requirements,
     :more_info_link,
   ].freeze
 
