@@ -6,7 +6,7 @@
 </div>
 <div id="white-strip-pathway">
    <div class="container">
-      <div class="col-md-12">
+      <div class="col-md-12 col-md-offset-1">
          <div class="row">
             <div class="col-md-4 step current">
                <div class="numberCircle current-circle">1</div>
@@ -45,7 +45,7 @@
                   <%= f.select(:year_of_study, options_for_select(1..7, @user.year_of_study), {:include_blank => true}, {:class => 'form-control', :autocomplete => "off" , :required => true} )%>
                </div>
                <div class="form-group">
-                  <label for="faculty">Faculty <label for="faculty">Faculty <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the faculty to which your course's department belongs">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label></label>
+                  <label for="faculty">Faculty <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the faculty to which your course's department belongs">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label></label>
                   <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
                      [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  , :required => true }) %>
                </div>

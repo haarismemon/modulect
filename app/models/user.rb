@@ -9,6 +9,9 @@ class User < ApplicationRecord
   # A user has many saved modules.
   has_and_belongs_to_many :uni_modules
 
+  # A user has many pathways
+  has_many :pathways
+
   validates :first_name, presence: true, length: { maximum: 70 }
   validates :last_name, presence: true, length: { maximum: 70 }
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
