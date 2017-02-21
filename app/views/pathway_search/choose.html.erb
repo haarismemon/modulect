@@ -115,11 +115,35 @@ $(window).load(function(){
          <li class="active"><a data-toggle="tab" href="#choose">Choose tags directly</a></li>
          <li><a data-toggle="tab" href="#search">Search for tags</a></li>
       </ul>
+
+<style>
+input.chk-btn {
+  display: none;
+}
+input.chk-btn + label {
+  border: 1px solid grey;
+  background: ghoswhite;
+  padding: 5px 8px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+input.chk-btn:not(:checked) + label:hover {
+  box-shadow: 0px 1px 3px;
+}
+input.chk-btn + label:active,
+input.chk-btn:checked + label {
+  box-shadow: 0px 0px 3px inset;
+  background: #eee;
+}
+</style>
+
+
       <div class="tab-content" style="margin-top:30px;">
          <div id="choose" class="tab-pane fade in active">
             <%  all_tag_name_of_course(@course_obj).sort.each do |tag| %>
 
-            	<input type="checkbox" name="chosen_tags_c[]" value="<%= tag %>"> <%= tag %> <br />
+            	<input type="checkbox" name="chosen_tags_c[]" id="<%= tag %>" value="<%= tag %>"class="chk-btn">
+            	<label for="<%= tag %>"><%= tag %></label>
 
 
             <% end %>

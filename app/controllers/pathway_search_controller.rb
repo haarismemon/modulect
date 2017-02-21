@@ -56,6 +56,7 @@ class PathwaySearchController < ApplicationController
 				params[:chosen_tags_c].each do |tag|
 	    			@chosen_tags << tag
 	    		end
+	    		@chosen_tags = @chosen_tags.uniq
 	    	# if just checkboxes
 			elsif params.has_key?(:chosen_tags_c)
 				params[:chosen_tags_c].each do |tag|
