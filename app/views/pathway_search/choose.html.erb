@@ -24,6 +24,9 @@
    .twitter-typeahead input{
    padding:7px 10px;margin-bottom:15px
    }
+   .hidden {
+  display: none;
+}
 </style>
 <script type="text/javascript">
    $(window).load(function(){
@@ -105,6 +108,10 @@
                         <li><a data-toggle="tab" href="#search">Search for tags</a></li>
                         <li style="float:right;"><a href="javascript:void()" onclick="window.location.reload()" style="border-bottom: 0px;"><i class="fa fa-times" aria-hidden="true"></i> RESET SEARCH</a></li>
                      </ul>
+
+
+
+
                      <script>
                         function myFunction() {
                             // Declare variables
@@ -127,11 +134,49 @@
                      </script>
                      <div class="tab-content" style="margin-top:30px;">
                         <div id="choose" class="tab-pane fade in active">
+                        <div class="row">
+                        <div class="col-md-9">
                            <input type="text" id="quick-filter-bar" onkeyup="myFunction()" placeholder="Quick filter tags">
-                           <div id="tags-area">
+</div>
+<div class="col-md-3" style="padding-left:0px;">
+<div style="margin-bottom:5px;font-size:13px">Select tag types:</div>
+<form>
+<select class="tag-type-select selectpicker" >
+  <option value="all">All</option>
+  <option value="CareerTag">Careers</option>
+  <option value="InterestTag">Interests</option>
+</select>
+</form>
+</div>
+</div>
+
+<script type="text/javascript">
+$( ".tag-type-select" ).change(function() {
+  var selectedEventType = this.options[this.selectedIndex].value;
+  if (selectedEventType == "all") {
+    $('#modulect-tags li').removeClass('hidden');
+  } else {
+    $('#modulect-tags li').addClass('hidden');
+    $('#modulect-tags li[data-eventtype="' + selectedEventType + '"]').removeClass('hidden');
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+                           <div id="tags-area" style="margin-top:20px;">
                               <ul id="modulect-tags">
                                  <%  all_tag_name_of_course(@course_obj).sort.each do |tag| %>
-                                 <li>
+                                 <li data-eventtype="<%= Tag.find_by_name(tag).type%>">
                                     <input type="checkbox" name="chosen_tags_c[]" id="<%= tag %>" value="<%= tag %>"class="chk-btn">
                                     <label for="<%= tag %>"><%= tag %></label>
                                  </li>
