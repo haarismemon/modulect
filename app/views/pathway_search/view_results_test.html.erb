@@ -78,15 +78,55 @@
 			targetDiv.innerHTML += "2nd semester: " + modules_second_semester.length + "<br/>";
 			targetDiv.innerHTML += "Year long: " + modules_year_long.length + "<br/>";
 			targetDiv.innerHTML += "Any semester: " + modules_any_semester.length + "<br/>";
-		}
+			var myTable =
+			"<table id =\"results_table_" + year + "\">"+
+				"<tr>"+
+					"<th>Semester 1</th>"+
+					"<th>Semester 2</th>"+
+				"</tr>";
+			var s1 = 0;
+			var s2 = 0;
+			for(i=0; i<modules_year_long.length; i++){
+				myTable +=
+				"<tr>"+
+					"<td colspan=2>" + modules_year_long[i].name + "</td>"+
+				"</tr>";
+				s1++;
+				s2++;
+			}
+			for(i=s1; i<4; i++){
+				myTable +=
+				"<tr>"+
+					"<td>?</td>"+
+					"<td>?</td>"+
+				"</tr>";
+			}
+			myTable += "</table>";
+			targetDiv.innerHTML += myTable;
 
-	   	/*myTable+=
-    	"<table>"+
-    		"<tr>"+
-    			"<th>Semester 1</th>"+
-				"<th>Semester 2</th>"+
-			"</tr>"+
-		"</table>";*/
+
+
+			var myTableOnPage = document.getElementById('results_table_'+year);
+			//myTableOnPage.rows[0].cells[1].innerHTML = 'Hello';
+			for(i=0; i<modules_fisrt_semester.length; i++){
+				myTableOnPage.rows[s1+1].cells[0].innerHTML = modules_fisrt_semester[i].name;
+				s1++;
+			}
+			for(i=0; i<modules_second_semester.length; i++){
+				myTableOnPage.rows[s2+1].cells[1].innerHTML = modules_second_semester[i].name;
+				s2++;
+			}
+			for(i=0; i<modules_any_semester.length; i++){
+				if(s2<s1){
+					myTableOnPage.rows[s2+1].cells[1].innerHTML = modules_any_semester[i].name;
+					s2++;
+				}else{
+					myTableOnPage.rows[s1+1].cells[0].innerHTML = modules_any_semester[i].name;
+					s1++;
+				}
+			}
+
+		}
 	}
 
 
@@ -110,7 +150,7 @@
 		for(var i=0; i<btns.length; i++){
 			(function(_i){
 				$(btns[_i]).click(function () {
-						showYear(divs, _i, log);
+					showYear(divs, _i, log);
 				});
 			})(i);
 		}
