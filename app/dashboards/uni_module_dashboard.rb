@@ -91,7 +91,7 @@ class UniModuleDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how uni modules are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(uni_module)
-  #   "UniModule ##{uni_module.id}"
-  # end
+  def display_resource(uni_module)
+    uni_module.name
+  end
 end

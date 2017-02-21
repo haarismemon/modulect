@@ -51,7 +51,7 @@ class CareerTagDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how career tags are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(career_tag)
-  #   "CareerTag ##{career_tag.id}"
-  # end
+  def display_resource(career_tag)
+    career_tag.name
+  end
 end
