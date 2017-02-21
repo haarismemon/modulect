@@ -154,6 +154,3 @@ p3 = Pathway.create(name: "My pathway", data: "1:2;5/2:9;10#")
 bob.pathways << p1
 bob.pathways << p2
 bob.pathways << p3
-
-vlad.pathways << p1
-vlad.pathways << p2
