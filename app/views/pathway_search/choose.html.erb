@@ -117,23 +117,31 @@ $(window).load(function(){
       </ul>
 
 <style>
-input.chk-btn {
+#choose-page input.chk-btn {
   display: none;
 }
-input.chk-btn + label {
-  border: 1px solid grey;
-  background: ghoswhite;
+#choose-page input.chk-btn + label {
   padding: 5px 8px;
   cursor: pointer;
   border-radius: 5px;
+      margin-right: 2px;
+    color: #696969;
+    background: #eee;
+    font-size: 15px;
+    margin-bottom: 13px;
+    border:1px solid #eee;
+    font-weight: normal;
 }
-input.chk-btn:not(:checked) + label:hover {
-  box-shadow: 0px 1px 3px;
-}
-input.chk-btn + label:active,
-input.chk-btn:checked + label {
-  box-shadow: 0px 0px 3px inset;
-  background: #eee;
+#choose-page input.chk-btn:not(:checked) + label:hover {
+  border:1px solid #333;
+  color:#333;
+  
+  }
+#choose-page input.chk-btn + label:active,
+#choose-page input.chk-btn:checked + label {
+  border:1px solid #2ab27b;
+  background: #2ab27b;
+  color:#fff;
 }
 </style>
 
