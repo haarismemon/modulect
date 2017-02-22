@@ -29,10 +29,31 @@
   <div class="container">
     <div class="col-md-10 login-card col-md-offset-1">
       <div class="col-md-12">
-        <div class="row" style="padding-top: 30px">
-          <div class="login-card" id="selected">
-            <h2>Your Selection:</h2>
+        <%  @course.year_structures.each do |y| %> 
+          <button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button">
+            <%= y.year_of_study %>
+          </button>
+          <div id=<%= "div_year_#{y.read_attribute_before_type_cast('year_of_study')}" %>>
+            <% y.groups.each do |grp| %>
+              <% if grp.name == "required" %>
+                <% grp.uni_modules.each do |y_req_module| %>
+                  <%= " - #{y_req_module[:name]} (#{y_req_module[:credits]} credits)" %> <br/>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% y.groups.each do |grp| %>
+              <% if grp.name == "optional" %>
+                <br/>
+                <%= "Select #{grp.total_credits} credits from #{grp.uni_modules.size} modules" %>
+                <br/>
+                <% grp.uni_modules.each do |y_opt_module| %>
+                  <%= " - #{y_opt_module[:name]} (#{y_opt_module[:credits]} credits)" %> <br/>
+                <% end %>
+              <% end %>
+            <% end %>
           </div>
+          <%  end %>
+          <button id="btn_all_years" class="btn btn-lg btn-block" type="button">show all</button>
         </div>
 
         <div class="row">
@@ -45,58 +66,58 @@
             <% @group_selection = [] %>
             <!--choices as buttons, once a button is clicked next show a column for the remaining choices in the group or the group shows-->
             <% @results.each do |result| %>
-              <% if UniModule.all_modules_in_group(group).include?(result.first) %>
-                <% @displayed << result.first %>
-                <% tagsmatched = result.second %>
-                <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="<%= result.first.id %>">
-                  <div class="col-md-4" style="width: 75%">
-                    <p> <%= result.first.name %> </p>
-                  </div>
-                  <div class="col-md-1 tag-match-figure" style="font-size:18px;">
-                   <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
-                  </div>
-                  <div class="col-md-1" style="font-size: 18px; float: right">
-                  <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, result.first, method: :get %>
-                  </div>
-                </div>
-              <% else %>
-              <% end %>
-            <% end %>
-            <% UniModule.all_modules_in_group(group).each do |mod| %>
-              <% if !@displayed.include?(mod) %>
-                <% uni_mod = @results.select{ |uni_module, tagsmatched| uni_module.id == mod.id}.first %>
-                <% if uni_mod.present? %>
-                  <% @displayed << uni_mod %>
-                  <% tagsmatched = uni_mod.second %>
-                  <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="<%= mod.id %>">
-                    <div class="col-md-4" style="width: 75%">
-                      <p> <%= mod.name %> </p>
-                    </div>
-                    <div class="col-md-1 tag-match-figure" style="font-size:18px;">
-                     <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
-                    </div>
-                    <div class="col-md-1" style="font-size: 18px; float: right">
-                    <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, uni_mod.first, method: :get %>
-                    </div>
-                  </div>
-                <% else %>
-                  <div class="row login-card res-card result-card-orange res-btn" id="<%= mod.id %>">
-                    <div class="col-md-4" style="width: 75%">
-                      <p> <%= mod.name %> </p>
-                    </div>
-                    <div class="col-md-1 tag-match-figure" style="font-size:18px;">
-                      <p> 0&#37; </p>
-                    </div>
-                    <div class="col-md-1" style="font-size: 18px; float: right">
-                      <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, (UniModule.find(mod)), method: :get %>
-                    </div>
-                  </div>
-                <% end %>
-              <% else %>
-              <% end %>
-            <% end %>
+            <% if UniModule.all_modules_in_group(group).include?(result.first) %>
+            <% @displayed << result.first %>
+            <% tagsmatched = result.second %>
+            <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="<%= result.first.id %>">
+              <div class="col-md-4" style="width: 75%">
+                <p> <%= result.first.name %> </p>
+              </div>
+              <div class="col-md-1 tag-match-figure" style="font-size:18px;">
+               <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
+             </div>
+             <div class="col-md-1" style="font-size: 18px; float: right">
+              <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, result.first, method: :get %>
+            </div>
+          </div>
+          <% else %>
+          <% end %>
+          <% end %>
+          <% UniModule.all_modules_in_group(group).each do |mod| %>
+          <% if !@displayed.include?(mod) %>
+          <% uni_mod = @results.select{ |uni_module, tagsmatched| uni_module.id == mod.id}.first %>
+          <% if uni_mod.present? %>
+          <% @displayed << uni_mod %>
+          <% tagsmatched = uni_mod.second %>
+          <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="<%= mod.id %>">
+            <div class="col-md-4" style="width: 75%">
+              <p> <%= mod.name %> </p>
+            </div>
+            <div class="col-md-1 tag-match-figure" style="font-size:18px;">
+             <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
+           </div>
+           <div class="col-md-1" style="font-size: 18px; float: right">
+            <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, uni_mod.first, method: :get %>
+          </div>
+        </div>
+        <% else %>
+        <div class="row login-card res-card result-card-orange res-btn" id="<%= mod.id %>">
+          <div class="col-md-4" style="width: 75%">
+            <p> <%= mod.name %> </p>
+          </div>
+          <div class="col-md-1 tag-match-figure" style="font-size:18px;">
+            <p> 0&#37; </p>
+          </div>
+          <div class="col-md-1" style="font-size: 18px; float: right">
+            <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, (UniModule.find(mod)), method: :get %>
+          </div>
         </div>
         <% end %>
+        <% else %>
+        <% end %>
+        <% end %>
+      </div>
+      <% end %>
     </div>
     <div class="row" style="margin-top: 60px">
       <% if logged_in? %>
