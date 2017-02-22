@@ -21,11 +21,9 @@ class FacultyDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :departments,
-    :id,
     :name,
-    :created_at,
-  ].freeze
+    :created_at
+    ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
@@ -48,7 +46,7 @@ class FacultyDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how faculties are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(faculty)
-  #   "Faculty ##{faculty.id}"
-  # end
+  def display_resource(faculty)
+    faculty.name
+  end
 end

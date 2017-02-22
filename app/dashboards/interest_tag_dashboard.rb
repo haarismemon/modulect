@@ -51,7 +51,7 @@ class InterestTagDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how interest tags are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(interest_tag)
-  #   "InterestTag ##{interest_tag.id}"
-  # end
+  def display_resource(interest_tag)
+    interest_tag.name
+  end
 end
