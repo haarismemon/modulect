@@ -50,13 +50,14 @@ module PathwaySearchHelper
     end
   end
 
-  def compulsory_modules_of_group(group)
-    @compulsory = []
-    group.uni_modules.select('uni_modules.*, groups_uni_modules.compulsory').each do |uni_module|
-      if uni_module.compulsory 
-        @compulsory << uni_module
-      end
-    end
-  end
+  #TO DO redefine
+  #def compulsory_modules_of_group(group)
+  #  @compulsory = []
+  #  group.uni_modules.select('uni_modules.*, groups_uni_modules.compulsory').each do |uni_module|
+  #    if uni_module.compulsory 
+  #      @compulsory << uni_module
+  #    end
+  #  end
+  #end
 
 end
