@@ -8,14 +8,14 @@ class CourseDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    departments: Field::HasMany,
-    year_structures: Field::HasMany,
-    id: Field::Number,
-    name: Field::String,
-    description: Field::String,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
-    year: Field::Number,
+      departments: Field::HasMany,
+      year_structures: Field::HasMany,
+      id: Field::Number,
+      name: Field::String,
+      description: Field::String,
+      created_at: Field::DateTime,
+      updated_at: Field::DateTime,
+      year: Field::Number,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,34 +24,33 @@ class CourseDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :departments,
-    :year_structures,
-    :id,
-    :name,
+      :name,
+      :description,
+      :year
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :departments,
-    :year_structures,
-    :id,
-    :name,
-    :description,
-    :created_at,
-    :updated_at,
-    :year,
+      :departments,
+      :year_structures,
+      :id,
+      :name,
+      :description,
+      :created_at,
+      :updated_at,
+      :year,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :departments,
-    :year_structures,
-    :name,
-    :description,
-    :year,
+      :departments,
+      :year_structures,
+      :name,
+      :description,
+      :year,
   ].freeze
 
   # Overwrite this method to customize how courses are displayed
