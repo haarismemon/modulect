@@ -22,6 +22,7 @@ gem 'wdm',                    '>= 0.1.0' if Gem.win_platform?
 gem 'default_value_for',      '~> 3.0', '>= 3.0.2'
 gem 'bourbon'
 gem "administrate",           "~> 0.3.0"
+gem 'will_paginate'
 
 group :development, :test do
   gem 'sqlite3'
