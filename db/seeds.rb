@@ -108,10 +108,10 @@ computer_science_15.year_structures << cs_year1
 computer_science_15.year_structures << cs_year2
 
 # Group seeds
-cs1_semester_1 = Group.create(name: "Semester 1", total_credits: 60)
-cs1_semester_2 = Group.create(name: "Semester 2", total_credits: 60)
-cs2_semester_1 = Group.create(name: "Semester 1", total_credits: 60)
-cs2_semester_2 = Group.create(name: "Semester 2", total_credits: 60)
+cs1_semester_1 = Group.create(name: "Semester 1", total_credits: 60, compulsory: true)
+cs1_semester_2 = Group.create(name: "Semester 2", total_credits: 60, compulsory: true)
+cs2_semester_1 = Group.create(name: "Semester 1", total_credits: 60, compulsory: true)
+cs2_semester_2 = Group.create(name: "Semester 2", total_credits: 60, compulsory: true)
 
 # Group-Modules association
 cs1_semester_1.uni_modules << prp

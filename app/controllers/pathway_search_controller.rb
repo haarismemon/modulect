@@ -44,7 +44,7 @@ class PathwaySearchController < ApplicationController
 		if (params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? && params.has_key?(:chosen_tags) && !params[:chosen_tags].empty?) || (params.has_key?(:chosen_tags_c))
 
 			@year_of_study = params[:year]
-	        @course = params[:course]
+	    @course = params[:course]
 			@structure = YearStructure.where("course_id = ? AND year_of_study = ?", @course, @year_of_study)
 			@groups = Group.where("year_structure_id = ?", @structure.ids)
 			@course_obj = Course.find_by_id(@course)
