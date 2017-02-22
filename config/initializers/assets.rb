@@ -4,6 +4,7 @@
 Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w(your_stylesheet_name.css)
 Rails.application.config.assets.precompile += %w( admin-style.scss )
+Rails.application.config.assets.precompile += %w( admin-script.js )
 # Add additional assets to the asset load path
 # Rails.application.config.assets.paths << Emoji.images_path
 
