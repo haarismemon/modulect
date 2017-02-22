@@ -48,7 +48,7 @@ class FacultyDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how faculties are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(faculty)
-  #   "Faculty ##{faculty.id}"
-  # end
+  def display_resource(faculty)
+    faculty.name
+  end
 end

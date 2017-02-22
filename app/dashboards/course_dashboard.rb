@@ -57,7 +57,7 @@ class CourseDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how courses are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(course)
-  #   "Course ##{course.id}"
-  # end
+  def display_resource(course)
+    course.name
+  end
 end

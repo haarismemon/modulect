@@ -51,7 +51,7 @@ class YearStructureDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how year structures are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(year_structure)
-  #   "YearStructure ##{year_structure.id}"
-  # end
+  def display_resource(year_structure)
+    year_structure.to_s
+  end
 end
