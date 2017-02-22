@@ -12,10 +12,10 @@ class CourseDashboard < Administrate::BaseDashboard
       year_structures: Field::HasMany,
       id: Field::Number,
       name: Field::String,
-      description: Field::String,
+      description: DescriptionField ,
       created_at: Field::DateTime,
       updated_at: Field::DateTime,
-      year: Field::Number,
+      year: Field::Number
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -59,4 +59,6 @@ class CourseDashboard < Administrate::BaseDashboard
   def display_resource(course)
     course.name
   end
+
+
 end

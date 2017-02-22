@@ -18,7 +18,7 @@ to display a collection of resources in an HTML table.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Collection
 %>
 
-<table class="collection-data table table-bordered" aria-labelledby="page-title">
+<table class="collection-data table " aria-labelledby="page-title">
   <thead>
     <tr>
       <% collection_presenter.attribute_types.each do |attr_name, attr_type| %>
@@ -68,9 +68,9 @@ to display a collection of resources in an HTML table.
           t("administrate.actions.edit"),
           [:edit, namespace, resource],
           class: "action-edit",
-        ) %></td>
+        ) %>
 
-        <td><%= link_to(
+          <%= link_to(
           t("administrate.actions.destroy"),
           [namespace, resource],
           class: "table__action--destroy",
