@@ -22,6 +22,7 @@ class UniModuleDashboard < Administrate::BaseDashboard
     pass_rate: Field::String,
     assessment_methods: Field::String,
     semester: Field::String,
+    requirements: Field::String,
     credits: Field::Number,
     exam_percentage: Field::Number,
     coursework_percentage: Field::Number,
