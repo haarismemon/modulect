@@ -155,6 +155,52 @@
 </div>
 
 <script type="text/javascript">
+  function colour_code_card_group(module_matches, search_tags) {
+    if((module_matches.length / search_tags.length) > 0.6) {
+      return "green"
+    } else {
+      return "orange"
+    }
+  }
+
+
+  function create_module_card(module) {
+    var result = <%= raw @results.to_json%>.filter(function(mod) {
+      if(mod[0].id == module.id){
+        return mod;
+      }
+    });
+
+    if(result.length > 0) {
+      var tagsmatched = result[0][1]
+      return "<div class=\"row login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id=\"" + module.id + "\">" +
+        "<div class=\"col-md-8\">" +
+          "<p>" +  module.code + "</p>" +
+          "<p>" +  module.name + "</p>" +
+        "</div>" +
+        "<div class=\"col-md-2\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
+          "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
+        "</div>" +
+        "<div class=\"col-md-2 tag-match-figure\" style=\"font-size:18px;\">" +
+          "<h4>" + Math.round((tagsmatched.length / <%= raw @chosen_tags %>.length) * 100) + " %</h4>"
+        "</div>" +
+      "</div>"
+    } else {
+      return "<div class=\"row login-card res-card result-card-orange res-btn\" id=\"" + module.id + "\">" +
+        "<div class=\"col-md-8\">" +
+          "<p>" +  module.code + "</p>" +
+          "<p>" + module.name + "</p>" +
+        "</div>" +
+         "<div class=\"col-md-2\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
+          "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
+        "</div>" +
+         "<div class=\"col-md-2 tag-match-figure\" style=\"font-size:18px;\">" +
+          "<h4> 0% </h4>"
+        "</div>" +
+      "</div>"
+    }
+  }
+
   function doLog(logObj, message){
     logObj.innerHTML += message;
   }
@@ -181,7 +227,7 @@
       targetDiv.innerHTML = "Requied modules in year " + year + "<br/>";
       var required_group = js_course.year_structures[year-1].groups[0].uni_modules;
       var modules_year_long = [];
-      var modules_fisrt_semester = [];
+      var modules_first_semester = [];
       var modules_second_semester = [];
       var modules_any_semester = [];
       for(module=0; module<required_group.length; module++){
@@ -190,28 +236,32 @@
         }else if(required_group[module].semester == 2){
           modules_second_semester.push(required_group[module]);
         }else if(required_group[module].semester == 1){
-          modules_fisrt_semester.push(required_group[module]);
+          modules_first_semester.push(required_group[module]);
         }else{
           modules_any_semester.push(required_group[module]);
         }
         targetDiv.innerHTML += required_group[module].name + " (" + required_group[module].credits + " credits)<br/>";
       }
-      targetDiv.innerHTML += "1st semester: " + modules_fisrt_semester.length + "<br/>";
+      targetDiv.innerHTML += "1st semester: " + modules_first_semester.length + "<br/>";
       targetDiv.innerHTML += "2nd semester: " + modules_second_semester.length + "<br/>";
       targetDiv.innerHTML += "Year long: " + modules_year_long.length + "<br/>";
       targetDiv.innerHTML += "Any semester: " + modules_any_semester.length + "<br/>";
       var myTable =
       "<table id =\"results_table_" + year + "\">"+
         "<tr>"+
-          "<th>Semester 1</th>"+
-          "<th>Semester 2</th>"+
+          "<th><div class=\"col-md-5 login-card\">" +
+                  "<h3>Semester 1</h3>" + 
+          "</th>"+
+          "<th><div class=\"col-md-5 login-card\">" +
+                  "<h3>Semester 2</h3>" +
+          "</th>"+
         "</tr>";
       var s1 = 0;
       var s2 = 0;
       for(i=0; i<modules_year_long.length; i++){
         myTable +=
         "<tr>"+
-          "<td colspan=2>" + modules_year_long[i].name + "</td>"+
+          "<td colspan=2>" + create_module_card(modules_year_long[i]) + "</td>"+
         "</tr>";
         s1++;
         s2++;
@@ -230,20 +280,20 @@
 
       var myTableOnPage = document.getElementById('results_table_'+year);
       //myTableOnPage.rows[0].cells[1].innerHTML = 'Hello';
-      for(i=0; i<modules_fisrt_semester.length; i++){
-        myTableOnPage.rows[s1+1].cells[0].innerHTML = modules_fisrt_semester[i].name;
+      for(i=0; i<modules_first_semester.length; i++){
+        myTableOnPage.rows[s1+1].cells[0].innerHTML = create_module_card(modules_first_semester[i])
         s1++;
       }
       for(i=0; i<modules_second_semester.length; i++){
-        myTableOnPage.rows[s2+1].cells[1].innerHTML = modules_second_semester[i].name;
+        myTableOnPage.rows[s2+1].cells[1].innerHTML = create_module_card(modules_second_semester[i])
         s2++;
       }
       for(i=0; i<modules_any_semester.length; i++){
         if(s2<s1){
-          myTableOnPage.rows[s2+1].cells[1].innerHTML = modules_any_semester[i].name;
+          myTableOnPage.rows[s2+1].cells[1].innerHTML =  create_module_card(modules_any_semester[i])
           s2++;
         }else{
-          myTableOnPage.rows[s1+1].cells[0].innerHTML = modules_any_semester[i].name;
+          myTableOnPage.rows[s1+1].cells[0].innerHTML =  create_module_card(modules_any_semester[i])
           s1++;
         }
       }

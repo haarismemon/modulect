@@ -135,6 +135,8 @@ cs_year2.groups << cs2_semester_2
 
 math_and_ph = Course.create(name: "Mathematics & Physics BSc", year: 2015)
 
+mathematics.courses << math_and_ph
+
 mnp_year1 = YearStructure.create(year_of_study: 1)
 mnp_year2 = YearStructure.create(year_of_study: 2)
 mnp_year3 = YearStructure.create(year_of_study: 3)
@@ -143,15 +145,15 @@ math_and_ph.year_structures << mnp_year1
 math_and_ph.year_structures << mnp_year2
 math_and_ph.year_structures << mnp_year3
 
-mnp_year1_required_modules =   Group.create(name: "required", total_credits: 105)
-mnp_year2_required_modules =   Group.create(name: "required", total_credits: 90)
-mnp_year3_required_modules =   Group.create(name: "required", total_credits: 15)
-mnp_year1_optional_modules =   Group.create(name: "optional", total_credits: 15)
-mnp_year2_optional_modules_1 = Group.create(name: "optional", total_credits: 15)
-mnp_year2_optional_modules_2 = Group.create(name: "optional", total_credits: 15)
-mnp_year3_optional_modules_1 = Group.create(name: "optional", total_credits: 15)
-mnp_year3_optional_modules_2 = Group.create(name: "optional", total_credits: 15)
-mnp_year3_optional_modules_3 = Group.create(name: "optional", total_credits: 75)
+mnp_year1_required_modules =   Group.create(name: "required", total_credits: 105, compulsory: true)
+mnp_year2_required_modules =   Group.create(name: "required", total_credits: 90, compulsory: true)
+mnp_year3_required_modules =   Group.create(name: "required", total_credits: 15, compulsory: true)
+mnp_year1_optional_modules =   Group.create(name: "optional", total_credits: 15, compulsory: false)
+mnp_year2_optional_modules_1 = Group.create(name: "optional", total_credits: 15, compulsory: false)
+mnp_year2_optional_modules_2 = Group.create(name: "optional", total_credits: 15, compulsory: false)
+mnp_year3_optional_modules_1 = Group.create(name: "optional", total_credits: 15, compulsory: false)
+mnp_year3_optional_modules_2 = Group.create(name: "optional", total_credits: 15, compulsory: false)
+mnp_year3_optional_modules_3 = Group.create(name: "optional", total_credits: 75, compulsory: false)
 
 mnp_year1.groups << mnp_year1_required_modules
 mnp_year2.groups << mnp_year2_required_modules
