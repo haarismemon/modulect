@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   get 'pathway-search/begin'
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
+  get 'pathway-search/view_results_test'
 
 
 end
