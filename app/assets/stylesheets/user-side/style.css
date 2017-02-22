@@ -540,7 +540,7 @@ select.form-control{
 }
 .banner {
     height: 100%;
-    background-image: url(banner.png), linear-gradient(-150deg, #00C1B6 0%, #136EB5 97%);
+    background-image: url(../banner.png), linear-gradient(-150deg, #00C1B6 0%, #136EB5 97%);
     background-size: 380px, contain;
     padding-top: 35px;
     padding-bottom: 35px;
