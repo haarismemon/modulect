@@ -89,7 +89,11 @@
    <div class="col-md-10 col-md-offset-1 text-right">
       <ul class="results-page-options">
          <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
-         <li><a href="javascript:void()"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email advisor</a> </li>
+         <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
+<%= request.original_url  %>
+%0A%0A
+Regards,%0A
+{Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
       </ul>
    </div>
 </div>
@@ -180,7 +184,7 @@
             </div>
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
-                <p><%= size_check unimodule.requirements %></p>
+               <p>TO DO</p>
             </div>
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
@@ -204,7 +208,10 @@
                <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
                <p><%= size_check unimodule.pass_rate %></p>
             </div>
-             <div class="col-md-12 text-right" style="margin-bottom:15px;">         
+             <div class="col-md-12 text-right" style="margin-bottom:15px;">
+             <% if !unimodule.more_info_link.nil? %>
+               <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, unimodule.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
+            <% end %>
                <%= link_to "Open page >", unimodule, method: :get, class: "btn btn-lg btn-small" %>
              </div>
          </div>

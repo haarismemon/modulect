@@ -1,4 +1,9 @@
 require 'rails_helper'
+require_relative 'user_controller_spec_helper'
+
+RSpec.configure do |c|
+  c.include UserControllerSpecHelper
+end
 
 RSpec.describe UsersController, type: :controller do
 
@@ -37,21 +42,19 @@ RSpec.describe UsersController, type: :controller do
       expect(flash).not_to be_empty
       expect(User.all.empty?).to eq true
     end
-
-    it "looks for user using a id that doesnt exist" do
-      expect {
-        get :edit,:id => -1
-      }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
   end
 
   describe 'PUT update' do
     let (:user) { create(:user) }
 
     context "valid attributes" do
+
+      before do
+        log_in_as(user)
+      end
+
       it "located the requested @user" do
-        put :update, id: user.id,user: FactoryGirl.attributes_for(:user)
+        put :update, id: user.id, user: FactoryGirl.attributes_for(:user)
         expect(assigns(:user)).to eq(user)
       end
 
@@ -73,6 +76,10 @@ RSpec.describe UsersController, type: :controller do
 
     context "invalid attributes" do
 
+      before do
+        log_in_as(user)
+      end
+
       it "does not change @user's attributes" do
         put :update, id: user.id,user: FactoryGirl.attributes_for(:user, year_of_study: "not_a_value", email: nil)
         expect(assigns(:user).year_of_study).not_to eq "not_a_value"
@@ -92,6 +99,10 @@ RSpec.describe UsersController, type: :controller do
 
     let (:user) { create(:user) }
 
+    before do
+      log_in_as(user)
+    end
+
     it "retrieves param id and users it to looks for correct user to store in @user" do
       get :edit, params: {:id => user.id }
       expect( assigns[:user].present?).to eq(true)
@@ -101,13 +112,6 @@ RSpec.describe UsersController, type: :controller do
     it "renders correct edit template" do
       get :edit, params: { :id => user.id }
       expect(response).to render_template("edit")
-    end
-
-
-    it "looks for user using a id that doesnt exist" do
-      expect {
-        get :edit, params: { :id => -1 }
-      }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'should return status 200' do
@@ -135,10 +139,5 @@ RSpec.describe UsersController, type: :controller do
     it 'should return status 200' do
       expect(response.status).to eq 200
     end
-
   end
-
-
-
-
 end

@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:edit, :update]
   skip_before_action :store_location,
                       only: [:new, :edit]
+  protect_from_forgery except: [:update_departments, :update_courses]
 
   def index
     #returns all users by order of last_name
@@ -59,12 +60,12 @@ class UsersController < ApplicationController
     @faculties = Faculty.all
     #Initialise departments and courses to be empty unless previously selected
     if(@user.department_id.present?)
-      @departments = Department.where("id = ?", @user.department_id)
+      @departments = Faculty.find_by_id(@user.faculty_id).departments
     else
       @departments = {}
     end
-    if(@user.course_id.present?)
-      @courses = Course.where("id = ?", @user.course_id)
+    if(@user.department_id.present? && @user.course_id.present?)
+      @courses = Department.find_by_id(@user.department_id).courses
     else
       @courses = {}
     end
@@ -93,9 +94,9 @@ class UsersController < ApplicationController
     if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
       flash[:success] = "Successfully updated your account"
-      if params.has_key?(:dest) && !params[:dest].empty? 
-        redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s 
-      else  
+      if params.has_key?(:dest) && !params[:dest].empty?
+        redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s
+      else
         redirect_to(edit_user_path)
       end
     else
@@ -134,6 +135,4 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
     end
-
-
 end

@@ -5,10 +5,17 @@ class UniModule < ApplicationRecord
   validates :semester, presence: true
   validates :credits, presence: true
 
+  # A UniModule has been saved as a favourite by many users.
   has_and_belongs_to_many :users
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :departments
   has_and_belongs_to_many :tags
+
+  #A UniModule has many required modules and can be a requirement of many modules
+  has_and_belongs_to_many(:uni_module,
+    :join_table => "uni_module_requirements",
+    :foreign_key => "uni_module_id",
+    :association_foreign_key => "required_uni_module_id")
 
   scope :search, lambda {|tag|
     joins(:tags).where(["tags.name = ?", tag])
@@ -38,7 +45,7 @@ class UniModule < ApplicationRecord
   end
 
   # Registers a user as having selected this module.
-  def add_user(valid_user)
+  def select_by_user(valid_user)
     users << valid_user
   end
 

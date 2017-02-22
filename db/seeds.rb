@@ -8,7 +8,7 @@
 
 # pass rates are all fictional, assigned to help with sorting according to pass rate
 prp = UniModule.create(name: "Programming Practice", code: "4CCS1PRP", semester: "1",
-                       credits: 15, pass_rate: 40)
+                       credits: 15, pass_rate: 40, more_info_link:"http://www.kcl.ac.uk/nms/depts/informatics/study/current/handbook/progs/Modules/4CCS1PRP.aspx" )
 pra = UniModule.create(name: "Programming Applications", code: "4CCS1PRA", semester: "2",
 											 credits: 15, exam_percentage: 75, coursework_percentage: 25, pass_rate: 50)
 fc1 = UniModule.create(name: "Foundations of Computing 1", code: "4CCS1FC1", semester: "1",
@@ -26,7 +26,7 @@ ela = UniModule.create(name: "Elementary Logic With Applications", code: "4CCS1E
 ins = UniModule.create(name: "Internet Systems", code: "5CCS2INS", semester: "1",
 											 credits: 15, exam_percentage: 80, coursework_percentage: 20, pass_rate: 60)
 fc2 = UniModule.create(name: "Foundations of Computing 2", code: "5CCS2FC2", semester: "2",
-											 credits: 15, exam_percentage: 100, coursework_percentage: 0, pass_rate: 70, requirements: "Must have done FC1 in 1st year")
+											 credits: 15, exam_percentage: 100, coursework_percentage: 0, pass_rate: 70)
 
 programming = InterestTag.create(name: "Programming")
 maths = InterestTag.create(name: "Maths")
@@ -57,22 +57,14 @@ cs1.tags << hardware_engineer
 pra.tags << front_end_developer
 
 # User seeds
-User.create(first_name:  "Vlad",
-            last_name:   "Nedelscu",
-            email:       "nedelescu.vlad@gmail.com",
-            password: 							"foobar",
-            password_confirmation: "foobar",
-            user_level: 3,
-            year_of_study: 1
-            )
-User.create(first_name:  "Bob",
+bob = User.create(first_name:  "Bob",
             last_name:   "Ross",
-					  email:       "example@example.com",
-					  password: 							"foobar",
-					  password_confirmation: "foobar",
+            email:       "example@example.com",
+            password: 	 "foobar",
+            password_confirmation: "foobar",
             activated: true,
             activated_at: Time.zone.now,
-            user_level: 3,
+            user_level: 1,
             year_of_study: 1)
 
 # Course seeds
@@ -285,3 +277,13 @@ mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_23
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_24
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_25
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_26
+
+# Pathway seeds
+p1 = Pathway.create(name: "Software Engineering", data: "1:23;45/2:37;38#")
+p2 = Pathway.create(data: "1:43;55/2:97;98#")
+p3 = Pathway.create(name: "My pathway", data: "1:2;5/2:9;10#")
+
+# Pathway-User association
+bob.pathways << p1
+bob.pathways << p2
+bob.pathways << p3

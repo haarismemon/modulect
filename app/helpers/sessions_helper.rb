@@ -35,6 +35,10 @@ module SessionsHelper
 		end
 	end
 
+	def admin_user
+		current_user && current_user.user_level == 1
+	end
+
 	# Logs out a user.
 	def log_out
 		forget current_user

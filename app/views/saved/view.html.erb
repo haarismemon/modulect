@@ -1,168 +1,254 @@
-<% provide(:title, 'Saved Modules') %>
+<% provide(:title, 'Saved Modules & Pathways') %>
 <% if logged_in? %>
+<script type="text/javascript">
+   $(function () {
+       var hashTab = window.location.hash;
+       if (hashTab != '') {
+           $('.nav-tabs a[href="' + hashTab + '"]').tab('show');
+           $(hashTab).addClass('active');
+       }
+   });
+   
+</script>
 <% saved_modules = current_user.uni_modules %>
+<% saved_pathways = current_user.pathways %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
    <div class="container">
-      <h1>Saved modules</h1>  
+      <h1>Saved Modules & Pathways</h1>
    </div>
 </div>
 <div id="page" style="padding-top:30px;">
 <div class="container">
-<% if saved_modules.length == 0 %>
-<div class="row" style="margin-bottom:20px;">
-   <div class="col-md-10 col-md-offset-1 text-center">
-      <h1>You haven't saved any modules :(</h1>
-   </div>
-</div>
-<% else %>
-
-<% sortby = request.query_parameters["sort_by"] %>
-<% saved_modules = sort_by(convert_to_results_array(saved_modules), sortby) %>
-<div class="row here-what" style="margin-bottom:20px;">
-   <div class="col-md-6 col-md-offset-1">
-      <h1>Your saved modules:</h1>
-      <h5>Saved <%= saved_modules.length %> modules</h5>
-   </div>
-   <div class="col-md-4 text-right" style="padding-top:30px;">
-      <div class="sort-area">
-         <% sorting_options = {"tags" => "Tag match (remembered)", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
-         Sort by: &nbsp;&nbsp;
-         <form action="<%= saved_path %>" style="display:inline-block;" method="GET">
-            <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
-               <% sorting_options.each do |option| %> 
-               <option value="<%= option.first %>" 
-                  <% if sortby == option.first %>
-                  selected
-                  <% end %>
-                  >
-                  <%= option.second %>
-               </option>
-               <% end %>
-            </select>
-         </form>
-      </div>
-   </div>
-</div>
-<div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
-   <div class="col-md-10 col-md-offset-1 text-right">
-      <ul class="results-page-options">
-         <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
-         <li><a href="javascript:void()"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email advisor</a> </li>
+   <div id="saved-page" class="col-md-10 col-md-offset-1">
+      <ul class="nav nav-tabs">
+         <li class="active"><a data-toggle="tab" href="#modules">Saved Modules</a></li>
+         <li><a data-toggle="tab" href="#pathways">Saved Pathways</a></li>
       </ul>
-   </div>
-</div>
-<div class="row">
-   <div class="col-md-10 col-md-offset-1">
-      <% saved_modules.each do |r| %>
-      <% unimodule = r.first %> 
-      <div class="col-md-12 login-card res-card" >
-         <div class="row">
-            <div class="col-md-12 result-card-main">
-               <h2><%= size_check unimodule.code %> <%= size_check unimodule.name %></h2>
-               <h4>Semester <%= size_check unimodule.semester %> - <%= unimodule.credits %> credits</h4>
-               <div style="margin-top:30px">
-                  <% if logged_in? %>
-                  <script>
-                     $(window).load(function(){
-                     $("#save-<%= unimodule.code%>").click(function() {
-                     $("#save-<%= unimodule.code%> span").html($("#save-<%= unimodule.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
-                     });});
-                     
-                  </script>
-                  <% if current_user.uni_modules.include?(unimodule) %>
-                  <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= unimodule.code%>"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span>
-                  </button>
-                  <% else %>
-                  <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= unimodule.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
-                  </button>
+      <div class="tab-content" style="margin-top:30px;">
+         <div id="modules" class="tab-pane fade in active">
+            <div class="col-md-12">
+               <% if saved_modules.length == 0 %>
+               <div class="row" style="margin-bottom:20px;">
+                  <div class="col-md-10 col-md-offset-1 text-center">
+                     <h1>You haven't saved any modules :(</h1>
+                  </div>
+               </div>
+               <% else %>
+               <% sortby = request.query_parameters["sort_by"] %>
+               <% saved_modules = sort_by(convert_to_results_array(saved_modules), sortby) %>
+               <div class="row here-what" style="margin-bottom:20px;">
+                  <div class="col-md-7">
+                     <h1>Your saved modules:</h1>
+                     <h5>Saved <%= saved_modules.length %> modules</h5>
+                  </div>
+                  <div class="col-md-5 text-right" style="padding-top:30px;">
+                     <div class="sort-area">
+                        <% sorting_options = {"tags" => "Tag match (remembered)", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
+                        Sort by: &nbsp;&nbsp;
+                        <form action="<%= saved_path %>#modules" style="display:inline-block;" method="GET">
+                           <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
+                              <% sorting_options.each do |option| %> 
+                              <option value="<%= option.first %>" 
+                                 <% if sortby == option.first %>
+                                 selected
+                                 <% end %>
+                                 >
+                                 <%= option.second %>
+                              </option>
+                              <% end %>
+                           </select>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+               <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
+                  <div class="col-md-12 text-right">
+                     <ul class="results-page-options">
+                        <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
+                        <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
+                           <%= request.original_url  %>
+                           %0A%0A
+                           Regards,%0A
+                           {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-12">
+                     <% saved_modules.each do |r| %>
+                     <% unimodule = r.first %> 
+                     <div class="col-md-12 login-card res-card" >
+                        <div class="row">
+                           <div class="col-md-12 result-card-main">
+                              <h2><%= size_check unimodule.code %> <%= size_check unimodule.name %></h2>
+                              <h4>Semester <%= size_check unimodule.semester %> - <%= unimodule.credits %> credits</h4>
+                              <div style="margin-top:30px">
+                                 <% if logged_in? %>
+                                 <script>
+                                    $(window).load(function(){
+                                    $("#save-<%= unimodule.code%>").click(function() {
+                                    $("#save-<%= unimodule.code%> span").html($("#save-<%= unimodule.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
+                                    });});
+                                    
+                                 </script>
+                                 <% if current_user.uni_modules.include?(unimodule) %>
+                                 <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= unimodule.code%>"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span>
+                                 </button>
+                                 <% else %>
+                                 <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= unimodule.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
+                                 </button>
+                                 <% end %>
+                                 <script>
+                                    $("button#save-<%= unimodule.code%>").on("click", function(){
+                                        $.ajax({
+                                           type: "POST",
+                                            url: "<%=application_save_module_path(module_par: unimodule) %>",
+                                            context: document.body
+                                        })
+                                    
+                                    
+                                    
+                                    
+                                    });
+                                    
+                                    
+                                 </script>
+                                 <% else %>
+                                 <a class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
+                                 <% end %>
+                                 <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= unimodule.code %>-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                              </div>
+                           </div>
+                        </div>
+                        <div id="result-<%= unimodule.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
+                           <div class="col-md-12" style="margin-bottom:15px;">
+                              <h5>Description</h5>
+                              <p><%= size_check unimodule.description %></p>
+                           </div>
+                           <div class="col-md-4" style="margin-bottom:15px;">
+                              <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
+                              <p>
+                                 <%= size_check get_careers_for_module(unimodule).sort.join(", ") %>
+                              </p>
+                           </div>
+                           <div class="col-md-4" style="margin-bottom:15px;">
+                              <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
+                              <p>TO DO</p>
+                           </div>
+                           <div class="col-md-4" style="margin-bottom:15px;">
+                              <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
+                              <p><%= size_check unimodule.lecturers %></p>
+                           </div>
+                           <div class="col-md-4" style="margin-bottom:15px;">
+                              <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
+                              <p><%= size_check unimodule.assessment_methods %></p>
+                           </div>
+                           <div class="col-md-4" style="margin-bottom:15px;">
+                              <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
+                              <p>
+                                 <% if unimodule.exam_percentage.nil? || unimodule.coursework_percentage.nil?%>
+                                 No data available
+                                 <% else %>
+                                 <%= unimodule.exam_percentage %>:<%= unimodule.coursework_percentage %>
+                                 <% end %>
+                              </p>
+                           </div>
+                           <div class="col-md-4" style="margin-bottom:15px;">
+                              <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
+                              <p><%= size_check unimodule.pass_rate %></p>
+                           </div>
+                           <div class="col-md-12 text-right" style="margin-bottom:15px;">
+                              <% if !unimodule.more_info_link.nil? %>
+                              <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, unimodule.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
+                              <% end %>
+                              <%= link_to "Open page >", unimodule, method: :get, class: "btn btn-lg btn-small" %>
+                           </div>
+                        </div>
+                     </div>
+                     <% end %>
+                  </div>
+               </div>
+               <% end %>
+            </div>
+         </div>
+         <div id="pathways" class="tab-pane fade">
+            <div class="col-md-12">
+               <% if saved_pathways.size == 0 %>
+               <div class="row" style="margin-bottom:20px;">
+                  <div class="col-md-10 col-md-offset-1 text-center">
+                     <h1>You haven't saved any pathways :(</h1>
+                  </div>
+               </div>
+               <% else %>    
+               <% sortby = request.query_parameters["sort_by"] %>
+               <% if !sortby.nil? %>
+               <% saved_pathways = sort_pathways(current_user, sortby) %> 
+               <% end %>            
+               <div class="row here-what" style="margin-bottom:40px;">
+                  <div class="col-md-7">
+                     <h1>Your saved pathways:</h1>
+                  </div>
+                  <div class="col-md-5 text-right" style="padding-top:30px;">
+                     <div class="sort-area">
+                        <% sorting_options = {"date_created" => "Date saved", "name" => "Name"} %>
+                        Sort by: &nbsp;&nbsp;
+                        <form action="<%= saved_path %>#pathways" style="display:inline-block;" method="GET">
+                           <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
+                              <% sorting_options.each do |option| %> 
+                              <option value="<%= option.first %>" 
+                                 <% if sortby == option.first %>
+                                 selected
+                                 <% end %>
+                                 >
+                                 <%= option.second %>
+                              </option>
+                              <% end %>
+                           </select>
+                        </form>
+                     </div>
+                  </div>
+                  <div class="row" style="margin-top:100px;">
+                     <div class="col-md-12">
+                        <% saved_pathways.each do |pathway| %>
+                        <div class="col-md-12 login-card res-card" id="pathwaycard-<%= pathway.id %>">
+                           <div class="row">
+                              <div class="col-md-12 result-card-main">
+                                 <h2><%= size_check check_pathway_name pathway.name %></h2>
+                                 <h4>Saved on <%= pathway.created_at %></h4>
+                                 <div style="margin-top:30px">
+                                    <a href="/?<%= pathway.data %>" class="btn btn-lg btn-small"><span>Open ></span>
+                                    </a>
+                                    <div style="float:right;">
+                                       <button class="btn btn-small btn-lg red-btn" id="pathwaydeletebutton-<%= pathway.id %>"><span><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;Delete</span>
+                                       </button>
+                                       <script>
+                                          $("button#pathwaydeletebutton-<%= pathway.id %>").on("click", function() {
+                                          if (confirm("Are you sure you want to delete this? ")) {
+                                          $.ajax({
+                                          type: "POST",
+                                          url: "<%=application_delete_pathway_path(pathway_par: pathway) %>",
+                                          context: document.body
+                                          })
+                                          $(this).closest("#pathwaycard-<%= pathway.id %>").remove();
+                                          
+                                          }
+                                          
+                                          
+                                          });
+                                       </script>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <% end %>
+                     </div>
+                  </div>
                   <% end %>
-                  <script>
-                     $("button#save-<%= unimodule.code%>").on("click", function(){
-                         $.ajax({
-                            type: "POST",
-                             url: "<%=application_save_module_path(module_par: unimodule) %>",
-                             context: document.body
-                         })
-                     
-                     
-                     
-                     
-                     });
-                     
-                     
-                  </script>
-                  <% else %>
-                  <a class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</a>
-                  <% end %>
-                  <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= unimodule.code %>-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
                </div>
             </div>
-                     </div>
-         <div id="result-<%= unimodule.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
-            <div class="col-md-12" style="margin-bottom:15px;">
-               <h5>Description</h5>
-               <p><%= size_check unimodule.description %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
-               <p>
-                  <%= size_check get_careers_for_module(unimodule).sort.join(", ") %>
-               </p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
-               <p><%= size_check unimodule.requirements %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
-               <p><%= size_check unimodule.lecturers %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
-               <p><%= size_check unimodule.assessment_methods %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
-               <p>
-                  <% if unimodule.exam_percentage.nil? || unimodule.coursework_percentage.nil?%>
-                  No data available
-                  <% else %>
-                  <%= unimodule.exam_percentage %>:<%= unimodule.coursework_percentage %>
-                  <% end %>
-               </p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
-               <p><%= size_check unimodule.pass_rate %></p>
-            </div>
-            <div class="col-md-12 text-right" style="margin-bottom:15px;">         
-               <%= link_to "Open page >", unimodule, method: :get, class: "btn btn-lg btn-small" %>
-             </div>
          </div>
       </div>
-      <% end %>
    </div>
 </div>
-<% end %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <% end %>

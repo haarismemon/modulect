@@ -1,109 +1,228 @@
 <% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
+<% tag_names = all_tag_name_of_course(@course_obj) %>
+<style>
+   .bootstrap-tagsinput {
+   background-color: none;
+   box-shadow: 0 0 0;
+   border-radius:0;
+   border:0;
+   position:relative;
+   }
+   .bootstrap-tagsinput input, .bootstrap-tagsinput input:focus {
+   border:1px solid #ddd;
+   background-color: rgb(255, 255, 255);
+   box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+   border-radius:4px;
+   min-width:90px !important;
+   position:absolute;
+   left:0;
+   top:0;
+   width:100%;
+   }
+   .twitter-typeahead{
+   width:100%;
+   }
+   .twitter-typeahead input{
+   padding:7px 10px;margin-bottom:15px
+   }
+   .hidden {
+   display: none;
+   }
+</style>
+<script type="text/javascript">
+   $(window).load(function(){
+   	$(".twitter-typeahead").on('click', function(){    
+   	    if ($(".twitter-typeahead").length){
+   	        $(".bootstrap-tagsinput").prepend($(".twitter-typeahead"))
+   	    }
+   	});
+   	$(".twitter-typeahead").keydown(function(e) {
+   		if(e.which == 13) {
+   	   		if ($(".twitter-typeahead").length){
+   		        $(".bootstrap-tagsinput").prepend($(".twitter-typeahead"))
+   		    }
+     		}
+   	   
+   	});
+   });
+   
+</script>
 <% if logged_in? %>
 <% @year_of_study = current_user.year_of_study %>
 <% @course = current_user.course_id %>
 <% end %>
-
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
-	<div class="container">
-		<h1>Pathway Search</h1>
-	</div>
+   <div class="container">
+      <h1>Pathway Search</h1>
+   </div>
 </div>
 <div id="white-strip-pathway">
-	<div class="container">
-		<div class="col-md-12">
-			<div class="row">
-				<div class="col-md-4 step">
-					<div class="numberCircle">1</div> My Details
-                
-				
-				</div>
-				<div class="col-md-4 step current">
-					<div class="numberCircle current-circle">2</div> Choose Interests & Careers
-                
-				
-				</div>
-				<div class="col-md-4 step">
-					<div class="numberCircle">3</div> Results and selection
-                
-				
-				</div>
-			</div>
-		</div>
-	</div>
+   <div class="container">
+      <div class="col-md-12 col-md-offset-1">
+         <div class="row">
+            <div class="col-md-4 step">
+               <div class="numberCircle">1</div>
+               My Details
+            </div>
+            <div class="col-md-4 step current">
+               <div class="numberCircle current-circle">2</div>
+               Choose Interests & Careers
+            </div>
+            <div class="col-md-4 step">
+               <div class="numberCircle">3</div>
+               Results and selection
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
 <% if @course_obj.nil? || @year_of_study.to_i < 1 || @year_of_study.to_i > 7 %>
 <div id="page">
-	<div class="container">
-		<div class="col-md-10 login-card col-md-offset-1">
-			<div class="col-md-12">
-				<div class="row">
-					<h1>Something went wrong.</h1>
-					<h4>Please try again.</h4>
-				</div>
-			</div>
-		</div>
-
-		</div>
+<div class="container">
+   <div class="col-md-10 login-card col-md-offset-1">
+      <div class="col-md-12">
+         <div class="row">
+            <h1>Something went wrong.</h1>
+            <h4>Please try again.</h4>
+         </div>
+      </div>
+   </div>
+</div>
 <% else %>
-
-
 <div id="page">
-	<div class="container">
-		<div class="col-md-10 login-card col-md-offset-1">
-			<div class="col-md-12">
-				<div class="row">
-					<h1>Let's find out about your interests and aspirations.</h1>
-					<h4>Use the search bar below to look for things. When done, click "View results".</h4>
-				</div>
-				<div class="row">
-					<h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course_obj.name %> student.
-					
-					</h5>
-				</div>
-				<form action="<%= pathway_search_view_results_path %>", method="get">
-					<div class="row" >
-						<div class="col-md-12" style="margin-top: 20px;padding-left:0px"><%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}, :required => true) %>
-							<script>
-							var tags = <%=  raw all_tag_name_of_course @course_obj %>;
-							// Remove the previously rendered search bar
-							$("div.bootstrap-tagsinput").remove();
-							var tags = new Bloodhound({
-								datumTokenizer: Bloodhound.tokenizers.whitespace,
-								queryTokenizer: Bloodhound.tokenizers.whitespace,
-								local: tags
-							});
-
-							tags.initialize();
-
-							$('input#chosen_tags').tagsinput({
-								typeaheadjs: {
-									name: 'tags',
-									source: tags.ttAdapter()
-								},
-								freeInput: false
-							});
-
-							$('input#chosen_tags').focus();
-						
-							</script>
-						</div>
-					</div>
-					<div class="row" style="border-top:1px dotted #dfe2e1;margin-top:50px;" >
-						<div class="col-md-12" style="margin-top: 30px;padding-left:0px">
-							<div class="form-group">
-								<input type="hidden" value="<%= @year_of_study %>" name="year">
-									<input type="hidden" value="<%= @course %>" name="course">
-										<button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>
-										<br />
-									</div>
-									<div class="form-group"><%= link_to "< Back to previous page", "#", method: :get %>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		<% end %>
+   <div class="container">
+      <div class="col-md-10 login-card col-md-offset-1">
+         <div class="col-md-12">
+            <div class="row">
+               <h1>Let's find out about your interests and aspirations.</h1>
+               <h4>Use the search or choose tags directly to make your selection. When done, click "View results".</h4>
+            </div>
+            <div class="row">
+               <h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course_obj.name %> student.
+               </h5>
+            </div>
+            <form action="<%= pathway_search_view_results_path %>", method="get">
+               <% if tag_names.size == 0 %>
+               <div class="row" style="margin-top:20px;">
+                  <h4 style="margin:30px 0px" class="text-center">Unfortunately, we couldn't find any tags for you at this time. Please try again later.</h4>
+               </div>
+               <% else %>
+               <div class="row" style="margin-top:20px;">
+                  <div id="choose-page">
+                     <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#choose">Choose directly</a></li>
+                        <li><a data-toggle="tab" href="#search">Search for tags</a></li>
+                        <li style="float:right;"><a href="javascript:void()" onclick="window.location.reload()" style="border-bottom: 0px;"><i class="fa fa-times" aria-hidden="true"></i> RESET SEARCH</a></li>
+                     </ul>
+                     <script>
+                        function myFunction() {
+                            // Declare variables
+                            var input, filter, ul, li, a, i;
+                            input = document.getElementById('quick-filter-bar');
+                            filter = input.value.toUpperCase();
+                            ul = document.getElementById("modulect-tags");
+                            li = ul.getElementsByTagName('li');
+                        
+                            // Loop through all list items, and hide those who don't match the search query
+                            for (i = 0; i < li.length; i++) {
+                                a = li[i].getElementsByTagName("label")[0];
+                                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                    li[i].style.display = "";
+                                } else {
+                                    li[i].style.display = "none";
+                                }
+                            }
+                        }
+                     </script>
+                     <div class="tab-content" style="margin-top:30px;">
+                        <div id="choose" class="tab-pane fade in active">
+                           <div class="row">
+                              <div class="col-md-9">
+                                 <input type="text" id="quick-filter-bar" onkeyup="myFunction()" placeholder="Quick filter tags">
+                              </div>
+                              <div class="col-md-3" id="choose-tag-filter">
+                                 <div style="margin-bottom:5px;font-size:13px">Select tag types:</div>
+           <select class="tag-type-select selectpicker" >
+            <option value="all">All</option>
+            <option value="CareerTag">Careers</option>
+            <option value="InterestTag">Interests</option>
+            </select>
+            </div>
+            </div>
+            <script type="text/javascript">
+               $( ".tag-type-select" ).change(function() {
+                 var selectedEventType = this.options[this.selectedIndex].value;
+                 if (selectedEventType == "all") {
+                   $('#modulect-tags li').removeClass('hidden');
+                 } else {
+                   $('#modulect-tags li').addClass('hidden');
+                   $('#modulect-tags li[data-eventtype="' + selectedEventType + '"]').removeClass('hidden');
+                 }
+               });
+            </script>
+            <div id="tags-area" style="margin-top:20px;">
+            <ul id="modulect-tags">
+            <%  tag_names.sort.each do |tag| %>
+            <li data-eventtype="<%= Tag.find_by_name(tag).type%>">
+            <input type="checkbox" name="chosen_tags_c[]" id="<%= tag %>" value="<%= tag %>"class="chk-btn">
+            <label for="<%= tag %>"><%= tag %></label>
+            </li>
+            <% end %>
+            </ul>
+            </div>
+            </div>
+            <div id="search" class="tab-pane fade">
+            <div class="col-md-12" style="padding-left:0px">
+            <%= text_field_tag(:chosen_tags, nil, :placeholder => 'Start typing and we\'ll start suggesting', data: {:role => "tagsinput"}) %>
+            <script>
+               var tags = <%=  raw tag_names %>;
+               // Remove the previously rendered search bar
+               $("div.bootstrap-tagsinput").remove();
+               var tags = new Bloodhound({
+               	datumTokenizer: Bloodhound.tokenizers.whitespace,
+               	queryTokenizer: Bloodhound.tokenizers.whitespace,
+               	local: tags
+               });
+               
+               tags.initialize();
+               
+               $('input#chosen_tags').tagsinput({
+               	typeaheadjs: {
+               		name: 'tags',
+               		source: tags.ttAdapter()
+               	},
+               	freeInput: false
+               });
+               
+               $('input#chosen_tags').focus();
+               
+            </script>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            <% end %>
+            <div class="row" style="margin-top:30px;" >
+               <div class="col-md-12 text-right">
+                  <a href="<%= pathway_search_view_results_path %>?year=<%=@year_of_study%>&course=<%= @course %>">Want to view your course's structure?</a>
+               </div>
+               <div class="col-md-12" style="border-top:1px dotted #dfe2e1;padding-top:15px;margin-top: 10px;padding-left:0px">
+                  <% if tag_names.size > 0 %>
+                  <div class="form-group">
+                     <input type="hidden" value="<%= @year_of_study %>" name="year">
+                     <input type="hidden" value="<%= @course %>" name="course">
+                     <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;
+                     <br />
+                  </div>
+                  <% end %>
+                  <div class="form-group"><%= link_to "< Back to previous page", pathway_search_begin_path, method: :get %>
+                  </div>
+               </div>
+            </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+<% end %>

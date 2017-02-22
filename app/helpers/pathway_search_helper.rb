@@ -36,7 +36,12 @@ module PathwaySearchHelper
 
   # uses above helper to get all the tag names
   def all_tag_name_of_course(course)
-    all_tags_of_course(course).pluck(:name)
+    @all_tags = all_tags_of_course(course)
+    if !@all_tags.nil?
+      @all_tags = @all_tags.pluck(:name)
+    else
+      @all_tags = {}
+    end
   end
 
   # returns a string used to colour code card based on number of tags matched
@@ -50,14 +55,13 @@ module PathwaySearchHelper
     end
   end
 
-  #TO DO redefine
-  #def compulsory_modules_of_group(group)
-  #  @compulsory = []
-  #  group.uni_modules.select('uni_modules.*, groups_uni_modules.compulsory').each do |uni_module|
-  #    if uni_module.compulsory 
-  #      @compulsory << uni_module
-  #    end
-  #  end
-  #end
+  # retuns a default string if name not set
+  def check_pathway_name(input)
+    if input == "Pathway"
+      "Pathway (no name)"
+    else
+      input
+    end
+  end
 
 end
