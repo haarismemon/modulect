@@ -326,6 +326,10 @@ select.form-control{
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
+
+#choose-tag-filter {
+     padding-left:0px;
+}
 @media (max-width: 768px) {
     .navbar {
         position: absolute;
@@ -370,6 +374,10 @@ select.form-control{
     #modulect-nav .btn-drop:active {
         background: transparent;
         border: 0px;
+    }
+
+    #choose-tag-filter {
+         padding-left:15px;
     }
 }
 /** Footer stuff by Khalil **/
