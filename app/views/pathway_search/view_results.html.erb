@@ -88,32 +88,36 @@
                     <% if @current_options.include? (result.first) %>
                       <% @displayed << result.first %>
                       <% tagsmatched = result.second %>
-                      <div class="row login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="<%= result.first.id %>">
-                        <div class="col-md-4" style="width: 75%">
-                          <p> <%= result.first.name %> </p>
-                        </div>
-                        <div class="col-md-1 tag-match-figure" style="font-size:18px;">
-                         <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
-                        </div>
-                        <div class="col-md-1" style="font-size: 18px; float: right">
-                          <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, result.first, method: :get %>
-                        </div>
+                      <div class ="row">
+                        <button type="button" class="login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="optButton">
+                          <div class="col-md-4" style="width: 75%">
+                            <p> <%= result.first.name %> </p>
+                          </div>
+                          <div class="col-md-1 tag-match-figure" style="font-size:18px;">
+                           <%= percentage_tag tagsmatched.length, @chosen_tags.length %>
+                          </div>
+                          <div class="col-md-1" style="font-size: 18px; float: right">
+                            <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, result.first, method: :get %>
+                          </div>
+                        </button>
                       </div>
                     <% end %>
                   <% end %>
                   <% @current_options.each do |opt| %>
                     <% if !@displayed.include? opt %>
                       <% @displayed << opt %>
-                      <div class="row login-card res-card result-card-orange res-btn" id="<%= opt.id %>">
-                        <div class="col-md-4" style="width: 75%">
-                          <p> <%= opt.name %> </p>
-                        </div>
-                        <div class="col-md-1 tag-match-figure" style="font-size:18px;">
-                          <p> 0&#37; </p>
-                        </div>
-                        <div class="col-md-1" style="font-size: 18px; float: right">
-                          <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, (UniModule.find(opt)), method: :get %>
-                        </div>
+                      <div class="row">
+                        <button type="button" class="login-card res-card result-card-orange res-btn" id="optButton">
+                          <div class="col-md-4" style="width: 75%">
+                            <p> <%= opt.name %> </p>
+                          </div>
+                          <div class="col-md-1 tag-match-figure" style="font-size:18px;">
+                            <p> 0&#37; </p>
+                          </div>
+                          <div class="col-md-1" style="font-size: 18px; float: right">
+                            <%= link_to '<i class="fa fa-info-circle" aria-hidden="true"></i>'.html_safe, (UniModule.find(opt)), method: :get %>
+                          </div>
+                        </button>
                       </div>
                     <% end %>
                   <% end %>
@@ -220,12 +224,18 @@
     $(divs[year]).slideDown();
   }
 
-  function create_blank_cell(year) {
-    return "<button type=\"button\" class=\"row login-card res-card res-btn\" data-toggle=\"modal\" data-target=\"#optionsModalYear" + year + "\">" +
+  function create_blank_cell(year, index) {
+    return "<button type=\"button\" id=\"button" + year + index +  "\" class=\"row login-card res-card res-btn\" data-toggle=\"modal\" data-target=\"#optionsModalYear" + year + "\" onClick=\"reply_click(this.id)\" \">" +
         "<div class=\"col-md-12\" style=\"font-size: 18px; align: center\">" +
           "<p> + Pick a Module </p>" +
         "</div>" +
       "</button>"
+  }
+
+  function reply_click(clicked_id) {
+    lastClickedId = clicked_id;
+    console.log("update");
+    console.log("click: " + clicked_id);
   }
 
   function updateUI(tableArea){
@@ -290,8 +300,8 @@
       for(i=s1; i<4; i++){
         myTable +=
         "<tr>"+
-          "<td>" + create_blank_cell(year) + "</td>"+
-          "<td>" + create_blank_cell(year)   + "</td>"+
+          "<td>" + create_blank_cell(year, i) + "</td>"+
+          "<td>" + create_blank_cell(year, i)   + "</td>"+
         "</tr>";
       }
       myTable += "</table>";
@@ -321,6 +331,7 @@
 
     }
   }
+  var lastClickedId;
 
 
   $(document).ready(function(){
@@ -359,6 +370,14 @@
     document.getElementById('btn_year_<%=@year_of_study%>').click();
 
   });
+
+  $(document).delegate("#optButton", 'click', function(e) {
+    console.log(lastClickedId);
+      e.preventDefault();
+      var content = $(this).html();
+      $('#' + lastClickedId).replaceWith($('#optButton'));
+      console.log("here2");
+    });
 </script>
 
 
