@@ -103,6 +103,7 @@
                   <% end %>
                   <% @current_options.each do |opt| %>
                     <% if !@displayed.include? opt %>
+                      <% @displayed << opt %>
                       <div class="row login-card res-card result-card-orange res-btn" id="<%= opt.id %>">
                         <div class="col-md-4" style="width: 75%">
                           <p> <%= opt.name %> </p>
@@ -115,6 +116,9 @@
                         </div>
                       </div>
                     <% end %>
+                  <% end %>
+                  <% if @displayed.empty? %>
+                    <h2> Sorry. No Modules can be selected for this slot </h2>
                   <% end %>
                 </div>
                 <div class="modal-footer">
