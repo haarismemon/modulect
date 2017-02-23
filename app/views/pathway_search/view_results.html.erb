@@ -73,7 +73,8 @@
                       <% @remaining_credits = grp.total_credits %>
                       <% grp.uni_modules.each do |mod| %>
                         <% if !@displayed.include? mod %>
-                          <% if (@remaining_credits -= mod.credits) >= 0 %>
+                          <% temp_credits = @remaining_credits %>
+                          <% if (temp_credits -= mod.credits) >= 0 %>
                             <% @current_options << mod %>
                           <% end %>
                         <% else %>
@@ -84,12 +85,13 @@
                   <% end %>
 
                   <% @displayed = [] %>
+                  <% @i = 0 %>
                   <% @results.each do |result| %>
                     <% if @current_options.include? (result.first) %>
                       <% @displayed << result.first %>
                       <% tagsmatched = result.second %>
                       <div class ="row">
-                        <button type="button" class="login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="optButton">
+                        <button type="button" class="login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="optButton<%= @i %>" onClick="send_click(this.id)">
                           <div class="col-md-4" style="width: 75%">
                             <p> <%= result.first.name %> </p>
                           </div>
@@ -102,12 +104,13 @@
                         </button>
                       </div>
                     <% end %>
+                    <% @i +=1 %>
                   <% end %>
                   <% @current_options.each do |opt| %>
                     <% if !@displayed.include? opt %>
                       <% @displayed << opt %>
                       <div class="row">
-                        <button type="button" class="login-card res-card result-card-orange res-btn" id="optButton">
+                        <button type="button" class="login-card res-card result-card-orange res-btn" id="optButton<%= @i %>" onClick="send_click(this.id)">
                           <div class="col-md-4" style="width: 75%">
                             <p> <%= opt.name %> </p>
                           </div>
@@ -120,6 +123,7 @@
                         </button>
                       </div>
                     <% end %>
+                    <% @i += 1%>
                   <% end %>
                   <% if @displayed.empty? %>
                     <h2> Sorry. No Modules can be selected for this slot </h2>
@@ -238,6 +242,12 @@
     console.log("click: " + clicked_id);
   }
 
+  function send_click(clicker_id) {
+    lastClickerId = clicker_id;
+    console.log("update");
+    console.log("clicker: " + clicker_id);
+  }
+
   function updateUI(tableArea){
     var data = '<%=raw @course_obj.to_json(
       include:
@@ -332,6 +342,7 @@
     }
   }
   var lastClickedId;
+  var lastClickerId;
 
 
   $(document).ready(function(){
@@ -371,13 +382,15 @@
 
   });
 
-  $(document).delegate("#optButton", 'click', function(e) {
-    console.log(lastClickedId);
-      e.preventDefault();
-      var content = $(this).html();
-      $('#' + lastClickedId).replaceWith($('#optButton'));
-      console.log("here2");
-    });
+  for(j = 0; j < <%= @i %>; ++j) {
+    $(document).delegate("#optButton" + j, 'click', function(e) {
+      console.log(lastClickedId);
+        e.preventDefault();
+        var content = $(this).html();
+        $('#' + lastClickedId).replaceWith($('#' + lastClickerId));
+        console.log("here2");
+      });
+  }
 </script>
 
 
