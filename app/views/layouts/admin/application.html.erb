@@ -35,27 +35,16 @@ By default, it renders:
           Admin Dashboard
         </a>
       </li>
-      <li>
-        <a href="#">Dashboard</a>
-      </li>
-      <li>
-        <a href="#">Shortcuts</a>
-      </li>
-      <li>
-        <a href="#">Overview</a>
-      </li>
-      <li>
-        <a href="#">Events</a>
-      </li>
-      <li>
-        <a href="#">About</a>
-      </li>
-      <li>
-        <a href="#">Services</a>
-      </li>
-      <li>
-        <a href="#">Contact</a>
-      </li>
+      <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
+          <li>
+            <% if [:uni_modules, :courses, :departments, :users, :year_structures,:faculties].include? resource%>
+                <%= link_to(
+                        display_resource_name(resource),
+                        [namespace, resource]
+                    ) %>
+            <% end%>
+          </li>
+      <% end %>
     </ul>
   </div>
   <!-- /#sidebar-wrapper -->
