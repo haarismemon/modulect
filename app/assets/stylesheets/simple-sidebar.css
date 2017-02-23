@@ -127,3 +127,8 @@
         margin-right: 0;
     }
 }
+
+/*Custom additions to Sidebar*/
+#sidebar-title {
+    color: white;
+}
