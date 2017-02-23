@@ -53,6 +53,24 @@
               <% end %>
             <% end %>
           </div>
+          <div class="modal fade" id="selectionModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Select a Module:</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <%  end %>
           <button id="btn_all_years" class="btn btn-lg btn-block" type="button">show all</button>
         </div>
@@ -178,10 +196,10 @@
           "<p>" +  module.code + "</p>" +
           "<p>" +  module.name + "</p>" +
         "</div>" +
-        "<div class=\"col-md-2\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
+        "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
           "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
         "</div>" +
-        "<div class=\"col-md-2 tag-match-figure\" style=\"font-size:18px;\">" +
+        "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
           "<h4>" + Math.round((tagsmatched.length / <%= raw @chosen_tags %>.length) * 100) + " %</h4>"
         "</div>" +
       "</div>"
@@ -191,10 +209,10 @@
           "<p>" +  module.code + "</p>" +
           "<p>" + module.name + "</p>" +
         "</div>" +
-         "<div class=\"col-md-2\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
+         "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
           "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
         "</div>" +
-         "<div class=\"col-md-2 tag-match-figure\" style=\"font-size:18px;\">" +
+         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
           "<h4> 0% </h4>"
         "</div>" +
       "</div>"
@@ -213,6 +231,12 @@
   }
 
   function updateUI(tableArea){
+
+    var blank_cell = "<button type=\"button\" class=\"row login-card res-card res-btn\">" +
+        "<div class=\"col-md-12\" style=\"font-size: 18px; align: center\">" +
+          "<p> + Pick a Module </p>" +
+        "</div>" +
+      "</button>"
     var data = '<%=raw @course_obj.to_json(
       include:
         {year_structures:
@@ -249,10 +273,10 @@
       var myTable =
       "<table id =\"results_table_" + year + "\">"+
         "<tr>"+
-          "<th><div class=\"col-md-5 login-card\">" +
+          "<th><div class=\"col-md-12 login-card\">" +
                   "<h3>Semester 1</h3>" + 
           "</th>"+
-          "<th><div class=\"col-md-5 login-card\">" +
+          "<th><div class=\"col-md-12 login-card\">" +
                   "<h3>Semester 2</h3>" +
           "</th>"+
         "</tr>";
@@ -269,8 +293,8 @@
       for(i=s1; i<4; i++){
         myTable +=
         "<tr>"+
-          "<td>?</td>"+
-          "<td>?</td>"+
+          "<td>" + blank_cell + "</td>"+
+          "<td>" + blank_cell + "</td>"+
         "</tr>";
       }
       myTable += "</table>";

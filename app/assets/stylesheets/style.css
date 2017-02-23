@@ -36,10 +36,6 @@ a:active {
     -webkit-user-select:none;
 }
 
-.external-module-link{
-    margin-right: 15px;
-}
-
 footer {
     height: 60px;
     border-top: 1px solid #dfe2e1;
@@ -106,27 +102,10 @@ select.form-control{
     background: rgba(42, 178, 123, 0.7);
     color: #fff;
 }
-
 .btn:active {
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
-.red-btn {
-    background: #c55252;
-    box-shadow: 0px 3px 0px 0px #502b2b;
-}
-
-.red-btn:hover, .red-btn:focus{
-    background: rgba(197, 82, 82, 0.71);
-    box-shadow: 0px 3px 0px 0px #502b2b;
-}
-
-.red-btn:active{
-    background: #923e3e;
-    box-shadow: 0px 3px 0px 0px #502b2b;
-}
-
-
 .form-group {
     margin-bottom: 20px;
 }
@@ -181,35 +160,6 @@ select.form-control{
 
 #flash-container{
     margin-bottom:35px;
-}
-
-#saved-page .nav-tabs, #choose-page .nav-tabs {
-    border-bottom: 0px;
-}
-#saved-page .nav-tabs>li.active>a,
-#saved-page .nav-tabs>li.active>a:focus,
-#saved-page .nav-tabs>li.active>a:hover,
-#choose-page .nav-tabs>li.active>a,
-#choose-page .nav-tabs>li.active>a:focus,
-#choose-page .nav-tabs>li.active>a:hover {
-    background: transparent;
-    border: 0px;
-    color: #2ab27b;
-    border-bottom: 2px solid #2ab27b;
-    text-decoration: none
-}
-#saved-page .nav-tabs>li>a,
-#choose-page .nav-tabs>li>a {
-    border: 0px;
-    border-bottom: 1px solid #f9f9f9;
-    color: #555459;
-}
-#saved-page .nav>li>a:focus,
-#saved-page .nav>li>a:hover
-#choose-page .nav>li>a:focus,
-#choose-page .nav>li>a:hover {
-    background: transparent;
-    text-decoration: underline;
 }
 
 /** Feras' header stuff **/
@@ -326,21 +276,11 @@ select.form-control{
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
-
-#choose-tag-filter {
-     padding-left:0px;
-}
 @media (max-width: 768px) {
     .navbar {
         position: absolute;
-        padding-bottom: 0px;
         /*padding: 12px 5px;*/
     }
-
-    .navbar-header{
-        padding-bottom: 12px;
-    }
-
     [class*="col-"] {
         margin-bottom: 15px;
     }
@@ -368,16 +308,12 @@ select.form-control{
         color: #14563b;
         box-shadow: none;
         border: none;
-        text-decoration: none;
+        text-decoration: underline;
         background: transparent;
     }
     #modulect-nav .btn-drop:active {
         background: transparent;
         border: 0px;
-    }
-
-    #choose-tag-filter {
-         padding-left:15px;
     }
 }
 /** Footer stuff by Khalil **/
@@ -518,6 +454,10 @@ select.form-control{
 }
 /** Search stuff by Feras **/
 
+th, td {
+    padding-left: 20px;
+    padding-right: 20px;
+}
 .res-btn {
     padding-bottom: 5px;
     padding-left: 5px;
@@ -699,61 +639,6 @@ select.form-control{
     padding:15px 0px;
     -webkit-user-select:none;
 }
-#choose-page input.chk-btn {
-    display: none;
-}
-#choose-page input.chk-btn + label {
-    padding: 5px 8px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 2px;
-    color: #696969;
-    background: #eee;
-    font-size: 15px;
-    margin-bottom: 13px;
-    border: 1px solid #eee;
-    font-weight: normal;
-}
-#choose-page input.chk-btn:not(:checked) + label:hover {
-    border: 1px solid #333;
-    color: #333;
-}
-#choose-page input.chk-btn + label:active,
-#choose-page input.chk-btn:checked + label {
-    border: 1px solid #2ab27b;
-    background: #2ab27b;
-    color: #fff;
-}
-#tags-area ul {
-    list-style-type: none;
-    padding: 0;
-}
-#tags-area li {
-    list-style: none;
-    display: inline-block;
-}
-#quick-filter-bar {
-    box-shadow: none;
-    outline: none;
-    display: inline-block;
-    margin: 0;
-    font-size: 18px;
-    outline: none !important;
-    text-overflow: ellipsis;
-    width: 100% !important;
-    margin-bottom: 20px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px 6px;
-    color: #555;
-    vertical-align: middle;
-    border-radius: 4px;
-    line-height: 35px;
-}
-#quick-filter-bar:focus {
-    box-shadow: 0 0.4px 0.4px rgba(42, 178, 123, 0) inset, 0 0 6px rgba(42, 178, 123, 0) !important;
-    border: 1px solid #2ab27b;
-}
 
 @media only screen and (max-width: 560px) {
     #footer-logo {
@@ -797,7 +682,7 @@ select.form-control{
         color: #14563b;
         box-shadow: none;
         border: none;
-        text-decoration: none;
+        text-decoration: underline;
         background: transparent;
     }
     #modulect-nav .btn-drop:active {
