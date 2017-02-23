@@ -301,22 +301,27 @@
     for(year=1; year<=js_course.year_structures.length; year++){
       var targetDiv = document.getElementById("div_year_" + (year)); //div_year_i
       targetDiv.innerHTML = "Requied modules in year " + year + "<br/>";
-      var required_group = js_course.year_structures[year-1].groups[0].uni_modules;
+      var required_modules = [];
+      for(group = 0; group < js_course.year_structures[year-1].groups.length; ++group) {
+        if(js_course.year_structures[year-1].groups[group].compulsory) {
+          required_modules.push.apply(required_modules, js_course.year_structures[year-1].groups[group].uni_modules);
+        }
+      }
       var modules_year_long = [];
       var modules_first_semester = [];
       var modules_second_semester = [];
       var modules_any_semester = [];
-      for(module=0; module<required_group.length; module++){
-        if(required_group[module].semester == 3){
-          modules_year_long.push(required_group[module]);
-        }else if(required_group[module].semester == 2){
-          modules_second_semester.push(required_group[module]);
-        }else if(required_group[module].semester == 1){
-          modules_first_semester.push(required_group[module]);
+      for(module=0; module<required_modules.length; module++){
+        if(required_modules[module].semester == 3){
+          modules_year_long.push(required_modules[module]);
+        }else if(required_modules[module].semester == 2){
+          modules_second_semester.push(required_modules[module]);
+        }else if(required_modules[module].semester == 1){
+          modules_first_semester.push(required_modules[module]);
         }else{
-          modules_any_semester.push(required_group[module]);
+          modules_any_semester.push(required_modules[module]);
         }
-        targetDiv.innerHTML += required_group[module].name + " (" + required_group[module].credits + " credits)<br/>";
+        targetDiv.innerHTML += required_modules[module].name + " (" + required_modules[module].credits + " credits)<br/>";
       }
       targetDiv.innerHTML += "1st semester: " + modules_first_semester.length + "<br/>";
       targetDiv.innerHTML += "2nd semester: " + modules_second_semester.length + "<br/>";
