@@ -20,6 +20,8 @@ By default, it renders:
   <meta name="viewport" content="initial-scale=1" />
   <title><%= content_for(:title) %> | <%= Rails.application.class.parent_name.titlecase %></title>
   <%= render "stylesheet" %>
+  <!--Sidebar Custom CSS-->
+  <link href="stylesheets/simple-sidebar.css" rel="stylesheet">
   <%= csrf_meta_tags %>
 </head>
 
