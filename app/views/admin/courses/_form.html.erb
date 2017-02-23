@@ -29,37 +29,10 @@ and renders all form fields for a resource's editable attributes.
     <% end %>
 
     <% page.attributes.each_with_index do |attribute, index| -%>
-        <% if index == 3 && attribute.html_class == "has-many" %>
-            <div class="field-unit field-unit--<%= attribute.html_class %>">
-              <%= render_field attribute, f: f %> <a class="button" onclick="spec1()"> Create new structure</a>
-            </div>
-            <div class="flash-alert to-hide">
-              <% @year_struc = YearStructure.new %>
-              <form></form>
-              <%= form_for @year_struc, url: admin_create_structure_path, :html => { :method => 'GET' } do |e| %>
-
-
-
-
-        <span class="new-form">
-        <div class="form-group" style="margin-top:10px;">
-          *Once you add a structure you can add groups after submission
-          <label for="inputName" class="sr-only">Name of course</label>
-          <%= e.text_field :year_of_study, placeholder: 'Name', class: 'form-control text-field' %>
-        </div>
-
-          <%= e.submit("Add year structure", url: admin_create_structure_path,:class => "add-struc-button") %>
-        </span>
-
-
-              <% end %>
-
-            </div>
-        <% else %>
             <div class="field-unit field-unit--<%= attribute.html_class %>">
               <%= render_field attribute, f: f %>
             </div>
-        <% end %>
+
     <% end -%>
 
     <div class="form-actions">
