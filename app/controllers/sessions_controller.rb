@@ -8,6 +8,11 @@ class SessionsController < ApplicationController
 
   def create
     @user = User.find_by(email: params[:session][:email].downcase)
+    @as = ""
+    if params.has_key?(:as) && !params[:as].empty?
+      @as = params[:as]
+    end
+
     if @user && @user.authenticate(params[:session][:password])
       if @user.activated?
         log_in @user
@@ -20,8 +25,12 @@ class SessionsController < ApplicationController
         redirect_to root_url
       end
     else
-      flash.now[:danger] = 'Invalid email/password combination'
-      render 'new'
+      flash[:danger] = 'Invalid email/password combination'
+      if @as == "admin"
+        redirect_to admin_login_path
+      else
+        redirect_to login_path
+      end
     end
   end
 
