@@ -57,7 +57,7 @@
               <% end %>
             <% end %>
           </div>
-          <div class="modal fade" id="optionsModal" tabindex="-1" role="dialog" aria-hidden="true" style="margin-top: 50px">
+          <div class="modal fade" id="optionsModalYear<%= y.year_of_study_before_type_cast.to_i %>" tabindex="-1" role="dialog" aria-hidden="true" style="margin-top: 50px">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -216,13 +216,15 @@
     $(divs[year]).slideDown();
   }
 
-  function updateUI(tableArea){
-
-    var blank_cell = "<button type=\"button\" class=\"row login-card res-card res-btn\" data-toggle=\"modal\" data-target=\"#optionsModal\">" +
+  function create_blank_cell(year) {
+    return "<button type=\"button\" class=\"row login-card res-card res-btn\" data-toggle=\"modal\" data-target=\"#optionsModalYear" + year + "\">" +
         "<div class=\"col-md-12\" style=\"font-size: 18px; align: center\">" +
           "<p> + Pick a Module </p>" +
         "</div>" +
       "</button>"
+  }
+
+  function updateUI(tableArea){
     var data = '<%=raw @course_obj.to_json(
       include:
         {year_structures:
@@ -284,8 +286,8 @@
       for(i=s1; i<4; i++){
         myTable +=
         "<tr>"+
-          "<td>" + blank_cell + "</td>"+
-          "<td>" + blank_cell + "</td>"+
+          "<td>" + create_blank_cell(year) + "</td>"+
+          "<td>" + create_blank_cell(year)   + "</td>"+
         "</tr>";
       }
       myTable += "</table>";
