@@ -201,7 +201,7 @@ select.form-control{
     color: #555459;
 }
 #saved-page .nav>li>a:focus,
-#saved-page .nav>li>a:hover
+#saved-page .nav>li>a:hover,
 #choose-page .nav>li>a:focus,
 #choose-page .nav>li>a:hover {
     background: transparent;
