@@ -1,8 +1,4 @@
-@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css?family=Raleway|Open+Sans|Varela+Round');
-@import url('awesome-bootstrap-checkbox.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css');
-
 ::selection {
     background: rgba(61, 201, 179, 0.6);
     /* WebKit/Blink Browsers */
