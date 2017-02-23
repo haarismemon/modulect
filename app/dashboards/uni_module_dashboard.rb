@@ -62,7 +62,6 @@ class UniModuleDashboard < Administrate::BaseDashboard
     :exam_percentage,
     :coursework_percentage,
     :more_info_url,
-    :requirements,
     :more_info_link,
   ].freeze
 
@@ -85,7 +84,6 @@ class UniModuleDashboard < Administrate::BaseDashboard
     :exam_percentage,
     :coursework_percentage,
     :more_info_url,
-    :requirements,
     :more_info_link,
   ].freeze
 

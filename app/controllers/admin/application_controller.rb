@@ -14,8 +14,7 @@ module Admin
       # TODO Add authentication logic here.
       if !admin_user
         store_location
-        flash[:success] = "Plese provide your administrator credentials"
-        redirect_to login_path
+        redirect_to admin_login_path
       end
     end
 
