@@ -16,17 +16,8 @@ and renders all form fields for a resource's editable attributes.
 
 <%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
 
-    <% if page.resource && page.resource.errors.size > 0 %>
-        <div id="error-box" class="flash-alert flash-alert-error">
-          <h3><%= pluralize(page.resource.errors.size, "error") %> prohibited this record from being saved</h3>
-          <p>There were problems with the following fields:</p>
-          <ul>
-            <% page.resource.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(page.resource) %>
 
     <% page.attributes.each_with_index do |attribute, index| -%>
             <div class="field-unit field-unit--<%= attribute.html_class %>">
