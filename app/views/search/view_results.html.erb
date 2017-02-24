@@ -24,9 +24,9 @@
                         queryTokenizer: Bloodhound.tokenizers.whitespace,
                         local: tags
                      });
-
+                     
                      tags.initialize();
-
+                     
                      $('input#chosen_tags').tagsinput({
                         typeaheadjs: {
                            name: 'tags',
@@ -34,7 +34,7 @@
                         },
                         freeInput: false
                      });
-
+                     
                      $('input#chosen_tags').focus();
                   </script>
                </div>
@@ -90,27 +90,19 @@
       <ul class="results-page-options">
          <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
          <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
-<%= request.original_url  %>
-%0A%0A
-Regards,%0A
-{Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
+            <%= request.original_url  %>
+            %0A%0A
+            Regards,%0A
+            {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
       </ul>
    </div>
 </div>
 <div class="row">
    <div class="col-md-10 col-md-offset-1">
       <% module_results.each do |r| %>
-
-
-<%= render partial: 'layouts/uni_module', locals: {uni_module: r.first, tags_matched: r.second, tags_searched_for: @temp_array, type: "search"}  %>
-
-
-
-
-
+      <%= render partial: 'layouts/uni_module', locals: {uni_module: r.first, tags_matched: r.second, tags_searched_for: @temp_array, type: "search"}  %>
       <% unimodule = r.first %>
       <% tagsmatched = r.second %>
-   
       <% end %>
    </div>
 </div>

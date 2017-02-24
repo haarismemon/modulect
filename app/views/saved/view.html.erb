@@ -76,13 +76,7 @@
                <div class="row">
                   <div class="col-md-12">
                      <% saved_modules.each do |r| %>
-
-
-
-
-<%= render partial: 'layouts/uni_module', locals: {uni_module: r.first, tags_matched: "", tags_searched_for: "", type: "saved"}  %>
-
-                     
+                     <%= render partial: 'layouts/uni_module', locals: {uni_module: r.first, tags_matched: "", tags_searched_for: "", type: "saved"}  %>
                      <% end %>
                   </div>
                </div>
