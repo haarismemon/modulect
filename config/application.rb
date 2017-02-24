@@ -14,5 +14,6 @@ module ProjectRun
 
     # Load all subclasses of the Tag model
     config.autoload_paths += %W(#{config.root}/app/models/tags)
+    config.exceptions_app = self.routes
   end
 end
