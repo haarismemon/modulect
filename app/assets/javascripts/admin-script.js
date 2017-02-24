@@ -4,9 +4,8 @@
  //= require bootstrap.min
  //= require_self
 
- var isClickedForNewStruc = false;
- var spec1 = function () {
-     $(".flash-alert").slideToggle("slow");
-     $(".add-struc-button").text('Close');
 
- }
+
+ $('.department-info select').change(function() {
+   $(" .instruction-label").fadeTo( "slow", 10 );;
+ });
