@@ -4,9 +4,13 @@
 <div id = "log"></div>
 <div align="center" style="margin-top: 10px">
 	<%  @course.year_structures.each do |y| %> 
-		<button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button">
+		<button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %>  type="button">
 			<%= y.year_of_study %>
 		</button>
+	<%  end %>
+	<button id="btn_all_years"  type="button">show all</button>
+
+	<%  @course.year_structures.each do |y| %> 
 		<div id=<%= "div_year_#{y.read_attribute_before_type_cast('year_of_study')}" %>>
 			Required modules<br/>
 			<% y.groups.each do |grp| %>
@@ -28,63 +32,115 @@
 			<% end %>
 		</div>
 	<%  end %>
-	<button id="btn_all_years" class="btn btn-lg btn-block" type="button">show all</button>
+
 </div>
 
 
 <script type="text/javascript">
-	function doLog(logObj, message){
-		logObj.innerHTML += message;
-	}
+(function() {
+	// this will hold arrays of modules for each year
+	// required_modules[0] - first year
+	// required_modules[0][0] - first year's modules that can go to any semester
+	// required_modules[0][1] - first year's 1st semester
+	// required_modules[0][2] - first year's 2nd semester
+	// required_modules[0][3] - first year's year long modules
+	var required_modules = [];
+	// oprional modules groups per year
+	var optional_modules = [];
+	var optional_modules_selected = [];
 
-	function showYear(divs, year, logObj){
+	// show and hide year div
+	function showYear(divs, year){
 		for(i=0; i<divs.length; i++){
 			if(i!=year)	$(divs[i]).slideUp();
 		}
 		$(divs[year]).slideDown();
 	}
 
-	function updateUI(tableArea){
+	function log(str){
+		console.log(str);
+	}
+	// year, group, index
+	function select_button_pressed(y, g, i){
+		$("#btn_opt_select_year_"+y+"_group_"+g+"_index_"+i).prop('disabled', true);
+	}
+
+	function optional_button_pressed(_year, _i){
+		log(_year + ", " + _i);
+		target = document.getElementById("div_opt_year_" + _year);
+		console.log (optional_modules[_year-1][_i]);
+		target.innerHTML = "";
+		for(i=0; i<optional_modules[_year-1][_i].uni_modules.length; i++){
+			target.innerHTML += "<button id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\">" + 
+			optional_modules[_year-1][_i].uni_modules[i].name + "</button><br/>";
+		}
+
+		for(i=0; i<optional_modules[_year-1][_i].uni_modules.length; i++){
+			(function(_year_, _i_, i_){
+				button = document.getElementById("btn_opt_select_year_" + _year_ + "_group_" + _i_+"_index_"+i_);
+				button.addEventListener("click", function(){
+					select_button_pressed(_year_,_i_,i_);
+				});
+			})(_year, _i, i);
+		}
+	}
+
+	// update UI - call every time the page is reloaded and/or new module is added to
+	// the year structure
+	function first_run(){
+
+		// get nested course JSON object from rails
 		var data = '<%=raw @course.to_json(
 			include:
 				{year_structures:
 					{include:
 						{groups:
 							{:include => :uni_modules}}}}).sub("'", "\\\\'") %>';
-		//data = data.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 		var js_course = jQuery.parseJSON(data);
 
+		// populate year divs with relevant information.
+		// generate table and buttons for optional modules
 		for(year=1; year<=js_course.year_structures.length; year++){
-			var targetDiv = document.getElementById("div_year_" + (year)); //div_year_i
-			targetDiv.innerHTML = "Requied modules in year " + year + "<br/>";
+			// find target <div> on the page
+			var targetDiv = document.getElementById("div_year_" + (year)); 
+			// assume 0th group is the required modules group
 			var required_group = js_course.year_structures[year-1].groups[0].uni_modules;
+			// sort modules
 			var modules_year_long = [];
 			var modules_fisrt_semester = [];
 			var modules_second_semester = [];
 			var modules_any_semester = [];
 			for(module=0; module<required_group.length; module++){
-				if(required_group[module].semester == 3){
-					modules_year_long.push(required_group[module]);
-				}else if(required_group[module].semester == 2){
-					modules_second_semester.push(required_group[module]);
-				}else if(required_group[module].semester == 1){
-					modules_fisrt_semester.push(required_group[module]);
-				}else{
-					modules_any_semester.push(required_group[module]);
-				}
-				targetDiv.innerHTML += required_group[module].name + " (" + required_group[module].credits + " credits)<br/>";
+				if     (required_group[module].semester == 3) modules_year_long.push(required_group[module]);
+				else if(required_group[module].semester == 2) modules_second_semester.push(required_group[module]);
+				else if(required_group[module].semester == 1) modules_fisrt_semester.push(required_group[module]);
+				else 									      modules_any_semester.push(required_group[module]);
 			}
-			targetDiv.innerHTML += "1st semester: " + modules_fisrt_semester.length + "<br/>";
-			targetDiv.innerHTML += "2nd semester: " + modules_second_semester.length + "<br/>";
-			targetDiv.innerHTML += "Year long: " + modules_year_long.length + "<br/>";
-			targetDiv.innerHTML += "Any semester: " + modules_any_semester.length + "<br/>";
+			var required_modules_this_year = [];
+			required_modules_this_year.push(modules_any_semester);
+			required_modules_this_year.push(modules_fisrt_semester);
+			required_modules_this_year.push(modules_second_semester);
+			required_modules_this_year.push(modules_year_long);
+			required_modules.push(required_modules_this_year);
+
+			var optional_modules_this_year = [];
+			var optional_modules_selected_this_year = [];
+			for(grp=1; grp<js_course.year_structures[year-1].groups.length; grp++){
+				optional_modules_this_year.push(js_course.year_structures[year-1].groups[grp]);
+				optional_modules_selected_this_year.push(false);
+			}
+			optional_modules.push(optional_modules_this_year);
+			optional_modules_selected.push(optional_modules_selected_this_year);
+
+
+			// build a table HTML code11
 			var myTable =
 			"<table id =\"results_table_" + year + "\">"+
 				"<tr>"+
 					"<th>Semester 1</th>"+
 					"<th>Semester 2</th>"+
 				"</tr>";
-			var s1 = 0;
+			var s1 = 0; // keeping track of column positions
 			var s2 = 0;
 			for(i=0; i<modules_year_long.length; i++){
 				myTable +=
@@ -101,8 +157,11 @@
 					"<td>?</td>"+
 				"</tr>";
 			}
-			myTable += "</table>";
-			targetDiv.innerHTML += myTable;
+			myTable += "</table><div id=\"optional_buttons_year_"+year+"\"></div><div>";
+			
+			
+			
+			targetDiv.innerHTML = myTable;
 
 
 
@@ -126,6 +185,25 @@
 				}
 			}
 
+
+			opt_buttons_div = document.getElementById("optional_buttons_year_"+year);
+			for(i=0; i<optional_modules[year-1].length; i++){	
+				out = "<button id = \"btn_opt_year_"+year+"_group_"+i+"\">Get " + 
+					optional_modules[year-1][i].total_credits + 
+					" credits";
+					opt_buttons_div.innerHTML += out;
+			}
+			opt_buttons_div.innerHTML += "<div id = \"div_opt_year_" + year + "\"></div>";
+
+
+			for(i=0; i<optional_modules[year-1].length; i++){
+				(function(_year, _i){
+					button = document.getElementById("btn_opt_year_" + _year + "_group_" + _i);
+					button.addEventListener("click", function(){
+						optional_button_pressed(_year, _i);
+					});
+				})(year, i);	
+			}
 		}
 	}
 
@@ -150,7 +228,7 @@
 		for(var i=0; i<btns.length; i++){
 			(function(_i){
 				$(btns[_i]).click(function () {
-					showYear(divs, _i, log);
+					showYear(divs, _i);
 				});
 			})(i);
 		}
@@ -160,7 +238,14 @@
 			}
 		});
 
-		var tableArea = document.getElementById('div_year_1');
-		updateUI(tableArea);
+		first_run();
+
+
+		// for debugging purposes only
+		// console.log(required_modules);
+		// console.log(optional_modules);
 	});
+
+
+})();
 </script>
