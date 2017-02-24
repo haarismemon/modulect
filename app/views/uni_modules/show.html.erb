@@ -4,6 +4,8 @@
       <h1>Module details</h1>
    </div>
 </div>
+
+
 <div id="page" style="padding-top:30px;">
 <div class="container">
 <div class="row">
@@ -51,57 +53,7 @@
             <% end %>
          </div>
       </div>
-      <div class="col-md-12 login-card res-card">
-         <div class="row">
-            <div class="col-md-9 result-card-main">
-               <h2><%= size_check @uni_module.code %> <%= size_check @uni_module.name %></h2>
-               <h4>Semester <%= size_check @uni_module.semester %> - <%= @uni_module.credits %> credits</h4>
-            </div>
-         </div>
-         <div style="margin-left:-15px;margin-top:20px;">
-            <div class="col-md-12" style="margin-bottom:15px;">
-               <h5>Description</h5>
-               <p><%= size_check @uni_module.description %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
-               <p>
-                  <%= size_check get_careers_for_module(@uni_module).sort.join(", ") %>
-               </p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
-               <p>TO DO</p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
-               <p><%= size_check @uni_module.lecturers %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
-               <p><%= size_check @uni_module.assessment_methods %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
-               <p>
-                  <% if @uni_module.exam_percentage.nil? || @uni_module.coursework_percentage.nil?%>
-                  No data available
-                  <% else %>
-                  <%= @uni_module.exam_percentage %>:<%= @uni_module.coursework_percentage %>
-                  <% end %>
-               </p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
-               <p><%= size_check @uni_module.pass_rate %></p>
-            </div>
-            <div class="col-md-12 text-right" style="margin-bottom:15px;">
-               <% if !@uni_module.more_info_link.nil? %>
-               <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, @uni_module.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
-               <% end %>
-            </div>
-         </div>
-      </div>
+      <%= render partial: 'layouts/uni_module', locals: {uni_module: @uni_module, tags_matched: "", tags_searched_for: "", type: "show"}  %>
       <div class="col-md-12 login-card res-card">
          <div class="row">
             <div class="col-md-9 result-card-main">
