@@ -26,7 +26,6 @@ class CourseDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
       :name,
       :departments,
-      :year_structures,
       :year
   ].freeze
 
