@@ -1,12 +1,24 @@
-<%= uni_module.code %>
-<%= tags_matched %>
-<%= type %>
-<%= tags_searched_for %>
+   <% if type == "search" %>
    <div class="col-md-12 login-card res-card result-card-<%= colour_code_card uni_module.code, tags_matched, tags_searched_for %>" >
+   <% elsif type == "saved" %>
+   <div class="col-md-12 login-card res-card" >
+
+   <% elsif type == "show" %>
+   <div class="col-md-12 login-card res-card" >
+        
+
+   <% end %>
          <div class="row">
+
+   <% if type == "search" %>
             <div class="col-md-9 result-card-main">
+    <% else %>
+            <div class="col-md-12 result-card-main">
+    <% end %>
                <h2><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
                <h4>Semester <%= size_check uni_module.semester %> - <%= uni_module.credits %> credits</h4>
+
+   <% if type != "show" %>
                <div style="margin-top:30px">
                   <% if logged_in? %>
                   <script>
@@ -46,7 +58,10 @@
                   <% end %>
                   <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= uni_module.code %>-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
                </div>
+
+<% end %>
             </div>
+            <% if type == "search" %>
             <div class="col-md-3 result-side-column result-card-side">
                <div class="row">
                   <h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
@@ -70,12 +85,24 @@
                   </div>
                </div>
             </div>
+            <% end %>
+
+
          </div>
+
+<% if type == "show" %>
+
+         <div id="result-<%= uni_module.code %>-more" style="margin-left:-15px;margin-top:20px;">
+<% else %>
+
          <div id="result-<%= uni_module.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
+<% end %>
             <div class="col-md-12" style="margin-bottom:15px;">
                <h5>Description</h5>
                <p><%= size_check uni_module.description %></p>
             </div>
+
+            <div class="row" style="margin-left:0px;">
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
                <p>
@@ -90,6 +117,8 @@
                <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
                <p><%= size_check uni_module.lecturers %></p>
             </div>
+            </div>
+            <div class="row" style="margin-left:0px;">
             <div class="col-md-4" style="margin-bottom:15px;">
                <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
                <p><%= size_check uni_module.assessment_methods %></p>
@@ -108,11 +137,12 @@
                <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
                <p><%= size_check uni_module.pass_rate %></p>
             </div>
+            </div>
              <div class="col-md-12 text-right" style="margin-bottom:15px;">
              <% if !uni_module.more_info_link.nil? %>
                <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, uni_module.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
             <% end %>
-               <%= link_to "Open page >", uni_module, method: :get, class: "btn btn-lg btn-small" %>
+              <% if type != "show" %> <%= link_to "Open page >", uni_module, method: :get, class: "btn btn-lg btn-small" %> <% end %>
              </div>
          </div>
       </div>
