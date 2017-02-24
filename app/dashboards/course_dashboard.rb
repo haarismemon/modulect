@@ -15,7 +15,7 @@ class CourseDashboard < Administrate::BaseDashboard
       description: DescriptionField ,
       created_at: Field::DateTime,
       updated_at: Field::DateTime,
-      year: Field::Number
+      year: YearField
   }.freeze
 
   # COLLECTION_ATTRIBUTES

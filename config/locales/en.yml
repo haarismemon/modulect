@@ -25,3 +25,5 @@ en:
     label:
       course:
         year: "Year of creation"
+      faculty:
+        departments: "Departments Accessible"

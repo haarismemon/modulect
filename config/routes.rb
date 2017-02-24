@@ -1,70 +1,44 @@
 Rails.application.routes.draw do
 
+  get 'errors/not_found'
+
+  get 'errors/internal_server_error'
+
   namespace :admin do
     resources :courses
-resources :departments
-resources :faculties
-resources :groups
-resources :tags
-resources :uni_modules
-resources :users
-resources :year_structures
-resources :career_tags
-resources :interest_tags
+    resources :departments
+    resources :faculties
+    resources :groups
+    resources :tags
+    resources :uni_modules
+    resources :users
+    resources :year_structures
+    resources :career_tags
+    resources :interest_tags
 
     root to: "courses#index"
   end
 
+  # General
   root 'search#home'
   get '/about', to: 'static_pages#about'
+  get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
 
-  resources :departments
-  resources :tags
-  resources :courses
-  post 'users/create_by_admin'
 
   # Authentication
   get     '/login',   to: 'sessions#new'
+  get     '/admin/login',   to: 'sessions#new'
   post    '/login',   to: 'sessions#create'
   delete  '/logout',  to: 'sessions#destroy'
-  post 'application/save_module'
-  post 'application/save_pathway'
-  post 'application/delete_pathway'
 
   # Signup
   get '/signup', to: 'users#new', as: 'signup'
   post 'signup', to: 'users#create'
 
-  # Profile
-  get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }
-  get '/*all/update_courses', to: 'users#update_courses', defaults: { format: 'js' }
-  post '/users/*all', to: 'users#update'
-
-
   # Uni Modules
-  resources :uni_modules do
-    member do
-      get :delete
-    end
-  end
-
-  # Departments
-  resources :departments do
-    member do
-      get :delete
-    end
-  end
-
-  resources :users, except: [:index]
-  post "users/new"
-
-  # Password resets
-  resources :password_resets, only: [:new, :create, :edit, :update]
-
-  # Account activations
-  resources :account_activations, only: [:edit]
+  resources :uni_modules, only: [:show]
 
   # Search
   get 'search/pathway_search'
@@ -76,5 +50,29 @@ resources :interest_tags
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
 
+  # Save pathways and modules used in ajax
+  post 'application/save_module'
+  post 'application/save_pathway'
+  post 'application/delete_pathway'
+
+  # Profile
+  get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }
+  get '/*all/update_courses', to: 'users#update_courses', defaults: { format: 'js' }
+  post '/users/*all', to: 'users#update'
+
+  # Users
+  resources :users, except: [:index]
+  post "users/new"
+  post 'users/create_by_admin'
+
+  # Password resets
+  resources :password_resets, only: [:new, :create, :edit, :update]
+
+  # Account activations
+  resources :account_activations, only: [:edit]
+
+  # Error pages
+  match "/404", :to => "errors#not_found", :via => :all
+  match "/500", :to => "errors#internal_server_error", :via => :all
 
 end
