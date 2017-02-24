@@ -37,6 +37,38 @@
 
 
 <script type="text/javascript">
+	/*
+	
+	TODO:
+	1) add valitation to select and deselect functions
+	2) add notifications
+	3) colour-code groups
+	4) right now when the year divs are updated, all the slide-down divs are getting hidden again
+		this should not be an issue since rather than having a slide-down div, we're more likely to have
+		a pop-up selection div
+
+
+	ISSUES:
+	1) What happens when the order of modules in optional groups is changed?
+
+
+
+
+
+
+
+
+	*/
+
+
+
+
+
+
+
+
+
+
 	// get JSON object from rails
 	var data = '<%=raw @course.to_json(
 		include:
@@ -185,17 +217,23 @@
 		target = document.getElementById("div_opt_year_" + _year);
 		target.innerHTML = "";
 		for(i=0; i<optional_modules_per_year[_year][_i].uni_modules.length; i++){
-			target.innerHTML += "<button id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\">" + 
-			optional_modules_per_year[_year][_i].uni_modules[i].name + "</button><br/>";
+			if(!selected_modules_per_year[_year][_i][i]){
+				target.innerHTML += "<button id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\">" + 
+				optional_modules_per_year[_year][_i].uni_modules[i].name + "</button><br/>";
+			}else{
+				target.innerHTML += "<button id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\">---selected---</button><br/>";
+			}
 		}
 
 		for(i=0; i<optional_modules_per_year[_year][_i].uni_modules.length; i++){
-			(function(_year_, _i_, i_){
-				button = document.getElementById("btn_opt_select_year_" + _year_ + "_group_" + _i_+"_index_"+i_);
-				button.addEventListener("click", function(){
-					selectModule(_year_,_i_,i_);
-				});
-			})(_year, _i, i);
+			if(!selected_modules_per_year[_year][_i][i]){
+				(function(_year_, _i_, i_){
+					button = document.getElementById("btn_opt_select_year_" + _year_ + "_group_" + _i_+"_index_"+i_);
+					button.addEventListener("click", function(){
+						selectModule(_year_,_i_,i_);
+					});
+				})(_year, _i, i);
+			}
 		}
 	}
 
@@ -203,14 +241,14 @@
 		// TODO: validate
 		selected_modules_per_year[year][group][module] = true;
 		udpateUI();
-		logStatus();
+		//logStatus();
 	}
 
 	function deselectModule(year, group, module){
 		// TODO: validate
 		selected_modules_per_year[year][group][module] = false;
 		udpateUI();
-		logStatus();
+		//logStatus();
 	}
 
 	function updateData(){
