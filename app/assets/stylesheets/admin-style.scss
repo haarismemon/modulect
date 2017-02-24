@@ -9,7 +9,14 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css');
 @import url('simple-sidebar.css');
 
+.flash-box {
+  margin-top: 10px;
+}
 
+.flash-box *{
+  background: dimgrey;
+  color: white;
+}
 .flash-alert {
   border: 1px solid #e8e8e8;
   background: #fff;
