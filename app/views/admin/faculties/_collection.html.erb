@@ -18,6 +18,7 @@ to display a collection of resources in an HTML table.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Collection
 %>
 <% is_department_table = (display_resource_name(collection_presenter.resource_name) == "Departments") %>
+<div class="table-responsive">
 <table class="collection-data table" aria-labelledby="page-title">
   <thead>
   <tr>
@@ -83,6 +84,7 @@ to display a collection of resources in an HTML table.
   <% end %>
   </tbody>
 </table>
+</div>
 <% if is_department_table == true %>
     <span class="instruction-label" %>*Modification to departments which this faculty has control over, can be done in the edit
      panel for this faculty</span>
