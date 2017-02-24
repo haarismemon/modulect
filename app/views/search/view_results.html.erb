@@ -24,9 +24,9 @@
                         queryTokenizer: Bloodhound.tokenizers.whitespace,
                         local: tags
                      });
-
+                     
                      tags.initialize();
-
+                     
                      $('input#chosen_tags').tagsinput({
                         typeaheadjs: {
                            name: 'tags',
@@ -34,7 +34,7 @@
                         },
                         freeInput: false
                      });
-
+                     
                      $('input#chosen_tags').focus();
                   </script>
                </div>
@@ -90,132 +90,19 @@
       <ul class="results-page-options">
          <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
          <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
-<%= request.original_url  %>
-%0A%0A
-Regards,%0A
-{Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
+            <%= request.original_url  %>
+            %0A%0A
+            Regards,%0A
+            {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
       </ul>
    </div>
 </div>
 <div class="row">
    <div class="col-md-10 col-md-offset-1">
       <% module_results.each do |r| %>
+      <%= render partial: 'layouts/uni_module', locals: {uni_module: r.first, tags_matched: r.second, tags_searched_for: @temp_array, type: "search"}  %>
       <% unimodule = r.first %>
       <% tagsmatched = r.second %>
-      <div class="col-md-12 login-card res-card result-card-<%= colour_code_card unimodule.code, tagsmatched, @temp_array%>" >
-         <div class="row">
-            <div class="col-md-9 result-card-main">
-               <h2><%= size_check unimodule.code %> <%= size_check unimodule.name %></h2>
-               <h4>Semester <%= size_check unimodule.semester %> - <%= unimodule.credits %> credits</h4>
-               <div style="margin-top:30px">
-                  <% if logged_in? %>
-                  <script>
-                     $(window).load(function(){
-                     $("#save-<%= unimodule.code%>").click(function() {
-                     $("#save-<%= unimodule.code%> span").html($("#save-<%= unimodule.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
-                     });});
-
-                  </script>
-                  <% if current_user.uni_modules.include?(unimodule) %>
-                  <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= unimodule.code%>"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span>
-                  </button>
-                  <% else %>
-                  <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= unimodule.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
-                  </button>
-                  <% end %>
-                  <script>
-                     $("button#save-<%= unimodule.code%>").on("click", function(){
-                         $.ajax({
-                            type: "POST",
-                             url: "<%=application_save_module_path(module_par: unimodule) %>",
-                             context: document.body
-                         })
-
-
-
-
-                     });
-                     
-
-                  </script>
-                  <% else %>
-                        <form action="/login" method="get">
-                            <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."id="save-<%= unimodule.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
-                            </button>
-                        </form>
-                  <% end %>
-                  <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= unimodule.code %>-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-               </div>
-            </div>
-            <div class="col-md-3 result-side-column result-card-side">
-               <div class="row">
-                  <h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
-                  <% if direct_search_check unimodule.code, tagsmatched, @temp_array %>
-                  <p>You searched for this directly</p>
-                  <% else %>
-                  <div class="tag-match-figure" style="font-size:18px;">
-                     <%= percentage_tag tagsmatched.length, @temp_array.length %>
-                  </div>
-                  <p><%= count_tag tagsmatched.length, @temp_array.length %></p>
-                  <% end %>
-               </div>
-               <div class="row" style="margin-top:10px">
-                  <style>
-                  </style>
-                  <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
-                  <div class="tags-area">
-                     <% tagsmatched.each do |t| %>
-                     <span title="" href="" class="color5"><%= t %></span>
-                     <% end %>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div id="result-<%= unimodule.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
-            <div class="col-md-12" style="margin-bottom:15px;">
-               <h5>Description</h5>
-               <p><%= size_check unimodule.description %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
-               <p>
-                  <%= size_check get_careers_for_module(unimodule).sort.join(", ") %>
-               </p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
-               <p>TO DO</p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
-               <p><%= size_check unimodule.lecturers %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
-               <p><%= size_check unimodule.assessment_methods %></p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
-               <p>
-                  <% if unimodule.exam_percentage.nil? || unimodule.coursework_percentage.nil?%>
-                  No data available
-                  <% else %>
-                  <%= unimodule.exam_percentage %>:<%= unimodule.coursework_percentage %>
-                  <% end %>
-               </p>
-            </div>
-            <div class="col-md-4" style="margin-bottom:15px;">
-               <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
-               <p><%= size_check unimodule.pass_rate %></p>
-            </div>
-             <div class="col-md-12 text-right" style="margin-bottom:15px;">
-             <% if !unimodule.more_info_link.nil? %>
-               <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, unimodule.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
-            <% end %>
-               <%= link_to "Open page >", unimodule, method: :get, class: "btn btn-lg btn-small" %>
-             </div>
-         </div>
-      </div>
       <% end %>
    </div>
 </div>
