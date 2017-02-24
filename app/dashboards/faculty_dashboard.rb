@@ -11,7 +11,6 @@ class FacultyDashboard < Administrate::BaseDashboard
       name: Field::String,
       departments: Field::HasMany,
       id: Field::Number,
-
       created_at: Field::DateTime,
       updated_at: Field::DateTime,
   }.freeze
