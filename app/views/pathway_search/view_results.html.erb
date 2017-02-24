@@ -40,20 +40,9 @@
             <% y.groups.each do |grp| %>
               <% if grp.compulsory %>
                 <% grp.uni_modules.each do |y_req_module| %>
-                <% @displayed << y_req_module %>
-                  <%= " - #{y_req_module[:name]} (#{y_req_module[:credits]} credits)" %> <br/>
+                  <% @displayed << y_req_module %>
                 <% end %>
                 <% @completed_groups << grp %>
-              <% end %>
-            <% end %>
-            <% y.groups.each do |grp| %>
-              <% if !grp.compulsory %>
-                <br/>
-                <%= "Select #{grp.total_credits} credits from #{grp.uni_modules.size} modules" %>
-                <br/>
-                <% grp.uni_modules.each do |y_opt_module| %>
-                  <%= " - #{y_opt_module[:name]} (#{y_opt_module[:credits]} credits)" %> <br/>
-                <% end %>
               <% end %>
             <% end %>
           </div>
@@ -84,14 +73,12 @@
                     <% end %>
                   <% end %>
 
-                  <% @displayed = [] %>
-                  <% @i = 0 %>
                   <% @results.each do |result| %>
                     <% if @current_options.include? (result.first) %>
                       <% @displayed << result.first %>
                       <% tagsmatched = result.second %>
                       <div class ="row">
-                        <button type="button" class="login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="optButton<%= @i %>" onClick="send_click(this.id)">
+                        <button type="button" class="login-card res-card result-card-<%= colour_code_card_group tagsmatched, @chosen_tags %> res-btn" id="optButton<%= result.first.id %>" onClick="send_click(this.id)">
                           <div class="col-md-4" style="width: 75%">
                             <p> <%= result.first.name %> </p>
                           </div>
@@ -104,13 +91,12 @@
                         </button>
                       </div>
                     <% end %>
-                    <% @i +=1 %>
                   <% end %>
                   <% @current_options.each do |opt| %>
                     <% if !@displayed.include? opt %>
                       <% @displayed << opt %>
                       <div class="row">
-                        <button type="button" class="login-card res-card result-card-orange res-btn" id="optButton<%= @i %>" onClick="send_click(this.id)">
+                        <button type="button" class="login-card res-card result-card-orange res-btn" id="optButton<%= opt.id %>" onClick="send_click(this.id)">
                           <div class="col-md-4" style="width: 75%">
                             <p> <%= opt.name %> </p>
                           </div>
@@ -123,7 +109,6 @@
                         </button>
                       </div>
                     <% end %>
-                    <% @i += 1%>
                   <% end %>
                   <% if @displayed.empty? %>
                     <h2> Sorry. No Modules can be selected for this slot </h2>
@@ -238,14 +223,10 @@
 
   function reply_click(clicked_id) {
     lastClickedId = clicked_id;
-    console.log("update");
-    console.log("click: " + clicked_id);
   }
 
   function send_click(clicker_id) {
     lastClickerId = clicker_id;
-    console.log("update");
-    console.log("clicker: " + clicker_id);
   }
 
   function updateUI(tableArea){
@@ -255,12 +236,10 @@
           {include:
             {groups:
               {:include => :uni_modules}}}}).sub("'", "\\\\'") %>';
-    //data = data.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
     var js_course = jQuery.parseJSON(data);
 
     for(year=1; year<=js_course.year_structures.length; year++){
-      var targetDiv = document.getElementById("div_year_" + (year)); //div_year_i
-      targetDiv.innerHTML = "Requied modules in year " + year + "<br/>";
+      var targetDiv = document.getElementById("div_year_" + (year));
       var required_modules = [];
       for(group = 0; group < js_course.year_structures[year-1].groups.length; ++group) {
         if(js_course.year_structures[year-1].groups[group].compulsory) {
@@ -281,12 +260,7 @@
         }else{
           modules_any_semester.push(required_modules[module]);
         }
-        targetDiv.innerHTML += required_modules[module].name + " (" + required_modules[module].credits + " credits)<br/>";
       }
-      targetDiv.innerHTML += "1st semester: " + modules_first_semester.length + "<br/>";
-      targetDiv.innerHTML += "2nd semester: " + modules_second_semester.length + "<br/>";
-      targetDiv.innerHTML += "Year long: " + modules_year_long.length + "<br/>";
-      targetDiv.innerHTML += "Any semester: " + modules_any_semester.length + "<br/>";
       var myTable =
       "<table id =\"results_table_" + year + "\">"+
         "<tr>"+
@@ -320,7 +294,6 @@
 
 
       var myTableOnPage = document.getElementById('results_table_'+year);
-      //myTableOnPage.rows[0].cells[1].innerHTML = 'Hello';
       for(i=0; i<modules_first_semester.length; i++){
         myTableOnPage.rows[s1+1].cells[0].innerHTML = create_module_card(modules_first_semester[i])
         s1++;
@@ -382,13 +355,11 @@
 
   });
 
-  for(j = 0; j < <%= @i %>; ++j) {
-    $(document).delegate("#optButton" + j, 'click', function(e) {
-      console.log(lastClickedId);
+  for(i = 0; i < <%= UniModule.distinct.count('id') %>; ++i) {
+    $(document).delegate('#optButton' + i, 'click', function(e) {
         e.preventDefault();
         var content = $(this).html();
         $('#' + lastClickedId).replaceWith($('#' + lastClickerId));
-        console.log("here2");
       });
   }
 </script>
