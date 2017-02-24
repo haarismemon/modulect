@@ -83,6 +83,36 @@
 	var required_modules_per_year = [];
 	var optional_modules_per_year = [];
 
+
+
+
+	var btns = [];
+	var divs = [];
+	for(i=1; i<10; i++){
+		var btn = document.getElementById("btn_year_"+i);
+		var div = document.getElementById("div_year_"+i);
+		if(!btn) break;
+		else{
+			$(div).hide();
+			total_years = i;
+			divs.push(div);
+			btns.push(btn);
+		}
+
+	}
+	for(var i=0; i<btns.length; i++){
+		(function(_i){
+			$(btns[_i]).click(function () {
+				showYear(divs, _i);
+			});
+		})(i);
+	}
+	$("#btn_all_years").click(function () {
+		for(i=0; i<divs.length; i++){
+			$(divs[i]).slideDown();
+		}
+	});
+		
 	// selected modules this year is all set to false
 	updateData();
 	selectModule(0,0,1);
@@ -104,7 +134,13 @@
 		console.log(selected_modules_per_year);
 	}
 
-
+	// show and hide year div
+	function showYear(divs, year){
+		for(i=0; i<divs.length; i++){
+			if(i!=year)	$(divs[i]).slideUp();
+		}
+		$(divs[year]).slideDown();
+	}
 
 
 	function udpateUI(){
@@ -217,7 +253,10 @@
 		for(i=0; i<optional_modules_per_year[_year][_i].uni_modules.length; i++){
 			if(!selected_modules_per_year[_year][_i][i]){
 				target.innerHTML += "<button id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\">" + 
-				optional_modules_per_year[_year][_i].uni_modules[i].name + "</button><br/>";
+				optional_modules_per_year[_year][_i].uni_modules[i].name + "<br/>credits: " +
+				optional_modules_per_year[_year][_i].uni_modules[i].credits + ", semester: " + 
+				optional_modules_per_year[_year][_i].uni_modules[i].semester+
+				"</button><br/>";
 			}else{
 				target.innerHTML += "<button id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\">---selected---</button><br/>";
 			}
