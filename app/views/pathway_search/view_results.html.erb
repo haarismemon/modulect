@@ -102,24 +102,7 @@
 
   ISSUES:
   1) What happens when the order of modules in optional groups is changed?
-
-
-
-
-
-
-
-
   */
-
-
-
-
-
-
-
-
-
 
   // get JSON object from rails
   var data = '<%=raw @course_obj.to_json(
@@ -134,9 +117,6 @@
   var selected_modules_per_year = [];
   var required_modules_per_year = [];
   var optional_modules_per_year = [];
-
-
-
 
   var btns = [];
   var divs = [];
@@ -167,10 +147,11 @@
     
   // selected modules this year is all set to false
   updateData();
-  selectModule(0,0,1);
-  selectModule(2,2,1);
-  selectModule(2,2,15);
-  selectModule(2,2,3);
+  <% @course_obj.year_structures.each do |year| %>
+    <% compulsory_modules_for_course_year(@course_obj, year).each do |comp_module| %>
+      <%= "selectModule(#{year.year_of_study_before_type_cast.to_i}, #{comp_module.first}, #{comp_module.second});" %>
+    <% end %>
+  <% end %>
   udpateUI();
 
   // debugging
@@ -385,6 +366,14 @@
     console.log("########################################");
     console.log("########### selecting module ###########");
     // TODO: validate
+    console.log("year: " + year);
+    console.log("group: " + group);
+    console.log("module: " + module);
+    console.log(optional_modules_per_year);
+    console.log("test");
+    console.log(optional_modules_per_year[0]);
+    console.log("test end");
+    console.log(optional_modules_per_year[year][group]);
     this_module = optional_modules_per_year[year][group].uni_modules[module];
 
     // 1. Make sure we don't go over max modules per group
