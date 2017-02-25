@@ -19,7 +19,7 @@ module Admin
     end
     def edit
       super
-      if(session[:data_save]["faculty"])
+      if(session[:data_save].present?&&session[:data_save]["faculty"])
         @_requested_resource = Faculty.new(session[:data_save]["faculty"])
       end
       set_data_session({"from_form" => true, "isEdit" =>true,"faculty" => @_requested_resource})

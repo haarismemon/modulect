@@ -35,7 +35,6 @@ module Admin
       end
     end
 
-
     # See https://administrate-docs.herokuapp.com/customizing_controller_actions
     # for more information
     private
@@ -47,18 +46,9 @@ module Admin
       else
         redirect_to(new_admin_faculty_path,
                     notice:"#{resource.name} has been added")
+        session[:data_save] = nil
       end
     end
 
-    # def find_location_of_request(resource)
-    #   session_for_adding = session[:data_save]
-    #   if !session_for_adding.nil? && session_for_adding[from_form]
-    #     return_array = [session_for_adding["location"], namespace, "department"]
-    #     session[:data_save] = nil
-    #     return_array
-    #   else
-    #     [namespace, resource]
-    #   end
-    # end
   end
 end
