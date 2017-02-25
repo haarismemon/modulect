@@ -35,7 +35,9 @@ and renders all form fields for a resource's editable attributes.
       <div class="field-unit field-unit">
         <label class="field-unit__label">Add New Tag</label>
         <input type="text" class="field-unit__field"/>
-        <button class="btn-danger">Add Tag</button>
+        <input type="radio" name="tag_type" value="InterestTag" checked> Interest
+        <input type="radio" name="tag_type" value="CareerTag"> Career
+        <%= link_to '<button type="button">New Tag!</button>'.html_safe, admin_create_tag_path(name: 'Operating Systems', type: 'InterestTag'), :method => :post %>
       </div>
     <% end %>
 
