@@ -15,5 +15,16 @@ module Admin
 
     # See https://administrate-docs.herokuapp.com/customizing_controller_actions
     # for more information
+
+    def create
+      @tag = Tag.create(name: params[:name], type: params[:type])
+
+      if @tag.save
+        redirect_to(admin_uni_modules_path)
+      else
+        redirect_to(new_admin_tag_path)
+      end
+    end
+
   end
 end
