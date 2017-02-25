@@ -34,10 +34,10 @@ and renders all form fields for a resource's editable attributes.
     <% if attribute.name == "tags" %>
       <div class="field-unit field-unit">
         <label class="field-unit__label">Add New Tag</label>
-        <input type="text" class="field-unit__field"/>
+        <input type="text" name="tag_name" class="field-unit__field"/>
         <input type="radio" name="tag_type" value="InterestTag" checked> Interest
         <input type="radio" name="tag_type" value="CareerTag"> Career
-        <%= link_to '<button type="button">New Tag!</button>'.html_safe, admin_create_tag_path(name: 'Operating Systems', type: 'InterestTag'), :method => :post %>
+        <%= link_to '<button type="button">New Tag!</button>'.html_safe, admin_create_tag_path, :method => :post %>
       </div>
     <% end %>
 
