@@ -8,6 +8,24 @@ module Admin
     #   @resources = Faculty.all.paginate(10, params[:page])
     # end
 
+    def new
+      super
+      set_data_session ({"from_form" => "true", "location" => "new"})
+    end
+    def show
+      super
+      #set data_session to nil
+      set_data_session()
+    end
+    def edit
+      super
+      logger.debug("+++1+++"+session[:data_save]["faculty"].to_s)
+      if(session[:data_save]["faculty"])
+        @_requested_resource = Faculty.new(session[:data_save]["faculty"])
+      end
+      set_data_session({"from_form" => true, "isEdit" =>true,"faculty" => @_requested_resource})
+    end
+
     # Define a custom finder by overriding the `find_resource` method:
     # def find_resource(param)
     #   Faculty.find_by!(slug: param)
@@ -15,5 +33,14 @@ module Admin
 
     # See https://administrate-docs.herokuapp.com/customizing_controller_actions
     # for more information
+    private
+    def set_data_session(value = nil)
+      session[:data_save] = value
+    end
+
+    def set_current_load
+
+    end
+
   end
 end
