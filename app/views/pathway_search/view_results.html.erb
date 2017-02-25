@@ -34,7 +34,7 @@
           <button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button">
             <%= y.year_of_study_before_type_cast.to_i.ordinalize %> Year
           </button>
-          <div id=<%= "div_year_#{y.read_attribute_before_type_cast('year_of_study')}" %>>
+          <div id=<%= "div_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> style="margin-top: 20px">
           </div>
           <div class="modal fade" id="optionsModalYear<%= y.year_of_study_before_type_cast.to_i %>" tabindex="-1" role="dialog" aria-hidden="true" style="margin-top: 50px">
             <div class="modal-dialog" role="document">
@@ -147,11 +147,7 @@
     
   // selected modules this year is all set to false
   updateData();
-  <% @course_obj.year_structures.each do |year| %>
-    <% compulsory_modules_for_course_year(@course_obj, year).each do |comp_module| %>
-      <%= "selectModule(#{year.year_of_study_before_type_cast.to_i}, #{comp_module.first}, #{comp_module.second});" %>
-    <% end %>
-  <% end %>
+  
   udpateUI();
 
   // debugging
@@ -243,7 +239,8 @@
             name = optional_modules_per_year[year][g].uni_modules[index].name;
             credits = optional_modules_per_year[year][g].uni_modules[index].credits;
             semester = optional_modules_per_year[year][g].uni_modules[index].semester;
-            button = "<button onclick = \"deselectModule(" + year + ", " + g + ", " + index + ")\">"+name+"</button>";
+            //button = "<button onclick = \"deselectModule(" + year + ", " + g + ", " + index + ")\">"+name+"</button>";
+            button = optional_modules_per_year[year][g].uni_modules[index];
             if(semester == 0) selected_modules_buttons_any_semester.push(button);
             if(semester == 1) selected_modules_buttons_first_semester.push(button);
             if(semester == 2) selected_modules_buttons_second_semester.push(button);
@@ -279,33 +276,33 @@
       myTableOnPage = document.getElementById('results_table_'+year);
       // fill required modules in 1st semester
       for(i=0; i<required_modules_per_year[year][1].length; i++){
-        myTableOnPage.rows[++s1].cells[0].innerHTML = required_modules_per_year[year][1][i].name;
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][1][i]);
       }
       for(i=0; i < selected_modules_buttons_first_semester.length; i++){
-        myTableOnPage.rows[++s1].cells[0].innerHTML = selected_modules_buttons_first_semester[i];
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(selected_modules_buttons_first_semester[i]);
       }
       // 2nd semester
       for(i=0; i<required_modules_per_year[year][2].length; i++){
-        myTableOnPage.rows[++s2].cells[1].innerHTML = required_modules_per_year[year][2][i].name;
+        myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][2][i]);
       }
       for(i=0; i < selected_modules_buttons_second_semester.length; i++){
-        myTableOnPage.rows[++s2].cells[1].innerHTML = selected_modules_buttons_second_semester[i];
+        myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i]);
       }
 
       // fill modules that can go to any semester
       for(i=0; i<required_modules_per_year[year][3].length; i++){
         if(s2<s1){
-          myTableOnPage.rows[++s2].cells[1].innerHTML = required_modules_per_year[year][3][i].name;
+          myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][3][i]);
         }else{
-          myTableOnPage.rows[++s1].cells[0].innerHTML = required_modules_per_year[year][3][i].name;
+          myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][3][i]);
         }
       }
       for(i=0; i < selected_modules_buttons_any_semester.length; i++){
         if(s2<s1){
-          myTableOnPage.rows[s2+1].cells[1].innerHTML = selected_modules_buttons_second_semester[i];
+          myTableOnPage.rows[s2+1].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i]);
           s2++;
         }else{
-          myTableOnPage.rows[s1+1].cells[0].innerHTML = selected_modules_buttons_second_semester[i];
+          myTableOnPage.rows[s1+1].cells[0].innerHTML = create_module_card(selected_modules_buttons_second_semester[i]);
           s1++;
         }
       }
@@ -366,14 +363,6 @@
     console.log("########################################");
     console.log("########### selecting module ###########");
     // TODO: validate
-    console.log("year: " + year);
-    console.log("group: " + group);
-    console.log("module: " + module);
-    console.log(optional_modules_per_year);
-    console.log("test");
-    console.log(optional_modules_per_year[0]);
-    console.log("test end");
-    console.log(optional_modules_per_year[year][group]);
     this_module = optional_modules_per_year[year][group].uni_modules[module];
 
     // 1. Make sure we don't go over max modules per group
