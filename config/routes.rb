@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     root to: "courses#index"
   end
 
+  post '/admin/create_tag',   to: 'admin/tags#create'
+
   # General
   root 'search#home'
   get '/about', to: 'static_pages#about'
