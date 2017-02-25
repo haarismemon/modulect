@@ -45,7 +45,7 @@
                   </button>
                   <h2 class="modal-title" id="exampleModalLabel">Select a Module:</h2>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="optionsModalBodyYear<%= y.year_of_study_before_type_cast.to_i %>">
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -217,8 +217,8 @@
     }
   }
 
-  function create_blank_cell(year, index) {
-    return "<button type=\"button\" id=\"button" + year + index +  "\" class=\"row login-card res-card res-btn\" data-toggle=\"modal\" data-target=\"#optionsModalYear" + year + "\" onClick=\"reply_click(this.id)\" \">" +
+  function create_blank_cell(year) {
+    return "<button type=\"button\" class=\"row login-card res-card res-btn\" data-toggle=\"modal\" data-target=\"#optionsModalYear" + year + "\">" +
         "<div class=\"col-md-12\" style=\"font-size: 18px; align: center\">" +
           "<p> + Pick a Module </p>" +
         "</div>" +
@@ -250,7 +250,7 @@
       }
 
 
-      targetDiv = document.getElementById("div_year_" + (year+1)); 
+      targetDiv = document.getElementById("div_year_" + (year+1));
       myTable = "<table id =\"results_table_" + year + "\"><tr><th>Semester 1</th><th>Semester 2</th></tr>";
       s1 = 0; // keeping track of column positions
       s2 = 0;
@@ -267,9 +267,9 @@
         s2++;
       }
       for(i=s1; i<4; i++){
-        myTable +="<tr><td>" + create_blank_cell(year, i) + "</td><td>" + create_blank_cell(year, i) + "</td></tr>";
+        myTable +="<tr><td>" + create_blank_cell(year+1) + "</td><td>" + create_blank_cell(year+1) + "</td></tr>";
       }
-      myTable += "</table><div id=\"optional_buttons_year_"+year+"\"></div><div>";      
+      myTable += "</table>";      
       targetDiv.innerHTML = myTable;
 
       // find the table we've just created
@@ -309,14 +309,14 @@
 
 
       // generate optional modules buttons
-      opt_buttons_div = document.getElementById("optional_buttons_year_"+year);
+      modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
       for(i=0; i<optional_modules_per_year[year].length; i++){  
         out = "<button id = \"btn_opt_year_"+year+"_group_"+i+"\">Get " + 
           optional_modules_per_year[year][i].total_credits + 
           " credits";
-          opt_buttons_div.innerHTML += out;
+          modalTarget.innerHTML += out;
       }
-      opt_buttons_div.innerHTML += "<div id = \"div_opt_year_" + year + "\"></div>";
+      modalTarget.innerHTML += "<div id = \"div_opt_year_" + year + "\"></div>";
 
 
       for(i=0; i<optional_modules_per_year[year].length; i++){
