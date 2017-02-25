@@ -20,18 +20,20 @@ and renders all form fields for a resource's editable attributes.
     <%= error_messages_for(page.resource) %>
 
   <% page.attributes.each_with_index do |attribute,index| -%>
-
+      <!--checks if current attribute is departments in for loop-->
       <% if (attribute.attribute.to_s == "departments") %>
+            <!--if it is, print the field with a button and instruction label -->
             <div class="field-unit field-unit--<%= attribute.html_class %> department-info">
               <%= render_field attribute, f: f %>
+              <!--link that redirects to new of department-->
           <%= link_to(
                   "New #{page.resource_name.titleize.downcase}",
                   [:new, namespace, page.resource_name],
                   class: "button",
               ) %>
-          <span class="field-unit__label instruction-label field-label">*Selecting a department which currently belongs to another faculty
+              <!--important instruction-->
+              <span class="field-unit__label instruction-label field-label">*Selecting a department which currently belongs to another faculty
               will cause for that department to be instead exclusivly linked to this faculty</span>
-
             </div>
 
       <%else%>

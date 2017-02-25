@@ -17,6 +17,7 @@ to display a collection of resources in an HTML table.
 
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Collection
 %>
+<!--checks if this table is being rendered within show of faculity-->
 <% is_department_table = (display_resource_name(collection_presenter.resource_name) == "Departments") %>
 <div class="table-responsive">
 <table class="collection-data table" aria-labelledby="page-title">
@@ -70,6 +71,8 @@ to display a collection of resources in an HTML table.
                     [:edit, namespace, resource],
                     class: "action-edit",
                 ) %>
+
+          <!--if table is not being rendered in show, add a delete button which removes record-->
           <% if !(is_department_table) %>
               <%= link_to(
                       t("administrate.actions.destroy"),
@@ -85,7 +88,8 @@ to display a collection of resources in an HTML table.
   </tbody>
 </table>
 </div>
-<% if is_department_table == true %>
+<!--if this table is being rendered within show then print this message below the table-->
+<% if is_department_table %>
     <span class="instruction-label" %>*Modification to departments which this faculty has control over, can be done in the edit
      panel for this faculty</span>
 <%end%>
