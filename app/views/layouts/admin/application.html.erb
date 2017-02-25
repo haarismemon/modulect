@@ -20,6 +20,7 @@ By default, it renders:
   <meta name="viewport" content="initial-scale=1" />
   <title><%= content_for(:title) %> | <%= Rails.application.class.parent_name.titlecase %></title>
   <%= render "stylesheet" %>
+  <%= javascript_include_tag 'administrate/application' %>
   <%= csrf_meta_tags %>
 </head>
 
@@ -66,9 +67,6 @@ By default, it renders:
 
 </div>
 <!-- /#wrapper -->
-
-<!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
