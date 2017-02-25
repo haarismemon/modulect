@@ -14,6 +14,8 @@ and renders all form fields for a resource's editable attributes.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
+
+
 <%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
 
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
@@ -29,12 +31,14 @@ and renders all form fields for a resource's editable attributes.
           <%= link_to(
                   "Add a department",
                   [:new, namespace, "department"],
-                  class: "button",
+                  {class: "button add-depart",:onclick=>"spec()"},
               ) %>
+
               <!--important instruction-->
               <span class="field-unit__label instruction-label field-label">*Selecting a department which currently belongs to another faculty
               will cause for that department to be instead exclusivly linked to this faculty</span>
             </div>
+
 
       <%else%>
 
