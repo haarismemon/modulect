@@ -19,7 +19,6 @@ module Admin
     end
     def edit
       super
-      logger.debug("+++1+++"+session[:data_save]["faculty"].to_s)
       if(session[:data_save]["faculty"])
         @_requested_resource = Faculty.new(session[:data_save]["faculty"])
       end
@@ -38,9 +37,7 @@ module Admin
       session[:data_save] = value
     end
 
-    def set_current_load
 
-    end
 
   end
 end
