@@ -148,7 +148,7 @@
   // selected modules this year is all set to false
   updateData();
   
-  udpateUI();
+  updateUI();
 
   // debugging
   // logStatus();
@@ -226,7 +226,7 @@
   }
 
 
-  function udpateUI(){
+  function updateUI(){
     for(year=0; year<js_course.year_structures.length; year++){
       // get all optional modules
       selected_modules_buttons_any_semester = [];
@@ -481,7 +481,7 @@
     }
     else{
       selected_modules_per_year[year][group][module] = true;
-      udpateUI();
+      updateUI();
     }
     //logStatus();
   }
@@ -489,7 +489,7 @@
   function deselectModule(year, group, module){
     // TODO: validate
     selected_modules_per_year[year][group][module] = false;
-    udpateUI();
+    updateUI();
     //logStatus();
   }
 
@@ -500,18 +500,18 @@
       // sort required modules for this year
       required_group = js_course.year_structures[year].groups[0].uni_modules;
       modules_year_long = [];
-      modules_fisrt_semester = [];
+      modules_first_semester = [];
       modules_second_semester = [];
       modules_any_semester = [];
       required_modules_this_year = [];
       for(module=0; module<required_group.length; module++){
         if     (required_group[module].semester == 3) modules_year_long.push(required_group[module]);
         else if(required_group[module].semester == 2) modules_second_semester.push(required_group[module]);
-        else if(required_group[module].semester == 1) modules_fisrt_semester.push(required_group[module]);
+        else if(required_group[module].semester == 1) modules_first_semester.push(required_group[module]);
         else                        modules_any_semester.push(required_group[module]);
       }
       required_modules_this_year.push(modules_any_semester);
-      required_modules_this_year.push(modules_fisrt_semester);
+      required_modules_this_year.push(modules_first_semester);
       required_modules_this_year.push(modules_second_semester);
       required_modules_this_year.push(modules_year_long);
 
