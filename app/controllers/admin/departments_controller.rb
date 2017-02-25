@@ -42,10 +42,10 @@ module Admin
     def locate_redirect_back(store,resource)
       if (store["isEdit"])
 
-        render(edit_admin_faculty_path(id: store["faculty"]["id"]),
+        redirect_to(edit_admin_faculty_path(id: store["faculty"]["id"]),
                     notice:"#{resource.name} has been added")
       else
-        render(new_admin_faculty_path,
+        redirect_to(new_admin_faculty_path,
                     notice:"#{resource.name} has been added")
       end
     end
