@@ -32,9 +32,9 @@ and renders all form fields for a resource's editable attributes.
 
   <% page.attributes.each do |attribute| -%>
     <% if attribute.name == "tags" %>
-      <div class="field-unit field-unit--<%= attribute.html_class %>">
-        <label>Add New Tag</label>
-        <input type="text"/>
+      <div class="field-unit field-unit">
+        <label class="field-unit__label">Add New Tag</label>
+        <input type="text" class="field-unit__field"/>
         <button class="btn-danger">Add Tag</button>
       </div>
     <% end %>
