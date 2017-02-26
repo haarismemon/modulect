@@ -6,10 +6,6 @@
 
 
 
- $('.department-info select').change(function() {
-   $(" .instruction-label").fadeTo( "slow", 10 );;
- });
-
 
 
 
