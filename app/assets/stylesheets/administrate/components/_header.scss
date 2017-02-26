@@ -2,7 +2,7 @@
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
-  padding: $base-spacing;
+  padding: $base-spacing 0 $base-spacing;
 }
 
 .header__heading {
