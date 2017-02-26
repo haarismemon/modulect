@@ -310,6 +310,7 @@
 
       // generate optional modules buttons
       modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
+      modalTarget.innerHTML = "";
       for(i=0; i<optional_modules_per_year[year].length; i++){  
         out = "<button id = \"btn_opt_year_"+year+"_group_"+i+"\">Get " + 
           optional_modules_per_year[year][i].total_credits + 
@@ -332,6 +333,7 @@
   }
 
   function optional_button_pressed(_year, _i){
+    console.log("div_opt_year_" + _year);
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
     // Sort the optional modules by their tags matched percentage
@@ -389,9 +391,9 @@
                                   "</div>"
                                 "</button>" +
                               "</div>";
-        }
-      }else{
+        } else {
         target.innerHTML += "<button id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\">---selected---</button><br/>";
+        }
       }
     }
 
