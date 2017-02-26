@@ -316,13 +316,13 @@
       // generate optional modules buttons
       modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
       modalTarget.innerHTML = "";
+      nav = "<ul class=\"nav nav-tabs\">";
       for(i=0; i<optional_modules_per_year[year].length; i++){  
-        out = "<button id = \"btn_opt_year_"+year+"_group_"+i+"\">Get " + 
-          optional_modules_per_year[year][i].total_credits + 
-          " credits";
-          modalTarget.innerHTML += out;
+        out = "<li><a role=\"tab\" data-toggle=\"tab\" id = \"btn_opt_year_"+year+"_group_"+i+"\">" + optional_modules_per_year[year][i].name + "</a></li>";
+          nav += out;
       }
-      modalTarget.innerHTML += "<div id = \"div_opt_year_" + year + "\"></div>";
+      nav += "</ul><div class=\"tab-pane fade in active\" id = \"div_opt_year_" + year + "\"></div>";
+      modalTarget.innerHTML += nav;
 
 
       for(i=0; i<optional_modules_per_year[year].length; i++){
