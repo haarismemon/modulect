@@ -8,14 +8,14 @@ class CourseDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-      departments: Field::HasMany,
-      year_structures: Field::HasMany,
-      id: Field::Number,
-      name: Field::String,
-      description: DescriptionField ,
-      created_at: Field::DateTime,
-      updated_at: Field::DateTime,
-      year: YearField
+    departments: Field::HasMany,
+    year_structures: Field::HasMany,
+    id: Field::Number,
+    name: Field::String,
+    description: DescriptionField,
+    year: YearField,
+    created_at: Field::DateTime,
+    updated_at: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -25,21 +25,23 @@ class CourseDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
       :name,
-      :departments,
-      :year_structures,
+    :departments,
+    :year_structures,
       :year
+
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
       :id,
-      :departments,
-      :year_structures,
+      :name,
       :description,
-      :created_at,
-      :updated_at,
+    :departments,
+    :year_structures,
       :year,
+  :created_at,
+    :updated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -48,17 +50,15 @@ class CourseDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
       :name,
       :description,
-      :departments,
-      :year_structures,
-      :year,
+    :departments,
+    :year_structures,
+    :year,
   ].freeze
 
   # Overwrite this method to customize how courses are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(course)
-    course.name
+   def display_resource(course)
+     course.name
   end
-
-
 end

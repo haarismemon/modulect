@@ -14,17 +14,48 @@ and renders all form fields for a resource's editable attributes.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
-<%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
+<%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
     <%= error_messages_for(page.resource) %>
 
-  <% page.attributes.each do |attribute| -%>
-    <div class="field-unit field-unit--<%= attribute.html_class %>">
-      <%= render_field attribute, f: f %>
-    </div>
-  <% end -%>
+    <% page.attributes.each do |attribute| -%>
+        <!--checks if render request came from faculty form-->
+        <% current_field_name = attribute.attribute.to_s %>
+        <!--print info message on top of courses field-->
+        <% if (current_field_name=="courses") %>
+            <span class="instruction-label form-actions">*courses can be linked at a later time if preferred</span>
+        <% end %>
+        <!--skip rendering the courses field if request came from faculty form-->
+                <%to_hide_or_not =
+                      (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["isEdit"])?
+                          "hide-content":""%>
+        <%set_drop_down_theme = current_field_name == "faculty"?"hasMany":""%>
 
-  <div class="form-actions">
-    <%= f.submit %>
-  </div>
+            <div class="field-unit field-unit--<%= attribute.html_class %> <%=to_hide_or_not%> <%= set_drop_down_theme%>">
+              <%= render_field attribute, f: f %>
+            </div>
+
+
+
+    <% end %>
+
+    <div class="form-actions">
+  <%= f.submit %>
+</div>
 <% end %>
+
+
+<!--js embedded with ruby-->
+
+<script>
+    $( document ).ready(function() {
+        <% data_store = session[:data_save]%>
+        for(var i = 0 ; i<$('.hide-content option').length;i++){
+            if($(".hide-content option[value='"+i+"']").text() == "<%= data_store.present? ?
+             ((data_store["faculty"].present?)? data_store["faculty"]["name"]:"") : "" %>"){
+                $(".hide-content select")[0].selectedIndex = i;
+                break;
+            }
+        }
+    });
+</script>
