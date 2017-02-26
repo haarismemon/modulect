@@ -180,7 +180,7 @@
   }
 
 
-  function create_module_card(module) {
+  function create_module_card(module, isOptional, year, group, modIndex) {
     var result = <%= raw @results.to_json%>.filter(function(mod) {
       if(mod[0].id == module.id){
         return mod;
@@ -189,31 +189,39 @@
 
     if(result.length > 0) {
       var tagsmatched = result[0][1];
-      return "<div class=\"row login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id=\"" + module.id + "\">" +
+      var moduleCard =  "<div class=\"row login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id=\"" + module.id + "\">" +
         "<div class=\"col-md-8\">" +
           "<p>" +  module.code + "</p>" +
           "<p>" +  module.name + "</p>" +
         "</div>" +
         "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
-          "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
-        "</div>" +
+          "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
+           if(isOptional) {
+            moduleCard += "<button onclick = \"deselectModule(" + year + ", " + group + ", " + modIndex + ")\">x</button>";
+          }
+          moduleCard += "</div>" +
         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
           "<h4>" + Math.round((tagsmatched.length / <%= raw @chosen_tags %>.length) * 100) + " %</h4>" +
         "</div>" +
       "</div>"
+      return moduleCard;
     } else {
-      return "<div class=\"row login-card res-card result-card-orange res-btn\" id=\"" + module.id + "\">" +
+      var moduleCard = "<div class=\"row login-card res-card result-card-orange res-btn\" id=\"" + module.id + "\">" +
         "<div class=\"col-md-8\">" +
           "<p>" +  module.code + "</p>" +
           "<p>" + module.name + "</p>" +
         "</div>" +
          "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
-          "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
-        "</div>" +
+          "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
+          if(isOptional) {
+            moduleCard += "<button onclick = \"deselectModule(" + year + ", " + group + ", " + modIndex + ")\">x</button>";
+          }
+          moduleCard += "</div>" +
          "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
           "<h4> 0% </h4>" +
         "</div>" +
       "</div>"
+      return moduleCard;
     }
   }
 
@@ -236,15 +244,12 @@
       for(g=0; g<optional_modules_per_year[year].length; g++){
         for(index=0; index<selected_modules_per_year[year][g].length; index++){
           if(selected_modules_per_year[year][g][index]){
-            name = optional_modules_per_year[year][g].uni_modules[index].name;
-            credits = optional_modules_per_year[year][g].uni_modules[index].credits;
             semester = optional_modules_per_year[year][g].uni_modules[index].semester;
-            //button = "<button onclick = \"deselectModule(" + year + ", " + g + ", " + index + ")\">"+name+"</button>";
-            button = optional_modules_per_year[year][g].uni_modules[index];
-            if(semester == 0) selected_modules_buttons_any_semester.push(button);
-            if(semester == 1) selected_modules_buttons_first_semester.push(button);
-            if(semester == 2) selected_modules_buttons_second_semester.push(button);
-            if(semester == 3) selected_modules_buttons_year_long.push(button);
+            sel_module = [optional_modules_per_year[year][g].uni_modules[index], year, g, index];
+            if(semester == 0) selected_modules_buttons_any_semester.push(sel_module);
+            if(semester == 1) selected_modules_buttons_first_semester.push(sel_module);
+            if(semester == 2) selected_modules_buttons_second_semester.push(sel_module);
+            if(semester == 3) selected_modules_buttons_year_long.push(sel_module);
           }
         }
       }
@@ -257,12 +262,12 @@
 
       // create the table and fill in year long modules first
       for(i=0; i<required_modules_per_year[year][0].length; i++){
-        myTable += "<tr><td colspan=2>" + create_module_card(required_modules_per_year[year][0][i]) + "</td></tr>";
+        myTable += "<tr><td colspan=2>" + create_module_card(required_modules_per_year[year][0][i], false, 0, 0, 0) + "</td></tr>";
         s1++;
         s2++;
       }
       for(i=0; i<selected_modules_buttons_year_long.length; i++){
-        myTable += "<tr><td colspan=2>" + create_module_card(selected_modules_buttons_year_long[i]) + "</td></tr>";
+        myTable += "<tr><td colspan=2>" + create_module_card(selected_modules_buttons_year_long[i][0], true, selected_modules_buttons_year_long[i][1], selected_modules_buttons_year_long[i][2], selected_modules_buttons_year_long[i][3]) + "</td></tr>";
         s1++;
         s2++;
       }
@@ -276,33 +281,33 @@
       myTableOnPage = document.getElementById('results_table_'+year);
       // fill required modules in 1st semester
       for(i=0; i<required_modules_per_year[year][1].length; i++){
-        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][1][i]);
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][1][i], false, 0, 0, 0);
       }
       for(i=0; i < selected_modules_buttons_first_semester.length; i++){
-        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(selected_modules_buttons_first_semester[i]);
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(selected_modules_buttons_first_semester[i][0], true, selected_modules_buttons_first_semester[i][1], selected_modules_buttons_first_semester[i][2], selected_modules_buttons_first_semester[i][3]);
       }
       // 2nd semester
       for(i=0; i<required_modules_per_year[year][2].length; i++){
-        myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][2][i]);
+        myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][2][i], false, 0, 0, 0);
       }
       for(i=0; i < selected_modules_buttons_second_semester.length; i++){
-        myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i]);
+        myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i][0], true, selected_modules_buttons_second_semester[i][1], selected_modules_buttons_second_semester[i][2], selected_modules_buttons_second_semester[i][3]);
       }
 
       // fill modules that can go to any semester
       for(i=0; i<required_modules_per_year[year][3].length; i++){
         if(s2<s1){
-          myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][3][i]);
+          myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0);
         }else{
-          myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][3][i]);
+          myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0);
         }
       }
       for(i=0; i < selected_modules_buttons_any_semester.length; i++){
         if(s2<s1){
-          myTableOnPage.rows[s2+1].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i]);
+          myTableOnPage.rows[s2+1].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i][0], true, selected_modules_buttons_second_semester[i][1], selected_modules_buttons_second_semester[i][2], selected_modules_buttons_second_semester[i][3]);
           s2++;
         }else{
-          myTableOnPage.rows[s1+1].cells[0].innerHTML = create_module_card(selected_modules_buttons_second_semester[i]);
+          myTableOnPage.rows[s1+1].cells[0].innerHTML = create_module_card(selected_modules_buttons_second_semester[i][0], true, selected_modules_buttons_second_semester[i][1], selected_modules_buttons_second_semester[i][2], selected_modules_buttons_second_semester[i][3]);
           s1++;
         }
       }
