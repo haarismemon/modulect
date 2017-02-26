@@ -56,28 +56,40 @@ and renders all form fields for a resource's editable attributes.
 
 <script>
     var cache = function () {
+        var dataStore = [];
         <% page.attributes.each_with_index do |attribute,index| -%>
         var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
         var valueOfText = $("[name*='"+attribute_name+"']").val()
-        if(valueOfText.length != 0){
-            localStorage['data_store'] = valueOfText;
-            console.log(localStorage['data_store'])
-        }
+        dataStore.push(valueOfText);
+
         <%end%>
+        localStorage['data_store']=JSON.stringify(dataStore)
+        console.log(dataStore.toString())
     }
 
     $( document ).ready(function() {
-        <% if session[:data_save].present? %>
-        if(localStorage['data_store'] != null){
-            <% page.attributes.each_with_index do |attribute,index| -%>
-            var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
-            var object_load = localStorage['data_store'] || '';
-            $("[name*='"+attribute_name+"']").val(object_load)
+            var data_to_be_loaded  = localStorage['data_store_accept'];
+            data_to_be_loaded = data_to_be_loaded? JSON.parse(data_to_be_loaded):null;
+
+            if(requestValidationCheck(localStorage['data_store'])&&data_to_be_loaded){
+              <% page.attributes.each_with_index do |attribute,index| -%>
+              var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+              var object_load = data_to_be_loaded[<%= index %>] || '';
+              $("[name*='"+attribute_name+"']").val(object_load)
 
             <%end%>
         }
-        <%end%>
-        localStorage = null;
+        localStorage['data_store'] = null;
+            localStorage['data_store_accept'] = null;
     });
+
+    //checks if request for caching was a valid one
+    var requestValidationCheck = function(cache_item){
+        var data  = cache_item;
+        if (!data || !JSON.parse(data)){
+            return true;
+        }
+       return false;
+    }
 
 </script>

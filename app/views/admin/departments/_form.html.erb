@@ -29,7 +29,7 @@ and renders all form fields for a resource's editable attributes.
                 <%to_hide_or_not =
                       (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["isEdit"])?
                           "hide-content":""%>
-        <%set_drop_down_theme = current_field_name == "faculty"?"hasMany":""%>
+        <%set_drop_down_theme = current_field_name == "faculty"?"":""%>
 
             <div class="field-unit field-unit--<%= attribute.html_class %> <%=to_hide_or_not%> <%= set_drop_down_theme%>">
               <%= render_field attribute, f: f %>
@@ -58,4 +58,17 @@ and renders all form fields for a resource's editable attributes.
             }
         }
     });
+
+    //two-way caching between faculty and department
+    $( document ).ready(function() {
+        data_request_store = localStorage['data_store'];
+        data_to_be_accepted = localStorage['data_store_accept'];
+        if((data_request_store&& JSON.parse(data_request_store))&&(!data_to_be_accepted || !JSON.parse(data_to_be_accepted))) {
+            localStorage['data_store_accept'] = data_request_store;
+        }else{
+            localStorage['data_store_accept'] = null;
+        }
+        localStorage['data_store'] = null;
+    });
+
 </script>
