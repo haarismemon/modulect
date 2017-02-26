@@ -31,14 +31,9 @@ and renders all form fields for a resource's editable attributes.
           <%= link_to(
                   "Add a department",
                   [:new, namespace, "department"],
-                  {class: "button add-depart",:onclick=>"spec()"},
+                  {class: "button add-depart",:onclick=>"cache()"},
               ) %>
-              <script>
-                var spec = function () {
 
-                }
-
-              </script>
               <!--important instruction-->
               <span class="field-unit__label instruction-label field-label">*Selecting a department which currently belongs to another faculty
               will cause for that department to be instead exclusivly linked to this faculty</span>
@@ -57,3 +52,32 @@ and renders all form fields for a resource's editable attributes.
     <%= f.submit %>
   </div>
 <% end %>
+
+
+<script>
+    var cache = function () {
+        <% page.attributes.each_with_index do |attribute,index| -%>
+        var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+        var valueOfText = $("[name*='"+attribute_name+"']").val()
+        if(valueOfText.length != 0){
+            localStorage['data_store'] = valueOfText;
+            console.log(localStorage['data_store'])
+        }
+        <%end%>
+    }
+
+    $( document ).ready(function() {
+        <% if session[:data_save].present? %>
+        if(localStorage['data_store'] != null){
+            <% page.attributes.each_with_index do |attribute,index| -%>
+            var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+            var object_load = localStorage['data_store'] || '';
+            $("[name*='"+attribute_name+"']").val(object_load)
+
+            <%end%>
+        }
+        <%end%>
+        localStorage = null;
+    });
+
+</script>

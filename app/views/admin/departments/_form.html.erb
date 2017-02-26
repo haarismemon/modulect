@@ -29,8 +29,9 @@ and renders all form fields for a resource's editable attributes.
                 <%to_hide_or_not =
                       (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["isEdit"])?
                           "hide-content":""%>
+        <%set_drop_down_theme = current_field_name == "faculty"?"hasMany":""%>
 
-            <div class="field-unit field-unit--<%= attribute.html_class %> <%=to_hide_or_not%>">
+            <div class="field-unit field-unit--<%= attribute.html_class %> <%=to_hide_or_not%> <%= set_drop_down_theme%>">
               <%= render_field attribute, f: f %>
             </div>
 

@@ -1,7 +1,8 @@
 /*
-
- *= require_self
+  *= require_self
  */
+
+//each sub-section is seperated by a comment
 
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css?family=Raleway|Open+Sans|Varela+Round');
@@ -9,14 +10,16 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css');
 @import url('simple-sidebar.css');
 
-.flash-box {
+//flash notice
+.flash-box{
   margin-top: 10px;
+  *{
+    background: dimgrey;
+    color: white;
+  }
 }
 
-.flash-box *{
-  background: dimgrey;
-  color: white;
-}
+//form error boxes
 .flash-alert {
   border: 1px solid #e8e8e8;
   background: #fff;
@@ -46,7 +49,6 @@
   margin-top: 20px;
 }
 
-
 #error-box{
   margin: 0px 0px 40px 0px;
 }
@@ -58,34 +60,36 @@
   }
 }
 
-.add-year{
-
-}
-
-.to-hide{
+//for fields that disapear
+.to-hide,.hide-content{
   display: none;
 }
-
+//instruction text
 .instruction-label{
   margin-top: 0px;
-
+  margin-right: 30px;
   font-size: 0.8em;
   color: #828282;
   text-wrap: avoid;
-
-
-
+  margin-top: 0px;
 }
 
+//special instruction text instance
 .field-label{
   margin-left: 4px;
   margin-top: 0px;
   opacity: 0;
 }
 
-.hide-content{
-   display: none;
+
+
+//for textarea glitch
+.transparent,.transparent *{
+  background: transparent;
 }
 
-
-
+//margin of faculty field in department form
+.select-field-margin{
+  //margin-top: %;
+  margin: 30px 0px 10px 0px;
+}
