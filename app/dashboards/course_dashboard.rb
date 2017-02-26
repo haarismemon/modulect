@@ -8,14 +8,14 @@ class CourseDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    departments: Field::HasMany,
-    year_structures: Field::HasMany,
-    id: Field::Number,
-    name: Field::String,
-    description: DescriptionField,
-    year: YearField,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+      departments: Field::HasMany,
+      year_structures: Field::HasMany,
+      id: Field::Number,
+      name: Field::String,
+      description: DescriptionField ,
+      created_at: Field::DateTime,
+      updated_at: Field::DateTime,
+      year: YearField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -25,10 +25,9 @@ class CourseDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
       :name,
-    :departments,
-    :year_structures,
+      :departments,
+      :year_structures,
       :year
-
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -61,4 +60,6 @@ class CourseDashboard < Administrate::BaseDashboard
    def display_resource(course)
      course.name
   end
+
+
 end

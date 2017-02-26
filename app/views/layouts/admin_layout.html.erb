@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= full_title(yield(:title)) %></title>
+  <%= stylesheet_link_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/bbc851b668.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+  <script>
+      var $ = jQuery.noConflict();
+
+      $(document).ready(function () {
+          setTimeout(fade_out, 5000);
+          function fade_out() {
+              $("#flash-container").fadeOut().empty();
+              $("#flash-container").css("margin-bottom", "0px");
+          }
+      });
+  </script>
+</head>
+
+<body>
+<span id="feras_header">
+<%= render 'layouts/header' %>
+</span>
+<div class="modulect-container">
+  <div id="page">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3 col-lg-2 sidenav">
+          <nav class="navbar fixed-nav navbar-default navbar-fixed-side">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <li class="navbar-brand" href="#">Admin Panel</li>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="#">Users</a></li>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Modules</a></li>
+
+              </ul>
+
+            </div><!-- /.navbar-collapse -->
+
+          </nav>
+        </div>
+        <div class="col-sm-9 col-lg-10 b">
+      <span class="green-button">
+        <% if flash.present? %>
+
+        <div class="alert alert-success ">
+           <span class="glyphicon glyphicon-education"></span>
+          <%= flash[:notice] %>
+        </div>
+        <script>
+            window.setTimeout(function () {
+                $(".alert-success").fadeTo(800, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 3000);
+        </script>
+        <% end %>
+        <%= yield %>
+        <%= render 'layouts/after_content' %>
+        </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="empty-space"></div>
+<%= render 'layouts/footer' %>
+</body>
+</html>
+
+</html>
