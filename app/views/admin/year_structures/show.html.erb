@@ -22,23 +22,28 @@ as well as a link to its edit page.
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
     <%= link_to(
-      "Edit",
-      [:edit, namespace, page.resource],
-      class: "button",
-    ) %>
+            "Edit",
+            [:edit, namespace, page.resource],
+            class: "button",
+        ) %>
   </div>
 </header>
 
 <dl>
   <% page.attributes.each do |attribute| %>
-    <dt class="attribute-label">
-    <%= t(
-      "helpers.label.#{resource_name}.#{attribute.name}",
-      default: attribute.name.titleize,
-    ) %>
-    </dt>
-
-    <dd class="attribute-data attribute-data--<%=attribute.html_class%>"
-        ><%= render_field attribute %></dd>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <dt class="attribute-label">
+            <%= t(
+                    "helpers.label.#{resource_name}.#{attribute.name}",
+                    default: attribute.name.titleize,
+                ) %>
+          </dt>
+        </div>
+        <div class="col-md-10 col-xs-12">
+          <dd class="attribute-data attribute-data--<%= attribute.html_class %>"
+          ><%= render_field attribute %></dd>
+        </div>
+      </div>
   <% end %>
 </dl>
