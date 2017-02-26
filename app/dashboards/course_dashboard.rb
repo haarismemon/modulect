@@ -12,10 +12,10 @@ class CourseDashboard < Administrate::BaseDashboard
       year_structures: Field::HasMany,
       id: Field::Number,
       name: Field::String,
-      description: Field::String,
+      description: DescriptionField ,
       created_at: Field::DateTime,
       updated_at: Field::DateTime,
-      year: Field::Number,
+      year: YearField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -34,12 +34,13 @@ class CourseDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
       :id,
-      :departments,
-      :year_structures,
+      :name,
       :description,
-      :created_at,
-      :updated_at,
+    :departments,
+    :year_structures,
       :year,
+  :created_at,
+    :updated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -48,15 +49,17 @@ class CourseDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
       :name,
       :description,
-      :departments,
-      :year_structures,
-      :year,
+    :departments,
+    :year_structures,
+    :year,
   ].freeze
 
   # Overwrite this method to customize how courses are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(course)
-    course.name
+   def display_resource(course)
+     course.name
   end
+
+
 end

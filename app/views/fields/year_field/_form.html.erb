@@ -1,0 +1,11 @@
+<div class="field-unit field-unit--has-many">
+
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+<div class="field-unit__field">
+
+    <%= f.select field.attribute, (1990..Time.now.year).to_a,{:prompt => "Year",:size => 5},class: "year-drop"%>
+
+</div>
+</div>
