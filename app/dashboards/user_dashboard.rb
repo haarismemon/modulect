@@ -51,45 +51,34 @@ class UserDashboard < Administrate::BaseDashboard
     :first_name,
     :last_name,
     :email,
-    # :password_digest,
     :user_level,
     :entered_before,
     :year_of_study,
     :course_id,
-    :created_at,
-    :updated_at,
-    :remember_digest,
-    :activation_digest,
-    :activated,
-    :activated_at,
-    :reset_digest,
-    :reset_sent_at,
     :department_id,
     :faculty_id,
+    :created_at,
+    :updated_at,
+    :activated,
+    :activated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    # :uni_modules,
     :first_name,
     :last_name,
     :email,
-    :password_digest,
     :user_level,
     :entered_before,
     :year_of_study,
-    # :course_id,
-    :remember_digest,
-    :activation_digest,
     :activated,
     :activated_at,
-    :reset_digest,
-    :reset_sent_at,
     :department_id,
     :faculty_id,
     :password,
+    :password_confirmation,
   ].freeze
 
   # Overwrite this method to customize how users are displayed
