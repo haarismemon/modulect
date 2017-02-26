@@ -8,14 +8,14 @@ class CourseDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-      departments: Field::HasMany,
-      year_structures: Field::HasMany,
-      id: Field::Number,
-      name: Field::String,
-      description: DescriptionField ,
-      created_at: Field::DateTime,
-      updated_at: Field::DateTime,
-      year: YearField
+    departments: Field::HasMany,
+    year_structures: Field::HasMany,
+    id: Field::Number,
+    name: Field::String,
+    description: Field::String,
+    created_at: Field::DateTime,
+    updated_at: Field::DateTime,
+    year: Field::Number,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,41 +24,40 @@ class CourseDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-      :name,
-      :departments,
-      :year_structures,
-      :year
+    :departments,
+    :year_structures,
+    :id,
+    :name,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-      :id,
-      :departments,
-      :year_structures,
-      :description,
-      :created_at,
-      :updated_at,
-      :year,
+    :departments,
+    :year_structures,
+    :id,
+    :name,
+    :description,
+    :created_at,
+    :updated_at,
+    :year,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-      :name,
-      :description,
-      :departments,
-      :year_structures,
-      :year,
+    :departments,
+    :year_structures,
+    :name,
+    :description,
+    :year,
   ].freeze
 
   # Overwrite this method to customize how courses are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(course)
-    course.name
-  end
-
-
+  # def display_resource(course)
+  #   "Course ##{course.id}"
+  # end
 end

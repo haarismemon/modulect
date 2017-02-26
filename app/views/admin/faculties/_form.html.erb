@@ -33,7 +33,12 @@ and renders all form fields for a resource's editable attributes.
                   [:new, namespace, "department"],
                   {class: "button add-depart",:onclick=>"spec()"},
               ) %>
+              <script>
+                var spec = function () {
 
+                }
+
+              </script>
               <!--important instruction-->
               <span class="field-unit__label instruction-label field-label">*Selecting a department which currently belongs to another faculty
               will cause for that department to be instead exclusivly linked to this faculty</span>

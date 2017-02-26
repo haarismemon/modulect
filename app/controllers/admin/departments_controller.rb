@@ -15,7 +15,7 @@ module Admin
 
     # See https://administrate-docs.herokuapp.com/customizing_controller_actions
     # for more information
-
+    before_action :make_data_store_nil, only: [:index,:show]
     def create
       resource = resource_class.new(resource_params)
       if resource.save
@@ -49,6 +49,7 @@ module Admin
         session[:data_save] = nil
       end
     end
+
 
   end
 end

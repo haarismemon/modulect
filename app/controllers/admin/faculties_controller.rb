@@ -7,16 +7,12 @@ module Admin
     #   super
     #   @resources = Faculty.all.paginate(10, params[:page])
     # end
-
+    before_action :make_data_store_nil, only: [:index,:show]
     def new
       super
-      set_data_session ({"from_form" => "true", "location" => "new"})
+      set_data_session ({"from_form" => "true","isEdit" =>false })
     end
-    def show
-      super
-      #set data_session to nil
-      set_data_session()
-    end
+
     def edit
       super
       if(session[:data_save].present?&&session[:data_save]["faculty"])
@@ -36,6 +32,8 @@ module Admin
     def set_data_session(value = nil)
       session[:data_save] = value
     end
+
+
 
 
 
