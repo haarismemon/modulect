@@ -514,6 +514,56 @@ select.form-control{
 }
 /** Search stuff by Feras **/
 
+.deselect {
+    color: #777;
+}
+.deselect:hover {
+    color: #c50000;
+}
+#pathway-tabs .nav-tabs {
+    border-bottom: 0px;
+}
+#pathway-tabs .nav-tabs>li.active>a,
+#pathway-tabs .nav-tabs>li.active>a:focus,
+#pathway-tabs .nav-tabs>li.active>a:hover {
+    background: transparent;
+    border: 0px;
+    color: #2ab27b;
+    border-bottom: 2px solid #2ab27b;
+    text-decoration: none
+}
+#pathway-tabs .nav-tabs>li>a {
+    border: 0px;
+    border-bottom: 1px solid #f9f9f9;
+    color: #555459;
+}
+#pathway-tabs .nav>li>a:focus,
+#pathway-tabs .nav>li>a:hover {
+    background: transparent;
+    text-decoration: underline;
+}
+th {
+    font-size: 18px;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+th, td {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 50%;
+}
+.res-btn {
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 10px;
+    width: 100%; !important
+}
+.res-btn:active,
+.res-btn:hover,
+.res-btn:focus {
+    background-color: #E9E9E9;
+}
 .btnQuick {
     color: #2ab27b;
     background: #FFFFFF;
@@ -809,3 +859,4 @@ select.form-control{
         margin-left:0px;
     }
 }
+>>>>>>> development:app/assets/stylesheets/user-side/style.css

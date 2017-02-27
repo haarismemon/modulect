@@ -71,6 +71,17 @@ Rails.application.routes.draw do
   # Account activations
   resources :account_activations, only: [:edit]
 
+  # Search
+  get 'search/pathway_search'
+  get 'search/view_results'
+
+  # Pathway search
+  get '/pathway-search', to: 'pathway_search#begin'
+  get 'pathway-search/begin'
+  get 'pathway-search/choose'
+  get 'pathway-search/view_results'
+  get 'pathway-search/view_results_test'
+
   # Error pages
   match "/404", :to => "errors#not_found", :via => :all
   match "/500", :to => "errors#internal_server_error", :via => :all
