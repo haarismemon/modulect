@@ -15,22 +15,10 @@ and renders all form fields for a resource's editable attributes.
 %>
 
 <%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
-  <% if page.resource.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(page.resource.errors.count, "error") %>
-        prohibited this <%= page.resource_name %> from being saved:
-      </h2>
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(page.resource) %>
 
-      <ul>
-        <% page.resource.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <% page.attributes.each do |attribute| -%>
+    <% page.attributes.each do |attribute| -%>
     <div class="field-unit field-unit--<%= attribute.html_class %>">
       <%= render_field attribute, f: f %>
     </div>
