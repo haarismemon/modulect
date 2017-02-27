@@ -101,6 +101,8 @@ module ApplicationHelper
 				modules.each do |uni_module|
           result_career_tags.concat uni_module.career_tags
         end
+
+        result_career_tags = result_career_tags.uniq!
       end
 
       result_career_tags
