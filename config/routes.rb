@@ -56,9 +56,10 @@ Rails.application.routes.draw do
 
 
   # Pathway search
-  get '/career-search', to: 'career_search#choose'
+  get '/career-search', to: 'career_search#begin'
+  get 'career-search/begin'
   get 'career-search/choose'
-  get 'career-search/view'
+  get 'career-search/view_results'
 
   # Save pathways and modules used in ajax
   post 'application/save_module'
