@@ -519,6 +519,7 @@ select.form-control{
 }
 .deselect:hover {
     color: #c50000;
+    cursor: pointer;
 }
 #pathway-tabs .nav-tabs {
     border-bottom: 0px;
