@@ -22,9 +22,7 @@ class YearStructureDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :course,
     :groups,
-    :id,
     :year_of_study,
   ].freeze
 
@@ -51,7 +49,7 @@ class YearStructureDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how year structures are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(year_structure)
-  #   "YearStructure ##{year_structure.id}"
-  # end
+  def display_resource(year_structure)
+    year_structure.to_s
+  end
 end

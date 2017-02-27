@@ -8,17 +8,14 @@ module Admin
   class ApplicationController < Administrate::ApplicationController
     before_action :authenticate_admin
 
-    include SessionsHelper
-
     def authenticate_admin
       # TODO Add authentication logic here.
-      if !admin_user
-        store_location
-        flash[:success] = "Plese provide your administrator credentials"
-        redirect_to login_path
-      end
     end
 
+    protected
+    def make_data_store_nil
+      session[:data_save] = nil
+    end
     # Override this value to specify the number of elements to display at a time
     # on index pages. Defaults to 20.
     # def records_per_page

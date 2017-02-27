@@ -28,6 +28,8 @@ class UserDashboard < Administrate::BaseDashboard
     reset_sent_at: Field::DateTime,
     department_id: Field::Number,
     faculty_id: Field::Number,
+    password: PasswordField,
+    password_confirmation: PasswordField,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -36,64 +38,53 @@ class UserDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :uni_modules,
-    :id,
     :first_name,
     :last_name,
+    :password,
+    :email
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :uni_modules,
-    :id,
     :first_name,
     :last_name,
     :email,
-    :password_digest,
     :user_level,
     :entered_before,
     :year_of_study,
     :course_id,
-    :created_at,
-    :updated_at,
-    :remember_digest,
-    :activation_digest,
-    :activated,
-    :activated_at,
-    :reset_digest,
-    :reset_sent_at,
     :department_id,
     :faculty_id,
+    :created_at,
+    :updated_at,
+    :activated,
+    :activated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :uni_modules,
     :first_name,
     :last_name,
     :email,
-    :password_digest,
     :user_level,
     :entered_before,
     :year_of_study,
-    :course_id,
-    :remember_digest,
-    :activation_digest,
     :activated,
     :activated_at,
-    :reset_digest,
-    :reset_sent_at,
     :department_id,
     :faculty_id,
+    :password,
+    :password_confirmation,
   ].freeze
 
   # Overwrite this method to customize how users are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(user)
-  #   "User ##{user.id}"
-  # end
+  def display_resource(user)
+    user.full_name
+  end
 end

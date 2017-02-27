@@ -1,0 +1,95 @@
+<%#
+# Form Partial
+
+This partial is rendered on a resource's `new` and `edit` pages,
+and renders all form fields for a resource's editable attributes.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Form][1].
+  Contains helper methods to display a form,
+  and knows which attributes should be displayed in the resource's form.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
+%>
+
+
+<span class="instruction-label field-label center-block">*Selecting a department which currently belongs to another faculty
+              will cause for that department to be instead exclusivly linked to this faculty</span>
+<%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
+
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(page.resource) %>
+
+  <% page.attributes.each_with_index do |attribute,index| -%>
+      <!--checks if current attribute is departments in for loop-->
+      <% if (attribute.attribute.to_s == "departments") %>
+            <!--if it is, print the field with a button and instruction label -->
+            <div class="field-unit field-unit--<%= attribute.html_class %> department-info">
+              <%= render_field attribute, f: f %>
+              <!--link that redirects to new of department-->
+          <%= link_to(
+                  "Create a department",
+                  [:new, namespace, "department"],
+                  {class: "button add-depart",:onclick=>"cache()"},
+              ) %>
+
+              <!--important instruction-->
+
+            </div>
+
+
+      <%else%>
+      <!--just render field otherwise like normal-->
+        <div class="field-unit field-unit--<%= attribute.html_class %>">
+          <%= render_field attribute, f: f %>
+        </div>
+      <% end %>
+    <% end -%>
+
+  <div class="form-actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+<script>
+    var cache = function () {
+        var dataStore = [];
+        <% page.attributes.each_with_index do |attribute,index| -%>
+        var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+        var valueOfText = $("[name*='"+attribute_name+"']").val()
+        dataStore.push(valueOfText);
+
+        <%end%>
+        localStorage['data_store']=JSON.stringify(dataStore)
+        console.log(dataStore.toString())
+    }
+
+    $( document ).ready(function() {
+            var data_to_be_loaded  = localStorage['data_store_accept'];
+            data_to_be_loaded = data_to_be_loaded? JSON.parse(data_to_be_loaded):null;
+
+            if(requestValidationCheck(localStorage['data_store'])&&data_to_be_loaded){
+              <% page.attributes.each_with_index do |attribute,index| -%>
+              var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+              var object_load = data_to_be_loaded[<%= index %>] || '';
+              $("[name*='"+attribute_name+"']").val(object_load)
+
+            <%end%>
+        }
+        localStorage['data_store'] = null;
+            localStorage['data_store_accept'] = null;
+    });
+
+    //checks if request for caching was a valid one
+    var requestValidationCheck = function(cache_item){
+        var data  = cache_item;
+        if (!data || !JSON.parse(data)){
+            return true;
+        }
+       return false;
+    }
+
+</script>

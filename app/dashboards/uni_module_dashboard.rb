@@ -26,6 +26,7 @@ class UniModuleDashboard < Administrate::BaseDashboard
     exam_percentage: Field::Number,
     coursework_percentage: Field::Number,
     more_info_url: Field::String,
+    requirements: Field::String,
     more_info_link: Field::String,
   }.freeze
 
@@ -35,10 +36,9 @@ class UniModuleDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :users,
-    :groups,
-    :departments,
-    :tags,
+    :name,
+    :code,
+    :lecturers
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -62,7 +62,6 @@ class UniModuleDashboard < Administrate::BaseDashboard
     :exam_percentage,
     :coursework_percentage,
     :more_info_url,
-    :requirements,
     :more_info_link,
   ].freeze
 
@@ -91,7 +90,7 @@ class UniModuleDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how uni modules are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(uni_module)
-  #   "UniModule ##{uni_module.id}"
-  # end
+  def display_resource(uni_module)
+    uni_module.name
+  end
 end
