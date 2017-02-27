@@ -54,6 +54,7 @@ end
 
 group :production do
   # Use postrgres in production
+  # TODO: Switch back to postgres when done debugging assets
   #gem 'pg', '0.18.4'
   gem 'sqlite3'
 end
