@@ -215,7 +215,7 @@ select.form-control{
     -webkit-user-select: none;
     position: fixed;
     width: 100%;
-    z-index: 1000000000;
+    z-index: 1000;
     padding: 12px 0px;
 }
 .navbar-brand {
