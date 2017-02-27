@@ -557,7 +557,7 @@ th, td {
     padding-bottom: 5px;
     padding-left: 5px;
     padding-right: 10px;
-    width: 100%; !important
+    width: 100% !important;
 }
 .res-btn:active,
 .res-btn:hover,
@@ -859,4 +859,3 @@ th, td {
         margin-left:0px;
     }
 }
->>>>>>> development:app/assets/stylesheets/user-side/style.css
