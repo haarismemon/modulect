@@ -91,7 +91,20 @@ module ApplicationHelper
       end
 
       result
-    end
+		end
+
+		def get_career_tags_from_modules(modules)
+			result_career_tags = []
+
+			modules = Array(modules)
+			if !modules.empty?
+				modules.each do |uni_module|
+          result_career_tags.concat uni_module.career_tags
+        end
+      end
+
+      result_career_tags
+		end
 
   	# converts an input array into a results type (Haaris')
   	# written by Aqib
