@@ -93,7 +93,7 @@ module ApplicationHelper
       result
 		end
 
-    # returns the array of career tags associated with the array of modules passed in
+    # returns the alphabetically sorted array of career tags associated with the array of modules passed in
     # input is the array of uni modules and output is the array of career tags associated
     # written by Haaris
 		def get_career_tags_from_modules(modules)
@@ -112,7 +112,7 @@ module ApplicationHelper
         result_career_tags = result_career_tags.uniq!
       end
 
-      result_career_tags
+      result_career_tags.sort_by { |career_tag| career_tag.name }
 		end
 
   	# converts an input array into a results type (Haaris')
