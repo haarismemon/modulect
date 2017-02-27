@@ -1,0 +1,100 @@
+/*
+
+ */
+@import url("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
+@import url("https://fonts.googleapis.com/css?family=Raleway|Open+Sans|Varela+Round");
+@import url("user-side/awesome-bootstrap-checkbox.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css");
+@import url("simple-sidebar.css");
+/* line 14, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.flash-box {
+  margin-top: 10px;
+}
+/* line 16, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.flash-box * {
+  background: dimgrey;
+  color: white;
+}
+
+/* line 23, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.flash-alert {
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  color: #555459;
+  margin-bottom: 15px;
+  border-left-width: 5px;
+  border-radius: .25rem;
+  font-family: "Open Sans";
+}
+
+/* line 32, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.flash-alert-error {
+  border-left-color: #cb5234;
+}
+
+/* line 35, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.flash-alert-error i {
+  color: #cb5234;
+  margin-right: 8px;
+}
+
+/* line 39, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.flash-alert-success {
+  border-left-color: #2ab27b;
+}
+
+/* line 42, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.flash-alert-success i {
+  color: #2ab27b;
+  margin-right: 8px;
+}
+
+/* line 47, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.flash-alert {
+  padding: 15px;
+  margin-top: 20px;
+}
+
+/* line 52, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+#error-box {
+  margin: 0px 0px 40px 0px;
+}
+
+/* line 57, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+#error-box li {
+  list-style-type: disc;
+  margin-left: 30px;
+}
+
+/* line 64, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.to-hide, .hide-content {
+  display: none;
+}
+
+/* line 68, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.instruction-label {
+  margin-top: 0px;
+  margin-right: 30px;
+  font-size: 0.8em;
+  color: #828282;
+  margin-top: 0px;
+}
+
+/* line 80, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.field-label {
+  margin-left: 10%;
+  margin-top: 0px;
+  margin-bottom: 28px;
+  width: 80%;
+  text-align: left;
+}
+
+/* line 91, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.transparent, .transparent * {
+  background: transparent;
+}
+
+/* line 96, /home/vlad/code/project-run/app/assets/stylesheets/admin-style.scss */
+.select-field-margin {
+  margin: 30px 0px 10px 0px;
+}
