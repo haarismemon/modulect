@@ -46,10 +46,16 @@
          <div class="col-md-12">
             <div class="row">
                <h1>Potential Careers.</h1>
-               <h4>Below are listed a list of careers which are related to modules you've taken.</h4>
-            </div>
+
+
+  <% if @careers_found.size == 0%>
+               <h4>We couldn't find any careers for your module-course combination.</h4>
             
-         
+<% else %>
+
+ <h4>Below are listed a list of careers which are related to modules you've taken.</h4>
+
+
 
 
 
@@ -58,7 +64,25 @@
 
 <% end %>
 
-<%= @careers_found.size %>
+
+
+
+
+
+
+
+
+
+
+
+
+<% end %>
+              
+            </div>
+       
+          
+         
+
 
 
 
