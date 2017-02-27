@@ -93,15 +93,22 @@ module ApplicationHelper
       result
 		end
 
+    # returns the array of career tags associated with the array of modules passed in
+    # input is the array of uni modules and output is the array of career tags associated
+    # written by Haaris
 		def get_career_tags_from_modules(modules)
 			result_career_tags = []
 
 			modules = Array(modules)
-			if !modules.empty?
+      # only find the career tags if the array of modules is not empty
+      if !modules.empty?
+        # loop through all modules in the array
 				modules.each do |uni_module|
+          # append the module's career tags to the result
           result_career_tags.concat uni_module.career_tags
         end
 
+        # remove any duplicate career tags in the result
         result_career_tags = result_career_tags.uniq!
       end
 
