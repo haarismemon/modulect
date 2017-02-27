@@ -44,11 +44,16 @@ class PathwaySearchController < ApplicationController
 		if (params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? && params.has_key?(:chosen_tags) && !params[:chosen_tags].empty?) || (params.has_key?(:chosen_tags_c))
 
 			@year_of_study = params[:year]
-	    @course = params[:course]
+	    	@course = params[:course]
 			@structure = YearStructure.where("course_id = ? AND year_of_study = ?", @course, @year_of_study)
 			@groups = Group.where("year_structure_id = ?", @structure.ids)
 			@course_obj = Course.find_by_id(@course)
 			@chosen_tags = []
+			@selected = []
+
+			if params.has_key?(:selected) && !params[:selected].empty?
+				@selected = params[:selected]
+			end
 
 			# if using the checkboxes and search
 			if params.has_key?(:chosen_tags) && params.has_key?(:chosen_tags_c)
@@ -72,10 +77,23 @@ class PathwaySearchController < ApplicationController
 	      else
 	       	@results = {}
 	      end
-	    else
-	    # disabling this redireect because alex's idea
-	    # of viewing the structure without any data
-	    # redirect_to "/pathway-search/"
+	      # if just viewing structure
+	    elsif (params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? )
+	    	@year_of_study = params[:year]
+	    	@course = params[:course]
+			@structure = YearStructure.where("course_id = ? AND year_of_study = ?", @course, @year_of_study)
+			@groups = Group.where("year_structure_id = ?", @structure.ids)
+			@course_obj = Course.find_by_id(@course)
+			@chosen_tags = []
+			@selected = []
+			@results = []
+
+			if params.has_key?(:selected) && !params[:selected].empty?
+				@selected = params[:selected]
+			end
+
+		else
+	    	redirect_to "/pathway-search/"
 	    end
 
 	end

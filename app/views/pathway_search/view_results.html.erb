@@ -108,7 +108,7 @@
   var js_course = jQuery.parseJSON(data);
 
   // globals to keep track of selected modules
-  var selected_modules_per_year = [];
+  var selected_modules_per_year = <%= @selected %>;
   var required_modules_per_year = [];
   var optional_modules_per_year = [];
 
@@ -140,17 +140,16 @@
   });
 
   function savePathway() {
-        console.log("here");
-
     $.ajax({
-       type: "POST",
+        type: "POST",
         url: "<%= application_save_pathway_path %>",
         data: {
             name: document.getElementById('save-name').value,
-            data: JSON.stringify(selected_modules_per_year)
+            data: JSON.stringify(selected_modules_per_year),
+            year: <%= @year_of_study.to_i %>,
+            course: <%= @course.to_i %>
         }
     })      
-    console.log("here");
   }
 
   // selected modules this year is all set to false
