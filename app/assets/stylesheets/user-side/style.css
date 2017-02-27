@@ -215,7 +215,7 @@ select.form-control{
     -webkit-user-select: none;
     position: fixed;
     width: 100%;
-    z-index: 1000000000;
+    z-index: 1000;
     padding: 12px 0px;
 }
 .navbar-brand {
@@ -519,6 +519,7 @@ select.form-control{
 }
 .deselect:hover {
     color: #c50000;
+    cursor: pointer;
 }
 #pathway-tabs .nav-tabs {
     border-bottom: 0px;
@@ -530,7 +531,7 @@ select.form-control{
     border: 0px;
     color: #2ab27b;
     border-bottom: 2px solid #2ab27b;
-    text-decoration: none
+    text-decoration: none;
 }
 #pathway-tabs .nav-tabs>li>a {
     border: 0px;
@@ -541,6 +542,7 @@ select.form-control{
 #pathway-tabs .nav>li>a:hover {
     background: transparent;
     text-decoration: underline;
+    cursor:pointer;
 }
 th {
     font-size: 18px;

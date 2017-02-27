@@ -57,11 +57,11 @@
         <% end %>
         <button id="btn_all_years" class="btn btn-lg btn-block" type="button" style="margin-top: 5px">show all</button>
         </div>
-        <div class="row">
+        <div class="row" <% if logged_in? %>style="margin-left:-30px;"<% end %>>
           <% if logged_in? %>
           <form onsubmit="savePathway();return false;" style="margin-top: 30px">
-            <div class="col-md-4">
-              <button type="submit" class="btn btn-lg save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>  Save Pathway</span>
+            <div class="col-md-3">
+              <button type="submit" class="btn btn-lg save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
               </button>
             </div>
             <div class="col-md-4">
@@ -69,14 +69,14 @@
             </div>
           </form>
           <% else %>
-          <form action="/login" method="get">
-            <button type="submit" class="btn btn-lg btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in." id="save"><span><i class="fa fa-star-o" aria-hidden="true"></i>  Save Pathway</span>
+          <form action="/login" method="get" style="margin-top:30px;">
+            <button type="submit" class="btn btn-lg btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in."><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
             </button>
           </form>
           <% end %>
         </div>
       <div class="form-group" style="margin-top: 30px">
-        <a onclick="window.history.back();" >"< Back to previous page"</a>
+        <a href="javascript:void()" onclick="javascript:history.back()" >< Back to previous page</a>
       </div>
     </div>
   </div>
