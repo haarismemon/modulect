@@ -1,3 +1,88 @@
-<h1>CareerSearch#view</h1>
-<p>Find me in app/views/career_search/view.html.erb</p>
-a
+<% provide(:title, 'Potential Careers - Career Search') %>
+<% if logged_in? %>
+<% @course = current_user.course_id %>
+<% end %>
+<div class="banner" style="margin-top: -30px;padding-top:40px;">
+   <div class="container">
+      <h1>Career Search</h1>
+   </div>
+</div>
+<div id="white-strip-pathway">
+   <div class="container">
+      <div class="col-md-12 col-md-offset-1">
+         <div class="row">
+            <div class="col-md-4 step">
+               <div class="numberCircle">1</div>
+               My Details
+            </div>
+            <div class="col-md-4 step">
+               <div class="numberCircle">2</div>
+               Choose Modules Taken
+            </div>
+            <div class="col-md-4 step current">
+               <div class="numberCircle current-circle">3</div>
+               Potential Careers
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<% if @course_obj.nil? %>
+<div id="page">
+<div class="container">
+   <div class="col-md-10 login-card col-md-offset-1">
+      <div class="col-md-12">
+         <div class="row">
+            <h1>Something went wrong.</h1>
+            <h4>Please try again.</h4>
+         </div>
+      </div>
+   </div>
+</div>
+<% else %>
+<div id="page">
+   <div class="container">
+      <div class="col-md-10 login-card col-md-offset-1">
+         <div class="col-md-12">
+            <div class="row">
+               <h1>Potential Careers.</h1>
+               <h4>Below are listed a list of careers which are related to modules you've taken.</h4>
+            </div>
+            
+         
+
+
+
+
+<%
+
+modules = []
+modules << UniModule.find_by_code("4CCS1PRP")
+modules << UniModule.find_by_code("4CCS1PRA")
+
+%>
+
+<% get_career_tags_from_modules(modules).each do |tag| %>
+<%= tag.name %>
+
+<% end %>
+
+
+
+
+
+
+
+
+            <div class="row" style="margin-top:30px;" >
+               <div class="col-md-12" style="border-top:1px dotted #dfe2e1;padding-top:15px;margin-top: 10px;padding-left:0px">
+                  <div class="form-group" style="margin-top: 30px">
+        <a href="javascript:void()" onclick="javascript:history.back()" >< Back to previous page</a>
+      </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<% end %>
