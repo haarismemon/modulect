@@ -30,6 +30,7 @@
     <div class="col-md-10 login-card col-md-offset-1">
       <div id = "log"></div>
       <div class="col-md-12">
+        <div class="row">
         <%  @course_obj.year_structures.each do |y| %> 
           <button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button" style="margin-top: 5px">
             <%= y.year_of_study_before_type_cast.to_i.ordinalize %> Year
@@ -55,32 +56,25 @@
           </div>
         <% end %>
         <button id="btn_all_years" class="btn btn-lg btn-block" type="button" style="margin-top: 5px">show all</button>
-      </div>
-      <div class="row" style="margin-top: 60px">
-        <% if logged_in? %>
-        <form>
-          <div class="col-md-4">
-            <button type="submit" class="btn btn-lg save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>  Save Pathway</span>
+        </div>
+        <div class="row">
+          <% if logged_in? %>
+          <form onsubmit="savePathway();return false;" style="margin-top: 30px">
+            <div class="col-md-4">
+              <button type="submit" class="btn btn-lg save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>  Save Pathway</span>
+              </button>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" id="save-name" placeholder="Name your Pathway" required>
+            </div>
+          </form>
+          <% else %>
+          <form action="/login" method="get">
+            <button type="submit" class="btn btn-lg btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in." id="save"><span><i class="fa fa-star-o" aria-hidden="true"></i>  Save Pathway</span>
             </button>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" id="save=name" placeholder="Name your Pathway" required>
-          </div>
-        </form>
-        <script>
-          $(window).load(function() {
-            $("#save").click(function() {
-              /* get html path */
-            })
-          })
-        </script>
-        <% else %>
-        <form action="/login" method="get">
-          <button type="submit" class="btn btn-lg btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in." id="save"><span><i class="fa fa-star-o" aria-hidden="true"></i>  Save Pathway</span>
-          </button>
-        </form>
-        <% end %>
-      </div>
+          </form>
+          <% end %>
+        </div>
       <div class="form-group" style="margin-top: 30px">
         <%= link_to "< Back to previous page", "#", method: :get %>
       </div>
@@ -144,7 +138,21 @@
       $(divs[i]).slideDown();
     }
   });
-    
+
+  function savePathway() {
+        console.log("here");
+
+    $.ajax({
+       type: "POST",
+        url: "<%= application_save_pathway_path %>",
+        data: {
+            name: document.getElementById('save-name').value,
+            data: JSON.stringify(selected_modules_per_year)
+        }
+    })      
+    console.log("here");
+  }
+
   // selected modules this year is all set to false
   updateData();
   
@@ -338,7 +346,6 @@
   }
 
   function optional_button_pressed(_year, _i){
-    console.log("div_opt_year_" + _year);
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
     // Sort the optional modules by their tags matched percentage
