@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'career_search/choose'
+
+  get 'career_search/view'
+
   get 'errors/not_found'
 
   get 'errors/internal_server_error'
@@ -49,6 +53,12 @@ Rails.application.routes.draw do
   get 'pathway-search/begin'
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
+
+
+  # Pathway search
+  get '/career-search', to: 'career_search#choose'
+  get 'career-search/choose'
+  get 'career-search/view'
 
   # Save pathways and modules used in ajax
   post 'application/save_module'

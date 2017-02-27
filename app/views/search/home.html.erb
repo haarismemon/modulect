@@ -52,23 +52,68 @@
 
 <div id="page" style="padding-top: 30px">
 	<div class="container">
-		<div class="col-md-12 login-card">
-			<div class="col-md-12">
+
+
+<div class="row">
+   <div class="col-md-8">
+      <div class="col-md-12 login-card">
+      <div class="col-md-12">
 				<div class="row">
 					<h1>Start a Pathway Search</h1>
 					<h3 style="margin-top: 20px">Let us assist you in finding the right modules which suit your interests and career aspirations.</h3>
 				</div>
 			<div class="row" >
-				<div class="col-md-4" style="margin-top: 30px;padding-left:0px">
+				<div style="margin-top: 30px;padding-left:0px">
 					<div class="form-group">
 						<form action="<%= pathway_search_begin_path %>" method="get">
-							<button id='pathwayButton' class="btn btn-lg btn-block" type="submit">Begin Search&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
+							<button style="width: inherit;" id='pathwayButton' class="btn btn-lg btn-block" type="submit">Begin Search&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
 							</button>
 						</form>
 					</div>
 				</div>
 				</div>
 			</div>
-		</div>
+      </div>
+   </div>
+   <div class="col-md-4">
+      <div class="col-md-12 login-card">
+         <div class="col-md-12">
+				<div class="row">
+					<h2>Career Search</h2>
+					<h4 style="margin-top: 20px">Enter the modules you've taken and we'll give you career suggestions.</h4>
+				</div>
+			<div class="row" >
+				<div style="margin-top: 30px;padding-left:0px">
+					<div class="form-group">
+						<form action="<%= career_search_choose_path %>" method="get">
+							<button style="width:inherit;" id='pathwayButton' class="btn btn-lg btn-block" type="submit">Start&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
+							</button>
+						</form>
+					</div>
+				</div>
+				</div>
+			</div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	</div>
+
+
+
+
+
 </div>
