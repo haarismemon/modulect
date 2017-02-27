@@ -22,10 +22,15 @@ class CareerSearchController < ApplicationController
 	end
 
 	  
-	
+
 
   def choose
-
+	if params.has_key?(:course) && !params[:course].empty? 
+	      @course = params[:course]
+	      @course_obj = Course.find_by_id(@course) 
+	else
+		redirect_to "/career-search/"
+	end
   end
 
   def view

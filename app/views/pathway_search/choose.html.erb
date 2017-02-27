@@ -1,5 +1,4 @@
 <% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
-<% tag_names = all_tag_name_of_course(@course_obj) %>
 <style>
    .bootstrap-tagsinput {
    background-color: none;
@@ -89,6 +88,7 @@
    </div>
 </div>
 <% else %>
+<% tag_names = all_tag_name_of_course(@course_obj) %>
 <div id="page">
    <div class="container">
       <div class="col-md-10 login-card col-md-offset-1">
