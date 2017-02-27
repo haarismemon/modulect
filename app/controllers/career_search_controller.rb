@@ -1,4 +1,5 @@
 class CareerSearchController < ApplicationController
+	include CareerSearchHelper
 
 	def begin
     	@faculties = Faculty.all
@@ -34,9 +35,20 @@ class CareerSearchController < ApplicationController
   end
 
   def view_results
-  	if params.has_key?(:course) && !params[:course].empty? 
+  	if params.has_key?(:course) && !params[:course].empty? && params.has_key?(:chosen_modules) && !params[:chosen_modules].empty? 
 	      @course = params[:course]
+	      @chosen_modules = params[:chosen_modules]
 	      @course_obj = Course.find_by_id(@course) 
+
+	      uni_modules_array = []
+	      @chosen_modules.each do |unimodule|
+	      	current_uni_module = UniModule.find_by_code(unimodule)
+	      	if !current_uni_module.nil?
+	      		uni_modules_array << current_uni_module
+	      	end
+	      end	
+	      @careers_found = get_career_tags_from_modules(uni_modules_array)
+
 	else
 		redirect_to "/career-search/"
 	end

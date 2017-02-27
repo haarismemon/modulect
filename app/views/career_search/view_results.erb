@@ -53,21 +53,12 @@
 
 
 
-
-<%
-
-modules = []
-modules << UniModule.find_by_code("4CCS1PRP")
-modules << UniModule.find_by_code("4CCS1PRA")
-
-%>
-
-<% get_career_tags_from_modules(modules).each do |tag| %>
+<% @careers_found.each do |tag| %>
 <%= tag.name %>
 
 <% end %>
 
-
+<%= @careers_found.size %>
 
 
 
