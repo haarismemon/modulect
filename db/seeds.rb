@@ -279,13 +279,3 @@ mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_23
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_24
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_25
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_26
-
-# Pathway seeds
-p1 = Pathway.create(name: "Software Engineering", data: "1:23;45/2:37;38#")
-p2 = Pathway.create(data: "1:43;55/2:97;98#")
-p3 = Pathway.create(name: "My pathway", data: "1:2;5/2:9;10#")
-
-# Pathway-User association
-bob.pathways << p1
-bob.pathways << p2
-bob.pathways << p3
