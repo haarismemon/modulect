@@ -19,8 +19,6 @@ Rails.application.routes.draw do
     root to: "courses#index"
   end
 
-  post '/admin/create_tag',   to: 'admin/tags#create'
-
   # General
   root 'search#home'
   get '/about', to: 'static_pages#about'
@@ -52,10 +50,11 @@ Rails.application.routes.draw do
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
 
-  # Save pathways and modules used in ajax
+  # Save pathways and modules, and create tags used in ajax
   post 'application/save_module'
   post 'application/save_pathway'
   post 'application/delete_pathway'
+  post 'admin/create_tag',   to: 'admin/tags#create'
 
   # Profile
   get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }
