@@ -18,13 +18,6 @@ module Admin
 
     def create
       @tag = Tag.create(name: params[:tag_name], type: params[:tag_type])
-
-      if @tag.save
-        redirect_to(admin_uni_modules_path)
-      else
-        redirect_to(new_admin_tag_path)
-        flash[:notice] = "Tag creation failed. Parameters passed: [name: #{params[:tag_name]}, type: #{params[:tag_type]}]"
-      end
     end
 
   end
