@@ -91,7 +91,9 @@ module ApplicationHelper
       end
 
       result
-    end
+		end
+
+
 
   	# converts an input array into a results type (Haaris')
   	# written by Aqib

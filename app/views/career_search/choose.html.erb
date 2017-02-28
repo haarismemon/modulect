@@ -1,0 +1,174 @@
+<% provide(:title, 'Choose Modules Taken - Career Search') %>
+<% if logged_in? %>
+<% @year_of_study = current_user.year_of_study %>
+<% @course = current_user.course_id %>
+<% end %>
+<div class="banner" style="margin-top: -30px;padding-top:40px;">
+   <div class="container">
+      <h1>Career Search</h1>
+   </div>
+</div>
+<div id="white-strip-pathway">
+   <div class="container">
+      <div class="col-md-12 col-md-offset-1">
+         <div class="row">
+            <div class="col-md-4 step">
+               <div class="numberCircle">1</div>
+               My Details
+            </div>
+            <div class="col-md-4 step current">
+               <div class="numberCircle current-circle">2</div>
+               Choose Modules Taken
+            </div>
+            <div class="col-md-4 step">
+               <div class="numberCircle">3</div>
+               Potential Careers
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<% if @course_obj.nil? || @year_of_study.to_i < 1 || @year_of_study.to_i > 7 %>
+<div id="page">
+<div class="container">
+   <div class="col-md-10 login-card col-md-offset-1">
+      <div class="col-md-12">
+         <div class="row">
+            <h1>Something went wrong.</h1>
+            <h4>Please try again.</h4>
+         </div>
+      </div>
+   </div>
+</div>
+<% else %>
+<div id="page">
+   <div id="choose-page">
+      <div class="container">
+         <div class="col-md-10 login-card col-md-offset-1">
+            <div class="col-md-12">
+               <div class="row">
+                  <h1>Let's find out which modules you've taken.</h1>
+                  <h4>Listed below are all the modules from your course (<%= @course_obj.name %>). 
+                     <br /> Select the ones which you've taken (we've pre-selected compulsory ones). Then click "View careers".
+                  </h4>
+               </div>
+               <script>
+                  //dom ready handler
+                  jQuery(function ($) {
+                      //form submit handler
+                      $('#choose-modules').submit(function (e) {
+                          //check atleat 1 checkbox is checked
+                          if (!$('.chk-btn').is(':checked')) {
+                              //prevent the default form submit if it is not checked
+                              e.preventDefault();
+                          }
+                      })
+                  })
+               </script>
+             
+                  <form action="<%= career_search_view_results_path %>" method="get" id="choose-modules">
+            <% if !check_course_contains_modules(@course_obj) %>
+               <div class="row" style="margin-top:20px;">
+                  <h4 style="margin:30px 0px" class="text-center">Unfortunately, we couldn't find any modules for you at this time. Please try again later.</h4>
+               </div>
+               <% else %>
+                  <div id="tags-area" style="margin-top:20px;">
+                     <% @course_obj.year_structures.each_with_index do |ys, year_index| %>
+                     <% if year_index + 1 <= @year_of_study %>
+                     <div class="row module-row">
+                        <button id=btn_year_<%= year_index+1 %> class="btn btn-lg btn-block grey-btn" type="button" style="margin-top: 5px">
+                        <%= (year_index+1).ordinalize %> Year<%if @year_of_study > 1 %>&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i><% end %>
+                        </button>
+                        <div id=div_year_<%= year_index+1 %> style="margin-top: 10px;display:none;padding-bottom:50px">
+                           <% ys.groups.each do |group| %>
+                           <div class="col-md-6" style="padding-left:0px;">
+                              <div class="col-md-12">
+                                 <h3 style="margin-bottom:15px;">
+                                    <% if group.compulsory? %>
+                                    Compulsory modules
+                                    <% else %>
+                                    Optional modules
+                                    <% end %>
+                                 </h3>
+                              </div>
+ <% group.uni_modules.sort_by { |uni_module| uni_module.name }.each do |uni_module| %>
+                              <div class="col-md-12">
+                                 <input type="checkbox" name="chosen_modules[]" id="<%= uni_module.code %>" value="<%= uni_module.code %>" class="chk-btn" 
+                                    <% if group.compulsory? %> checked="checked" <% end %>>
+                                 <label for="<%= uni_module.code %>" style="width:100%;"><%= uni_module.code + " " + uni_module.name %></label>
+                              </div>
+                              <% end %>
+                           </div>
+                           <% end %>
+                        </div>
+                     </div>
+                     <% end %>
+                     <% end %>
+                  </div>
+                 <% if @year_of_study > 1 %>
+                  <div class="row">
+                     <button id="btn_all_years" class="btn btn-lg btn-block" type="button" style="margin-top: 5px">show all</button>
+                  </div>
+                  <% end %>
+                  <div class="row" style="margin-top:30px;" >
+                     <div class="col-md-12" style="border-top:1px dotted #dfe2e1;padding-top:15px;margin-top: 10px;padding-left:0px">
+                        <div class="form-group">
+                           <input type="hidden" value="<%= @year_of_study %>" name="year">
+                           <input type="hidden" value="<%= @course %>" name="course">
+                           <button id='quickButton'  class="btn btn-lg"  type="submit">View careers ></button>&nbsp&nbsp;
+                           <div style="float:right;">
+                           <button type="button" value="Reset Form" onClick="this.form.reset()" class="btn red-btn" /><i class="fa fa-repeat" aria-hidden="true"></i> Reset</button></div>
+                           <br />
+                        </div>
+                        <div class="form-group"><%= link_to "< Back to previous page", career_search_begin_path, method: :get %>
+                        </div>
+                     </div>
+                  </div>
+                  <% end %> 
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+   var btns = [];
+   var divs = [];
+   for(i=1; i<10; i++){
+     var btn = document.getElementById("btn_year_"+i);
+     var div = document.getElementById("div_year_"+i);
+     if(!btn) break;
+     else{
+       $(div).hide();
+       total_years = i;
+       divs.push(div);
+       btns.push(btn);
+     }
+   
+   }
+   for(var i=0; i<btns.length; i++){
+     (function(_i){
+       $(btns[_i]).click(function () {
+         showYear(divs, _i);
+       });
+     })(i);
+   }
+   $("#btn_all_years").click(function () {
+     for(i=0; i<divs.length; i++){
+       $(divs[i]).slideDown();
+     }
+   });
+   
+   
+   // show and hide year div
+   function showYear(divs, year){
+     for(i=0; i<divs.length; i++){
+       if(i!=year) $(divs[i]).slideUp();
+     }
+     $(divs[year]).slideDown();
+   }
+   
+     document.getElementById('btn_year_1').click();
+   
+</script>
+<% end %>
