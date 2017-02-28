@@ -47,7 +47,7 @@
       <div class="col-md-10 login-card col-md-offset-1">
          <div class="col-md-12">
             <div class="row">
-               <h1>Let's find which modules you've taken.</h1>
+               <h1>Let's find out which modules you've taken.</h1>
                <h4>Below are listed all the modules from your course (<%= @course_obj.name %>). <br />Select the ones which you've taken. When done, click "View careers".</h4>
             </div>
             <script>
@@ -69,23 +69,31 @@ jQuery(function ($) {
 
 
 <div id="tags-area" style="margin-top:20px;">
-<% @course_obj.year_structures.each do |ys| %>
+<% @course_obj.year_structures.each_with_index do |ys, year_index| %>
+<% if year_index + 1 <= @year_of_study %>
    <div style="margin-top:30px;">
-      <h1><%= ys.year_of_study %></h1>
+      <h1><%= ys.year_of_study.titleize.downcase.capitalize %></h1>
       <% ys.groups.each do |group| %>
+<div class="col-md-6">
+<% if group.compulsory? %>
+Compulsory
+<% else %>
+Optional
+<% end %>
          <% group.uni_modules.each do |uni_module| %>
 
-<input type="checkbox" name="chosen_modules[]" id="<%= uni_module.code %>" value="<%= uni_module.code %>" class="chk-btn">
+<input type="checkbox" name="chosen_modules[]" id="<%= uni_module.code %>" value="<%= uni_module.code %>" class="chk-btn" 
+<% if group.compulsory? %> checked="checked" <% end %>>
 <label for="<%= uni_module.code %>"><%= uni_module.code + " " + uni_module.name %></label>
-
-
 
          <% end %>
 
 
+</div>
       <% end %>
    </div>
 
+      <% end %>
 
 <% end %>
 
