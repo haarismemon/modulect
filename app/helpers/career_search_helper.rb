@@ -27,5 +27,21 @@ module CareerSearchHelper
 
 	end
 
+  # check which modules contain which the input tag
+  # written by Aqib
+  def get_module_which_contains_tag(tag, modules)
+
+    resulting_modules = []
+
+    modules.each do |uni_module|
+      if uni_module.career_tags.include?(tag)
+        resulting_modules << uni_module
+      end
+    end
+
+    resulting_modules
+
+  end
+
 
 end

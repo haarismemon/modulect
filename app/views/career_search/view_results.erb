@@ -1,5 +1,6 @@
 <% provide(:title, 'Potential Careers - Career Search') %>
 <% if logged_in? %>
+<% @year_of_study = current_user.year_of_study %>
 <% @course = current_user.course_id %>
 <% end %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
@@ -27,7 +28,7 @@
       </div>
    </div>
 </div>
-<% if @course_obj.nil? %>
+<% if @course_obj.nil? || @year_of_study.to_i < 1 || @year_of_study.to_i > 7 %>
 <div id="page">
 <div class="container">
    <div class="col-md-10 login-card col-md-offset-1">
@@ -57,14 +58,42 @@
 
 
 
+<% @careers_found.each_with_index do |tag, i| %>
+
+<% if i % 3 == 0 %><div class="row"><% end %>
 
 
-<% @careers_found.each do |tag| %>
-<%= tag.name %>
+<script>
+$(document).ready(function(){
+    $("#slide-toggle-<%= i %>").click(function(){
+        $("#slide-toggle-<%= i %>-p").toggle();
+    });
+});
+</script>
+<div class="col-md-4">
+<div class="col-md-12 login-card" style="padding-left:15px;">
+<h4><%= tag.name %></h4>
+<a href="javascript:void()" id="slide-toggle-<%= i %>" >Modules <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+
+<p class="module-list-career" id="slide-toggle-<%= i %>-p" style="display:none; font-size:13px;margin-top:12px;">
+<% get_module_which_contains_tag(tag, @uni_modules_array).each do |uni_module| %>
+   <%= uni_module.code + " " + uni_module.name %> <br />
+<% end %>
+</p>
+
+
+
+</div>
+</div>
+
+
+<% if i % 3 == 2  %></div><% end %>
+
+
 
 <% end %>
 
-
+</div>
 
 
 

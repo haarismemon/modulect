@@ -1,5 +1,6 @@
 <% provide(:title, 'Choose Modules Taken - Career Search') %>
 <% if logged_in? %>
+<% @year_of_study = current_user.year_of_study %>
 <% @course = current_user.course_id %>
 <% end %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
@@ -27,7 +28,7 @@
       </div>
    </div>
 </div>
-<% if @course_obj.nil? %>
+<% if @course_obj.nil? || @year_of_study.to_i < 1 || @year_of_study.to_i > 7 %>
 <div id="page">
 <div class="container">
    <div class="col-md-10 login-card col-md-offset-1">
@@ -79,6 +80,8 @@ Why the hell is year in query params?
             <div class="row" style="margin-top:30px;" >
                <div class="col-md-12" style="border-top:1px dotted #dfe2e1;padding-top:15px;margin-top: 10px;padding-left:0px">
                   <div class="form-group">
+                  <input type="hidden" value="<%= @year_of_study %>" name="year">
+                     
                      <input type="hidden" value="<%= @course %>" name="course">
                      <button id='quickButton'  class="btn btn-lg"  type="submit">View careers ></button>&nbsp&nbsp;
                      <br />
