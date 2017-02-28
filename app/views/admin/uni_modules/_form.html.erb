@@ -45,10 +45,10 @@ and renders all form fields for a resource's editable attributes.
                 $.ajax({
                     type: "POST",
                     url: "<%= admin_create_tag_path %>",
-                    data: { tag_name: name_of_tag, tag_type : type_of_tag},
+                    data: { tag_name: name_of_tag, tag_type : type_of_tag, uni_module_id : <%=page.resource.id%>},
                     context: document.body,
                     success: function(){
-                        alert('success');
+                        alert("success ");
                     }
                 })
             });

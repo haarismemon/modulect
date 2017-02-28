@@ -18,6 +18,9 @@ module Admin
 
     def create
       @tag = Tag.create(name: params[:tag_name], type: params[:tag_type])
+      @uni_module = UniModule.find(params[:uni_module_id])
+
+      @uni_module.tags << @tag
     end
 
   end
