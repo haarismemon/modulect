@@ -8,7 +8,7 @@ end
 ruby '2.3.3'
 gem 'bcrypt',                 '~> 3.1.7'
 gem 'bootstrap-sass'
-gem 'bootstrap-tagsinput-rails' 
+gem 'bootstrap-tagsinput-rails'
 gem 'twitter-typeahead-rails'
 gem 'sass-rails',             '~> 5.0'
 gem 'rails',                  '~> 5.0.1'
@@ -55,9 +55,7 @@ end
 
 group :production do
   # Use postrgres in production
-  # TODO: Switch back to postgres when done debugging assets
-  #gem 'pg', '0.18.4'
-  gem 'sqlite3'
+  gem 'pg', '0.18.4'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
