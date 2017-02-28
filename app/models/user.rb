@@ -21,7 +21,7 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX }
   validates :year_of_study, length: { maximum: 1 }
   validates :course_id, length: { maximum: 1 } #not tested
-  enum user_level: { open_access: 1, faculty_access: 2, user_access: 3 }
+  enum user_level: {user_access: 3 ,faculty_access: 2, super_admin_access: 1 }
   has_secure_password
   validates :password, presence: true,
                        length: {minimum: 6},

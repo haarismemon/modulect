@@ -16,17 +16,31 @@ and renders all form fields for a resource's editable attributes.
 
 
 
-<%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
+<%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
     <%= error_messages_for(page.resource) %>
 
-  <% page.attributes.each do |attribute| -%>
-    <div class="field-unit field-unit--<%= attribute.html_class %>">
-      <%= render_field attribute, f: f %>
-    </div>
-  <% end -%>
+    <% page.attributes.each do |attribute| -%>
+        <% current_field_name = attribute.attribute.to_s %>
+        <% if (current_field_name=="user_level")  %>
+            <% class_to_add = "faculty-field" %>
+            <span class="instruction-label form-actions">*Super admin access gives unbound access to modify, create and to delete</span>
+        <% end %>
 
-  <div class="form-actions">
-    <%= f.submit %>
-  </div>
+        <div class="field-unit field-unit--<%= attribute.html_class %> <%= class_to_add %>">
+          <%= render_field attribute, f: f %>
+        </div>
+    <% end -%>
+
+    <div class="form-actions">
+      <%= f.submit %>
+    </div>
 <% end %>
+
+
+
+<script>
+    $( document ).ready(function() {
+        var $select = $('.faculty-field select').selectize();
+    });
+</script>
