@@ -792,6 +792,16 @@ th, td {
     border: 1px solid #2ab27b;
 }
 
+.module-list-career{
+    display:none;
+    font-size:13px;
+    margin-top:12px;
+}
+
+.career-row, .module-row{
+    margin-top:15px;
+}
+
 @media only screen and (max-width: 560px) {
     #footer-logo {
         width: 120px;
@@ -859,5 +869,9 @@ th, td {
 
     .mobile-12-margin {
         margin-left:0px;
+    }
+
+    .career-row{
+        margin-top:0px;
     }
 }
