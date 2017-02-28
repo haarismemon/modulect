@@ -28,6 +28,32 @@
                   <% end %>
                 </div>
               </form>
+              <script>
+                      if (<%= logged_in? %> && document.getElementById('search_course').checked) {
+                        var tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
+                      } else {
+                        var tags = <%=  raw @tag_names + @module_names + @module_code %>;
+                      }
+                      // Remove the previously rendered search bar
+                      $("div.bootstrap-tagsinput").remove();
+                      var tags = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        local: tags
+                      });
+                     
+                      tags.initialize();
+                     
+                      $('input#chosen_tags').tagsinput({
+                        typeaheadjs: {
+                          name: 'tags',
+                          source: tags.ttAdapter()
+                        },
+                        freeInput: false
+                      });
+                     
+                      $('input#chosen_tags').focus();
+                    </script>
             </div>
           </div>
         </div>
@@ -49,32 +75,6 @@
                 <button style="width: inherit;" id='pathwayButton' class="btn btn-lg btn-block" type="submit">Begin Search&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
                 </button>
               </form>
-              <script>
-    if (<%= logged_in? %> && document.getElementById('search_course').checked) {
-      var tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
-    } else {
-      var tags = <%=  raw @tag_names + @module_names + @module_code %>;
-    }
-                      // Remove the previously rendered search bar
-                      $("div.bootstrap-tagsinput").remove();
-                      var tags = new Bloodhound({
-                        datumTokenizer: Bloodhound.tokenizers.whitespace,
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                        local: tags
-                      });
-                     
-                      tags.initialize();
-                     
-                      $('input#chosen_tags').tagsinput({
-                        typeaheadjs: {
-                          name: 'tags',
-                          source: tags.ttAdapter()
-                        },
-                        freeInput: false
-                      });
-                     
-                      $('input#chosen_tags').focus();
-                    </script>
             </div>
           </div>
         </div>

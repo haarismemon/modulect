@@ -12,40 +12,48 @@
       <h1>Your Search:</h1>
       <div class="row" style="margin-top: 15px">
          <div id="quick-search">
-            <form action="<%= search_view_results_path %>", method="get">
-               <div class="col-md-8">
-                  <%= text_field_tag(:chosen_tags, @temp_array.join(','), :placeholder => '', data: {:role => "tagsinput"}, :required => true) %>
-                  <script>
-                     var tags = <%=  raw @tag_names + @module_names + @module_code %>;
-                     // Remove the previously rendered search bar
-                     $("div.bootstrap-tagsinput").remove();
-                     var tags = new Bloodhound({
+               <form action="<%= search_view_results_path %>", method="get">
+   <div class="col-md-8">
+    <%= text_field_tag(:chosen_tags, @temp_array.join(','), :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
+                  </div>
+                  <div class="col-md-4">
+                  <div class="form-group">
+                    <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <% if logged_in? %>
+                    <div class="checkbox">
+                      <input type="checkbox" value="" id="search_course" checked="checked"><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+                    </div>
+                  <% end %>
+                </div>
+              </form>
+              <script>
+                      if (<%= logged_in? %> && document.getElementById('search_course').checked) {
+                        var tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
+                      } else {
+                        var tags = <%=  raw @tag_names + @module_names + @module_code %>;
+                      }
+                      // Remove the previously rendered search bar
+                      $("div.bootstrap-tagsinput").remove();
+                      var tags = new Bloodhound({
                         datumTokenizer: Bloodhound.tokenizers.whitespace,
                         queryTokenizer: Bloodhound.tokenizers.whitespace,
                         local: tags
-                     });
+                      });
                      
-                     tags.initialize();
+                      tags.initialize();
                      
-                     $('input#chosen_tags').tagsinput({
+                      $('input#chosen_tags').tagsinput({
                         typeaheadjs: {
-                           name: 'tags',
-                           source: tags.ttAdapter()
+                          name: 'tags',
+                          source: tags.ttAdapter()
                         },
                         freeInput: false
-                     });
+                      });
                      
-                     $('input#chosen_tags').focus();
-                  </script>
-               </div>
-               <div class="col-md-4">
-                  <div class="form-group">
-                     <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
-                     </button>
-                  </div>
-               </div>
-               <input type="hidden" name="sort_by" value="<%= sortby %>">
-            </form>
+                      $('input#chosen_tags').focus();
+                    </script>
          </div>
       </div>
    </div>
