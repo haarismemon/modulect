@@ -50,6 +50,13 @@ and renders all form fields for a resource's editable attributes.
                     context: document.body,
                     success: function(){
                         alert("success ");
+
+                        $('input[name="tag_name"]').val("");
+                        var last_tag = $("select#uni_module_tag_ids + div>div.selectize-input.items.not-full.has-options.has-items>div.item");
+                        var new_data_value = parseInt(last_tag.attr("data-value")) + 1;
+                        last_tag.last().after("<div class=\"item\" data-value=\"" + new_data_value + "\">" + name_of_tag + "</div>");
+
+//                        $("select#uni_module_tag_ids").append("<option value=\"" + new_data_value + "\" selected=\"selected\">" + name_of_tag + "</option>");
                     }
                 })
             });
