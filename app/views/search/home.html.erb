@@ -42,12 +42,14 @@
                   <div class="form-group">
                     <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
                     </button>
-                    <% if logged_in? %>
-                    <div class="checkbox">
-                      <label><input type="checkbox" value="" checked>Only show <%= get_course_of_user(current_user).name %> modules</label>
-                    </div>
-                    <% end %>
                   </div>
+                  <% if logged_in? %>
+                  <div class="form-group">
+                    <div class="checkbox">
+                      <input type="checkbox" value="" id="search_course" checked="checked"><label for="search_course"><span>Only show <%= get_course_of_user(current_user).name %> modules</span></label>
+                    </div>
+                  </div>
+                  <% end %>
                 </div>
               </form>
             </div>
