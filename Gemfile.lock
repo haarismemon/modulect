@@ -284,7 +284,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass
-  bourbon
+  bourbon (= 4.3.2)
   byebug (= 9.0.0)
   capybara
   coffee-rails (~> 4.2)
