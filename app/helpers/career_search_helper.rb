@@ -43,5 +43,24 @@ module CareerSearchHelper
 
   end
 
+  # check that a course contains modules
+  # by looping over year strucutres, then groups
+  # and increasing a counter
+  # by Aqib
+  def check_course_contains_modules(course_obj)
+    module_count = 0
+
+    course_obj.year_structures.each do |ys|
+      ys.groups.each do |group|
+        module_count += group.uni_modules.size
+      end
+    end
+    
+    if module_count == 0
+      false
+    else 
+      true
+    end
+  end
 
 end

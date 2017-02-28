@@ -67,7 +67,7 @@
                </script>
              
                   <form action="<%= career_search_view_results_path %>" method="get" id="choose-modules">
-            <% if @course_obj.year_structures.size == 0 %>
+            <% if !check_course_contains_modules(@course_obj) %>
                <div class="row" style="margin-top:20px;">
                   <h4 style="margin:30px 0px" class="text-center">Unfortunately, we couldn't find any modules for you at this time. Please try again later.</h4>
                </div>
