@@ -42,6 +42,7 @@
 </div>
 <% else %>
 <div id="page">
+<div id="choose-page">
    <div class="container">
       <div class="col-md-10 login-card col-md-offset-1">
          <div class="col-md-12">
@@ -49,29 +50,57 @@
                <h1>Let's find which modules you've taken.</h1>
                <h4>Below are listed all the modules from your course (<%= @course_obj.name %>). <br />Select the ones which you've taken. When done, click "View careers".</h4>
             </div>
-            <form action="<%= career_search_view_results_path %>", method="get">
+            <script>
+         
+//dom ready handler
+jQuery(function ($) {
+    //form submit handler
+    $('#choose-modules').submit(function (e) {
+        //check atleat 1 checkbox is checked
+        if (!$('.chk-btn').is(':checked')) {
+            //prevent the default form submit if it is not checked
+            e.preventDefault();
+        }
+    })
+})
+</script>
+            <form action="<%= career_search_view_results_path %>" method="get" id="choose-modules">
          
 
 
+<div id="tags-area" style="margin-top:20px;">
+<% @course_obj.year_structures.each do |ys| %>
+   <div style="margin-top:30px;">
+      <h1><%= ys.year_of_study %></h1>
+      <% ys.groups.each do |group| %>
+         <% group.uni_modules.each do |uni_module| %>
+
+<input type="checkbox" name="chosen_modules[]" id="<%= uni_module.code %>" value="<%= uni_module.code %>" class="chk-btn">
+<label for="<%= uni_module.code %>"><%= uni_module.code + " " + uni_module.name %></label>
 
 
-Ask modules here...
-Why the hell is year in query params?
+
+         <% end %>
+
+
+      <% end %>
+   </div>
+
+
+<% end %>
 
 
 
 
 
-<input type="checkbox" name="chosen_modules[]" id="4CCS1PRP" value="4CCS1PRP" class="chk-btn">
-<label for="4CCS1PRP">4CCS1PRP</label>
-
-<input type="checkbox" name="chosen_modules[]" id="4CCS1PRA" value="4CCS1PRA" class="chk-btn">
-<label for="4CCS1PRA">4CCS1PRA</label>
 
 
-<input type="checkbox" name="chosen_modules[]" id="5CCS2INS" value="5CCS2INS" class="chk-btn">
-<label for="5CCS2INS">5CCS2INS</label>
 
+
+
+
+
+</div>
 
 
 
@@ -91,7 +120,7 @@ Why the hell is year in query params?
                </div>
             </div>
             </form>
-         </div>
+         </div></div>
       </div>
    </div>
 </div>
