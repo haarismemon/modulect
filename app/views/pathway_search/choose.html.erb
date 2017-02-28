@@ -212,7 +212,9 @@
                   <div class="form-group">
                      <input type="hidden" value="<%= @year_of_study %>" name="year">
                      <input type="hidden" value="<%= @course %>" name="course">
-                     <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;
+                     <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;                   
+<div style="float:right;">
+<button type="button" value="Reset Form" onClick="window.location.reload(false);" class="btn red-btn" id="reset-button" /><i class="fa fa-repeat" aria-hidden="true"></i> Reset</button></div>
                      <br />
                   </div>
                   <% end %>
