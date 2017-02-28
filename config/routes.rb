@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   get 'pathway-search/view_results'
 
 
-  # Pathway search
+  # Career search
   get '/career-search', to: 'career_search#begin'
   get 'career-search/begin'
   get 'career-search/choose'
