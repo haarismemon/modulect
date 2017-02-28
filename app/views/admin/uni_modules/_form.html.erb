@@ -38,13 +38,14 @@ and renders all form fields for a resource's editable attributes.
         <input type="radio" name="tag_type" value="InterestTag" checked id="tag_type"> Interest
         <input type="radio" name="tag_type" value="CareerTag" id="tag_type"> Career
         <button type="button" class="btn btn-lg btn-small" id="new-tag">New Tag</button>
+
         <script>
             $("#new-tag").on("click", function(){
                 var name_of_tag = $('input[name="tag_name"]').val();
                 var type_of_tag = $('input[name="tag_type"]:checked').val()
                 $.ajax({
                     type: "POST",
-                    url: "<%= admin_create_tag_path %>",
+                    url: "<%= admin_add_new_tag_path %>",
                     data: { tag_name: name_of_tag, tag_type : type_of_tag, uni_module_id : <%=page.resource.id%>},
                     context: document.body,
                     success: function(){
@@ -53,8 +54,7 @@ and renders all form fields for a resource's editable attributes.
                 })
             });
         </script>
-
-        <!--<%= link_to '<button type="button">New Tag!</button>'.html_safe, admin_create_tag_path, :method => :post %>-->
+        
       </div>
     <% end %>
 

@@ -16,7 +16,7 @@ module Admin
     # See https://administrate-docs.herokuapp.com/customizing_controller_actions
     # for more information
 
-    def create
+    def add_new_tag
       @tag = Tag.create(name: params[:tag_name], type: params[:tag_type])
       @uni_module = UniModule.find(params[:uni_module_id])
 
