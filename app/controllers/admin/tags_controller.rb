@@ -25,7 +25,9 @@ module Admin
         uni_module = UniModule.find(params[:uni_module_id])
       end
 
-      uni_module.tags << new_tag
+      unless uni_module.nil?
+        uni_module.tags << new_tag
+      end
 
     end
 
