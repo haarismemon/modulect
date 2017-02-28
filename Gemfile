@@ -6,10 +6,11 @@ git_source(:github) do |repo_name|
 end
 # if version doesn't work, use rvm to switch your ruby version
 ruby '2.3.3'
-gem 'sass-rails',             '~> 5.0'
 gem 'bcrypt',                 '~> 3.1.7'
 gem 'bootstrap-sass'
-gem 'materialize-sass'
+gem 'bootstrap-tagsinput-rails'
+gem 'twitter-typeahead-rails'
+gem 'sass-rails',             '~> 5.0'
 gem 'rails',                  '~> 5.0.1'
 gem 'puma',                   '~> 3.0'
 gem 'uglifier',               '>= 1.3.0'
@@ -20,8 +21,8 @@ gem 'jbuilder',               '~> 2.5'
 gem 'coffee-script-source',   '1.8.0'
 gem 'wdm',                    '>= 0.1.0' if Gem.win_platform?
 gem 'default_value_for',      '~> 3.0', '>= 3.0.2'
-gem 'bourbon'
-gem "administrate",           "~> 0.3.0"
+gem 'bourbon',                '4.3.2'
+gem "administrate",           '~> 0.3.0'
 
 group :development, :test do
   gem 'sqlite3'

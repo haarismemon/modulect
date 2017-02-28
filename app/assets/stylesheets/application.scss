@@ -1,0 +1,10 @@
+/*
+ * CSS manifest file for the root application.
+ * Do not include styles for /admin here. See ./administrate/application.scss
+ * instead.
+ */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+@import "user-side/**/*";
