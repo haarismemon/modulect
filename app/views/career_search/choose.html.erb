@@ -85,7 +85,7 @@
                                     <% end %>
                                  </h3>
                               </div>
-                              <% group.uni_modules.each do |uni_module| %>
+ <% group.uni_modules.sort_by { |uni_module| uni_module.name }.each do |uni_module| %>
                               <div class="col-md-12">
                                  <input type="checkbox" name="chosen_modules[]" id="<%= uni_module.code %>" value="<%= uni_module.code %>" class="chk-btn" 
                                     <% if group.compulsory? %> checked="checked" <% end %>>
