@@ -17,10 +17,16 @@ module Admin
     # for more information
 
     def add_new_tag
-      @tag = Tag.create(name: params[:tag_name], type: params[:tag_type])
-      @uni_module = UniModule.find(params[:uni_module_id])
 
-      @uni_module.tags << @tag
+      new_tag = Tag.find_by_name(params[:tag_name])
+
+      unless new_tag.nil?
+        new_tag = Tag.create(name: params[:tag_name], type: params[:tag_type])
+        uni_module = UniModule.find(params[:uni_module_id])
+      end
+
+      uni_module.tags << new_tag
+
     end
 
   end
