@@ -559,7 +559,7 @@ th, td {
     padding-bottom: 5px;
     padding-left: 5px;
     padding-right: 10px;
-    width: 100%; !important
+    width: 100% !important;
 }
 .res-btn:active,
 .res-btn:hover,
@@ -588,7 +588,7 @@ th, td {
 }
 .banner {
     height: 100%;
-    background-image: url(../banner.png), linear-gradient(-150deg, #00C1B6 0%, #136EB5 97%);
+    background-image: asset-url('banner.png'), linear-gradient(-150deg, #00C1B6 0%, #136EB5 97%);
     background-size: 380px, contain;
     padding-top: 35px;
     padding-bottom: 35px;
@@ -861,4 +861,3 @@ th, td {
         margin-left:0px;
     }
 }
->>>>>>> development:app/assets/stylesheets/user-side/style.css
