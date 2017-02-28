@@ -55,4 +55,9 @@ class CareerSearchController < ApplicationController
 		#redirect_to "/career-search/"
 	end
   end
+
+  # used to save the checkboxes
+  def save_career_search_modules(user)
+  
+  end
 end
