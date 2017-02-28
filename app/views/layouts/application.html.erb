@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= full_title(yield(:title)) %></title>
+    <title><%= full_title( yield(:title) ) %></title>
     <%= render 'layouts/rails_defaults' %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/bbc851b668.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     <%= favicon_link_tag 'favicon.ico' %>
     <script>
       var $=jQuery.noConflict();
-      
+
       $(document).ready(function(){
        setTimeout(fade_out, 5000);
           function fade_out() {
@@ -22,14 +20,14 @@
   </head>
 
   <body>
-    <%= render 'layouts/header' %> 
+    <%= render 'layouts/header' %>
     <div class="modulect-container">
         <%= render 'layouts/flash' if !flash.empty? %>
         <%= yield %>
         <%= render 'layouts/after_content' %>
         </div>
-      </div> 
-      <%= render 'layouts/footer' %> 
+      </div>
+      <%= render 'layouts/footer' %>
     </div>
   </body>
 </html>

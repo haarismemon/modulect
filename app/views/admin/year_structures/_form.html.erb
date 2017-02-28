@@ -1,0 +1,47 @@
+<%#
+# Form Partial
+
+This partial is rendered on a resource's `new` and `edit` pages,
+and renders all form fields for a resource's editable attributes.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Form][1].
+  Contains helper methods to display a form,
+  and knows which attributes should be displayed in the resource's form.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
+%>
+
+<%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(page.resource) %>
+
+    <% page.attributes.each do |attribute| -%>
+        <!--checks if render request came from faculty form-->
+
+        <% current_field_name = attribute.attribute.to_s %>
+        <!--print info message on top of courses field-->
+        <% class_to_add = (current_field_name=="course"|| current_field_name=="year_of_study") ?
+            "faculty-field" : ""%>
+
+        <div class="field-unit field-unit--<%= attribute.html_class %> <%= class_to_add%>">
+          <%= render_field attribute, f: f %>
+        </div>
+    <% end -%>
+
+    <div class="form-actions">
+      <%= f.submit %>
+    </div>
+<% end %>
+
+
+<script>
+  $( document ).ready(function() {
+    $('.faculty-field select').prepend( '<option value="dsad"></option>' );
+    var $select = $('.faculty-field select').selectize();
+
+  });
+
+</script>

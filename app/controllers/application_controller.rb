@@ -24,4 +24,19 @@ class ApplicationController < ActionController::Base
       end
   end
 
+  # Save pathway to favourites
+  def save_pathway
+    pathway_name = params[:name]
+    pathway_data = params[:data]
+    pathway_year = params[:year]
+    pathway_course = params[:course]
+    current_user.pathways << Pathway.create(name: pathway_name, data: pathway_data, year: pathway_year, course_id: pathway_course)
+  end
+
+  # delete pathway from user's favourites
+  def delete_pathway
+    pathway = Pathway.find(params[:pathway_par])
+    current_user.pathways.delete(pathway)
+  end
+
 end

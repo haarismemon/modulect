@@ -11,8 +11,13 @@ module ProjectRun
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    
+
     # Load all subclasses of the Tag model
     config.autoload_paths += %W(#{config.root}/app/models/tags)
+    config.exceptions_app = self.routes
+
+    config.to_prepare do
+          Administrate::ApplicationController.helper ProjectRun::Application.helpers
+        end
   end
 end

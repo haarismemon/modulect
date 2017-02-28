@@ -76,7 +76,7 @@ class UsersController < ApplicationController
     @departments = Department.where("faculty_id = ?", params[:faculty_id])
                   respond_to do |format|
                     format.js
-                  end 
+                  end
   end
 
   # Change the value of @courses if department changes
@@ -94,9 +94,9 @@ class UsersController < ApplicationController
     if @user.update_attributes(update_params)
       # If save succeeds, redirect to the index action
       flash[:success] = "Successfully updated your account"
-      if params.has_key?(:dest) && !params[:dest].empty? 
-        redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s 
-      else  
+      if params.has_key?(:dest) && !params[:dest].empty?
+        redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s
+      else
         redirect_to(edit_user_path)
       end
     else
@@ -135,6 +135,4 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
     end
-
-
 end

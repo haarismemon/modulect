@@ -1,0 +1,32 @@
+<%#
+# Form Partial
+
+This partial is rendered on a resource's `new` and `edit` pages,
+and renders all form fields for a resource's editable attributes.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Form][1].
+  Contains helper methods to display a form,
+  and knows which attributes should be displayed in the resource's form.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
+%>
+
+<%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
+
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(page.resource) %>
+
+    <% page.attributes.each_with_index do |attribute, index| -%>
+            <div class="field-unit field-unit--<%= attribute.html_class %>">
+              <%= render_field attribute, f: f %>
+            </div>
+
+    <% end -%>
+
+    <div class="form-actions">
+      <%= f.submit %>
+    </div>
+<% end %>

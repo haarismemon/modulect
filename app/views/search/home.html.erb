@@ -1,74 +1,97 @@
 <% provide(:title, 'Search') %>
 <div class="banner" style="margin-top: -30px;padding-top:40px;">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<% if logged_in? %>
-				<h1>Hi <%= current_user.first_name %>, let's find some modules for you</h1>
-				<% else %>
-				<h1>Hi, let's find some modules for you</h1>
-				<% end %>
-			</div>
-		</div>
-		<div class="row" style="margin-top: 15px">
-			<div id="quick-search">
-				<form action="<%= search_view_results_path %>", method="get">
-					<div class="col-md-8">
-						<%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
-						<script>
-							var tags = <%=  raw @tag_names + @module_names + @module_code %>;
-							// Remove the previously rendered search bar
-							$("div.bootstrap-tagsinput").remove();
-							var tags = new Bloodhound({
-								datumTokenizer: Bloodhound.tokenizers.whitespace,
-								queryTokenizer: Bloodhound.tokenizers.whitespace,
-								local: tags
-							});
-
-							tags.initialize();
-
-							$('input#chosen_tags').tagsinput({
-								typeaheadjs: {
-									name: 'tags',
-									source: tags.ttAdapter()
-								},
-								freeInput: false
-							});
-
-							$('input#chosen_tags').focus();
-						</script>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12">
+            <% if logged_in? %>
+            <h1>Hi <%= current_user.first_name %>, let's find some modules for you</h1>
+            <% else %>
+            <h1>Hi, let's find some modules for you</h1>
+            <% end %>
+         </div>
+      </div>
+      <div class="row" style="margin-top: 15px">
+         <div id="quick-search">
+            <form action="<%= search_view_results_path %>", method="get">
+               <div class="col-md-8">
+                  <%= text_field_tag(:chosen_tags, nil, :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
+                  <script>
+                     var tags = <%=  raw @tag_names + @module_names + @module_code %>;
+                     // Remove the previously rendered search bar
+                     $("div.bootstrap-tagsinput").remove();
+                     var tags = new Bloodhound({
+                     	datumTokenizer: Bloodhound.tokenizers.whitespace,
+                     	queryTokenizer: Bloodhound.tokenizers.whitespace,
+                     	local: tags
+                     });
+                     
+                     tags.initialize();
+                     
+                     $('input#chosen_tags').tagsinput({
+                     	typeaheadjs: {
+                     		name: 'tags',
+                     		source: tags.ttAdapter()
+                     	},
+                     	freeInput: false
+                     });
+                     
+                     $('input#chosen_tags').focus();
+                  </script>
+               </div>
+               <div class="col-md-4">
+                  <div class="form-group">
+                     <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
+                     </button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
 </div>
-
 <div id="page" style="padding-top: 30px">
-	<div class="container">
-		<div class="col-md-12 login-card">
-			<div class="col-md-12">
-				<div class="row">
-					<h1>Start a Pathway Search</h1>
-					<h3 style="margin-top: 20px">Let us assist you in finding the right modules which suit your interests and career aspirations.</h3>
-				</div>
-			<div class="row" >
-				<div class="col-md-4" style="margin-top: 30px;padding-left:0px">
-					<div class="form-group">
-						<form action="<%= pathway_search_begin_path %>" method="get">
-							<button id='pathwayButton' class="btn btn-lg btn-block" type="submit">Begin Search&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
-							</button>
-						</form>
-					</div>
-				</div>
-				</div>
-			</div>
-		</div>
-	</div>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-8">
+            <div class="col-md-12 login-card">
+               <div class="col-md-12">
+                  <div class="row">
+                     <h1>Start a Pathway Search</h1>
+                     <h3 style="margin-top: 20px">Let us assist you in finding the right modules which suit your interests and career aspirations.</h3>
+                  </div>
+                  <div class="row" >
+                     <div style="margin-top: 30px;padding-left:0px">
+                        <div class="form-group">
+                           <form action="<%= pathway_search_begin_path %>" method="get">
+                              <button style="width: inherit;" id='pathwayButton' class="btn btn-lg btn-block" type="submit">Begin Search&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
+                              </button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="col-md-12 login-card">
+               <div class="col-md-12">
+                  <div class="row">
+                     <h2>Career Search</h2>
+                     <h4 style="margin-top: 20px">Enter the modules you've taken and we'll give you career suggestions.</h4>
+                  </div>
+                  <div class="row" >
+                     <div style="margin-top: 30px;padding-left:0px">
+                        <div class="form-group">
+                           <form action="<%= career_search_begin_path %>" method="get">
+                              <button style="width:inherit;" id='pathwayButton' class="btn btn-lg btn-block" type="submit">Start&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
+                              </button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>

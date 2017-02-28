@@ -34,4 +34,41 @@ module PathwaySearchHelper
     end
   end
 
+  # returns a string used to colour code card based on number of tags matched
+  # inputs are a string and lists
+  # written by Aqib adapted by Feras
+  def colour_code_card_group(module_matched_list, tags_matched_list)
+    if percentage(module_matched_list.length, tags_matched_list.length) >= 60.0
+      "green"
+    else
+      "orange"
+    end
+  end
+
+  # retuns a default string if name not set
+  def check_pathway_name(input)
+    if input == "Pathway"
+      "Pathway (no name)"
+    else
+      input
+    end
+  end
+
+  # returns all the compulsory modules for a course
+  def compulsory_modules_for_course_year(course, year) 
+    comp_mod_in_group = []
+    groups = course.year_structures.find_by_year_of_study(year).groups
+    groups.each do |group|
+      if group.compulsory
+        group.uni_modules.each do |required_mod|
+          comp_mod_in_group << [group.id, required_mod.id]
+        end
+      end
+    end
+    #returns an array of group-module pairs
+    comp_mod_in_group
+  end
+
+  
+
 end
