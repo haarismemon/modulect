@@ -48,8 +48,15 @@
             <div class="col-md-12">
                <div class="row">
                   <h1>Let's find out which modules you've taken.</h1>
-                  <h4>Below are listed all the modules from your course (<%= @course_obj.name %>). <br />Select the ones which you've taken. When done, click "View careers".</h4>
+                  <h4>Listed below are all the modules from your course (<%= @course_obj.name %>). 
+                  <br /> Select the ones which you've taken (we've pre-selected compulsory ones). Then click "View careers".</h4>
                </div>
+
+
+
+        
+
+
                <script>
                   //dom ready handler
                   jQuery(function ($) {
@@ -68,9 +75,14 @@
                      <% @course_obj.year_structures.each_with_index do |ys, year_index| %>
                      <% if year_index + 1 <= @year_of_study %>
                      <div class="row module-row">
-                        <div class="col-md-12" style="padding-left:0px;">
-                        <h1><%= ys.year_of_study.titleize.downcase.capitalize %></h1>
-                        </div>
+
+
+
+<button id=btn_year_<%= year_index+1 %> class="btn btn-lg btn-block" type="button" style="margin-top: 5px">
+            <%= (year_index+1).ordinalize %> Year
+          </button>
+
+  <div id=div_year_<%= year_index+1 %> style="margin-top: 10px;display:none;padding-bottom:50px">
                         <% ys.groups.each do |group| %>
                         <div class="col-md-6" style="padding-left:0px;">
                          <div class="col-md-12">
@@ -86,15 +98,26 @@
                            <div class="col-md-12">
                               <input type="checkbox" name="chosen_modules[]" id="<%= uni_module.code %>" value="<%= uni_module.code %>" class="chk-btn" 
                                  <% if group.compulsory? %> checked="checked" <% end %>>
-                              <label for="<%= uni_module.code %>"><%= uni_module.code + " " + uni_module.name %></label>
+                              <label for="<%= uni_module.code %>" style="width:100%;"><%= uni_module.code + " " + uni_module.name %></label>
                            </div>
                            <% end %>
                         </div>
                         <% end %>
                      </div>
+
+
+
+          </div>
+
                      <% end %>
                      <% end %>
                   </div>
+
+
+<div class="row">
+<button id="btn_all_years" class="btn btn-lg btn-block" type="button" style="margin-top: 5px">show all</button></div>
+
+
                   <div class="row" style="margin-top:30px;" >
                      <div class="col-md-12" style="border-top:1px dotted #dfe2e1;padding-top:15px;margin-top: 10px;padding-left:0px">
                         <div class="form-group">
@@ -113,4 +136,64 @@
       </div>
    </div>
 </div>
+
+
+
+
+       <script type="text/javascript">
+
+  var btns = [];
+  var divs = [];
+  for(i=1; i<10; i++){
+    var btn = document.getElementById("btn_year_"+i);
+    var div = document.getElementById("div_year_"+i);
+    if(!btn) break;
+    else{
+      $(div).hide();
+      total_years = i;
+      divs.push(div);
+      btns.push(btn);
+    }
+
+  }
+  for(var i=0; i<btns.length; i++){
+    (function(_i){
+      $(btns[_i]).click(function () {
+        showYear(divs, _i);
+      });
+    })(i);
+  }
+  $("#btn_all_years").click(function () {
+    for(i=0; i<divs.length; i++){
+      $(divs[i]).slideDown();
+    }
+  });
+
+
+  // show and hide year div
+  function showYear(divs, year){
+    for(i=0; i<divs.length; i++){
+      if(i!=year) $(divs[i]).slideUp();
+    }
+    $(divs[year]).slideDown();
+  }
+
+    document.getElementById('btn_year_1').click();
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <% end %>
