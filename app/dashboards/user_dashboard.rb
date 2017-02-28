@@ -14,7 +14,7 @@ class UserDashboard < Administrate::BaseDashboard
     last_name: Field::String,
     email: Field::String,
     password_digest: Field::String,
-    user_level: Field::Number,
+    user_level: EnumField,
     entered_before: Field::Boolean,
     year_of_study: Field::Number,
     course_id: Field::String,
