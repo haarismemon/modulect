@@ -67,7 +67,11 @@
                </script>
              
                   <form action="<%= career_search_view_results_path %>" method="get" id="choose-modules">
- 
+            <% if @course_obj.year_structures.size == 0 %>
+               <div class="row" style="margin-top:20px;">
+                  <h4 style="margin:30px 0px" class="text-center">Unfortunately, we couldn't find any modules for you at this time. Please try again later.</h4>
+               </div>
+               <% else %>
                   <div id="tags-area" style="margin-top:20px;">
                      <% @course_obj.year_structures.each_with_index do |ys, year_index| %>
                      <% if year_index + 1 <= @year_of_study %>
@@ -119,7 +123,8 @@
                         <div class="form-group"><%= link_to "< Back to previous page", career_search_begin_path, method: :get %>
                         </div>
                      </div>
-                  </div 
+                  </div>
+                  <% end %> 
                </form>
             </div>
          </div>
