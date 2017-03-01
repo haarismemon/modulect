@@ -20,7 +20,7 @@ with respect to that related field-->
 
     <% page.attributes.each do |attribute| -%>
         <% current_field_name = attribute.attribute.to_s %>
-
+        <%= current_field_name %>
         <% case current_field_name %>
           <% when "user_level" %>
             <% class_to_add = "faculty-field" %>
