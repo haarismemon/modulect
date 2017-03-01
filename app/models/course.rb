@@ -8,6 +8,7 @@ class Course < ApplicationRecord
 
   has_and_belongs_to_many :departments
   has_many :year_structures
+  has_many :users
 
   has_many :groups, through: :year_structures
   has_many :uni_modules, through: :groups
