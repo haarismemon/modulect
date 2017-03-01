@@ -1,5 +1,4 @@
 <% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
-<% tag_names = all_tag_name_of_course(@course_obj) %>
 <style>
    .bootstrap-tagsinput {
    background-color: none;
@@ -89,6 +88,7 @@
    </div>
 </div>
 <% else %>
+<% tag_names = all_tag_name_of_course(@course_obj) %>
 <div id="page">
    <div class="container">
       <div class="col-md-10 login-card col-md-offset-1">
@@ -101,7 +101,7 @@
                <h5>So far, we know that you're a <%= @year_of_study.to_i.ordinalize %> year, <%= @course_obj.name %> student.
                </h5>
             </div>
-            <form action="<%= pathway_search_view_results_path %>", method="get">
+            <form action="<%= pathway_search_view_results_path %>" method="get">
                <% if tag_names.size == 0 %>
                <div class="row" style="margin-top:20px;">
                   <h4 style="margin:30px 0px" class="text-center">Unfortunately, we couldn't find any tags for you at this time. Please try again later.</h4>
@@ -212,7 +212,9 @@
                   <div class="form-group">
                      <input type="hidden" value="<%= @year_of_study %>" name="year">
                      <input type="hidden" value="<%= @course %>" name="course">
-                     <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;
+                     <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;                   
+<div style="float:right;">
+<button type="button" value="Reset Form" onClick="window.location.reload(false);" class="btn red-btn" id="reset-button" /><i class="fa fa-repeat" aria-hidden="true"></i> Reset</button></div>
                      <br />
                   </div>
                   <% end %>
