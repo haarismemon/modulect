@@ -49,12 +49,12 @@ class UserDashboard < Administrate::BaseDashboard
     :first_name,
     :last_name,
     :email,
+    :course,
+    :faculty,
     :uni_modules,
     :user_level,
     :entered_before,
     :year_of_study,
-    :course,
-    :faculty,
     :created_at,
     :updated_at,
     :activated,
@@ -67,22 +67,14 @@ class UserDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :first_name,
     :last_name,
-    :user_level,
     :email,
-    :password,
-    :password_confirmation,
-
-    :entered_before,
-    :year_of_study,
-    :department_id,
-    :faculty_id,
-    :password,
-    :password_confirmation,
-    :activated,
-    :activated_at,
     :course,
-
     :faculty,
+    :uni_modules,
+    :user_level,
+    :year_of_study,
+    :password,
+    :password_confirmation,
   ].freeze
 
   # Overwrite this method to customize how users are displayed
