@@ -23,7 +23,7 @@ with respect to that related field-->
         <% case current_field_name %>
         <% when "password" %>
 
-            <a onclick="openPasswordFields();" class="form-actions password-show-toggle">Change password</a>
+            <a onclick="openPasswordFields();" class="form-actions password-show-toggle">Change Password</a>
             <% class_to_add = "password-hidden" %>
         <% when "password_confirmation" %>
             <% class_to_add = "password-hidden" %>
@@ -39,15 +39,16 @@ with respect to that related field-->
             <% class_to_add = "faculty-field" %>
 
         <% end %>
-        <div class="field-unit field-unit--<%= attribute.html_class %> <%= class_to_add %>">
-          <%= render_field attribute, f: f %>
+
+        <div class="row field-unit field-unit--<%= attribute.html_class %> <%= class_to_add %>">
+          <div class="col-xs-12">
+            <%= render_field attribute, f: f %>
+          </div>
         </div>
     <% end -%>
 
     <div class="form-actions"><%= f.submit %></div>
 <% end %>
-
-
 
 <script>
     $(document).ready(function () {
