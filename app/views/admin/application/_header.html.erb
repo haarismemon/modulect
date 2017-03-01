@@ -1,0 +1,44 @@
+<style>
+#admin-header{    position: fixed;
+    display: block;
+    height: 70px;
+    width: 100%;
+    padding: 15px 8px;
+    z-index: 1000;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(230,230,230,0.7);
+    z-index: 10000000;}
+
+    #menu-toggle{color:#555459;font-size:18px;margin-right:18px;}
+
+#admin-header  [class*="col-"] {padding: 0;}
+
+</style>
+
+<header id="admin-header">
+<div class="container-fluid">
+
+<div class="col-md-3">
+ <a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
+ <%= link_to image_tag( "modulect-logo.png", :alt=> "Modulect", :style => "height: 45px"), "/admin" %>
+</div>
+
+
+<div class="col-md-6">
+<div class="no-mobile" style="width:100%;display:inline-block;">
+
+            <%= content_for(:search) %>
+</div>
+</div>
+
+<div class="col-md-3">
+test
+</div>
+
+
+
+</div>
+
+
+        
+</header>
