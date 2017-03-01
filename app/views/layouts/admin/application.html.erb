@@ -45,7 +45,7 @@ By default, it renders:
 
                 <%= link_to(
                         ('<i class="' + icons[display_resource_name(resource)] + '" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;' + display_resource_name(resource)).html_safe,
-                        [namespace, resource], method: :get
+                        [namespace, resource]
                     ) %>
             <% end%>
           </li>
@@ -60,7 +60,6 @@ By default, it renders:
       <div class="row">
         <div class="col-lg-12">
           <main role="main">
-            <%= content_for(:search) %>
             <%= render "flashes" -%>
             <%= yield %>
           </main>
