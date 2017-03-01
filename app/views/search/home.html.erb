@@ -21,7 +21,7 @@
                     <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                   </div>
-                  <% if logged_in? %>
+                  <% if logged_in? && !current_user.course_id.nil? %>
                     <div class="checkbox">
                       <input type="checkbox" value="" id="search_course" checked="checked"><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
                     </div>
@@ -29,11 +29,13 @@
                 </div>
               </form>
               <script>
-                      if (<%= logged_in? %> && document.getElementById('search_course').checked) {
-                        var tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
-                      } else {
+                      <% if logged_in? && !current_user.course_id.nil? %>
+                        if( document.getElementById('search_course').checked) {
+                          var tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
+                        }
+                      <% else %>
                         var tags = <%=  raw @tag_names + @module_names + @module_code %>;
-                      }
+                      <% end %>
                       // Remove the previously rendered search bar
                       $("div.bootstrap-tagsinput").remove();
                       var tags = new Bloodhound({

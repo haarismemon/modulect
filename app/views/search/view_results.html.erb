@@ -1,6 +1,13 @@
 <% provide(:title, 'Search Results') %>
 <% sortby = request.query_parameters["sort_by"] %>
 <% module_results = sort_by(@results, sortby) %>
+<% @found_results = [] %>
+<% if logged_in? && !current_user.course_id.nil? && params[:search_course] == 1 %>
+  <% @found_results = module_results & modules_in_course(get_course_of_user(current_user)) %>
+<% else %>
+  <% @found_results = module_results %>
+<% end %>
+
 <style>
  @media print {
   .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
@@ -21,19 +28,21 @@
               <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
               </button>
             </div>
-            <% if logged_in? %>
+            <% if logged_in? && !current_user.course_id.nil? %>
             <div class="checkbox">
-              <input type="checkbox" value="" id="search_course" checked="checked"><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+              <%= check_box_tag "search_course", "", true %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
             </div>
             <% end %>
           </div>
         </form>
         <script>
-          if (<%= logged_in? %> && document.getElementById('search_course').checked) {
-            var tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
-          } else {
+          <% if logged_in? && !current_user.course_id.nil? %>
+            if( document.getElementById('search_course').checked) {
+              var tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
+            }
+          <% else %>
             var tags = <%=  raw @tag_names + @module_names + @module_code %>;
-          }
+          <% end %>
           // Remove the previously rendered search bar
           $("div.bootstrap-tagsinput").remove();
           var tags = new Bloodhound({
@@ -60,7 +69,7 @@
 </div>
 <div id="page" style="padding-top:30px;">
   <div class="container">
-    <% if module_results.length == 0 %>
+    <% if @found_results.length == 0 %>
     <div class="row" style="margin-bottom:20px;">
       <div class="col-md-10 col-md-offset-1 text-center">
         <h1>No modules found :(</h1>
@@ -70,7 +79,7 @@
     <div class="row here-what" style="margin-bottom:20px;">
       <div class="col-md-6 col-md-offset-1">
         <h1>Here's what we found:</h1>
-        <h5>Showing <%= module_results.length %> modules</h5>
+        <h5>Showing <%= @found_results.length %> modules</h5>
       </div>
       <div class="col-md-4 text-right" style="padding-top:30px;">
         <div class="sort-area">
@@ -107,7 +116,7 @@
     </div>
     <div class="row">
       <div class="col-md-10 col-md-offset-1">
-        <% module_results.each do |r| %>
+        <% @found_results.each do |r| %>
         <%= render partial: 'layouts/uni_module', locals: {uni_module: r.first, tags_matched: r.second, tags_searched_for: @temp_array, type: "search"}  %>
         <% unimodule = r.first %>
         <% tagsmatched = r.second %>
