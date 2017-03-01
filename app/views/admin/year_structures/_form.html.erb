@@ -19,10 +19,9 @@ and renders all form fields for a resource's editable attributes.
     <%= error_messages_for(page.resource) %>
 
     <% page.attributes.each do |attribute| -%>
-        <!--checks if render request came from faculty form-->
+
 
         <% current_field_name = attribute.attribute.to_s %>
-        <!--print info message on top of courses field-->
         <% class_to_add = (current_field_name=="course"|| current_field_name=="year_of_study") ?
             "faculty-field" : ""%>
 
@@ -41,7 +40,6 @@ and renders all form fields for a resource's editable attributes.
 
 <script>
   $( document ).ready(function() {
-    $('.faculty-field select').prepend( '<option value="dsad"></option>' );
     var $select = $('.faculty-field select').selectize();
 
   });
