@@ -4,15 +4,13 @@
 This partial is rendered on a resource's `new` and `edit` pages,
 and renders all form fields for a resource's editable attributes.
 
-## Local variables:
 
-- `page`:
-  An instance of [Administrate::Page::Form][1].
-  Contains helper methods to display a form,
-  and knows which attributes should be displayed in the resource's form.
-
-[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
+
+<!--Note to anyone who wants to modify this form: There exists a for loop which renders all the attributes
+related to that model. current_field_name intialized within for loop returns field name. Have a if
+statement that compares the current field name with a value and do the associated behaviour
+with respect to that related field-->
 
 
 
@@ -22,25 +20,32 @@ and renders all form fields for a resource's editable attributes.
 
     <% page.attributes.each do |attribute| -%>
         <% current_field_name = attribute.attribute.to_s %>
-        <% if (current_field_name=="user_level")  %>
-            <% class_to_add = "faculty-field" %>
-            <span class="instruction-label form-actions">*Super admin access gives unbound access to modify, create and to delete</span>
-        <% end %>
 
+        <% case current_field_name %>
+          <% when "user_level" %>
+            <% class_to_add = "faculty-field" %>
+            <span class="instruction-label form-actions">*Super admin access gives unbound access to modify, create and delete</span>
+        <% when "course" %>
+            <% class_to_add = "faculty-field" %>
+            <span class="instruction-label form-actions">*If entered, departments will automatically be infered from the course</span>
+        <% when "department_id" %>
+            <% class_to_add = "to-hide" %>
+        <% when "faculty" %>
+            <% class_to_add = "faculty-field" %>
+
+        <% end %>
         <div class="field-unit field-unit--<%= attribute.html_class %> <%= class_to_add %>">
           <%= render_field attribute, f: f %>
         </div>
     <% end -%>
 
-    <div class="form-actions">
-      <%= f.submit %>
-    </div>
+    <div class="form-actions"><%= f.submit %></div>
 <% end %>
 
 
 
 <script>
-    $( document ).ready(function() {
+    $(document).ready(function () {
         var $select = $('.faculty-field select').selectize();
     });
 </script>
