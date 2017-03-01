@@ -11,6 +11,7 @@ class User < ApplicationRecord
   # A user has many pathways
   has_many :pathways
   belongs_to :faculty
+  belongs_to :course
 
   validates :first_name, presence: true, length: { maximum: 70 }
   validates :last_name, presence: true, length: { maximum: 70 }
