@@ -23,7 +23,7 @@ with respect to that related field-->
         <% case current_field_name %>
         <% when "password" %>
 
-            <a onclick="openPasswordFields();" class="form-actions password-show-toggle">Change password</a>
+            <a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a>
             <% class_to_add = "password-hidden" %>
         <% when "password_confirmation" %>
             <% class_to_add = "password-hidden" %>
@@ -58,7 +58,8 @@ with respect to that related field-->
     var isClickedForNewStruc = false;
     var openPasswordFields = function () {
         $(".password-hidden").slideToggle("slow");
-        $(".password-show-toggle a").text('Close');
+        $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
+
 
     }
 </script>
