@@ -68,10 +68,11 @@ class UserDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :first_name,
     :last_name,
+    :user_level,
     :email,
     :password,
     :password_confirmation,
-    :user_level,
+
     :entered_before,
     :year_of_study,
     :activated,

@@ -50,7 +50,7 @@
 }
 
 //for fields that disapear
-.to-hide,.hide-content{
+.to-hide,.hide-content,.password-hidden{
   display: none;
 }
 //instruction text
@@ -84,4 +84,8 @@
 .select-field-margin{
   //margin-top: %;
   margin: 30px 0px 10px 0px;
+}
+
+.move-up{
+  margin-bottom: 20px;
 }

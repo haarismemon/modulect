@@ -20,9 +20,14 @@ with respect to that related field-->
 
     <% page.attributes.each do |attribute| -%>
         <% current_field_name = attribute.attribute.to_s %>
-        <%= current_field_name %>
         <% case current_field_name %>
-          <% when "user_level" %>
+        <% when "password" %>
+
+            <a onclick="openPasswordFields();" class="form-actions password-show-toggle">Change password</a>
+            <% class_to_add = "password-hidden" %>
+        <% when "password_confirmation" %>
+            <% class_to_add = "password-hidden" %>
+        <% when "user_level" %>
             <% class_to_add = "faculty-field" %>
             <span class="instruction-label form-actions">*Super admin access gives unbound access to modify, create and delete</span>
         <% when "course" %>
@@ -48,4 +53,12 @@ with respect to that related field-->
     $(document).ready(function () {
         var $select = $('.faculty-field select').selectize();
     });
+
+
+    var isClickedForNewStruc = false;
+    var openPasswordFields = function () {
+        $(".password-hidden").slideToggle("slow");
+        $(".password-show-toggle a").text('Close');
+
+    }
 </script>
