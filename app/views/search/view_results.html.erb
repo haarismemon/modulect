@@ -1,8 +1,11 @@
 <% provide(:title, 'Search Results') %>
 <% sortby = request.query_parameters["sort_by"] %>
 <% module_results = sort_by(@results, sortby) %>
+<p><%= module_results %> </p>
+<p> hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh </p>
+<p><%=modules_in_course(get_course_of_user(current_user)) %> </p>
 <% @found_results = [] %>
-<% if logged_in? && !current_user.course_id.nil? && params[:search_course] == 1 %>
+<% if logged_in? && !current_user.course_id.nil? && @search_course %>
   <% @found_results = module_results & modules_in_course(get_course_of_user(current_user)) %>
 <% else %>
   <% @found_results = module_results %>

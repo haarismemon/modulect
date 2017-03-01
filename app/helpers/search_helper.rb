@@ -36,8 +36,9 @@ module SearchHelper
     courseMods = []
     year_structures = course.year_structures
     year_structures.each do |year_structure|
+      groups = year_structure.groups
       groups.each do |group|
-        courseMods + UniModule.all_modules_in_group(group).pluck(:name)
+        courseMods.concat UniModule.all_modules_in_group(group).pluck(:name)
       end
     end
     courseMods

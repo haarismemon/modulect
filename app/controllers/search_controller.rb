@@ -17,7 +17,7 @@ class SearchController < ApplicationController
     else
      redirect_to "/"
     end
-    if params.has_key(:search_course) && !params[:search_course].empty?
+    if params.has_key?(:search_course) && !params[:search_course].empty?
       @search_course = params[:search_course]
     else
       @search_course = false
