@@ -23,7 +23,7 @@
                   </div>
                   <% if logged_in? && !current_user.course_id.nil? %>
                     <div class="checkbox">
-                      <input type="checkbox" value="" id="search_course" checked="checked"><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+                      <%= check_box_tag :search_course, checked=true, true %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
                     </div>
                   <% end %>
                 </div>

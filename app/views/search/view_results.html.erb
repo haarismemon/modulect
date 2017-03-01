@@ -29,8 +29,10 @@
               </button>
             </div>
             <% if logged_in? && !current_user.course_id.nil? %>
+            <div class="form-group">
             <div class="checkbox">
-              <%= check_box_tag "search_course", "", true %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+              <%= check_box_tag :search_course, checked=true, true %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+            </div>
             </div>
             <% end %>
           </div>
