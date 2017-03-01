@@ -21,8 +21,11 @@ By default, it renders:
   <title><%= content_for(:title) %> - Admin | Modulect</title>
   <%= stylesheet_link_tag 'administrate/application' %>
   <%= javascript_include_tag 'administrate/application' %>
+  <script src="https://use.fontawesome.com/bbc851b668.js"></script>
   <%= csrf_meta_tags %>
 </head>
+
+    <%= render 'header' %>
 
 <div id="wrapper">
 
@@ -30,15 +33,18 @@ By default, it renders:
   <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
       <li class="sidebar-brand">
-        <a href="#" id="sidebar-title">
+        <a href="/admin" id="sidebar-title">
           Admin Dashboard
         </a>
       </li>
       <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
-          <li>
-            <% if [:uni_modules, :courses, :departments, :users, :year_structures,:faculties].include? resource%>
+          <li class="menu-item">
+            <% if [:uni_modules, :courses, :departments, :users, :faculties].include? resource%>
+
+<% icons = {"Courses" => "fa fa-graduation-cap", "Departments" => "fa fa-building", "Faculties" => "fa fa-university", "Uni Modules" => "fa fa-pencil-square", "Users" => "fa fa-users"} %>
+
                 <%= link_to(
-                        display_resource_name(resource),
+                        ('<i class="' + icons[display_resource_name(resource)] + '" aria-hidden="true"></i>&nbsp;&nbsp;' + display_resource_name(resource)).html_safe,
                         [namespace, resource]
                     ) %>
             <% end%>
@@ -75,6 +81,32 @@ By default, it renders:
         $("#wrapper").toggleClass("toggled");
     });
 </script>
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />test
 </body>
 </html>
