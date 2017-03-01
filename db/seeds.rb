@@ -56,17 +56,6 @@ dbs.tags << database_engineer
 cs1.tags << hardware_engineer
 pra.tags << front_end_developer
 
-# User seeds
-bob = User.create(first_name:  "Bob",
-            last_name:   "Ross",
-            email:       "example@example.com",
-            password: 	 "foobar",
-            password_confirmation: "foobar",
-            activated: true,
-            activated_at: Time.zone.now,
-            user_level: 1,
-            year_of_study: 1)
-
 # Course seeds
 computer_science_15 = Course.create(name: "BSc Computer Science", year: 2015)
 maths = Course.create(name: "BSc Mathematics", year: 2015)
@@ -279,3 +268,15 @@ mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_23
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_24
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_25
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_26
+
+
+# User seeds
+bob = User.create!(first_name:  "Bob",
+            last_name:   "Ross",
+            email:       "example@example.com",
+            password: 	 "foobar",
+            password_confirmation: "foobar",
+            activated: true,
+            activated_at: Time.zone.now,
+            user_level: 1,
+            year_of_study: 1)

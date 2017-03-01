@@ -10,8 +10,10 @@ class User < ApplicationRecord
   has_and_belongs_to_many :uni_modules
   # A user has many pathways
   has_many :pathways
-  belongs_to :faculty
-  belongs_to :course
+
+  # do not remove the , optional: true
+  belongs_to :faculty, optional: true
+  belongs_to :course, optional: true
 
   validates :first_name, presence: true, length: { maximum: 70 }
   validates :last_name, presence: true, length: { maximum: 70 }
@@ -22,7 +24,7 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX }
   validates :year_of_study, length: { maximum: 1 }
   validates :course_id, length: { maximum: 1 } #not tested
-  enum user_level: {user_access: 3 ,faculty_access: 2, super_admin_access: 1 }
+  enum user_level: {user_access: 3, department_admin_access: 2, super_admin_access: 1 }
   has_secure_password
   validates :password, presence: true,
                        length: {minimum: 6},
