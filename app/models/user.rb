@@ -10,8 +10,10 @@ class User < ApplicationRecord
   has_and_belongs_to_many :uni_modules
   # A user has many pathways
   has_many :pathways
-  belongs_to :faculty
-  belongs_to :course
+
+  # do not remove the , optional: true
+  belongs_to :faculty, optional: true
+  belongs_to :course, optional: true
 
   validates :first_name, presence: true, length: { maximum: 70 }
   validates :last_name, presence: true, length: { maximum: 70 }

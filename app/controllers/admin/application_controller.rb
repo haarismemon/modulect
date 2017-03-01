@@ -8,10 +8,10 @@ module Admin
   class ApplicationController < Administrate::ApplicationController
     before_action :authenticate_admin
 
-   include SessionsHelper
-   
+    include SessionsHelper
+
     def authenticate_admin
-        # TODO Add authentication logic here.
+      # TODO Add authentication logic here.
       if !admin_user
         store_location
         redirect_to admin_login_path
@@ -19,9 +19,11 @@ module Admin
     end
 
     protected
-    def make_data_store_nil
-      session[:data_save] = nil
-    end
+      def make_data_store_nil
+         session[:data_save] = nil
+      end
+
+
     # Override this value to specify the number of elements to display at a time
     # on index pages. Defaults to 20.
     # def records_per_page
