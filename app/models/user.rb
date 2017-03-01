@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   # A user has many saved modules.
   has_and_belongs_to_many :uni_modules
+  has_and_belongs_to_many :departments
   # A user has many pathways
   has_many :pathways
 
