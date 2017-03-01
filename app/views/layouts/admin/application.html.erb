@@ -44,8 +44,8 @@ By default, it renders:
 <% icons = {"Courses" => "fa fa-graduation-cap", "Departments" => "fa fa-building", "Faculties" => "fa fa-university", "Uni Modules" => "fa fa-pencil-square", "Users" => "fa fa-users"} %>
 
                 <%= link_to(
-                        ('<i class="' + icons[display_resource_name(resource)] + '" aria-hidden="true"></i>&nbsp;&nbsp;' + display_resource_name(resource)).html_safe,
-                        [namespace, resource]
+                        ('<i class="' + icons[display_resource_name(resource)] + '" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;' + display_resource_name(resource)).html_safe,
+                        [namespace, resource], method: :get
                     ) %>
             <% end%>
           </li>
@@ -55,11 +55,10 @@ By default, it renders:
   <!-- /#sidebar-wrapper -->
 
   <!-- Page Content -->
-  <div id="page-content-wrapper">
+  <div id="page-content-wrapper" style="padding-top:5px;">
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
-          <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
           <main role="main">
             <%= content_for(:search) %>
             <%= render "flashes" -%>
