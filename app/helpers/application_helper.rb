@@ -109,4 +109,6 @@ module ApplicationHelper
 	def error_messages_for(object)
 		render(:partial => 'admin/application/admin_form_error', :locals => {:object => object})
 	end
+
+
 end

@@ -12,7 +12,7 @@ related to that model. current_field_name intialized within for loop returns fie
 statement that compares the current field name with a value and do the associated behaviour
 with respect to that related field-->
 
-
+<% user_level = (params[:action] == "edit")?(User.find(params[:id]).user_level.to_s):""%>
 
 <%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
@@ -31,7 +31,8 @@ with respect to that related field-->
             <% class_to_add = "faculty-field" %>
             <span class="instruction-label form-actions">*Super admin access gives unbound access to modify, create and delete</span>
         <% when "course" %>
-            <% class_to_add = "faculty-field" %>
+            <% class_to_add = "faculty-field " %>
+            <% class_to_add += user_level&&user_level==3?"hide-content":"" %>
             <span class="instruction-label form-actions">*If entered, departments will automatically be infered from the course</span>
         <% when "department_id" %>
             <% class_to_add = "to-hide" %>
