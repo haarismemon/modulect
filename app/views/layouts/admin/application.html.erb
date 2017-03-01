@@ -61,8 +61,10 @@ By default, it renders:
         <div class="col-lg-12">
           <main role="main">
             <%= render "flashes" -%>
+<div class="no-desktop">
+<%= content_for(:search) %>
+</div>
             <%= yield %>
-            MUST ADD THE SEARCH BAR  FOR MOBILE!
             MUST REMOVE BOTTOM JUNK!
           </main>
         </div>

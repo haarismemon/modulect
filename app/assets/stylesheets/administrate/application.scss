@@ -43,3 +43,36 @@ body {
 #wrapper {
 	padding-top:70px;
 }
+
+.search{border-bottom:0px;margin-top:-10px;    background: #fff;}
+.search__input{font-family:"Varela Round";font-size:17px;}
+.search__clear a {color:#555459;}
+
+.no-desktop{display:none;}
+
+#admin-header{    position: fixed;
+    display: block;
+    height: 70px;
+    width: 100%;
+    padding: 15px 8px;
+    z-index: 1000;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(230,230,230,0.7);
+    z-index: 10000000;
+    -webkit-box-shadow: 0px 0px 3px 1px #dfe2e1;
+    -moz-box-shadow: 0px 0px 3px 1px #dfe2e1;
+    box-shadow: 0px 0px 3px 1px #dfe2e1;
+
+}
+
+    #menu-toggle{color:#555459;font-size:18px;margin-right:18px;}
+
+#admin-header  [class*="col-"] {padding: 0;}
+
+.search-area{display:inline-block;}
+
+@media(max-width:768px) {
+	.no-mobile{display:none;}
+	.no-desktop{display:block;}
+	.search{margin: 20px 0px;    border: 1px solid #dfe2e1;}
+}
