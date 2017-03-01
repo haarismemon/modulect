@@ -14,10 +14,10 @@ class UserDashboard < Administrate::BaseDashboard
     last_name: Field::String,
     email: Field::String,
     password_digest: Field::String,
-    user_level: Field::Number,
+    user_level: EnumField,
     entered_before: Field::Boolean,
-    year_of_study: Field::Number,
-    course_id: Field::String,
+    year_of_study: YearOfStudyField,
+    course: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     remember_digest: Field::String,
@@ -27,7 +27,7 @@ class UserDashboard < Administrate::BaseDashboard
     reset_digest: Field::String,
     reset_sent_at: Field::DateTime,
     department_id: Field::Number,
-    faculty_id: Field::Number,
+    faculty: Field::BelongsTo,
     password: PasswordField,
     password_confirmation: PasswordField,
   }.freeze
@@ -53,12 +53,12 @@ class UserDashboard < Administrate::BaseDashboard
     :user_level,
     :entered_before,
     :year_of_study,
-    :course_id,
-    :department_id,
-    :faculty_id,
+    :course,
+    :faculty,
     :created_at,
     :updated_at,
     :activated,
+    :activated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -67,14 +67,22 @@ class UserDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :first_name,
     :last_name,
-    :email,
     :user_level,
+    :email,
+    :password,
+    :password_confirmation,
+
     :entered_before,
     :year_of_study,
     :department_id,
     :faculty_id,
     :password,
     :password_confirmation,
+    :activated,
+    :activated_at,
+    :course,
+
+    :faculty,
   ].freeze
 
   # Overwrite this method to customize how users are displayed

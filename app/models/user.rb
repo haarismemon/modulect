@@ -8,9 +8,10 @@ class User < ApplicationRecord
 
   # A user has many saved modules.
   has_and_belongs_to_many :uni_modules
-
   # A user has many pathways
   has_many :pathways
+  belongs_to :faculty
+  belongs_to :course
 
   validates :first_name, presence: true, length: { maximum: 70 }
   validates :last_name, presence: true, length: { maximum: 70 }
@@ -19,10 +20,9 @@ class User < ApplicationRecord
                     length: { maximum: 255 },
                     uniqueness: { case_sensitive: false },
                     format: { with: VALID_EMAIL_REGEX }
-  validates :user_level, length: { is: 1 }, inclusion: { in: [1, 2, 3] }
   validates :year_of_study, length: { maximum: 1 }
   validates :course_id, length: { maximum: 1 } #not tested
-
+  enum user_level: {user_access: 3 ,faculty_access: 2, super_admin_access: 1 }
   has_secure_password
   validates :password, presence: true,
                        length: {minimum: 6},
