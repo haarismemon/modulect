@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
   def show
     redirect_to(edit_user_path)
+
   end
 
   # Displays signup form.
@@ -56,6 +57,10 @@ class UsersController < ApplicationController
   def edit
     #! allows for template's form to be ready populated with the associated users data ready for modification by admin
     @user = User.find(params[:id])
+
+    # for debugging the reset
+    #@user.update_attributes("year_of_study" => 0, "faculty_id" =>1,  "department_id" => 1,  "course_id" => 1)
+
     # Get arrays to use for profiles
     @faculties = Faculty.all
     #Initialise departments and courses to be empty unless previously selected
@@ -91,18 +96,39 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user.updating_password = false
-    if @user.update_attributes(update_params)
-      # If save succeeds, redirect to the index action
-      flash[:success] = "Successfully updated your account"
-      if params.has_key?(:dest) && !params[:dest].empty?
-        redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s
+    @task = params[:task]
+
+    if @task == "reset"
+       flash[:success] = "You have successfully reset your account"
+
+       # update course/year attributes
+       @user.update_attributes("year_of_study" => "", "faculty_id" => "",  "department_id" => "",  "course_id" => "")
+       
+       # delete saved modules
+       @user.uni_modules.each do |uni_module|
+        @user.unsave_module(uni_module)
+       end
+
+       # delete saved pathways
+       @user.pathways.each do |pathway|
+        @user.pathways.delete(pathway)
+       end
+       redirect_to(edit_user_path)
+      
+    else  
+      if @user.update_attributes(update_params)
+        # If save succeeds, redirect to the index action
+        flash[:success] = "Successfully updated your account"
+        if params.has_key?(:dest) && !params[:dest].empty?
+          redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s
+        else
+          redirect_to(edit_user_path)
+        end
       else
-        redirect_to(edit_user_path)
+        # If save fails, restart form and notify user
+        flash[:error] = "Please check that you have entered your details correctly and try again."
+        render 'edit'
       end
-    else
-      # If save fails, restart form and notify user
-      flash[:error] = "Please check that you have entered your details correctly and try again."
-      render 'edit'
     end
   end
 
