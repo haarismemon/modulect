@@ -8,8 +8,14 @@ module Admin
   class ApplicationController < Administrate::ApplicationController
     before_action :authenticate_admin
 
+   include SessionsHelper
+   
     def authenticate_admin
-      # TODO Add authentication logic here.
+        # TODO Add authentication logic here.
+      if !admin_user
+        store_location
+        redirect_to admin_login_path
+      end
     end
 
     protected
