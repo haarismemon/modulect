@@ -1,11 +1,9 @@
 
-
-<header id="admin-header">
+<header class="navbar navbar-default" id="admin-header">
 <div class="container-fluid">
-
 <div class="col-md-3">
- <a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
- <%= link_to image_tag( "modulect-logo.png", :alt=> "Modulect", :style => "height: 45px"), "/admin" %>
+ <a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i>
+ <%= image_tag( "modulect-logo.png", :alt=> "Modulect", :style => "height: 45px;margin-left:18px") %></a>
 </div>
 
 
@@ -16,26 +14,54 @@
 </div>
 </div>
 
-<div class="col-md-3">
+<div class="no-mobile">
+ 
+
+
+
+
+
+
  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                
+            <ul class="nav navbar-nav navbar-right" style="margin-top: -5px;">
+               
                     <li>
-                        <a data-method="get" href="/saved">Saved <i class="fa fa-star-o" aria-hidden="true"></i></a>
+                        <%= link_to 'Open Modulect <i class="fa fa-external-link" aria-hidden="true"></i>'.html_safe, root_path, target: :blank %>
                     </li>
-                    <li class="dropdown">
-                        <button class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome Bob <span class="caret"></span>
+                
+                    <li class="dropdown" style="margin-left:15px;">
+                        <button class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome <%= current_user.first_name %> <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a data-method="get" href="/users/1/edit">My Details</a></a>
+                            <li><%= link_to "My Details", edit_user_path(current_user), target: :blank, method: :get %></a>
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a rel="nofollow" data-method="delete" href="/logout">Log out</a>
+                                <%= link_to "Log out", logout_path, method: "delete" %>
                             </li>
                         </ul>
                     </li>
             </ul>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
