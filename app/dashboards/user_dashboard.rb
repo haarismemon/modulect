@@ -46,10 +46,10 @@ class UserDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :uni_modules,
     :first_name,
     :last_name,
     :email,
+    :uni_modules,
     :user_level,
     :entered_before,
     :year_of_study,
@@ -59,7 +59,6 @@ class UserDashboard < Administrate::BaseDashboard
     :created_at,
     :updated_at,
     :activated,
-    :activated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -72,8 +71,6 @@ class UserDashboard < Administrate::BaseDashboard
     :user_level,
     :entered_before,
     :year_of_study,
-    :activated,
-    :activated_at,
     :department_id,
     :faculty_id,
     :password,
