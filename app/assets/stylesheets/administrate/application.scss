@@ -254,6 +254,24 @@ button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type=
     position: fixed;
 }
 
+.admin-top-button {
+    background: none;
+    box-shadow: none;
+    color: #333;
+    border-left: 1px solid #dfe2e1;
+    border-radius: 0px;
+    margin-top: -11px;
+    height: 70px;
+    text-shadow: none;
+    margin-right: -25px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.admin-top-button:hover {
+    opacity: 1;
+    background: #2ab27b;
+}
+
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
 	display:none;
