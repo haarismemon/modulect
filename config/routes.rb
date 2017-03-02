@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     resources :career_tags
     resources :interest_tags
 
-    root to: "courses#index"
+    root to: "application#homepage"
   end
 
   # General
@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
+  get '/admin', to: 'admin#courses'
 
 
   # Authentication

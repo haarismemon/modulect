@@ -18,6 +18,10 @@ module Admin
       end
     end
 
+    def homepage
+
+    end
+
     protected
       def make_data_store_nil
          session[:data_save] = nil

@@ -22,7 +22,7 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
     <%= link_to(
-      "Show User",
+      "<i class='fa fa-user' aria-hidden='true'></i>&nbsp;&nbsp;Show User".html_safe,
       [namespace, page.resource],
       class: "button",
     ) %>
