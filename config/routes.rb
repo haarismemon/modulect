@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     resources :year_structures
     resources :career_tags
     resources :interest_tags
-
+    get 'upload'
     root to: "application#homepage"
   end
 
@@ -30,8 +30,6 @@ Rails.application.routes.draw do
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
   get '/admin', to: 'admin#homepage'
-  get '/admin/upload'
-
 
   # Authentication
   get     '/login',   to: 'sessions#new'

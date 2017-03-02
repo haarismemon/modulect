@@ -62,6 +62,7 @@
                <% end%>
             </li>
             <% end %>
+            <li class="menu-item"><%= link_to "<i class='fa fa-upload' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;Upload data".html_safe, admin_upload_path %></li>
             <li class="menu-item no-desktop"><%= link_to "<i class='fa fa-sign-out' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;Log out".html_safe, logout_path, method: "delete" %></li>
          </ul>
       </div>
