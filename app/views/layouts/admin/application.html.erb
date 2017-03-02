@@ -24,7 +24,17 @@ By default, it renders:
   <script src="https://use.fontawesome.com/bbc851b668.js"></script>
   <%= favicon_link_tag 'favicon.ico' %>
   <%= csrf_meta_tags %>
+<script>
+      var $=jQuery.noConflict();
 
+      $(document).ready(function(){
+       setTimeout(fade_out, 5000);
+          function fade_out() {
+            $("#flash-container").fadeOut().empty();
+            $("#flash-container").css("margin-bottom", "0px");
+          }
+      });
+  </script>
 </head>
 
     <%= render 'header' %>
