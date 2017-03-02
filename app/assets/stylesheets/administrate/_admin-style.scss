@@ -86,6 +86,14 @@
   margin: 30px 0px 10px 0px;
 }
 
-.move-up{
-  margin-bottom: 20px;
+.password-hidden{
+  margin-top: 20px;
+
+}
+
+.password-show-toggle{
+  cursor: pointer;
+  position: absolute;
+  left: 60%;
+  z-index: 10000;
 }
