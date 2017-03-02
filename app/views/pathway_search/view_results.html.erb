@@ -241,6 +241,7 @@
 
 
   function updateUI(){
+    logStatus();
     for(year=0; year<js_course.year_structures.length; year++){
       // get all optional modules
       selected_modules_buttons_any_semester = [];
@@ -267,8 +268,9 @@
       s2 = 0;
 
       // create the table and fill in year long modules first
-      for(i=0; i<required_modules_per_year[year][0].length; i++){
-        myTable += "<tr><td colspan=2>" + create_module_card(required_modules_per_year[year][0][i], false, 0, 0, 0) + "</td></tr>";
+      for(i=0; i<required_modules_per_year[year][3].length; i++){
+        console.log("year long module in year " + year + " : " + required_modules_per_year[year][3][i].name);
+        myTable += "<tr><td colspan=2>" + create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0) + "</td></tr>";
         s1++;
         s2++;
       }
@@ -301,11 +303,11 @@
       }
 
       // fill modules that can go to any semester
-      for(i=0; i<required_modules_per_year[year][3].length; i++){
+      for(i=0; i<required_modules_per_year[year][0].length; i++){
         if(s2<s1){
-          myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0);
+          myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][0][i], false, 0, 0, 0);
         }else{
-          myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0);
+          myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][0][i], false, 0, 0, 0);
         }
       }
       for(i=0; i < selected_modules_buttons_any_semester.length; i++){
