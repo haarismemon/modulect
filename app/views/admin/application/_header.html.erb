@@ -20,7 +20,8 @@
                <li class="dropdown" style="margin-left:15px;">
                   <button class="admin-top-button dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span style="font-weight:normal">Logged in as:</span> <%= current_user.first_name + " " + current_user.last_name %> <span class="caret"></span>
                   </button>
-                  <ul class="dropdown-menu" style="width: 100%;">
+                  <ul class="dropdown-menu" style="width: 110%;box-shadow: none; border-radius: 0px;
+    margin-right: -10%;">
                      <li><%= link_to "My Details", edit_user_path(current_user), target: :blank, method: :get %>
                      <li role="separator" class="divider"></li>
                      <li>
