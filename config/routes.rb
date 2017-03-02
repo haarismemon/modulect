@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     resources :career_tags
     resources :interest_tags
 
-    root to: "courses#index"
+    root to: "application#homepage"
   end
 
   # General

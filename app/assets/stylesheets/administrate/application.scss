@@ -110,6 +110,26 @@ label {
     padding: 25px 15px;
 }
 
+
+.icon-row{
+   font-size: 40px;
+    margin-top: 20px;
+}
+
+[class*="col-"] {
+    margin-bottom:15px;
+}
+
+.login-card {
+    background-color: #fff;
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+    padding: 10px 30px 30px 30px;
+    border: 1px solid #e8e8e8;
+}
+
 #wrapper {
     padding-top: 72px;
 }
