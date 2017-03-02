@@ -36,6 +36,11 @@ By default, it renders:
         <a href="/admin" id="sidebar-title">
           Admin Dashboard
         </a>
+        </li>
+
+      <li class="sidebar-brand" style="margin-top:-10px;font-size:13px;line-height:normal; color:#fff;text-indent:0px;    padding-left: 20px;height:inherit;padding-bottom: 25px;
+    border-bottom: 1px solid #888888;">
+        Department: <%= Department.find(current_user.department_id).name %>
       </li>
       <li class="menu-item"><%= link_to '<i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Home'.html_safe, admin_path %></li>
       <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
@@ -63,9 +68,9 @@ By default, it renders:
         <div class="col-lg-12">
           <main role="main">
             <%= render "flashes" -%>
-<div class="no-desktop-search">
-<%= content_for(:search) %>
-</div>
+            <div class="no-desktop-search">
+            <%= content_for(:search) %>
+            </div>
             <%= yield %>
           </main>
         </div>

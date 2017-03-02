@@ -37,6 +37,8 @@ body {
     background: rgba(61, 201, 179, 0.6);
     /* Gecko Browsers */
 }
+
+
 #wrapper {
     padding-top: 72px;
 }
@@ -95,7 +97,7 @@ body {
     -o-transition: all 0.5s;
     transition: all 0.5s;
     font-family: "Varela Round";
-    text-transform: none;
+    text-transform: uppercase;
 }
 .btn:hover,
 .btn:focus,
@@ -266,6 +268,7 @@ button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type=
     margin-right: -25px;
     padding-left: 40px;
     padding-right: 40px;
+    text-transform: none;
 }
 .admin-top-button:hover {
     opacity: 1;
