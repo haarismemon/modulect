@@ -39,7 +39,7 @@ body {
 }
 
 a {color: #2ab27b;}
-a:hover{text-decoration:none;color:#555459;}
+a:hover,a :focus, a:active{text-decoration:none;color:#555459;}
 
 .btn-default {
     border: 0px;
