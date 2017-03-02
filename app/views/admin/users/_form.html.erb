@@ -4,39 +4,61 @@
 This partial is rendered on a resource's `new` and `edit` pages,
 and renders all form fields for a resource's editable attributes.
 
-## Local variables:
 
-- `page`:
-  An instance of [Administrate::Page::Form][1].
-  Contains helper methods to display a form,
-  and knows which attributes should be displayed in the resource's form.
-
-[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
-<%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
-  <% if page.resource.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(page.resource.errors.count, "error") %>
-        prohibited this <%= page.resource_name %> from being saved:
-      </h2>
+<!--Note to anyone who wants to modify this form: There exists a for loop which renders all the attributes
+related to that model. current_field_name intialized within for loop returns field name. Have a if
+statement that compares the current field name with a value and do the associated behaviour
+with respect to that related field-->
 
-      <ul>
-        <% page.resource.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+
+<%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(page.resource) %>
+
+    <% page.attributes.each do |attribute| -%>
+        <% current_field_name = attribute.attribute.to_s %>
+        <% case current_field_name %>
+        <% when "password" %>
+            <a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a>
+            <% class_to_add = "password-hidden" %>
+        <% when "password_confirmation" %>
+            <% class_to_add = "password-hidden" %>
+        <% when "user_level" %>
+            <% class_to_add = "faculty-field" %>
+            <span class="instruction-label form-actions">*Super admin access gives unbound access to modify, create and delete</span>
+        <% when "course" %>
+            <% to_hide = (!is_edit_form || (is_edit_form && !specify_user_level(params[:id],3)))? "":"hide-content"%>
+            <% class_to_add = "faculty-field "+to_hide %>
+            <span class="instruction-label form-actions <%=to_hide%>">*If entered, departments will automatically be infered from the course</span>
+        <% when "departments" %>
+            <% to_hide = !is_edit_form || (is_edit_form && !specify_user_level(params[:id],1))? "":"hide-content"%>
+            <% class_to_add = "faculty-field "+to_hide %>
+        <% when "faculty" %>
+            <% class_to_add = "faculty-field hide-content" %>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
+        <div class="field-unit field-unit--<%= attribute.html_class %> <%= class_to_add%>">
+          <%= render_field attribute, f: f %>
+        </div>
+    <% end -%>
 
-  <% page.attributes.each do |attribute| -%>
-    <div class="field-unit field-unit--<%= attribute.html_class %>">
-      <%= render_field attribute, f: f %>
-    </div>
-  <% end -%>
-
-  <div class="form-actions">
-    <%= f.submit %>
-  </div>
+    <div class="form-actions"><%= f.submit %></div>
 <% end %>
+
+
+
+<script>
+    $(document).ready(function () {
+        var $select = $('.faculty-field select').selectize();
+    });
+
+
+    var isClickedForNewStruc = false;
+    var openPasswordFields = function () {
+        $(".password-hidden").slideToggle("slow");
+        $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
+
+
+    }
+</script>

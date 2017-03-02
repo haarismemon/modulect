@@ -109,4 +109,19 @@ module ApplicationHelper
 	def error_messages_for(object)
 		render(:partial => 'admin/application/admin_form_error', :locals => {:object => object})
 	end
+
+	# checks if the form is being rendered by the edit page instead of the new page for a model associated in admin
+	def is_edit_form
+		if params.has_key?(:action)&&params[:action]=="edit"
+			true
+		end
+		false
+
+	end
+
+	# returns user level match. return true if matches with input
+	def check_user_level(id,user_level_to_check)
+		user = User.find(:id)
+		(user_level_to_check == User.user_levels[user.user_level]) # Returns the integer value
+		end
 end

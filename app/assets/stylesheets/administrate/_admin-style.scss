@@ -50,7 +50,7 @@
 }
 
 //for fields that disapear
-.to-hide,.hide-content{
+.to-hide,.hide-content,.password-hidden{
   display: none;
 }
 //instruction text
@@ -60,7 +60,6 @@
   font-size: 0.8em;
   color: #828282;
   margin-top: 0px;
-
 }
 
 
@@ -85,4 +84,16 @@
 .select-field-margin{
   //margin-top: %;
   margin: 30px 0px 10px 0px;
+}
+
+.password-hidden{
+  margin-top: 20px;
+
+}
+
+.password-show-toggle{
+  cursor: pointer;
+  position: absolute;
+  left: 60%;
+  z-index: 10000;
 }
