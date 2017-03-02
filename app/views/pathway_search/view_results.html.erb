@@ -92,7 +92,7 @@
   4) right now when the year divs are updated, all the slide-down divs are getting hidden again
     this should not be an issue since rather than having a slide-down div, we're more likely to have
     a pop-up selection div
-
+  5) Check the case with multiple required groups
 
   
   */
@@ -558,7 +558,6 @@
       // sort required modules for this year
       for(g = 0; g < js_course.year_structures[year].groups.length; g++){
         if(js_course.year_structures[year].groups[g].compulsory){
-          console.log("found a group");
           required_group = required_group.concat(js_course.year_structures[year].groups[0].uni_modules);
         }
       }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228191443) do
+ActiveRecord::Schema.define(version: 20170302113120) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -54,6 +54,10 @@ ActiveRecord::Schema.define(version: 20170228191443) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.boolean  "compulsory"
+    t.integer  "min_modules", default: 0
+    t.integer  "max_modules", default: 999
+    t.integer  "min_credits", default: 0
+    t.integer  "max_credits", default: 999
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
   end
 
