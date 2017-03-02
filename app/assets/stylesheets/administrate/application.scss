@@ -23,7 +23,7 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css');
 @import url('../user-side/awesome-bootstrap-checkbox.css');
 
-@import url('https://fonts.googleapis.com/css?family=Lato|Varela+Round');
+@import url('https://fonts.googleapis.com/css?family=Lato|Varela+Round|Open+Sans');
 body {
     font-family: "Varela Round";
     color: #555459;
@@ -96,7 +96,7 @@ textarea {height: 100px;}
 
 [type="color"], [type="date"], [type="datetime"], [type="datetime-local"], [type="email"], [type="month"], [type="number"], [type="password"], [type="search"], [type="tel"], [type="text"], [type="time"], [type="url"], [type="week"], input:not([type]), textarea, select[multiple]{
     font-family: "Varela Round";
-    font-size:18px;
+    font-size:16px;
     background: #fff;
     padding: 10px 15px;
 }
@@ -336,6 +336,64 @@ a.action-edit{margin-right:10px;}
     background: #2ab27b;
 }
 
+.selectize-control.multi .selectize-input.has-items {font-size:16px; padding:10px 8px;}
+
+.selectize-control.multi .selectize-input > div {padding-top:5px;padding-bottom:5px;}
+
+
+
+.flash-alert, .alert {
+    padding: 15px;
+    border: 1px solid #e8e8e8;
+    background: #fff;
+    color: #555459;
+    margin-bottom: 15px;
+    border-left-width: 5px;
+    border-radius: .25rem;
+    font-family: "Open Sans";
+}
+.flash-alert-error, .alert-danger {
+    border-left-color: #cb5234;
+}
+.flash-alert-error i, .alert-danger i {
+    color: #cb5234;
+    margin-right: 8px;
+}
+.flash-alert-error, .alert-error {
+    border-left-color: #cb5234;
+}
+.flash-alert-error i, .alert-error i {
+    color: #cb5234;
+    margin-right: 8px;
+}
+.flash-alert-success, .alert-success {
+    border-left-color: #2ab27b;
+}
+.flash-alert-success i, .alert-success i {
+    color: #2ab27b;
+    margin-right: 8px;
+}
+
+
+.flash-alert-notice, .alert-notice {
+    border-left-color: #2ab27b;
+}
+.flash-alert-notice i, .alert-notice i {
+    color: #2ab27b;
+    margin-right: 8px;
+}
+
+.flash-alert-warning, .alert-warning {
+    border-left-color: #f5a108;
+}
+.flash-alert-warning i, .alert-warning i {
+    color: #f5a108;
+    margin-right: 8px;
+}
+
+#flash-container{
+    margin-bottom:35px;
+}
 
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
