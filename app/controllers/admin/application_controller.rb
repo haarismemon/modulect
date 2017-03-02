@@ -22,6 +22,10 @@ module Admin
 
     end
 
+    def upload
+
+    end
+
     protected
       def make_data_store_nil
          session[:data_save] = nil
