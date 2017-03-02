@@ -18,9 +18,27 @@
          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right" style="margin-top: -5px;">
                <li class="dropdown" style="margin-left:15px;">
-                  <button class="dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome <%= current_user.first_name %> <span class="caret"></span>
+
+
+<style>
+.admin-top-button {    background: none;
+    box-shadow: none;
+    color: #333;
+    border-left: 1px solid #dfe2e1;
+    border-radius: 0px;
+    margin-top: -11px;
+    height: 70px;
+    text-shadow: none;
+    margin-right: -25px;
+    padding-left: 40px;
+    padding-right:40px;}
+    .admin-top-button:hover{
+   opacity: 1;background: #2ab27b;}
+    </style>
+
+                  <button class="admin-top-button dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span style="font-weight:normal">Logged in as:</span> <%= current_user.first_name + " " + current_user.last_name %> <span class="caret"></span>
                   </button>
-                  <ul class="dropdown-menu">
+                  <ul class="dropdown-menu" style="width: 100%;">
                      <li><%= link_to "My Details", edit_user_path(current_user), target: :blank, method: :get %>
                      <li role="separator" class="divider"></li>
                      <li>
