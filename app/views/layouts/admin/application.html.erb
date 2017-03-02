@@ -37,7 +37,7 @@ By default, it renders:
           Admin Dashboard
         </a>
       </li>
-      <li class="menu-item"><%= link_to '<i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Home'.html_safe, admin_path, target: :blank %></li>
+      <li class="menu-item"><%= link_to '<i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Home'.html_safe, admin_path %></li>
       <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
           <li class="menu-item">
             <% if [:uni_modules, :courses, :departments, :users, :faculties].include? resource%>
@@ -63,11 +63,11 @@ By default, it renders:
         <div class="col-lg-12">
           <main role="main">
             <%= render "flashes" -%>
-<div class="no-desktop">
+<div class="no-desktop-search">
 <%= content_for(:search) %>
 </div>
             <%= yield %>
-            MUST REMOVE BOTTOM JUNK! <Br />MUST FIX HEADER ON MOBILE
+          MUST FIX HEADER ON MOBILE
           </main>
         </div>
       </div>
@@ -85,32 +85,5 @@ By default, it renders:
         $("#wrapper").toggleClass("toggled");
     });
 </script>
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />test
 </body>
 </html>
