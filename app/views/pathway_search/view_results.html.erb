@@ -94,8 +94,7 @@
     a pop-up selection div
 
 
-  ISSUES:
-  1) What happens when the order of modules in optional groups is changed?
+  
   */
 
   // get JSON object from rails
@@ -555,9 +554,15 @@
   function updateData(){
     // go through each year
     for(year=0; year<js_course.year_structures.length; year++){
-
+      required_group = [];
       // sort required modules for this year
-      required_group = js_course.year_structures[year].groups[0].uni_modules;
+      for(g = 0; g < js_course.year_structures[year].groups.length; g++){
+        if(js_course.year_structures[year].groups[g].compulsory){
+          console.log("found a group");
+          required_group = required_group.concat(js_course.year_structures[year].groups[0].uni_modules);
+        }
+      }
+      // required_group = js_course.year_structures[year].groups[0].uni_modules;
       modules_year_long = [];
       modules_first_semester = [];
       modules_second_semester = [];
