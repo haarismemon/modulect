@@ -17,6 +17,7 @@ with respect to that related field-->
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
     <%= error_messages_for(page.resource) %>
 
+    <!--iterate through each attribute-->
     <% page.attributes.each do |attribute| -%>
         <% current_field_name = attribute.attribute.to_s %>
         <% case current_field_name %>
@@ -29,15 +30,19 @@ with respect to that related field-->
             <% class_to_add = "faculty-field" %>
             <span class="instruction-label form-actions">*Super admin access gives unbound access to modify, create and delete</span>
         <% when "course" %>
-            <% to_hide = (!is_edit_form || (is_edit_form && !specify_user_level(params[:id],3)))? "":"hide-content"%>
+            <% to_hide = (!is_edit_form(params) || (is_edit_form(params) && check_user_level(params[:id],3)))? "":"hide-content"%>
             <% class_to_add = "faculty-field "+to_hide %>
             <span class="instruction-label form-actions <%=to_hide%>">*If entered, departments will automatically be infered from the course</span>
+        <% when "year_of_study" %>
+            <% to_hide = (!is_edit_form(params) || (is_edit_form(params) && check_user_level(params[:id],3)))? "":"hide-content"%>
+            <% class_to_add = "faculty-field "+to_hide %>
         <% when "departments" %>
-            <% to_hide = !is_edit_form || (is_edit_form && !specify_user_level(params[:id],1))? "":"hide-content"%>
+            <% to_hide = !is_edit_form(params) || (is_edit_form(params) && !check_user_level(params[:id],1))? "":"hide-content"%>
             <% class_to_add = "faculty-field "+to_hide %>
         <% when "faculty" %>
             <% class_to_add = "faculty-field hide-content" %>
         <% end %>
+
         <div class="field-unit field-unit--<%= attribute.html_class %> <%= class_to_add%>">
           <%= render_field attribute, f: f %>
         </div>

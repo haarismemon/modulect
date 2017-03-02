@@ -111,17 +111,31 @@ module ApplicationHelper
 	end
 
 	# checks if the form is being rendered by the edit page instead of the new page for a model associated in admin
-	def is_edit_form
-		if params.has_key?(:action)&&params[:action]=="edit"
+	def is_edit_form(param_input)
+		if param_input.has_key?(:action)&&param_input[:action]=="edit"
 			true
+		else
+			false
 		end
-		false
-
 	end
 
 	# returns user level match. return true if matches with input
 	def check_user_level(id,user_level_to_check)
-		user = User.find(:id)
+		user = User.find(id)
 		(user_level_to_check == User.user_levels[user.user_level]) # Returns the integer value
-		end
+	end
+
+	# Specifies the allowed attributes to show on the user's show page
+	def filter_for_user_show(attribute)
+		user_level = User.user_levels[User.find(params[:id]).user_level]
+		# super admin's attributes not to show
+		super_admin_filter = user_level == 1 && attribute != "course" &&
+				attribute != "year_of_study" && attribute != "faculty"
+		# department admin's attributes not to show
+		department_admin_filter = user_level == 2 && attribute != "course" &&
+				attribute != "year_of_study"
+		# user's attributes not to show
+		user_filter = user_level == 3
+		super_admin_filter || department_admin_filter || user_filter
+	end
 end
