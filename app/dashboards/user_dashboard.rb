@@ -51,14 +51,12 @@ class UserDashboard < Administrate::BaseDashboard
     :last_name,
     :email,
     :user_level,
-    :entered_before,
     :year_of_study,
     :course,
     :faculty,
     :created_at,
     :updated_at,
     :activated,
-    :activated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
