@@ -229,6 +229,23 @@ body {
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
+
+.open-app a{
+	color: #2ab27b;
+	font-size:20px;
+	margin-left:15px;
+}
+
+.open-app a:hover{
+	color: #555449;
+}
+
+@media(min-width:981px) and (max-width:1055px) {
+.open-app{
+	display:none;
+	}
+}
+
 @media(max-width:991px) {
     .no-mobile-search {
         display: none;
