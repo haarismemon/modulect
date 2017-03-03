@@ -112,6 +112,12 @@ label {
     padding: 25px 15px;
 }
 
+@-moz-document url-prefix() {
+    .form-control {
+        height: auto;
+        padding: 15px;
+    }
+}
 
 .icon-row{
    font-size: 40px;

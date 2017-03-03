@@ -124,4 +124,13 @@ module ApplicationHelper
 			false
 		end
 	end
+
+	def admin_type
+		if current_user.user_level == "super_admin_access"
+			"System"
+		else 
+			"Department"
+		end
+	end
+
 end

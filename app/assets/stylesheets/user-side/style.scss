@@ -72,6 +72,14 @@ label {
     font-size: 18px;
     padding: 25px 15px;
 }
+
+@-moz-document url-prefix() {
+    .form-control {
+        height: auto;
+        padding: 15px;
+    }
+}
+
 textarea:focus,
 input:focus,
 select:focus,
