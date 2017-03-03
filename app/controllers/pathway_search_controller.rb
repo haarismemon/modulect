@@ -19,6 +19,8 @@ class PathwaySearchController < ApplicationController
 		    else
 		      @courses = {}
 		    end
+		    
+		    @all_courses = Department.find_by_id(@user.department_id).courses
 		end
 	end
 
