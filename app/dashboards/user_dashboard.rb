@@ -52,7 +52,6 @@ class UserDashboard < Administrate::BaseDashboard
     :last_name,
     :email,
     :user_level,
-    :entered_before,
     :year_of_study,
     :course,
     :faculty,
@@ -72,8 +71,6 @@ class UserDashboard < Administrate::BaseDashboard
     :email,
     :password,
     :password_confirmation,
-
-    :entered_before,
     :year_of_study,
     :activated,
     :activated_at,
