@@ -8,6 +8,8 @@
   <% @found_results = module_results %>
 <% end %>
 
+<p> heheheh <%=@search_course %> param <%= params[:search_course] %> </p>
+
 <style>
  @media print {
   .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
@@ -30,37 +32,62 @@
             </div>
             <% if logged_in? && !current_user.course_id.nil? %>
             <div class="form-group">
-            <div class="checkbox">
-              <%= check_box_tag :search_course, checked=true, true %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
-            </div>
+              <% if @search_course %>
+              <div class="checkbox">
+                <%= check_box_tag :search_course, checked=true, true %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+              </div>
+              <% else %>
+              <div class="checkbox">
+                <%= check_box_tag :search_course, checked=false, false %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+              </div>
+              <% end %>
             </div>
             <% end %>
           </div>
         </form>
         <script>
-          <% if logged_in? && !current_user.course_id.nil? %>
-            if( document.getElementById('search_course').checked) {
-              var tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
-            }
-          <% else %>
-            var tags = <%=  raw @tag_names + @module_names + @module_code %>;
-          <% end %>
+          var tags = [];
+          function updateTags() {
+            console.log("herhehrer");
+            <% if logged_in? && !current_user.course_id.nil? %>
+              if( document.getElementById('search_course').checked) {
+                console.log("check");
+                tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
+              } else {
+                console.log("uncheck log");
+                tags = <%=  raw @tag_names + @module_names + @module_code %>;
+              }
+            <% else %>
+              console.log("out");
+              tags = <%=  raw @tag_names + @module_names + @module_code %>;
+            <% end %>
+          }
+
+          updateTags();
+
           // Remove the previously rendered search bar
           $("div.bootstrap-tagsinput").remove();
-          var tags = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            local: tags
-          });
-
-          tags.initialize();
-
+          var tagsBloodhound = new Bloodhound({
+              datumTokenizer: Bloodhound.tokenizers.whitespace,
+              queryTokenizer: Bloodhound.tokenizers.whitespace,
+              local: tags
+            });
+           
+          tagsBloodhound.initialize();
+           
           $('input#chosen_tags').tagsinput({
             typeaheadjs: {
-             name: 'tags',
-             source: tags.ttAdapter()
-           },
-           freeInput: false
+              name: 'tagsBloodhound',
+              source: tagsBloodhound.ttAdapter()
+            },
+            freeInput: false
+          });
+
+          $('#search_course').change(function() {
+            updateTags();
+            tagsBloodhound.clear();
+            tagsBloodhound.local = tags;
+            tagsBloodhound.initialize(true);
           });
 
           $('input#chosen_tags').focus();
@@ -99,7 +126,8 @@
               </option>
             <% end %>
           </select>
-          <input type="hidden" name="chosen_tags" value="<%= @temp_array.join(",")%>">
+          <input type="hidden" name="chosen_tags" value="<%= @temp_array.join(",") %>">
+          <input type="hidden" name="search_course" value="<%= @search_course %>">
         </form>
         </div>
       </div>
