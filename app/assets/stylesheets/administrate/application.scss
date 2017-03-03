@@ -13,7 +13,6 @@
 @import "components/**/*";
 @import "simple-sidebar";
 
-@import "admin-style";
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
@@ -22,6 +21,7 @@
 
 @import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css');
 @import url('../user-side/awesome-bootstrap-checkbox.css');
+@import "admin-style";
 
 @import url('https://fonts.googleapis.com/css?family=Lato|Varela+Round|Open+Sans');
 body {
