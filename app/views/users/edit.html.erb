@@ -44,7 +44,7 @@
             <div class="col-md-12 login-card">
                <h3>Department &amp; Course Details</h3>
                <br>
-               <%= render partial: 'layouts/user_fields', locals: {type: "user_edit"} %>
+               <%= render partial: 'layouts/user_fields', locals: {type: "user_edit", dest: edit_user_path(current_user)} %>
             </div>
          </div>
       </div>
