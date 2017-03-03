@@ -21,6 +21,24 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#department" do
+    context "when user is a department admin" do
+      before do
+        user.department = build(:department)
+      end
+
+      it "returns the department" do
+        expect(user.department).not_to be_nil
+      end
+    end
+
+    context "when user is not a department admin" do
+      it "returns nil" do
+        expect(user.department).to be_nil
+      end
+    end
+  end
+
   describe "before save" do
     context "when email contains capital letters" do
       before do
@@ -165,26 +183,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context "when user_level is one digit long" do
-      context "but not 1|2|3" do
-        before do
-          user.user_level = 4
-        end
-        it "evaluates to false" do
-          expect(user.valid?).to eq false
-        end
-      end
-    end
-
-    context "when user_level is longer than one digit" do
-      before do
-        user.user_level = 11
-      end
-      it "evaluates to false" do
-        expect(user.valid?).to eq false
-      end
-    end
-
     context "when year_of_study is one digit long" do
       before do
         user.year_of_study = 1
@@ -200,6 +198,35 @@ RSpec.describe User, type: :model do
       end
       it "evaluates to false" do
         expect(user.valid?).to eq false
+      end
+    end
+  end
+
+  describe "assigning user privileges" do
+    context "when giving super admin access" do
+      before do
+        user.super_admin_access!
+      end
+      it "gives the user admin access" do
+        expect(user.super_admin_access?).to eq true
+      end
+    end
+
+    context "when giving department admin access" do
+      before do
+        user.department_admin_access!
+      end
+      it "gives the user admin access to the department" do
+        expect(user.department_admin_access?).to eq true
+      end
+    end
+
+    context "when giving regular user access" do
+      before do
+        user.user_access!
+      end
+      it "gives the user regular access" do
+        expect(user.user_access?).to eq true
       end
     end
   end

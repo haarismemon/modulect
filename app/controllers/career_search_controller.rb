@@ -8,17 +8,21 @@ class CareerSearchController < ApplicationController
 
     	if logged_in?
     		@user = current_user
+
 		    #Initialise departments and courses to be empty unless previously selected
-		     if(@user.department_id.present?)
-		      @departments = Faculty.find_by_id(@user.faculty_id).departments
+        if(@user.department)
+          @departments = @user.faculty.departments
 		    else
 		      @departments = {}
 		    end
-		    if(@user.department_id.present? && @user.course_id.present?)
+
+		    if(@user.department && @user.course)
 		      @courses = Department.find_by_id(@user.department_id).courses
 		    else
 		      @courses = {}
 		    end
+      else
+        redirect_to login_path
 		end
 	end
 
@@ -26,13 +30,13 @@ class CareerSearchController < ApplicationController
 
 
   def choose
-	if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
-		 @year_of_study = params[:year]
-	      @course = params[:course]
-	      @course_obj = Course.find_by_id(@course) 
-	else
-		redirect_to "/career-search/"
-	end
+    if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
+       @year_of_study = params[:year]
+          @course = params[:course]
+          @course_obj = Course.find_by_id(@course) 
+    else
+      redirect_to career_search_path
+    end
   end
 
   def view_results
