@@ -114,9 +114,10 @@ module ApplicationHelper
 	# by Aqib
 	def is_admin
 		# I know that the quicker way to write this
-		# is to check if a user is student and return true/false 
-		# accordingly. But the enum "user_access" is a bit confusing
-		# so i took the longer route
+		# is to check if a user is a student and return false if they are
+		# and true if not (so an admin) accordingly. 
+		# But the enum "user_access" is a bit confusing
+		# so I took the longer route
 		if current_user.user_level == "super_admin_access" || current_user.user_level == "department_admin_access"
 			true
 		else 

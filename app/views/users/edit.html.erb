@@ -27,6 +27,14 @@
                <p style="margin-top:30px;"><%= link_to "Change my password >", new_password_reset_path %>
                   <% end %>
             </div>
+
+            <% if is_admin %>
+            <div class="col-md-12 login-card module-row" style="padding-bottom:27px;">
+               <h3>Adminstration</h3>
+               <p>You are currently logged in as an Admin. As a result, you will be unable to change the Department and Faculty.</p>  
+               <p><%= link_to "Access Administration area >", admin_path %></p>    
+               </div>         
+            <% else %>
             <div class="col-md-12 login-card module-row" style="padding-bottom:27px;">
                <h3>Danger zone</h3>
                <p>Want to start over? Rest your account below.</p>
@@ -37,8 +45,10 @@
                   <button class="btn btn-lg btn-block red-btn" type="submit" onclick="return confirm('This will reset your account and delete all saved modules/pathways too. Are you sure?');" style="margin-top:25px;">RESET ACCOUNT
                   </button>
                </div>
-               <% end %>
             </div>
+            <% end %>
+            <% end %>
+
          </div>
          <div class="col-md-5">
             <div class="col-md-12 login-card">
