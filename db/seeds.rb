@@ -58,7 +58,7 @@ pra.tags << front_end_developer
 
 # Course seeds
 computer_science_15 = Course.create(name: "BSc Computer Science", year: 2015)
-maths = Course.create(name: "BSc Mathematics", year: 2015)
+mathem = Course.create(name: "BSc Mathematics", year: 2015)
 jmc = Course.create(name: "BSc Joint Mathematics and Computer Science", year: 2015)
 elec_eng = Course.create(name: "BSc Electronic Engineering", year: 2015)
 medicine = Course.create(name: "Medicine", year: 2015)
@@ -83,7 +83,7 @@ lsm.departments << gkt
 
 # Department-Course many to many association
 informatics.courses << computer_science_15
-mathematics.courses << maths
+mathematics.courses << mathem
 mathematics.courses << jmc
 informatics.courses << elec_eng
 gkt.courses << medicine
@@ -164,6 +164,8 @@ mnp_y1_req_6 =   UniModule.create(code: "4HCS2FC2", semester: "2", credits: 15, 
 mnp_y1_req_7 =   UniModule.create(code: "4JCS2FC2", semester: "2", credits: 15, name: "Joint Honours Laboratory")
 mnp_y1_opt_1_1 = UniModule.create(code: "4KCS2FC2", semester: "1", credits: 15, name: "Numbers and Functions")
 mnp_y1_opt_1_2 = UniModule.create(code: "4LCS2FC2", semester: "1", credits: 15, name: "Probability and Statistics I")
+
+mnp_y1_req_1.tags << maths
 
 mnp_year1_required_modules.uni_modules << mnp_y1_req_1
 mnp_year1_required_modules.uni_modules << mnp_y1_req_2
