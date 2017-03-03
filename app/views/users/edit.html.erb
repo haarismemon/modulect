@@ -31,7 +31,7 @@
             <% if is_admin %>
             <div class="col-md-12 login-card module-row" style="padding-bottom:27px;">
                <h3>Adminstration</h3>
-               <p>You are currently logged in as an Admin. As a result, you will be unable to change the Department and Faculty.</p>  
+               <p>You are currently logged in as a <%= admin_type %> Administrator. As a result, you will be unable to change the Department and Faculty.</p>  
                <p><%= link_to "Access Administration area >", admin_path %></p>    
                </div>         
             <% else %>

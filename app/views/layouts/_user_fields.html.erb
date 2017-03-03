@@ -4,8 +4,11 @@
 
 <div class="col-md-12" style="margin-top: -20px;margin-bottom: 20px;color:#38b3c3">
 <div class="row">
-               <h5><i class="fa fa-info-circle" aria-hidden="true"></i> You are currently logged in as a <%= admin_type %> Administrator.
-               </h5>       
+<h5><i class="fa fa-info-circle" aria-hidden="true"></i> You are currently logged in as a <%= admin_type %> Administrator.</h5>     
+<% if admin_type == "System" %>
+<h5>Since you're a System Admin, these details can be saved and used to test that Modulect is working correctly.</h5>
+<% end %>
+
  </div>  
  </div>
 <% end %>
