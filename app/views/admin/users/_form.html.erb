@@ -23,7 +23,7 @@ with respect to that related field-->
         <% case current_field_name %>
         <% when "password" %>
 
-            <a onclick="openPasswordFields();" class="form-actions password-show-toggle">Change Password</a>
+            <a onclick="openPasswordFields();" href="javascript:void()" class="form-actions password-show-toggle">Change Password</a><br /><br />
             <% class_to_add = "password-hidden" %>
         <% when "password_confirmation" %>
             <% class_to_add = "password-hidden" %>
