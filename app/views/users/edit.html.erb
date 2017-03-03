@@ -52,8 +52,19 @@
          </div>
          <div class="col-md-5">
             <div class="col-md-12 login-card">
+               <% if current_user.user_level == "user_access" %>
                <h3>Department &amp; Course Details</h3>
+               <% elsif current_user.user_level == "department_admin_access" %>
+               <h3>Department details</h3>
+               <% else %>
+               <h3>Testing Modulect</h3>
+               <% end %>
                <br>
+               <% if current_user.user_level == "department_admin_access" %>
+                  <style>
+                     #course-group, #yos-group {display: none}
+                  </style>
+               <% end %>
                <%= render partial: 'layouts/user_fields', locals: {type: "user_edit", dest: edit_user_path(current_user)} %>
             </div>
          </div>
