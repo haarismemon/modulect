@@ -73,7 +73,7 @@ class UserDashboard < Administrate::BaseDashboard
     :course,
     :year_of_study,
     :departments,
-    :faculty,
+
   ].freeze
 
   # Overwrite this method to customize how users are displayed
