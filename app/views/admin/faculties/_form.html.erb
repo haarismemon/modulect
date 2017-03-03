@@ -23,35 +23,36 @@ and renders all form fields for a resource's editable attributes.
     <%= error_messages_for(page.resource) %>
 
     <% page.attributes.each_with_index do |attribute, index| -%>
-        <!--current field name in loop-->
-        <% current_field_name = attribute.attribute.to_s %>
-        <!--assigns class specified-->
-        <% class_to_add = (current_field_name == "departments")? "select-field":"" %>
-
-
+        <!--checks if current attribute is departments in for loop-->
+        <% if (attribute.attribute.to_s == "departments") %>
             <!--if it is, print the field with a button and instruction label -->
-            <div class="row field-unit field-unit--<%= attribute.html_class %> <%= class_to_add%>">
+            <div class="row field-unit field-unit--<%= attribute.html_class %> department-info">
               <div class="col-xs-12">
                 <%= render_field attribute, f: f %>
               </div>
 
-              <% if (current_field_name == "departments")%>
               <div class="col-xs-12">
-                  <!--link that redirects to new of department-->
-                  <%= link_to(
+                <!--link that redirects to new of department-->
+                <%= link_to(
                         "Create new department",
                         [:new, namespace, "department"],
                         {class: "add-depart", :onclick => "cache()"},
                     ) %>
-                </div>
-              <%end%>
+              </div>
+              <!--important instruction-->
+
             </div>
 
-    <%end%>
-        <!--important instruction-->
 
-
-
+        <% else %>
+            <!--just render field otherwise like normal-->
+            <div class="row field-unit field-unit--<%= attribute.html_class %>">
+              <div class="col-xs-12">
+                <%= render_field attribute, f: f %>
+              </div>
+            </div>
+        <% end %>
+    <% end -%>
 
     <div class="form-actions">
       <%= f.submit %>
@@ -73,7 +74,6 @@ and renders all form fields for a resource's editable attributes.
     }
 
     $(document).ready(function () {
-        $('.select-field select').selectize();
         var data_to_be_loaded = localStorage['data_store_accept'];
         data_to_be_loaded = data_to_be_loaded ? JSON.parse(data_to_be_loaded) : null;
 
