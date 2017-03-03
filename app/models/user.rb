@@ -12,7 +12,7 @@ class User < ApplicationRecord
   # A user has many pathways
   has_many :pathways
 
-  # do not remove the , optional: true
+    # do not remove the , optional: true
   belongs_to :faculty, optional: true
   belongs_to :course, optional: true
 
@@ -31,6 +31,7 @@ class User < ApplicationRecord
   validates :password, presence: true,
                        length: {minimum: 6},
                        if: :should_validate_password?
+
 
   default_value_for :user_level, 3  #student #(needs testing)
   default_value_for :entered_before, false  #(needs testing)
