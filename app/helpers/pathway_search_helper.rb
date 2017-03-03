@@ -56,17 +56,17 @@ module PathwaySearchHelper
 
   # returns all the compulsory modules for a course
   def compulsory_modules_for_course_year(course, year) 
-    comp_mod_in_group = []
+    comp_mod= []
     groups = course.year_structures.find_by_year_of_study(year).groups
     groups.each do |group|
       if group.compulsory
         group.uni_modules.each do |required_mod|
-          comp_mod_in_group << [group.id, required_mod.id]
+          comp_mod << required_mod
         end
       end
     end
     #returns an array of group-module pairs
-    comp_mod_in_group
+    comp_mod
   end
 
   
