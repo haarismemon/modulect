@@ -109,4 +109,28 @@ module ApplicationHelper
 	def error_messages_for(object)
 		render(:partial => 'admin/application/admin_form_error', :locals => {:object => object})
 	end
+
+	# returns true if the user is a department or system admin
+	# by Aqib
+	def is_admin
+		# I know that the quicker way to write this
+		# is to check if a user is a student and return false if they are
+		# and true if not (so an admin) accordingly. 
+		# But the enum "user_access" is a bit confusing
+		# so I took the longer route
+		if current_user.user_level == "super_admin_access" || current_user.user_level == "department_admin_access"
+			true
+		else 
+			false
+		end
+	end
+
+	def admin_type
+		if current_user.user_level == "super_admin_access"
+			"System"
+		else 
+			"Department"
+		end
+	end
+
 end

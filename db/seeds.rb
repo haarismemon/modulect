@@ -271,6 +271,8 @@ mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_26
 
 
 # User seeds
+
+# system admin
 bob = User.create!(first_name:  "Bob",
             last_name:   "Ross",
             email:       "example@example.com",
@@ -279,6 +281,32 @@ bob = User.create!(first_name:  "Bob",
             activated: true,
             activated_at: Time.zone.now,
             user_level: 1,
+            faculty: nms,
+            department: informatics,
+            year_of_study: 1)
+
+# department admin
+sophie = User.create!(first_name:  "Ali",
+            last_name:   "Syed",
+            email:       "ali.syed@kcl.ac.uk",
+            password: 	 "foobar",
+            password_confirmation: "foobar",
+            activated: true,
+            activated_at: Time.zone.now,
+            user_level: 2,
+            faculty: nms,
+            department: informatics,
+            year_of_study: 1)
+
+# student
+sophie = User.create!(first_name:  "Sophie",
+            last_name:   "McDonald",
+            email:       "sophie.mcdonald@kcl.ac.uk",
+            password: 	 "foobar",
+            password_confirmation: "foobar",
+            activated: true,
+            activated_at: Time.zone.now,
+            user_level: 3,
             faculty: nms,
             department: informatics,
             year_of_study: 1)
