@@ -8,8 +8,6 @@
   <% @found_results = module_results %>
 <% end %>
 
-<p> heheheh <%=@search_course %> param <%= params[:search_course] %> </p>
-
 <style>
  @media print {
   .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
@@ -38,7 +36,7 @@
               </div>
               <% else %>
               <div class="checkbox">
-                <%= check_box_tag :search_course, checked=false, false %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+                <%= check_box_tag :search_course, checked=true, false %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
               </div>
               <% end %>
             </div>
