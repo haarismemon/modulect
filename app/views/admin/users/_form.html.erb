@@ -1,16 +1,17 @@
 <%#
 # Form Partial
-
 This partial is rendered on a resource's `new` and `edit` pages,
 and renders all form fields for a resource's editable attributes.
-
-
 %>
 
 <!--Note to anyone who wants to modify this form: There exists a for loop which renders all the attributes
-related to that model. current_field_name intialized within for loop returns field name. Have a if
+related to that model. current_field_name intialized within for loop returns field name. Have a switch(if)
 statement that compares the current field name with a value and do the associated behaviour
-with respect to that related field-->
+with respect to that related field
+
+note: some js methods embedded need to be modified in order to maintaining of code.
+Highlighted with !important
+-->
 
 
 
@@ -18,29 +19,48 @@ with respect to that related field-->
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
     <%= error_messages_for(page.resource) %>
 
+    <!--iterate through each attribute-->
     <% page.attributes.each do |attribute| -%>
+        <!--current field name in loop-->
         <% current_field_name = attribute.attribute.to_s %>
+        <!--examines what field it is and does something particular-->
         <% case current_field_name %>
-        <% when "password" %>
+          <% when "password" %>
+            <% if is_edit_form(params) %>
+                <a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a>
+                <% class_to_add = "password-hidden" %>
+            <%end%>
 
-            <a onclick="openPasswordFields();" class="form-actions password-show-toggle">Change Password</a>
-            <% class_to_add = "password-hidden" %>
-        <% when "password_confirmation" %>
-            <% class_to_add = "password-hidden" %>
-        <% when "user_level" %>
-            <% class_to_add = "faculty-field" %>
-            <span class="instruction-label form-actions">*Super admin access gives unbound access to modify, create and delete</span>
-        <% when "course" %>
-            <% class_to_add = "faculty-field" %>
-            <span class="instruction-label form-actions">*If entered, departments will automatically be infered from the course</span>
-        <% when "department_id" %>
-            <% class_to_add = "to-hide" %>
-        <% when "faculty" %>
-            <% class_to_add = "faculty-field" %>
+          <% when "password_confirmation" %>
+            <% if is_edit_form(params) %>
+                <% class_to_add = "password-hidden" %>
+            <%end%>
 
-        <% end %>
+          <% when "user_level" %>
+            <% class_to_add = "select-field" %>
 
-        <div class="row field-unit field-unit--<%= attribute.html_class %> <%= class_to_add %>">
+         <% when "course" %>
+            <% if !is_edit_form(params)|| (is_edit_form(params)&&!check_user_level(params[:id],1)) %>
+               <div class="page-header additional-info">Additional information</div>
+            <%end%>
+            <% to_hide = (!is_edit_form(params) || (is_edit_form(params)&&
+                check_user_level(params[:id],3)))? "":"hide-content"%>
+            <% class_to_add = "select-field "+to_hide %>
+
+          <% when "year_of_study" %>
+            <% to_hide = (!is_edit_form(params) || (is_edit_form(params)&&
+                check_user_level(params[:id],3)))? "":"hide-content"%>
+            <% class_to_add = "select-field "+to_hide %>
+
+          <% when "departments" %>
+            <% to_hide = !is_edit_form(params) || (is_edit_form(params) &&
+                !check_user_level(params[:id],1))? "":"hide-content"%>
+            <% class_to_add = "select-field "+to_hide %>
+        <%end%>
+
+        <!--renders attributes-->
+        <div class="row field-unit field-unit--<%= attribute.html_class %> <%= class_to_add %>
+        <%= attribute.attribute%>">
           <div class="col-xs-12">
             <%= render_field attribute, f: f %>
           </div>
@@ -50,16 +70,57 @@ with respect to that related field-->
     <div class="form-actions"><%= f.submit %></div>
 <% end %>
 
+
+
 <script>
-    $(document).ready(function () {
-        var $select = $('.faculty-field select').selectize();
-    });
 
-
+    //toggles the password field to appear and disappear
     var isClickedForNewStruc = false;
     var openPasswordFields = function () {
         $(".password-hidden").slideToggle("slow");
-        $(".password-show-toggle a").text('Close');
-
+        $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
     }
+
+    //allows for creation of instruction label for a particular field
+    var createInstruction = function(field_name,instruction){
+        var html = '<span class="instruction-label form-actions">'+instruction+'</span>' ;
+        var label = $("[for*='" + field_name + "']");
+        label.css("margin","0px");
+        $("[for*='" + field_name + "']").parent().after(html);
+    }
+
+    $(document).ready(function () {
+        //!important {if fields are added, specify within block whether they should be hidden}
+        //manipulates the page depending on what the select item value is for user_level field
+        // i.e shows certain fields that were initially hidden
+        var $select = $('.select-field select').selectize({ onChange: function(value) {
+            if(value == "user_access"){
+                addAllFieldsBack()
+            }else if(value == "department_access"){
+                addAllFieldsBack();
+                removeField("course");
+                removeField("year_of_study");
+            }else if(value == "super_admin_access"){
+                removeField("course");
+                removeField("year_of_study");
+                removeField("departments");
+                $(".additional-info").css("display","none")
+            }
+        }});
+        //create instruction labels for the admin user
+        createInstruction("user_level","*Warning: Super admin access gives unbound access to modify, create and delete");
+
+    });
+
+    //removes a field from sight
+    var removeField =  function(field_name){
+        $("."+field_name).css("display","none");
+    }
+
+    //add all fields back to form except password fields
+    var addAllFieldsBack = function(){
+        $(".additional-info").css("display","block")
+        $(".field-unit:not(.password-hidden)").css("display","block");
+    }
+
 </script>

@@ -108,29 +108,57 @@ module ApplicationHelper
 	# creates and renders a div error box containing all errors related to the object in question
 	def error_messages_for(object)
 		render(:partial => 'admin/application/admin_form_error', :locals => {:object => object})
-	end
+  end
 
-	# returns true if the user is a department or system admin
-	# by Aqib
-	def is_admin
-		# I know that the quicker way to write this
-		# is to check if a user is a student and return false if they are
-		# and true if not (so an admin) accordingly. 
-		# But the enum "user_access" is a bit confusing
-		# so I took the longer route
-		if current_user.user_level == "super_admin_access" || current_user.user_level == "department_admin_access"
-			true
-		else 
-			false
-		end
-	end
+  # returns true if the user is a department or system admin
+  # by Aqib
+  def is_admin
+    # I know that the quicker way to write this
+    # is to check if a user is a student and return false if they are
+    # and true if not (so an admin) accordingly.
+    # But the enum "user_access" is a bit confusing
+    # so I took the longer route
+    if current_user.user_level == "super_admin_access" || current_user.user_level == "department_admin_access"
+      true
+    else
+      false
+    end
+  end
 
-	def admin_type
-		if current_user.user_level == "super_admin_access"
-			"System"
-		else 
-			"Department"
-		end
-	end
+  def admin_type
+    if current_user.user_level == "super_admin_access"
+      "System"
+    else
+      "Department"
+    end
+  end
 
+  # checks if the form is being rendered by the edit page instead of the new page for a model associated in admin
+  def is_edit_form(param_input)
+    if param_input.has_key?(:action)&&param_input[:action]=="edit"
+      true
+    else
+      false
+    end
+  end
+
+  # returns user level match. return true if matches with input
+  def check_user_level(id,user_level_to_check)
+    user = User.find(id)
+    (user_level_to_check == User.user_levels[user.user_level]) # Returns the integer value
+  end
+
+  # Specifies the allowed attributes to show on the user's show page
+  def filter_for_user_show(attribute)
+    user_level = User.user_levels[User.find(params[:id]).user_level]
+    # super admin's attributes not to show
+    super_admin_filter = user_level == 1 && attribute != "course" &&
+        attribute != "year_of_study" && attribute != "faculty" && attribute != "departments"
+    # department admin's attributes not to show
+    department_admin_filter = user_level == 2 && attribute != "course" &&
+        attribute != "year_of_study"
+    # user's attributes not to show
+    user_filter = user_level == 3
+    super_admin_filter || department_admin_filter || user_filter
+  end
 end
