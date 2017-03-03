@@ -40,7 +40,9 @@ class UserDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :first_name,
     :last_name,
-    :email
+    :email,
+    :user_level,
+
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -69,7 +71,6 @@ class UserDashboard < Administrate::BaseDashboard
     :email,
     :password,
     :password_confirmation,
-
     :course,
     :year_of_study,
     :departments,
