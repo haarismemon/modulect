@@ -118,7 +118,7 @@ module ApplicationHelper
 		# and true if not (so an admin) accordingly. 
 		# But the enum "user_access" is a bit confusing
 		# so I took the longer route
-		if current_user.user_level == "super_admin_access" || current_user.user_level == "department_access"
+		if current_user.user_level == "super_admin_access" || current_user.user_level == "department_admin_access"
 			true
 		else 
 			false
