@@ -43,7 +43,7 @@
 <% end %>
             <% end %>
             <% else %>
-            <form action="<%= pathway_search_choose_path %>" method="get">
+            <form action="<%= dest %>" method="get">
                <div class="form-group">
                   <label for="year-of-study">Year Of Study <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify which year you are studying in e.g. 1st year of degree">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
                   <%= select_tag(:year, options_for_select(1..7), {:include_blank => true, :class => 'form-control', :id => "year_of_study_select", :autocomplete => "off"  , :required => true }) %>
