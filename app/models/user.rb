@@ -8,10 +8,11 @@ class User < ApplicationRecord
 
   # A user has many saved modules.
   has_and_belongs_to_many :uni_modules
+  has_and_belongs_to_many :departments
   # A user has many pathways
   has_many :pathways
 
-  # do not remove the , optional: true
+    # do not remove the , optional: true
   belongs_to :faculty, optional: true
   belongs_to :course, optional: true
   belongs_to :department, optional: true
@@ -25,11 +26,13 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX }
   validates :year_of_study, length: { maximum: 1 }
   validates :course_id, length: { maximum: 1 } #not tested
-  enum user_level: {user_access: 3, department_admin_access: 2, super_admin_access: 1 }
+  enum user_level: {user_access: 3 ,department_access: 2, super_admin_access: 1 }
+  # enum user_level: {user_access: 3, department_admin_access: 2, super_admin_access: 1 }
   has_secure_password
   validates :password, presence: true,
                        length: {minimum: 6},
                        if: :should_validate_password?
+
 
   default_value_for :user_level, 3  #student #(needs testing)
   default_value_for :entered_before, false  #(needs testing)
