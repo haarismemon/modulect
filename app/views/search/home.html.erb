@@ -21,7 +21,7 @@
                     <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                   </div>
-                  <% if logged_in? && !current_user.course_id.nil? %>
+                  <% if logged_in? && !current_user.course_id.nil? && current_user.course_id != "" %>
                     <div class="checkbox">
                       <%= check_box_tag :search_course, checked=true, true %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
                     </div>
@@ -31,7 +31,7 @@
               <script>
               var tags = [];
               function updateTags() {
-                <% if logged_in? && !current_user.course_id.nil? %>
+                <% if logged_in? && !current_user.course_id.nil? && current_user.course_id != ""  %>
                   if( document.getElementById('search_course').checked) {
                     tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
                   } else {
@@ -77,6 +77,18 @@
       </div>
       <div id="page" style="padding-top: 30px">
        <div class="container">
+
+
+        <div class="row">
+         <div class="col-md-12">
+          <div class="flash-alert flash-alert-success">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <span>You have successfully reset your account</span>
+         </div>
+        </div>
+        </div>
+
+
         <div class="row">
          <div class="col-md-8">
           <div class="col-md-12 login-card">
