@@ -8,13 +8,13 @@ class DepartmentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-      courses: Field::HasMany,
-      uni_modules: Field::HasMany,
-      faculty: Field::BelongsTo,
-      id: Field::Number,
-      name: Field::String,
-      created_at: Field::DateTime,
-      updated_at: Field::DateTime,
+    courses: Field::HasMany,
+    uni_modules: Field::HasMany,
+    faculty: Field::BelongsTo,
+    id: Field::Number,
+    name: Field::String,
+    created_at: Field::DateTime,
+    updated_at: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -23,9 +23,9 @@ class DepartmentDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-      :name,
-      :courses,
-      :faculty
+    :name,
+    :courses,
+    :faculty
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -35,8 +35,8 @@ class DepartmentDashboard < Administrate::BaseDashboard
       :name,
       :faculty,
       :courses,
-      :created_at,
-      :updated_at,
+    :created_at,
+    :updated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -45,7 +45,7 @@ class DepartmentDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
       :name,
       :faculty,
-      :courses,
+    :courses,
 
 
   ].freeze

@@ -26,7 +26,7 @@ class UserDashboard < Administrate::BaseDashboard
     activated_at: Field::DateTime,
     reset_digest: Field::String,
     reset_sent_at: Field::DateTime,
-    departments: Field::HasMany,
+    department_id: Field::Number,
     faculty: Field::BelongsTo,
     password: PasswordField,
     password_confirmation: PasswordField,
@@ -40,25 +40,26 @@ class UserDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :first_name,
     :last_name,
-    :email,
-    :user_level,
-
+    :password,
+    :email
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-
+    :uni_modules,
     :first_name,
     :last_name,
     :email,
     :user_level,
+    :entered_before,
     :year_of_study,
     :course,
-    :departments,
+    :faculty,
     :created_at,
     :updated_at,
     :activated,
+    :activated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -71,10 +72,14 @@ class UserDashboard < Administrate::BaseDashboard
     :email,
     :password,
     :password_confirmation,
-    :course,
-    :year_of_study,
-    :departments,
 
+    :entered_before,
+    :year_of_study,
+    :activated,
+    :activated_at,
+    :course,
+
+    :faculty,
   ].freeze
 
   # Overwrite this method to customize how users are displayed
