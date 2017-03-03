@@ -48,17 +48,13 @@
         <script>
           var tags = [];
           function updateTags() {
-            console.log("herhehrer");
             <% if logged_in? && !current_user.course_id.nil? %>
               if( document.getElementById('search_course').checked) {
-                console.log("check");
                 tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
               } else {
-                console.log("uncheck log");
                 tags = <%=  raw @tag_names + @module_names + @module_code %>;
               }
             <% else %>
-              console.log("out");
               tags = <%=  raw @tag_names + @module_names + @module_code %>;
             <% end %>
           }
