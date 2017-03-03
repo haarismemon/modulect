@@ -7,6 +7,9 @@
 <h5><i class="fa fa-info-circle" aria-hidden="true"></i> You are currently logged in as a <%= admin_type %> Administrator.</h5>     
 <% if admin_type == "System" %>
 <h5>Since you're a System Admin, these details can be saved and used to test that Modulect is working correctly.</h5>
+<% elsif admin_type == "Department" && (type == "pathway_search" || type == "career_search")  %>
+<h5>Since you're a Department Admin, these details can be saved and used to test that Modulect is working correctly.</h5>
+
 <% end %>
 
  </div>  
