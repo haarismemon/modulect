@@ -14,6 +14,7 @@ class User < ApplicationRecord
   # do not remove the , optional: true
   belongs_to :faculty, optional: true
   belongs_to :course, optional: true
+  belongs_to :department, optional: true
 
   validates :first_name, presence: true, length: { maximum: 70 }
   validates :last_name, presence: true, length: { maximum: 70 }

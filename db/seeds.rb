@@ -279,4 +279,6 @@ bob = User.create!(first_name:  "Bob",
             activated: true,
             activated_at: Time.zone.now,
             user_level: 1,
+            faculty: nms,
+            department: informatics,
             year_of_study: 1)
