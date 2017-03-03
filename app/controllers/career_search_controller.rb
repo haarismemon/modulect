@@ -19,8 +19,10 @@ class CareerSearchController < ApplicationController
 		    else
 		      @courses = {}
 		    end
-		    
-		    @all_courses = Department.find_by_id(@user.department_id).courses
+
+		    if(@user.department_id.present? && @user.course_id.present?)
+		      @all_courses = Department.find_by_id(@user.department_id).courses
+		     end
 		end
 	end
 

@@ -292,8 +292,7 @@ sophie = User.create!(first_name:  "Ali",
             activated_at: Time.zone.now,
             user_level: 2,
             faculty: nms,
-            department: informatics,
-            year_of_study: 1)
+            department: informatics)
 
 # student
 sophie = User.create!(first_name:  "Sophie",
@@ -303,7 +302,4 @@ sophie = User.create!(first_name:  "Sophie",
             password_confirmation: "foobar",
             activated: true,
             activated_at: Time.zone.now,
-            user_level: 3,
-            faculty: nms,
-            department: informatics,
-            year_of_study: 1)
+            user_level: 3)
