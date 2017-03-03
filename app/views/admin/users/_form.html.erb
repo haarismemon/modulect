@@ -40,9 +40,11 @@ Highlighted with !important
             <% class_to_add = "select-field" %>
 
          <% when "course" %>
-            <% if !is_edit_form(params)|| (is_edit_form(params)&&!check_user_level(params[:id],1)) %>
-               <div class="page-header additional-info">Additional information</div>
-            <%end%>
+            <% to_hide_sub_header = (!is_edit_form(params)|| (is_edit_form(params)&&
+                !check_user_level(params[:id],1)))?"":"hide-content"%>
+
+               <div class="page-header additional-info <%=to_hide_sub_header%>">Additional information</div>
+
             <% to_hide = (!is_edit_form(params) || (is_edit_form(params)&&
                 check_user_level(params[:id],3)))? "":"hide-content"%>
             <% class_to_add = "select-field "+to_hide %>
