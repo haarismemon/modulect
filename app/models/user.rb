@@ -19,7 +19,7 @@ class User < ApplicationRecord
 
   validates :first_name, presence: true, length: { maximum: 70 }
   validates :last_name, presence: true, length: { maximum: 70 }
-  VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+  VALID_EMAIL_REGEX = /\A([\w+\-].?)+@kcl.ac.uk/i
   validates :email, presence: true,
                     length: { maximum: 255 },
                     uniqueness: { case_sensitive: false },
@@ -35,7 +35,6 @@ class User < ApplicationRecord
 
 
   default_value_for :user_level, 3  #student #(needs testing)
-  default_value_for :entered_before, false  #(needs testing)
 
 
   class << self
