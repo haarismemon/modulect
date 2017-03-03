@@ -46,10 +46,16 @@
                Admin Dashboard
                </a>
             </li>
+            <% if current_user.user_level == "department_admin_access" %>
             <li class="sidebar-brand" style="margin-top:-10px;font-size:13px;line-height:normal; color:#fff;text-indent:0px;    padding-left: 20px;height:inherit;padding-bottom: 25px;
                border-bottom: 1px solid #888888;">
                Department: <%= Department.find(current_user.department_id).name %>
             </li>
+            <% else %>                     
+               <li class="sidebar-brand" style="margin-top:-10px;font-size:13px;line-height:normal; color:#fff;text-indent:0px;    padding-left: 20px;height:inherit;padding-bottom: 25px;
+                  border-bottom: 1px solid #888888;">System Administrator
+               </li>
+            <% end %>
             <li class="menu-item"><%= link_to '<i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Home'.html_safe, admin_path %></li>
             <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
             <li class="menu-item">
