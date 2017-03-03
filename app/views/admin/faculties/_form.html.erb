@@ -73,11 +73,11 @@ and renders all form fields for a resource's editable attributes.
     }
 
     $(document).ready(function () {
-//        $('.select-field select').selectize();
+        $('.select-field select').selectize();
         var data_to_be_loaded = localStorage['data_store_accept'];
         data_to_be_loaded = data_to_be_loaded ? JSON.parse(data_to_be_loaded) : null;
 
-        if (requestValidationCheck(localStorage['data_store']) && data_to_be_loaded) {
+        if (!localStorage['data_store'] || !JSON.parse(localStorage['data_store']) && data_to_be_loaded) {
             <% page.attributes.each_with_index do |attribute,index| -%>
             var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
             var object_load = data_to_be_loaded[<%= index %>] || '';
@@ -89,13 +89,5 @@ and renders all form fields for a resource's editable attributes.
         localStorage['data_store_accept'] = null;
     });
 
-    //checks if request for caching was a valid one
-    var requestValidationCheck = function (cache_item) {
-        var data = cache_item;
-        if (!data || !JSON.parse(data)) {
-            return true;
-        }
-        return false;
-    }
 
 </script>
