@@ -2,7 +2,7 @@
 <% sortby = request.query_parameters["sort_by"] %>
 <% module_results = sort_by(@results, sortby) %>
 <% @found_results = [] %>
-<% if logged_in? && !current_user.course_id.nil? && @search_course %>
+<% if logged_in? && !current_user.course_id.nil?  && current_user.course_id != ""  && @search_course %>
   <% @found_results = module_results.select{ |uni_module| modules_in_course(get_course_of_user(current_user)).include? uni_module[0].id } %>
 <% else %>
   <% @found_results = module_results %>
@@ -14,7 +14,7 @@
   .collapse{display:block;}
 }
 </style>
-<div class="banner" style="margin-top: -30px;padding-top:40px;">
+<div class="banner" style="padding-top:40px;">
   <div class="container">
     <h1>Your Search:</h1>
     <div class="row" style="margin-top: 15px">
@@ -28,7 +28,7 @@
               <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
               </button>
             </div>
-            <% if logged_in? && !current_user.course_id.nil? %>
+            <% if logged_in? && !current_user.course_id.nil?  && current_user.course_id != "" %>
             <div class="form-group">
               <% if @search_course %>
               <div class="checkbox">
@@ -46,7 +46,7 @@
         <script>
           var tags = [];
           function updateTags() {
-            <% if logged_in? && !current_user.course_id.nil? %>
+            <% if logged_in? && !current_user.course_id.nil? && current_user.course_id != ""  %>
               if( document.getElementById('search_course').checked) {
                 tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
               } else {
@@ -131,7 +131,7 @@
         <ul class="results-page-options">
           <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
           <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
-          <%= request.original_url  %>
+            <%= request.original_url.gsub("&", "%26")%>
             %0A%0A
             Regards,%0A
             {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>

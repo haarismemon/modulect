@@ -2,16 +2,11 @@ require 'rails_helper'
 
 RSpec.describe UniModulesController, type: :controller do
 
-  describe "GET #index" do
-    it "returns http success" do
-      get :index
-      expect(response).to have_http_status(:success)
-    end
-  end
+  describe "GET #show" do
+    let (:uni_module) { create(:uni_module) }
 
-  describe "GET #new" do
     it "returns http success" do
-      get :new
+      get :show, id: uni_module.id
       expect(response).to have_http_status(:success)
     end
   end

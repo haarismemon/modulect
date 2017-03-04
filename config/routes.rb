@@ -54,17 +54,17 @@ Rails.application.routes.draw do
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
 
-
   # Career search
   get '/career-search', to: 'career_search#begin'
   get 'career-search/begin'
   get 'career-search/choose'
   get 'career-search/view_results'
 
-  # Save pathways and modules used in ajax
+  # Save pathways and modules, and create tags used in ajax
   post 'application/save_module'
   post 'application/save_pathway'
   post 'application/delete_pathway'
+  post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
 
   # Profile
   get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }
