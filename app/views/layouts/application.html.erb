@@ -22,13 +22,14 @@
       <%= render 'layouts/header' %>
       <div class="modulect-container">
 
-      <% if logged_in? && current_user.user_level == "user_access" && (!current_user.faculty_id.nil? || !current_user.department_id.nil? || !current_user.course_id.nil? || current_user.course_id != "" ) %>
-         <div class="container" style="margin-bottom: 35px;">
+      <% if logged_in? && current_user.user_level == "user_access" && (current_user.faculty_id.nil? || current_user.department_id.nil? || current_user.course_id.nil? || current_user.course_id == "" ) %>
+         <style>#flash-container{margin-top: 0px;}</style>
+         <div class="container" style="margin-top:15px;">
             <div class="row">
                <div class="col-md-12">
                   <div class="flash-alert flash-alert-notice">
                      <i class="fa fa-info" aria-hidden="true"></i>
-                     <span>You haven't yet provided any faculty, department or course information. <%= link_to "Add now >", edit_user_path(current_user),method: :get %></a></span>
+                     <span>You haven't yet provided your faculty, department or course information yet. <%= link_to "Add now >", edit_user_path(current_user),method: :get %></a></span>
                   </div>
                </div>
             </div>
