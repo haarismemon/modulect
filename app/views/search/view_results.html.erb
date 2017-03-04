@@ -131,7 +131,7 @@
         <ul class="results-page-options">
           <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
           <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
-          <%= request.original_url  %>
+            <%= request.original_url.gsub("&", "%26")%>
             %0A%0A
             Regards,%0A
             {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
