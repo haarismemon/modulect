@@ -22,11 +22,14 @@ module Admin
 
       if new_tag.nil?
         new_tag = Tag.create(name: params[:tag_name], type: params[:tag_type])
-        uni_module = UniModule.find(params[:uni_module_id])
-      end
 
-      unless uni_module.nil?
-        uni_module.tags << new_tag
+        unless params[:uni_module_id].nil?
+          uni_module = UniModule.find(params[:uni_module_id])
+          unless uni_module.nil?
+            uni_module.tags << new_tag
+          end
+        end
+
       end
 
     end
