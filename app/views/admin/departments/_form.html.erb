@@ -43,8 +43,12 @@ and renders all form fields for a resource's editable attributes.
 <!--js embedded with ruby-->
 
 <script data-turbolinks="false">
+    //sets value of the faculty select to a initial value{only triggered
+    //when redirect from faculty form occurs}
     var setValueOfFacultySelect = function () {
+        //stores session cache
         <% data_store = session[:data_save]%>
+        //sets session cache value for faculty name into faculty field
         for(var i = 0 ; i<$('.hide-content option').length;i++){
             if($(".hide-content option[value='"+i+"']").text() == "<%= data_store.present? ?
              ((data_store["faculty"].present?)? data_store["faculty"]["name"]:"") : "" %>"){
