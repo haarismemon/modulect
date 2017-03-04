@@ -8,28 +8,32 @@ class User < ApplicationRecord
 
   # A user has many saved modules.
   has_and_belongs_to_many :uni_modules
-
+  has_and_belongs_to_many :departments
   # A user has many pathways
   has_many :pathways
 
+    # do not remove the , optional: true
+  belongs_to :faculty, optional: true
+  belongs_to :course, optional: true
+  belongs_to :department, optional: true
+
   validates :first_name, presence: true, length: { maximum: 70 }
   validates :last_name, presence: true, length: { maximum: 70 }
-  VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+  VALID_EMAIL_REGEX = /\A([\w+\-].?)+@kcl.ac.uk/i
   validates :email, presence: true,
                     length: { maximum: 255 },
                     uniqueness: { case_sensitive: false },
                     format: { with: VALID_EMAIL_REGEX }
-  validates :user_level, length: { is: 1 }, inclusion: { in: [1, 2, 3] }
   validates :year_of_study, length: { maximum: 1 }
   validates :course_id, length: { maximum: 1 } #not tested
-
+  enum user_level: {user_access: 3, department_admin_access: 2, super_admin_access: 1 }
   has_secure_password
   validates :password, presence: true,
                        length: {minimum: 6},
                        if: :should_validate_password?
 
+
   default_value_for :user_level, 3  #student #(needs testing)
-  default_value_for :entered_before, false  #(needs testing)
 
 
   class << self

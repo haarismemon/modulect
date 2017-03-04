@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170222191305) do
+ActiveRecord::Schema.define(version: 20170303185627) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -70,6 +70,8 @@ ActiveRecord::Schema.define(version: 20170222191305) do
     t.integer  "user_id"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.integer  "year"
+    t.integer  "course_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -103,7 +105,6 @@ ActiveRecord::Schema.define(version: 20170222191305) do
     t.integer  "credits"
     t.integer  "exam_percentage"
     t.integer  "coursework_percentage"
-    t.string   "more_info_url"
     t.string   "more_info_link"
   end
 
@@ -119,7 +120,6 @@ ActiveRecord::Schema.define(version: 20170222191305) do
     t.string   "email"
     t.string   "password_digest"
     t.integer  "user_level"
-    t.boolean  "entered_before"
     t.integer  "year_of_study"
     t.string   "course_id"
     t.datetime "created_at",                        null: false

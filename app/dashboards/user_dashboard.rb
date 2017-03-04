@@ -14,10 +14,10 @@ class UserDashboard < Administrate::BaseDashboard
     last_name: Field::String,
     email: Field::String,
     password_digest: Field::String,
-    user_level: Field::Number,
+    user_level: EnumField,
     entered_before: Field::Boolean,
-    year_of_study: Field::Number,
-    course_id: Field::String,
+    year_of_study: YearOfStudyField,
+    course: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     remember_digest: Field::String,
@@ -26,8 +26,10 @@ class UserDashboard < Administrate::BaseDashboard
     activated_at: Field::DateTime,
     reset_digest: Field::String,
     reset_sent_at: Field::DateTime,
-    department_id: Field::Number,
-    faculty_id: Field::Number,
+  #  departments: Field::HasMany,
+    faculty: Field::BelongsTo,
+    password: PasswordField,
+    password_confirmation: PasswordField,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -38,55 +40,41 @@ class UserDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :first_name,
     :last_name,
-    :email
+    :email,
+    :user_level,
+
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :uni_modules,
-    :id,
+      :id,
     :first_name,
     :last_name,
     :email,
-    :password_digest,
     :user_level,
-    :entered_before,
     :year_of_study,
-    :course_id,
+    :course,
+  #  :departments,
     :created_at,
     :updated_at,
-    :remember_digest,
-    :activation_digest,
     :activated,
-    :activated_at,
-    :reset_digest,
-    :reset_sent_at,
-    :department_id,
-    :faculty_id,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :uni_modules,
     :first_name,
     :last_name,
-    :email,
-    :password_digest,
     :user_level,
-    :entered_before,
+    :email,
+    :password,
+    :password_confirmation,
+    :course,
     :year_of_study,
-    :course_id,
-    :remember_digest,
-    :activation_digest,
-    :activated,
-    :activated_at,
-    :reset_digest,
-    :reset_sent_at,
-    :department_id,
-    :faculty_id,
+    #:departments,
+
   ].freeze
 
   # Overwrite this method to customize how users are displayed

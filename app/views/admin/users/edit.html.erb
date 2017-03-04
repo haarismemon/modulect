@@ -15,13 +15,14 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
-<% content_for(:title) { "Edit #{page.page_title}" } %>
+<% content_for(:title) { "Edit #{User.find(params[:id]).first_name} #{User.find(params[:id]).last_name}" } %>
+
 
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
     <%= link_to(
-      "Show #{page.page_title}",
+      "<i class='fa fa-user' aria-hidden='true'></i>&nbsp;&nbsp;Show User".html_safe,
       [namespace, page.resource],
       class: "button",
     ) %>

@@ -1,0 +1,105 @@
+<% provide(:title, 'Potential Careers - Career Search') %>
+<% if logged_in? %>
+<% @year_of_study = current_user.year_of_study %>
+<% @course = current_user.course_id %>
+<% end %>
+<div class="banner" style="padding-top:40px;">
+   <div class="container">
+      <h1>Career Search</h1>
+   </div>
+</div>
+<div id="white-strip-pathway">
+   <div class="container">
+      <div class="col-md-12 col-md-offset-1">
+         <div class="row">
+            <div class="col-md-4 step">
+               <div class="numberCircle">1</div>
+               My Details
+            </div>
+            <div class="col-md-4 step">
+               <div class="numberCircle">2</div>
+               Choose Modules Taken
+            </div>
+            <div class="col-md-4 step current">
+               <div class="numberCircle current-circle">3</div>
+               Potential Careers
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<% if @course_obj.nil? || @year_of_study.to_i < 1 || @year_of_study.to_i > 7 %>
+<div id="page">
+   <div class="container">
+      <div class="col-md-10 login-card col-md-offset-1">
+         <div class="col-md-12">
+            <div class="row">
+               <h1>Something went wrong.</h1>
+               <h4>Please try again.</h4>
+            </div>
+         </div>
+      </div>
+   </div>
+   <% else %>
+   <div id="page">
+      <div class="container">
+<div class="row nomobile" style="margin-top:20px;margin-bottom:10px;">
+   <div class="col-md-10 col-md-offset-1 text-right">
+      <ul class="results-page-options">
+         <li><a href="mailto:?subject=Modulect | Please check my careers&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which careers I can get from the modules I have taken. Please take a look at this link:%0A%0A
+            <%= request.original_url.gsub("&", "%26")%>
+            %0A%0A
+            Regards,%0A
+            {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
+      </ul>
+   </div>
+</div>
+         <div class="col-md-10 login-card col-md-offset-1">
+            <div class="col-md-12">
+               <div class="row">
+                  <h1>Potential Careers.</h1>
+                  <% if @careers_found.size == 0%>
+                  <h4>We couldn't find any careers for your module-course combination.</h4>
+                  <% else %>
+                  <h4>Below is a list of careers which are related to modules you've taken.</h4>
+                  <% @careers_found.each_with_index do |tag, i| %>
+                  <% if i % 3 == 0 %>
+                  <div class="row career-row">
+                     <% end %>
+                     <script>
+                        $(document).ready(function(){
+                            $("#slide-toggle-<%= i %>").click(function(){
+                                $("#slide-toggle-<%= i %>-p").toggle();
+                            });
+                        });
+                     </script>
+                     <div class="col-md-4">
+                        <div class="col-md-12 login-card" style="padding-left:15px;">
+                           <h4><%= tag.name %></h4>
+                           <a href="javascript:void()" id="slide-toggle-<%= i %>" >Associated modules <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                           <p class="module-list-career" id="slide-toggle-<%= i %>-p">
+                              <% get_module_which_contains_tag(tag, @uni_modules_array).each do |uni_module| %>
+                              <%= uni_module.code + " " + uni_module.name %> <br />
+                              <% end %>
+                           </p>
+                        </div>
+                     </div>
+                     <% if i % 3 == 2  %>
+                  </div>
+                  <% end %>
+                  <% end %>
+               </div>
+               <% end %>
+            </div>
+            <div class="row" style="margin-top:30px;" >
+               <div class="col-md-12" style="border-top:1px dotted #dfe2e1;padding-top:15px;margin-top: 10px;padding-left:0px">
+                  <div class="form-group" style="margin-top: 30px">
+                     <a href="javascript:void()" onclick="javascript:history.back()" >< Back to previous page</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<% end %>

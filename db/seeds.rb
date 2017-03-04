@@ -56,20 +56,9 @@ dbs.tags << database_engineer
 cs1.tags << hardware_engineer
 pra.tags << front_end_developer
 
-# User seeds
-bob = User.create(first_name:  "Bob",
-            last_name:   "Ross",
-            email:       "example@example.com",
-            password: 	 "foobar",
-            password_confirmation: "foobar",
-            activated: true,
-            activated_at: Time.zone.now,
-            user_level: 1,
-            year_of_study: 1)
-
 # Course seeds
 computer_science_15 = Course.create(name: "BSc Computer Science", year: 2015)
-maths = Course.create(name: "BSc Mathematics", year: 2015)
+mathem = Course.create(name: "BSc Mathematics", year: 2015)
 jmc = Course.create(name: "BSc Joint Mathematics and Computer Science", year: 2015)
 elec_eng = Course.create(name: "BSc Electronic Engineering", year: 2015)
 medicine = Course.create(name: "Medicine", year: 2015)
@@ -94,7 +83,7 @@ lsm.departments << gkt
 
 # Department-Course many to many association
 informatics.courses << computer_science_15
-mathematics.courses << maths
+mathematics.courses << mathem
 mathematics.courses << jmc
 informatics.courses << elec_eng
 gkt.courses << medicine
@@ -175,6 +164,8 @@ mnp_y1_req_6 =   UniModule.create(code: "4HCS2FC2", semester: "2", credits: 15, 
 mnp_y1_req_7 =   UniModule.create(code: "4JCS2FC2", semester: "2", credits: 15, name: "Joint Honours Laboratory")
 mnp_y1_opt_1_1 = UniModule.create(code: "4KCS2FC2", semester: "1", credits: 15, name: "Numbers and Functions")
 mnp_y1_opt_1_2 = UniModule.create(code: "4LCS2FC2", semester: "1", credits: 15, name: "Probability and Statistics I")
+
+mnp_y1_req_1.tags << maths
 
 mnp_year1_required_modules.uni_modules << mnp_y1_req_1
 mnp_year1_required_modules.uni_modules << mnp_y1_req_2
@@ -280,12 +271,37 @@ mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_24
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_25
 mnp_year3_optional_modules_3.uni_modules << mnp_y3_opt_3_26
 
-# Pathway seeds
-p1 = Pathway.create(name: "Software Engineering", data: "1:23;45/2:37;38#")
-p2 = Pathway.create(data: "1:43;55/2:97;98#")
-p3 = Pathway.create(name: "My pathway", data: "1:2;5/2:9;10#")
 
-# Pathway-User association
-bob.pathways << p1
-bob.pathways << p2
-bob.pathways << p3
+# User seeds
+
+# system admin
+bob = User.create!(first_name:  "Bob",
+            last_name:   "Ross",
+            email:       "bob.ross@kcl.ac.uk",
+            password: 	 "foobar",
+            password_confirmation: "foobar",
+            activated: true,
+            activated_at: Time.zone.now,
+            user_level: 1)
+
+# department admin
+sophie = User.create!(first_name:  "Ali",
+            last_name:   "Syed",
+            email:       "ali.syed@kcl.ac.uk",
+            password: 	 "foobar",
+            password_confirmation: "foobar",
+            activated: true,
+            activated_at: Time.zone.now,
+            user_level: 2,
+            faculty: nms,
+            department: informatics)
+
+# student
+sophie = User.create!(first_name:  "Sophie",
+            last_name:   "McDonald",
+            email:       "sophie.mcdonald@kcl.ac.uk",
+            password: 	 "foobar",
+            password_confirmation: "foobar",
+            activated: true,
+            activated_at: Time.zone.now,
+            user_level: 3)

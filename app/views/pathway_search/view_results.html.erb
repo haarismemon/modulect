@@ -1,5 +1,5 @@
 <% provide(:title, 'Pathway Results') %>
-<div class="banner" style="margin-top: -30px;padding-top:40px;">
+<div class="banner" style="padding-top:40px;">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -10,13 +10,13 @@
 </div>
 <div id="white-strip-pathway">
   <div class="container">
-    <div class="col-md-12">
+    <div class="col-md-12 col-md-offset-1">
       <div class="row">
         <div class="col-md-4 step">
           <div class="numberCircle">1</div> My Details
         </div>
         <div class="col-md-4 step">
-          <div class="numberCircle">2</div> Choose Interests & Careers
+          <div class="numberCircle">2</div> Choose Interests &amp; Careers
         </div>
         <div class="col-md-4 step current">
           <div class="numberCircle current-circle">3</div> Results and selection
@@ -28,93 +28,574 @@
 <div id="page" style="padding-top:30px;">
   <div class="container">
     <div class="col-md-10 login-card col-md-offset-1">
+      <div id = "log"></div>
       <div class="col-md-12">
         <div class="row">
-        <h3><%= @year_of_study.to_i.ordinalize %> Year</h3>
-        <!--groups-->
-        <% @groups.each do |group| %>       
-        <div class="col-md-4 login-card">
-          <h3><%= group.name %></h3>
-          <!--choices as buttons, once a button is clicked next show a column for the remaining choices in the group or the group shows-->
-          <% UniModule.all_modules_in_group(group).each do |mod| %>
-            <% if @results.include? mod.code %>
-                <% tagsmatched = @results.find_by_id(mod).second %>
-              <div class="row login-card res-card result-card-<%= colour_code_card tagsmatched, @chosen_tags %>" >
-                <p> <%= mod.name %> </p>
+        <%  @course_obj.year_structures.each do |y| %> 
+          <button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button" style="margin-top: 5px">
+            <%= y.year_of_study_before_type_cast.to_i.ordinalize %> Year
+          </button>
+          <div id=<%= "div_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> style="margin-top: 20px">
+          </div>
+          <div class="modal fade" id="optionsModalYear<%= y.year_of_study_before_type_cast.to_i %>" tabindex="-1" role="dialog" aria-hidden="true" style="margin-top: 50px">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h2 class="modal-title" id="exampleModalLabel">Select a Module:</h2>
+                </div>
+                <div class="modal-body" id="optionsModalBodyYear<%= y.year_of_study_before_type_cast.to_i %>">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
               </div>
-            <% else %>
-              <div class="row login-card res-card result-card-orange">
-                <p> <%= mod.name %> </p>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
+            </div>
+          </div>
         <% end %>
-      </div>
-      <div class="row" style="margin-top: 60px">
-        <% if logged_in? %>
-          <form>
-            <div class="col-md-4">
-              <button type="submit" class="btn btn-lg save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>  Save Pathway</span>
+        <button id="btn_all_years" class="btn btn-lg btn-block" type="button" style="margin-top: 5px">show all</button>
+        </div>
+        <div class="row" <% if logged_in? %>style="margin-left:-30px;"<% end %>>
+          <% if logged_in? %>
+          <form onsubmit="savePathway();return false;" style="margin-top: 30px">
+            <div class="col-md-3">
+              <button type="submit" class="btn btn-lg save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
               </button>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" id="save=name" placeholder="Name your Pathway" required>
+              <input type="text" class="form-control" id="save-name" placeholder="Name your Pathway" required>
             </div>
           </form>
-          <script>
-            $(window).load(function() {
-              $("#save").click(function() {
-                /* get html path */
-              })
-            })
-          </script>
-        <% else %>
-        <form action="/login" method="get">
-          <button type="submit" class="btn btn-lg btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in." id="save"><span><i class="fa fa-star-o" aria-hidden="true"></i>  Save Pathway</span>
-          </button>
-        </form>
-        <% end %>
-      </div>
-
-      <!--Change to course id when aqib pushes-->
-      <% if exists_next_year_for(@course, @year_of_study) %>
+          <% else %>
+          <form action="/login" method="get" style="margin-top:30px;">
+            <button type="submit" class="btn btn-lg btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in."><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
+            </button>
+          </form>
+          <% end %>
+        </div>
       <div class="form-group" style="margin-top: 30px">
-        <%= link_to "Go to next year >", "javascript:void()", method: :get, class: "btn btn-lg" %>
-      </div>
-      <% end %>
-      <div class="form-group" style="margin-top: 30px">
-        <%= link_to "< Back to previous page", "#", method: :get %>
+        <a href="javascript:void()" onclick="javascript:history.back()" >< Back to previous page</a>
       </div>
     </div>
   </div>
 </div>
-</div>
+
+<script type="text/javascript">
+  /*
+  
+  TODO:
+  1) add valitation to select and deselect functions
+  2) add notifications
+  3) colour-code groups
+  4) right now when the year divs are updated, all the slide-down divs are getting hidden again
+    this should not be an issue since rather than having a slide-down div, we're more likely to have
+    a pop-up selection div
 
 
+  ISSUES:
+  1) What happens when the order of modules in optional groups is changed?
+  */
+
+  // get JSON object from rails
+  var data = '<%=raw @course_obj.to_json(
+    include:
+      {year_structures:
+        {include:
+          {groups:
+            {:include => :uni_modules}}}}).sub("'", "\\\\'") %>';
+  var js_course = jQuery.parseJSON(data);
+
+  // globals to keep track of selected modules
+  var selected_modules_per_year = <%= @selected %>;
+  var required_modules_per_year = [];
+  var optional_modules_per_year = [];
+
+  var btns = [];
+  var divs = [];
+  for(i=1; i<10; i++){
+    var btn = document.getElementById("btn_year_"+i);
+    var div = document.getElementById("div_year_"+i);
+    if(!btn) break;
+    else{
+      $(div).hide();
+      total_years = i;
+      divs.push(div);
+      btns.push(btn);
+    }
+
+  }
+  for(var i=0; i<btns.length; i++){
+    (function(_i){
+      $(btns[_i]).click(function () {
+        showYear(divs, _i);
+      });
+    })(i);
+  }
+  $("#btn_all_years").click(function () {
+    for(i=0; i<divs.length; i++){
+      $(divs[i]).slideDown();
+    }
+  });
+
+  function savePathway() {
+    $.ajax({
+        type: "POST",
+        url: "<%= application_save_pathway_path %>",
+        data: {
+            name: document.getElementById('save-name').value,
+            data: JSON.stringify(selected_modules_per_year),
+            year: <%= @year_of_study.to_i %>,
+            course: <%= @course.to_i %>
+        }
+    })      
+  }
+
+  // selected modules this year is all set to false
+  updateData();
+  
+  updateUI();
+
+  // debugging
+  // logStatus();
+  function logStatus(){
+    console.log("JSON course object");
+    console.log(js_course);
+    console.log("Required modules per year");
+    console.log(required_modules_per_year);
+    console.log("Optional modules per year");
+    console.log(optional_modules_per_year);
+    console.log("Selected modules per year");
+    console.log(selected_modules_per_year);
+  }
+
+  // show and hide year div
+  function showYear(divs, year){
+    for(i=0; i<divs.length; i++){
+      if(i!=year) $(divs[i]).slideUp();
+    }
+    $(divs[year]).slideDown();
+  }
+
+  function colour_code_card_group(module_matches, search_tags) {
+    if((module_matches.length / search_tags.length) > 0.6) {
+      return "green"
+    } else {
+      return "orange"
+    }
+  }
 
 
-<!--
-<%= @year_of_study.to_i.ordinalize %> year <%= @course %> student <br />
+  function create_module_card(module, isOptional, year, group, modIndex) {
+    var result = <%= raw @results.to_json%>.filter(function(mod) {
+      if(mod[0].id == module.id){
+        return mod;
+      }
+    });
 
-who picked
+    if(result.length > 0) {
+      var tagsmatched = result[0][1];
+      var moduleCard =  "<div class=\"row login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id=\"" + module.id + "\">" +
+        "<div class=\"col-md-8\">" +
+          "<p>" +  module.code + "</p>" +
+          "<p>" +  module.name + "</p>" +
+        "</div>" +
+        "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
+          "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
+           if(isOptional) {
+            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + modIndex + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+          }
+          moduleCard += "</div>" +
+        "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
+          "<h4>" + Math.round((tagsmatched.length / <%= raw @chosen_tags %>.length) * 100) + " %</h4>" +
+        "</div>" +
+      "</div>"
+      return moduleCard;
+    } else {
+      var moduleCard = "<div class=\"row login-card res-card result-card-orange res-btn\" id=\"" + module.id + "\">" +
+        "<div class=\"col-md-8\">" +
+          "<p>" +  module.code + "</p>" +
+          "<p>" + module.name + "</p>" +
+        "</div>" +
+         "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
+          "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
+          if(isOptional) {
+            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + modIndex + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+          }
+          moduleCard += "</div>" +
+         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
+          "<h4> 0% </h4>" +
+        "</div>" +
+      "</div>"
+      return moduleCard;
+    }
+  }
 
-<br />
+  function create_blank_cell(year) {
+    return "<button type=\"button\" class=\"row login-card res-card res-btn\" data-toggle=\"modal\" data-target=\"#optionsModalYear" + year + "\">" +
+        "<div class=\"col-md-12\" style=\"font-size: 18px; text-align: center\">" +
+          "<p> + Pick a Module </p>" +
+        "</div>" +
+      "</button>"
+  }
 
-<%= @chosen_tags %> <br />
 
-<br />
+  function updateUI(){
+    for(year=0; year<js_course.year_structures.length; year++){
+      // get all optional modules
+      selected_modules_buttons_any_semester = [];
+      selected_modules_buttons_first_semester = [];
+      selected_modules_buttons_second_semester = [];
+      selected_modules_buttons_year_long = [];
+      for(g=0; g<optional_modules_per_year[year].length; g++){
+        for(index=0; index<selected_modules_per_year[year][g].length; index++){
+          if(selected_modules_per_year[year][g][index]){
+            semester = optional_modules_per_year[year][g].uni_modules[index].semester;
+            sel_module = [optional_modules_per_year[year][g].uni_modules[index], year, g, index];
+            if(semester == 0) selected_modules_buttons_any_semester.push(sel_module);
+            if(semester == 1) selected_modules_buttons_first_semester.push(sel_module);
+            if(semester == 2) selected_modules_buttons_second_semester.push(sel_module);
+            if(semester == 3) selected_modules_buttons_year_long.push(sel_module);
+          }
+        }
+      }
 
-<h1>Results</h1> <br />
 
-<br />
+      targetDiv = document.getElementById("div_year_" + (year+1));
+      myTable = "<table id =\"results_table_" + year + "\" style=\"width: 100%\"><tr><th>Semester 1</th><th>Semester 2</th></tr>";
+      s1 = 0; // keeping track of column positions
+      s2 = 0;
 
-<% @results.each do |result| %>
+      // create the table and fill in year long modules first
+      for(i=0; i<required_modules_per_year[year][0].length; i++){
+        myTable += "<tr><td colspan=2>" + create_module_card(required_modules_per_year[year][0][i], false, 0, 0, 0) + "</td></tr>";
+        s1++;
+        s2++;
+      }
+      for(i=0; i<selected_modules_buttons_year_long.length; i++){
+        myTable += "<tr><td colspan=2>" + create_module_card(selected_modules_buttons_year_long[i][0], true, selected_modules_buttons_year_long[i][1], selected_modules_buttons_year_long[i][2], selected_modules_buttons_year_long[i][3]) + "</td></tr>";
+        s1++;
+        s2++;
+      }
+      for(i=s1; i<4; i++){
+        myTable +="<tr><td>" + create_blank_cell(year+1) + "</td><td>" + create_blank_cell(year+1) + "</td></tr>";
+      }
+      myTable += "</table>";      
+      targetDiv.innerHTML = myTable;
 
-<%= result %> <br />   
-<%= link_to "Open page >", result.first, method: :get, class: "btn btn-lg btn-small" %><br /> <br />     <br /> <br />     
+      // find the table we've just created
+      myTableOnPage = document.getElementById('results_table_'+year);
+      // fill required modules in 1st semester
+      for(i=0; i<required_modules_per_year[year][1].length; i++){
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][1][i], false, 0, 0, 0);
+      }
+      for(i=0; i < selected_modules_buttons_first_semester.length; i++){
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(selected_modules_buttons_first_semester[i][0], true, selected_modules_buttons_first_semester[i][1], selected_modules_buttons_first_semester[i][2], selected_modules_buttons_first_semester[i][3]);
+      }
+      // 2nd semester
+      for(i=0; i<required_modules_per_year[year][2].length; i++){
+        myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][2][i], false, 0, 0, 0);
+      }
+      for(i=0; i < selected_modules_buttons_second_semester.length; i++){
+        myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i][0], true, selected_modules_buttons_second_semester[i][1], selected_modules_buttons_second_semester[i][2], selected_modules_buttons_second_semester[i][3]);
+      }
 
-<% end %>
+      // fill modules that can go to any semester
+      for(i=0; i<required_modules_per_year[year][3].length; i++){
+        if(s2<s1){
+          myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0);
+        }else{
+          myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0);
+        }
+      }
+      for(i=0; i < selected_modules_buttons_any_semester.length; i++){
+        if(s2<s1){
+          myTableOnPage.rows[s2+1].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i][0], true, selected_modules_buttons_second_semester[i][1], selected_modules_buttons_second_semester[i][2], selected_modules_buttons_second_semester[i][3]);
+          s2++;
+        }else{
+          myTableOnPage.rows[s1+1].cells[0].innerHTML = create_module_card(selected_modules_buttons_second_semester[i][0], true, selected_modules_buttons_second_semester[i][1], selected_modules_buttons_second_semester[i][2], selected_modules_buttons_second_semester[i][3]);
+          s1++;
+        }
+      }
 
--->
+
+      // generate optional modules buttons
+      modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
+      modalTarget.innerHTML = "";
+      nav = "<div id=\"pathway-tabs\"><ul class=\"nav nav-tabs\">";
+      for(i=0; i<optional_modules_per_year[year].length; i++){  
+        out = "<li><a role=\"tab\" data-toggle=\"tab\" id = \"btn_opt_year_"+year+"_group_"+i+"\">" + optional_modules_per_year[year][i].name + "</a></li>";
+          nav += out;
+      }
+      nav += "</ul></div><div class=\"tab-pane fade in active col-md-12\" id = \"div_opt_year_" + year + "\" style=\"padding-top: 20px\"></div>";
+      modalTarget.innerHTML += nav;
+
+
+      for(i=0; i<optional_modules_per_year[year].length; i++){
+        (function(_year, _i){
+          button = document.getElementById("btn_opt_year_" + _year + "_group_" + _i);
+          button.addEventListener("click", function(){
+            optional_button_pressed(_year, _i);
+          });
+        })(year, i);  
+      }
+
+    }
+  }
+
+  function optional_button_pressed(_year, _i){
+    target = document.getElementById("div_opt_year_" + _year);
+    target.innerHTML = "";
+    // Sort the optional modules by their tags matched percentage
+    var addedModules = [];
+    for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
+      if(!selected_modules_per_year[_year][_i][i]) {
+        uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
+        var result = <%= raw @results.to_json%>.filter(function(mod) {
+          if(mod[0].id == uni_mod.id){
+            return mod;
+          }
+        });
+        if(result.length > 0) {
+          var tagsmatched = result[0][1];
+          target.innerHTML += "<div class =\"row\">" +
+                                "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\">" +
+                                  "<div class=\"col-md-8\" style\"width: 75%\">" +
+                                    "<p>" +  uni_mod.code + "</p>" +
+                                    "<p>" + uni_mod.name + "</p>" +
+                                  "</div>" +
+                                  "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
+                                    "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
+                                  "</div>" +
+                                  "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
+                                    "<h4>" + Math.round((tagsmatched.length / <%= raw @chosen_tags %>.length) * 100) + " %</h4>" +        
+                                  "</div>"
+                                "</button>" +
+                              "</div>";
+          addedModules.push(uni_mod);
+        }
+      }
+    }
+    for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
+      if(!selected_modules_per_year[_year][_i][i]) {
+        uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
+         var foundAlready = addedModules.filter(function(mod) {
+          if(mod.id == uni_mod.id){
+            return mod;
+          }
+        });
+        if(foundAlready.length == 0) {
+          target.innerHTML += "<div class =\"row\">" +
+                                "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\">" +
+                                  "<div class=\"col-md-8\" style\"width: 75%\">" +
+                                    "<p>" +  uni_mod.code + "</p>" +
+                                    "<p>" + uni_mod.name + "</p>" +
+                                  "</div>" +
+                                  "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
+                                    "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
+                                  "</div>" +
+                                  "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
+                                    "<h4> 0% </h4>" +
+                                  "</div>"
+                                "</button>" +
+                              "</div>";
+        }
+      }
+    }
+
+    for(i=0; i<optional_modules_per_year[_year][_i].uni_modules.length; i++){
+      if(!selected_modules_per_year[_year][_i][i]){
+        (function(_year_, _i_, i_){
+          button = document.getElementById("btn_opt_select_year_" + _year_ + "_group_" + _i_+"_index_"+i_);
+          button.addEventListener("click", function(){
+            $("#optionsModalYear" + (_year + 1)).modal('hide');
+            selectModule(_year_,_i_,i_);
+          });
+        })(_year, _i, i);
+      }
+    }
+  }
+
+  function selectModule(year, group, module){
+    logStatus();
+    console.log("########################################");
+    console.log("########### selecting module ###########");
+    // TODO: validate
+    this_module = optional_modules_per_year[year][group].uni_modules[module];
+
+    // 1. Make sure we don't go over max modules per group
+    group_credits = optional_modules_per_year[year][group].total_credits;
+    console.log("max allowed credits in this group: " + group_credits);
+    credits_used = 0;
+    for(i=0; i<selected_modules_per_year[year][group].length; i++){
+      if(selected_modules_per_year[year][group][i]){
+        credits_used += optional_modules_per_year[year][group].uni_modules[i].credits;
+      }
+    }
+    console.log("credits already used: " + credits_used);
+    console.log("----------------------------------------");
+
+    // 2. Don't select more than 120 credits worth modules per year
+    credits_this_year = 0;
+    for(g=0; g<required_modules_per_year[year].length; g++){
+      for(i=0; i<required_modules_per_year[year][g].length; i++){
+        credits_this_year += required_modules_per_year[year][g][i].credits;
+          console.log(required_modules_per_year[year][g][i].name + 
+            " (" + required_modules_per_year[year][g][i].credits + ")");
+      }
+    }
+    for(g=0; g<selected_modules_per_year[year].length; g++){
+      for(i=0; i<selected_modules_per_year[year][g].length; i++){
+        console.log("checking selected [y=" + year + ", g=" + g + ", i=" + i + "]");
+        if(selected_modules_per_year[year][g][i]){
+          credits_this_year += optional_modules_per_year[year][g].uni_modules[i].credits;
+          console.log(optional_modules_per_year[year][g].uni_modules[i].name + 
+            " (" + optional_modules_per_year[year][g].uni_modules[i].credits + ")");
+        }
+      }
+    } 
+    console.log("credits used this year: " + credits_this_year);      
+    console.log("----------------------------------------");
+
+    // 3. Don't add more than allowed number of modules per semester
+    total_any = 0;
+    total_1st = 0;
+    total_2nd = 0;
+    // add required modules
+    req_modules_any = 0;
+    req_modules_1st = 0;
+    req_modules_2nd = 0;
+    for(i=0; i<js_course.year_structures[year].groups[0].uni_modules.length; i++){
+      if(js_course.year_structures[year].groups[0].uni_modules[i].semester == 0)
+        req_modules_any++;
+      else if(js_course.year_structures[year].groups[0].uni_modules[i].semester == 1) 
+        req_modules_1st++;
+      else if(js_course.year_structures[year].groups[0].uni_modules[i].semester == 2) 
+        req_modules_2nd++;
+      else if(js_course.year_structures[year].groups[0].uni_modules[i].semester == 3){
+        req_modules_1st++;
+        req_modules_2nd++;  
+      }     
+    }
+    // add selected optional modules
+    opt_modules_any = 0;
+    opt_modules_1st = 0;
+    opt_modules_2nd = 0;
+    for(g=0; g<selected_modules_per_year[year].length; g++){
+      for(i=0; i<selected_modules_per_year[year][g].length; i++){
+        if(selected_modules_per_year[year][g][i]){
+          if(optional_modules_per_year[year][g].uni_modules[i].semester == 0)
+            opt_modules_any++;
+          else if(optional_modules_per_year[year][g].uni_modules[i].semester == 1)
+            opt_modules_1st++;
+          else if(optional_modules_per_year[year][g].uni_modules[i].semester == 2)
+            opt_modules_2nd++;
+          else if(optional_modules_per_year[year][g].uni_modules[i].semester == 3){
+            opt_modules_1st++;
+            opt_modules_2nd++;
+          }
+
+
+        }
+      }
+    }
+    total_any = opt_modules_any + req_modules_any;
+    total_1st = opt_modules_1st + req_modules_1st;
+    total_2nd = opt_modules_2nd + req_modules_2nd;
+    can_add = false;
+    // any semester should be able to add anywhere as long as there is a slot in either row
+    if(this_module.semester == 0){
+      if(total_1st + total_2nd + total_any < 8)
+        can_add = true;
+    }
+    // If first semester, then check that
+    // a. there is a space in 1st semester
+    // b. there is enough free space left after that to place all "any" modules
+    else if(this_module.semester == 1){
+      if(total_1st < 4 && ( (8 - total_1st - total_2nd - 1) >= total_any ))
+        can_add = true;
+    }
+    // same check for semester 2
+    else if(this_module.semester == 2){
+      if(total_2nd < 4 && ( (8 - total_1st - total_2nd - 1) >= total_any ))
+        can_add = true;
+    }
+    // check for year-long moludels.
+    else if(this_module.semester == 3){
+      if(total_1st < 4 && total_2nd < 4 && ( (8 - total_1st - total_2nd - 2) >= total_any ))
+        can_add = true; 
+    }
+    console.log("1st semester: " + total_1st + " modules");
+    console.log("2nd semester: " + total_2nd + " modules");
+    console.log("Any semester: " + total_any + " modules");
+    console.log("----------------------------------------");
+
+    if(credits_used>=group_credits){
+      window.alert("You have already selected enought modules from this group");
+    }else if(credits_this_year+this_module.credits > 120){
+      window.alert("You have enough credits this year");
+    }else if(!can_add){
+      window.alert("Addind this module would exceed the maximum allowed number of modules per semester");
+    }
+    else{
+      selected_modules_per_year[year][group][module] = true;
+      updateUI();
+    }
+    //logStatus();
+  }
+
+  function deselectModule(year, group, module){
+    // TODO: validate
+    selected_modules_per_year[year][group][module] = false;
+    updateUI();
+    //logStatus();
+  }
+
+  function updateData(){
+    // go through each year
+    for(year=0; year<js_course.year_structures.length; year++){
+
+      // sort required modules for this year
+      required_group = js_course.year_structures[year].groups[0].uni_modules;
+      modules_year_long = [];
+      modules_first_semester = [];
+      modules_second_semester = [];
+      modules_any_semester = [];
+      required_modules_this_year = [];
+      for(module=0; module<required_group.length; module++){
+        if     (required_group[module].semester == 3) modules_year_long.push(required_group[module]);
+        else if(required_group[module].semester == 2) modules_second_semester.push(required_group[module]);
+        else if(required_group[module].semester == 1) modules_first_semester.push(required_group[module]);
+        else                        modules_any_semester.push(required_group[module]);
+      }
+      required_modules_this_year.push(modules_any_semester);
+      required_modules_this_year.push(modules_first_semester);
+      required_modules_this_year.push(modules_second_semester);
+      required_modules_this_year.push(modules_year_long);
+
+      optional_modules_this_year = [];
+      for(grp=1; grp<js_course.year_structures[year].groups.length; grp++){
+        optional_modules_this_year.push(js_course.year_structures[year].groups[grp]);
+      }
+
+      selected_modules_this_year = [];
+      for(grp=1; grp<js_course.year_structures[year].groups.length; grp++){
+        selected_modules_in_this_group = [];
+        for(mod=0; mod<js_course.year_structures[year].groups[grp].uni_modules.length; mod++){
+          selected_modules_in_this_group.push(false);
+        }
+        selected_modules_this_year.push(selected_modules_in_this_group);
+      }
+
+      optional_modules_per_year.push(optional_modules_this_year);
+      required_modules_per_year.push(required_modules_this_year);
+      selected_modules_per_year.push(selected_modules_this_year);
+    }
+
+    document.getElementById('btn_year_<%=@year_of_study%>').click();
+  }
+</script>
+
+
 

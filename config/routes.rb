@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'career_search/choose'
+
+  get 'career_search/view'
+
   get 'errors/not_found'
 
   get 'errors/internal_server_error'
@@ -15,8 +19,8 @@ Rails.application.routes.draw do
     resources :year_structures
     resources :career_tags
     resources :interest_tags
-
-    root to: "courses#index"
+    get 'upload'
+    root to: "application#homepage"
   end
 
   # General
@@ -25,7 +29,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
-
+  get '/admin', to: 'admin#homepage'
 
   # Authentication
   get     '/login',   to: 'sessions#new'
@@ -50,6 +54,12 @@ Rails.application.routes.draw do
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
 
+  # Career search
+  get '/career-search', to: 'career_search#begin'
+  get 'career-search/begin'
+  get 'career-search/choose'
+  get 'career-search/view_results'
+
   # Save pathways and modules, and create tags used in ajax
   post 'application/save_module'
   post 'application/save_pathway'
@@ -71,6 +81,17 @@ Rails.application.routes.draw do
 
   # Account activations
   resources :account_activations, only: [:edit]
+
+  # Search
+  get 'search/pathway_search'
+  get 'search/view_results'
+
+  # Pathway search
+  get '/pathway-search', to: 'pathway_search#begin'
+  get 'pathway-search/begin'
+  get 'pathway-search/choose'
+  get 'pathway-search/view_results'
+  get 'pathway-search/view_results_test'
 
   # Error pages
   match "/404", :to => "errors#not_found", :via => :all

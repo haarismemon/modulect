@@ -1,0 +1,44 @@
+<% provide(:title, 'My Details - Career Search') %>
+<div class="banner" style="padding-top:40px;">
+   <div class="container">
+      <h1>Career Search</h1>
+   </div>
+</div>
+<div id="white-strip-pathway">
+   <div class="container">
+      <div class="col-md-12 col-md-offset-1">
+         <div class="row">
+            <div class="col-md-4 step current">
+               <div class="numberCircle current-circle">1</div>
+               My Details
+            </div>
+            <div class="col-md-4 step">
+               <div class="numberCircle">2</div>
+               Choose Modules Taken
+            </div>
+            <div class="col-md-4 step">
+               <div class="numberCircle">3</div>
+               Potential Careers
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div id="page">
+<div class="container">
+   <div class="col-md-10 login-card col-md-offset-1">
+      <div class="col-md-12">
+         <div class="row" style="margin-bottom:20px">
+            <h1>Let's get started</h1>
+            <% if logged_in? %>
+            <h4>Check that your details below are correct - we've auto-filled where we can. If so, click "Next".</h4>
+            <% else %>
+            <h4>Please enter the details below. Once done, click "Next".</h4>
+            <% end %>
+         </div>
+         <div class="row" >
+            <%= render partial: 'layouts/user_fields', locals: {type: "pathway_search", dest: career_search_choose_path} %>   
+         </div>
+      </div>
+   </div>
+</div>

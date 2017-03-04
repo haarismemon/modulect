@@ -1,0 +1,7 @@
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+<div class="field-unit__field faculty-field">
+  <%= f.select field.attribute, (1..10).to_a,{:prompt=>"",:size => 5},class: "year-drop"%>
+
+</div>

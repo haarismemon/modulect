@@ -36,7 +36,7 @@ module SessionsHelper
 	end
 
 	def admin_user
-		current_user && current_user.user_level == 1
+		current_user && (current_user.user_level == "super_admin_access" || current_user.user_level == "department_admin_access")
 	end
 
 	# Logs out a user.
