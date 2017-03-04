@@ -14,7 +14,7 @@ and renders all form fields for a resource's editable attributes.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
-<%= form_for([namespace, page.resource], html: { :onsubmit => 'dos();',class: "form"}) do |f| %>
+<%= form_for([namespace, page.resource], html: { class: "form"}) do |f| %>
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
     <%= error_messages_for(page.resource) %>
 
@@ -58,9 +58,6 @@ and renders all form fields for a resource's editable attributes.
         }
     };
 
-    var dos = function(){
-        console.log("Hello");
-    };
 
 
     //two-way caching between faculty and department
@@ -80,8 +77,11 @@ and renders all form fields for a resource's editable attributes.
             //store in new data cache object
             localStorage['data_store_accept'] = data_request_store;
         }else{
-            //if any condition invalidated, do not cache anything.
-            localStorage['data_store_accept'] = null;
+            //do not clear cache in instance of invalid validation of form
+            <% if form_valid?(page) %>
+              //clear cache
+              localStorage['data_store_accept'] = null;
+            <%end%>
         }
         //set to null because its no longer in use
         localStorage['data_store'] = null;
