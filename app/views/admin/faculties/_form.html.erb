@@ -34,7 +34,6 @@ and renders all form fields for a resource's editable attributes.
               <div class="col-xs-12">
                 <%= render_field attribute, f: f %>
               </div>
-
               <!--A button only for the departments field which allows for more departments to be added-->
               <% if (current_field_name == "departments")%>
               <div class="col-xs-12">
@@ -58,30 +57,7 @@ and renders all form fields for a resource's editable attributes.
 <% end %>
 
 
-<script>
-    //caches all data of fields and is triggered before redirect button is clicked
-    var cache = function () {
-        var dataStore = [];
-        //iterates through attributes
-        <% page.attributes.each_with_index do |attribute,index| -%>
-          //store attribute name
-          var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
-          //get jquery object field related to that attribute
-          var valueOfText = $("[name*='" + attribute_name + "']").val()
-          dataStore.push(valueOfText);
-        <%end%>
-        //convert to json and store in cache
-        localStorage['data_store'] = JSON.stringify(dataStore)
-        console.log(dataStore.toString())
-    }
-
-    $(document).ready(function () {
-        $('.select-field select').selectize();
-        createInstruction("department","*Warning: selecting a department which currently belongs to another facultywill cause for that department to be instead exclusivly linked to this faculty");
-        //checks for cached data of form after redirect
-        checkForCachedData();
-
-    });
+<script data-turbolinks="false">
 
     var checkForCachedData = function(){
         var data_to_be_loaded = localStorage['data_store_accept'];
@@ -90,15 +66,54 @@ and renders all form fields for a resource's editable attributes.
         if (!localStorage['data_store'] || !JSON.parse(localStorage['data_store']) && data_to_be_loaded) {
             //iterate through attributes and load each piece of data one by one
             <% page.attributes.each_with_index do |attribute,index| -%>
-              var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
-              var object_load = data_to_be_loaded[<%= index %>] || '';
-              $("[name*='" + attribute_name + "']").val(object_load)
+            var object_load = data_to_be_loaded[<%= index %>] || '';
+            var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+            <% if attribute.html_class == "has-many" %>
+              var selectize = sel[0].selectize;
+
+                  selectize.addOption(object_load[0]);
+            <%else%>
+            $("[name*='" + attribute_name + "']").val(object_load)
+
+            <%end%>
             <%end%>
         }
         //set to null to indicate data cache is no longer in use
         localStorage['data_store'] = null;
         localStorage['data_store_accept'] = null;
     }
+    //caches all data of fields and is triggered before redirect button is clicked
+    var cache = function () {
+        var dataStore = [];
+        //iterates through attributes
+        <% page.attributes.each_with_index do |attribute,index| -%>
+          //store attribute name
+          var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+          <% if attribute.html_class == "has-many" %>
+            var selectize = sel[0].selectize;
+            var selected_objects = $.map(selectize.items, function(value) {
+            console.log(selectize.options[value])
+            return selectize.options[value];
+        });
+        dataStore.push(selected_objects);
+          <%else%>
+        //get jquery object field related to that attribute
+          var valueOfText = $("[name*='" + attribute_name + "']").val()
+          dataStore.push(valueOfText);
+        <%end%>
+        <%end%>
+        //convert to json and store in cache
+        localStorage['data_store'] = JSON.stringify(dataStore)
+        console.log(dataStore.toString())
+    }
+    var sel;
+    $(document).ready(function () {
+        sel =  $('.select-field select').selectize();
+        createInstruction("department","*Warning: selecting a department which currently belongs to another facultywill cause for that department to be instead exclusivly linked to this faculty");
+        //checks for cached data of form after redirect
+        checkForCachedData();
+    });
+
 
 
 </script>

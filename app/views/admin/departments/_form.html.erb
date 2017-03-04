@@ -42,19 +42,26 @@ and renders all form fields for a resource's editable attributes.
 
 <!--js embedded with ruby-->
 
-<script>
+<script data-turbolinks="false">
+    var setValueOfFacultySelect = function () {
+        <% data_store = session[:data_save]%>
+        for(var i = 0 ; i<$('.hide-content option').length;i++){
+            if($(".hide-content option[value='"+i+"']").text() == "<%= data_store.present? ?
+             ((data_store["faculty"].present?)? data_store["faculty"]["name"]:"") : "" %>"){
+                $(".hide-content select")[0].selectedIndex = i;
+                break;
+            }
+        }
+    }
 
 
+    //two-way caching between faculty and department
     $( document ).ready(function() {
         //intialize select dropdown
         $('.select-field select').selectize();
         createInstruction("course","*Courses can be linked at a later time if preferred");
         setValueOfFacultySelect();
-    });
 
-
-    //two-way caching between faculty and department
-    $( document ).ready(function() {
         //on load of page, check if data store exists in cache
         data_request_store = localStorage['data_store'];
         //cache object which will carry information back to faculty on redirect{used to check authenticity}
@@ -72,15 +79,5 @@ and renders all form fields for a resource's editable attributes.
         localStorage['data_store'] = null;
     });
 
-    var setValueOfFacultySelect = function () {
-        <% data_store = session[:data_save]%>
-        for(var i = 0 ; i<$('.hide-content option').length;i++){
-            if($(".hide-content option[value='"+i+"']").text() == "<%= data_store.present? ?
-             ((data_store["faculty"].present?)? data_store["faculty"]["name"]:"") : "" %>"){
-                $(".hide-content select")[0].selectedIndex = i;
-                break;
-            }
-        }
-    }
 
 </script>
