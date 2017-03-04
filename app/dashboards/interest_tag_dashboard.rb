@@ -22,21 +22,23 @@ class InterestTagDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :uni_modules,
-    :id,
-    :name,
-    :type,
+      :id,
+      :name,
+      :type,
+      :uni_modules,
+
+
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :uni_modules,
-    :id,
-    :name,
-    :type,
-    :created_at,
-    :updated_at,
+      :id,
+      :name,
+      :type,
+      :uni_modules,
+      :created_at,
+      :updated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
