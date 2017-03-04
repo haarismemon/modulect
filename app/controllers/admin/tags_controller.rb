@@ -32,6 +32,8 @@ module Admin
 
       end
 
+      head :no_content
+
     end
 
   end
