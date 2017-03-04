@@ -52,22 +52,37 @@ and renders all form fields for a resource's editable attributes.
                         alert("success ");
 
                         $('input[name="tag_name"]').val("");
-                        var last_tag = $("select#uni_module_tag_ids + div>div.selectize-input.items.not-full.has-options.has-items>div.item");
-                        var new_data_value = parseInt(last_tag.attr("data-value")) + 1;
-                        last_tag.last().after("<div class=\"item\" data-value=\"" + new_data_value + "\">" + name_of_tag + "</div>");
 
-//                        $("select#uni_module_tag_ids").append("<option value=\"" + new_data_value + "\" selected=\"selected\">" + name_of_tag + "</option>");
+                        var tags = $("#new_tags");
+
+                        if (tags.html() == "No new tags created") {
+                            $("#new_tags").html("<div class=\"item\">"+ name_of_tag +"</div>");
+                        } else {
+                            $("#new_tags").append("<div class=\"item\">"+ name_of_tag +"</div>");
+                        }
                     }
                 })
             });
         </script>
-        
+
       </div>
+
+      <div>
+        <label class="field-unit__label">New Tags</label>
+        <div class="field-unit__field">
+          <div class="selectize-control multi">
+            <div id="new_tags" class="selectize-input items not-full has-options has-items" style="min-height: 36px;">No new tags created</div>
+          </div>
+        </div>
+      </div>
+    <% else %>
+
     <% end %>
 
     <div class="field-unit field-unit--<%= attribute.html_class %>">
       <%= render_field attribute, f: f %>
     </div>
+
   <% end -%>
 
   <div class="form-actions">
