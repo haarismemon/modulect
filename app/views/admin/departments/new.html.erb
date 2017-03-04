@@ -20,7 +20,16 @@ to do the heavy lifting.
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
-    <%= link_to 'Back', :back, class: "button" %>
+    <!--checks if validation failed-->
+    <% if (page.resource && page.resource.errors.size > 0 &&
+        session[:data_save].present?) %>
+        <!--redirects back to faculty form if intially came from there-->
+        <%= determine_redirect_link_from_previous_state %>
+    <%else%>
+        <!--or just go back to last page like normal-->
+        <%= link_to 'Back', :back, class: "button" %>
+    <%end%>
+
   </div>
 </header>
 

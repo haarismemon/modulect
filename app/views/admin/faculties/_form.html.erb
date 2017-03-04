@@ -74,7 +74,8 @@ If none found, load default values to fields{came from a different page}.-->
         }
     };
 
-    //checks if there is cached data that is waiting to be loaded on page load
+
+      //checks if there is cached data that is waiting to be loaded on page load
     var checkForCachedData = function(){
         var data_to_be_loaded = localStorage['data_store_accept'];
         data_to_be_loaded = data_to_be_loaded ? JSON.parse(data_to_be_loaded) : null;

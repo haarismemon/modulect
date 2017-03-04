@@ -160,5 +160,13 @@ module ApplicationHelper
     # user's attributes not to show
     user_filter = user_level == 3
     super_admin_filter || department_admin_filter || user_filter
-  end
+	end
+
+	def determine_redirect_link_from_previous_state
+		if(session[:data_save]["faculty"].present?&&session[:data_save]["isEdit"])
+				link_to 'Back', edit_admin_faculty_path(id: session[:data_save]["faculty"]["id"]), class: "button"
+		else
+				link_to 'Back', new_admin_faculty_path, class: "button"
+		end
+	end
 end
