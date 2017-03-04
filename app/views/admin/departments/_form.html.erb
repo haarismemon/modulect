@@ -21,21 +21,16 @@ and renders all form fields for a resource's editable attributes.
     <% page.attributes.each do |attribute| -%>
         <!--checks if render request came from faculty form-->
         <% current_field_name = attribute.attribute.to_s %>
-        <!--print info message on top of courses field-->
-        <% if (current_field_name=="courses") %>
-            <span class="instruction-label form-actions">*courses can be linked at a later time if preferred</span>
-        <% end %>
+
         <!--skip rendering the courses field if request came from faculty form-->
                 <%to_hide_or_not =
                       (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["isEdit"])?
-                          "hide-content":"faculty-field"%>
+                          "hide-content":"select-field"%>
         <%set_drop_down_theme = current_field_name == "faculty"?"select-field-margin":""%>
 
         <div class="field-unit field-unit--<%= attribute.html_class %> <%=to_hide_or_not%> <%= set_drop_down_theme %> ">
               <%= render_field attribute, f: f %>
-            </div>
-
-
+        </div>
 
     <% end %>
 
@@ -48,8 +43,36 @@ and renders all form fields for a resource's editable attributes.
 <!--js embedded with ruby-->
 
 <script>
+
+
     $( document ).ready(function() {
-        $('.faculty-field select').selectize();
+        //intialize select dropdown
+        $('.select-field select').selectize();
+        createInstruction("course","*Courses can be linked at a later time if preferred");
+        setValueOfFacultySelect();
+    });
+
+
+    //two-way caching between faculty and department
+    $( document ).ready(function() {
+        //on load of page, check if data store exists in cache
+        data_request_store = localStorage['data_store'];
+        //cache object which will carry information back to faculty on redirect{used to check authenticity}
+        data_to_be_accepted = localStorage['data_store_accept'];
+        //checks if there is a data store and if data doesn't already exist on data_store_accept
+        // {if it does, this indicates this page was visited twice in a row, breaking the chain}
+        if((data_request_store&& JSON.parse(data_request_store))&&(!data_to_be_accepted || !JSON.parse(data_to_be_accepted))) {
+            //store in new data cache object
+            localStorage['data_store_accept'] = data_request_store;
+        }else{
+            //if any condition invalidated, do not cache anything.
+            localStorage['data_store_accept'] = null;
+        }
+        //set to null because its no longer in use
+        localStorage['data_store'] = null;
+    });
+
+    var setValueOfFacultySelect = function () {
         <% data_store = session[:data_save]%>
         for(var i = 0 ; i<$('.hide-content option').length;i++){
             if($(".hide-content option[value='"+i+"']").text() == "<%= data_store.present? ?
@@ -58,18 +81,6 @@ and renders all form fields for a resource's editable attributes.
                 break;
             }
         }
-    });
-
-    //two-way caching between faculty and department
-    $( document ).ready(function() {
-        data_request_store = localStorage['data_store'];
-        data_to_be_accepted = localStorage['data_store_accept'];
-        if((data_request_store&& JSON.parse(data_request_store))&&(!data_to_be_accepted || !JSON.parse(data_to_be_accepted))) {
-            localStorage['data_store_accept'] = data_request_store;
-        }else{
-            localStorage['data_store_accept'] = null;
-        }
-        localStorage['data_store'] = null;
-    });
+    }
 
 </script>

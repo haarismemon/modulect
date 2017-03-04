@@ -59,14 +59,18 @@ and renders all form fields for a resource's editable attributes.
 
 
 <script>
+    //caches all data of fields and is triggered before redirect button is clicked
     var cache = function () {
         var dataStore = [];
+        //iterates through attributes
         <% page.attributes.each_with_index do |attribute,index| -%>
-        var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
-        var valueOfText = $("[name*='" + attribute_name + "']").val()
-        dataStore.push(valueOfText);
-
+          //store attribute name
+          var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+          //get jquery object field related to that attribute
+          var valueOfText = $("[name*='" + attribute_name + "']").val()
+          dataStore.push(valueOfText);
         <%end%>
+        //convert to json and store in cache
         localStorage['data_store'] = JSON.stringify(dataStore)
         console.log(dataStore.toString())
     }
@@ -74,20 +78,27 @@ and renders all form fields for a resource's editable attributes.
     $(document).ready(function () {
         $('.select-field select').selectize();
         createInstruction("department","*Warning: selecting a department which currently belongs to another facultywill cause for that department to be instead exclusivly linked to this faculty");
+        //checks for cached data of form after redirect
+        checkForCachedData();
+
+    });
+
+    var checkForCachedData = function(){
         var data_to_be_loaded = localStorage['data_store_accept'];
         data_to_be_loaded = data_to_be_loaded ? JSON.parse(data_to_be_loaded) : null;
-
+        //if data_store exists and it can be parsed(not a empty store)
         if (!localStorage['data_store'] || !JSON.parse(localStorage['data_store']) && data_to_be_loaded) {
+            //iterate through attributes and load each piece of data one by one
             <% page.attributes.each_with_index do |attribute,index| -%>
-            var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
-            var object_load = data_to_be_loaded[<%= index %>] || '';
-            $("[name*='" + attribute_name + "']").val(object_load)
-
+              var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
+              var object_load = data_to_be_loaded[<%= index %>] || '';
+              $("[name*='" + attribute_name + "']").val(object_load)
             <%end%>
         }
+        //set to null to indicate data cache is no longer in use
         localStorage['data_store'] = null;
         localStorage['data_store_accept'] = null;
-    });
+    }
 
 
 </script>
