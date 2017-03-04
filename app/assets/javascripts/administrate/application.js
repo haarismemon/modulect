@@ -6,7 +6,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require moment
-//= require turbolinks
 //= require datetime_picker
 //= require_tree .
 //= require selectize
