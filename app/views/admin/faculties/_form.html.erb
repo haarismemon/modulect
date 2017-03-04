@@ -57,6 +57,7 @@ and renders all form fields for a resource's editable attributes.
 <% end %>
 
 
+<!--low level caching of fields implemented from scratch-->
 <script data-turbolinks="false">
 
     var checkForCachedData = function(){
@@ -66,12 +67,14 @@ and renders all form fields for a resource's editable attributes.
         if (!localStorage['data_store'] || !JSON.parse(localStorage['data_store']) && data_to_be_loaded) {
             //iterate through attributes and load each piece of data one by one
             <% page.attributes.each_with_index do |attribute,index| -%>
-            var object_load = data_to_be_loaded[<%= index %>] || '';
+              var object_load = data_to_be_loaded[<%= index %>] || '';
             var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
             <% if attribute.html_class == "has-many" %>
-              var selectize = sel[0].selectize;
-
-                  selectize.addOption(object_load[0]);
+            dropdown = $("[id*='"+attribute_name+"']").selectize();
+            for(var i = 0 ; i<object_load.length;++i) {
+                  var selectize = dropdown[0].selectize;
+                  selectize.addItem(object_load[i].value);
+              }
             <%else%>
             $("[name*='" + attribute_name + "']").val(object_load)
 
@@ -90,7 +93,8 @@ and renders all form fields for a resource's editable attributes.
           //store attribute name
           var attribute_name = "<%=attribute.attribute.to_s.singularize %>"
           <% if attribute.html_class == "has-many" %>
-            var selectize = sel[0].selectize;
+            dropdown = $("[id*='"+attribute_name+"']").selectize();
+            var selectize = dropdown.selectize;
             var selected_objects = $.map(selectize.items, function(value) {
             console.log(selectize.options[value])
             return selectize.options[value];
@@ -104,7 +108,7 @@ and renders all form fields for a resource's editable attributes.
         <%end%>
         //convert to json and store in cache
         localStorage['data_store'] = JSON.stringify(dataStore)
-        console.log(dataStore.toString())
+//        console.log(dataStore.toString())
     }
     var sel;
     $(document).ready(function () {
