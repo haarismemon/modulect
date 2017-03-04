@@ -37,7 +37,7 @@ class UniModuleDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :name,
     :code,
-    :lecturers
+    :updated_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
