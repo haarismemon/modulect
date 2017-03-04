@@ -83,13 +83,6 @@ Highlighted with !important
         $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
     }
 
-    //allows for creation of instruction label for a particular field
-    var createInstruction = function(field_name,instruction){
-        var html = '<span class="instruction-label form-actions">'+instruction+'</span>' ;
-        var label = $("[for*='" + field_name + "']");
-        label.css("margin","0px");
-        $("[for*='" + field_name + "']").parent().after(html);
-    }
 
     $(document).ready(function () {
         //!important {if fields are added, specify within block whether they should be hidden}

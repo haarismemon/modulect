@@ -15,26 +15,27 @@ and renders all form fields for a resource's editable attributes.
 %>
 
 
-<span class="col-xs-12 instruction-label field-label center-block">*Selecting a department which currently belongs to another faculty
-              will cause for that department to be instead exclusivly linked to this faculty</span>
 <%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
+
 
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
     <%= error_messages_for(page.resource) %>
 
+
     <% page.attributes.each_with_index do |attribute, index| -%>
-        <!--current field name in loop-->
+        <!--current field name-->
         <% current_field_name = attribute.attribute.to_s %>
-        <!--assigns class specified-->
+        <!--assigns class related to intializing select drop down plugin-->
         <% class_to_add = (current_field_name == "departments")? "select-field":"" %>
 
 
-            <!--if it is, print the field with a button and instruction label -->
+            <!--renders a field with a button and instruction label -->
             <div class="row field-unit field-unit--<%= attribute.html_class %> <%= class_to_add%>">
               <div class="col-xs-12">
                 <%= render_field attribute, f: f %>
               </div>
 
+              <!--A button only for the departments field which allows for more departments to be added-->
               <% if (current_field_name == "departments")%>
               <div class="col-xs-12">
                   <!--link that redirects to new of department-->
@@ -48,8 +49,6 @@ and renders all form fields for a resource's editable attributes.
             </div>
 
     <%end%>
-        <!--important instruction-->
-
 
 
 
@@ -74,6 +73,7 @@ and renders all form fields for a resource's editable attributes.
 
     $(document).ready(function () {
         $('.select-field select').selectize();
+        createInstruction("department","*Warning: selecting a department which currently belongs to another facultywill cause for that department to be instead exclusivly linked to this faculty");
         var data_to_be_loaded = localStorage['data_store_accept'];
         data_to_be_loaded = data_to_be_loaded ? JSON.parse(data_to_be_loaded) : null;
 
