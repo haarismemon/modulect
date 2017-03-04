@@ -50,7 +50,7 @@ and renders all form fields for a resource's editable attributes.
                     data: { tag_name: name_of_tag, tag_type : type_of_tag, uni_module_id : <%=page.resource.id%>},
                     context: document.body,
                     success: function(){
-                        alert("success ");
+//                        alert("success ");
 
                         $('input[name="tag_name"]').val("");
                         var tags = $("#new_tags");
@@ -74,7 +74,7 @@ and renders all form fields for a resource's editable attributes.
                         data: { tag_name: name_of_tag, tag_type : type_of_tag},
                         context: document.body,
                         success: function(){
-                            alert("success ");
+//                            alert("success ");
 
                             $('input[name="tag_name"]').val("");
                             var tags = $("#new_tags");
