@@ -83,7 +83,7 @@
         <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
           <div class="col-md-10 col-md-offset-1 text-right">
             <ul class="results-page-options">
-              <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
+              <li><a id="print" href="javascript:void()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
               <li><a id="mailto" href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
                 <%= request.original_url.gsub("&", "%26") %>
                 %0A%0A
@@ -166,6 +166,13 @@
       "%0A%0A" +
       "Regards,%0A" +
       "{Insert name}");
+  });
+
+  $("#print").click(function(e) {
+    for(i=0; i<divs.length; i++){
+      $(divs[i]).slideDown(0);
+    }
+    window.print();
   });
 
   function savePathway() {
