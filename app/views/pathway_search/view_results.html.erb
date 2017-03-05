@@ -80,6 +80,18 @@
           </form>
           <% end %>
         </div>
+        <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
+          <div class="col-md-10 col-md-offset-1 text-right">
+            <ul class="results-page-options">
+              <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
+              <li><a id="mailto" href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
+                <%= request.original_url.gsub("&", "%26") %>
+                %0A%0A
+                Regards,%0A
+                {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
+            </ul>
+          </div>
+        </div>
       <div class="form-group" style="margin-top: 30px">
         <a href="javascript:void()" onclick="javascript:history.back()" >< Back to previous page</a>
       </div>
@@ -146,6 +158,14 @@
 
   $("#save").click(function() {
     document.getElementById("save").innerHTML= "<span><i class=\"fa fa-star\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Saved</span>";
+  });
+
+  $("#mailto").click(function() {
+    document.getElementById("mailto").setAttribute("href", "mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A" +
+      "<%= request.original_url.gsub("&", "%26") %>" + "%26selected=" + JSON.stringify(selected_modules_per_year) +
+      "%0A%0A" +
+      "Regards,%0A" +
+      "{Insert name}");
   });
 
   function savePathway() {
