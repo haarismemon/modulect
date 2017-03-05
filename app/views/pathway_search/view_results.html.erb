@@ -190,9 +190,51 @@
     window.print();
   });
 
-  function sort() {
+  function sort(year, group) {
     var select = document.getElementById("sort_by");
     var selected = select.options[select.selectedIndex].value;
+
+    if(selected == "tags") {
+      module_results = @results
+      return optional_button_pressed(year, group, true);
+    }
+    else if(selected == "coursework") {
+      optional_modules_per_year[_year][_i].sort(function(a, b) {
+        if(a.coursework_percentage < b.coursework_percentage) {
+          return -1;
+        }
+        if(a.coursework_percentage > b.coursework_percentage) {
+          return 1;
+        }
+        return 0;
+      });
+      return optional_button_pressed(year, group, false);
+    }
+    else if(selected == "exam") {
+      optional_modules_per_year[_year][_i].sort(function(a, b) {
+        if(a.coursework_percentage < b.exam_percentage) {
+          return -1;
+        }
+        if(a.coursework_percentage > b.exam_percentage) {
+          return 1;
+        }
+        return 0;
+      });
+      return optional_button_pressed(year, group, false);
+    }
+    else if(selected == "pass") {
+      optional_modules_per_year[_year][_i].sort(function(a, b) {
+        if(a.pass_rate < b.pass_rate) {
+          return -1;
+        }
+        if(a.pass_rate > b.pass_rate) {
+          return 1;
+        }
+        return 0;
+      });
+      return optional_button_pressed(year, group, false);
+    }
+
   }
 
   function savePathway() {
@@ -406,7 +448,7 @@
         (function(_year, _i){
           button = document.getElementById("btn_opt_year_" + _year + "_group_" + _i);
           button.addEventListener("click", function(){
-            optional_button_pressed(_year, _i);
+            optional_button_pressed(_year, _i, true);
           });
         })(year, i);  
       }
@@ -414,7 +456,7 @@
     }
   }
 
-  function optional_button_pressed(_year, _i){
+  function optional_button_pressed(_year, _i, useTags){
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
     // Sort the optional modules by their tags matched percentage
@@ -426,7 +468,7 @@
           return mod;
         }
       });
-      if(result.length > 0) {
+      if(result.length > 0 && useTags) {
         var tagsmatched = result[0][1];
         moduleCard = "<div class =\"row\">" +
                               "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
