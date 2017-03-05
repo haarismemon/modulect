@@ -202,7 +202,7 @@
          "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
             "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
           "</div>" +
-         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; margin-left: -15px\">" +
+         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
           "<h4> Compulsory </h4>" +
         "</div>" +
       "</div>"
@@ -222,7 +222,7 @@
             moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + modIndex + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
           }
           moduleCard += "</div>" +
-        "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
+        "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
           "<h4>" + Math.round((tagsmatched.length / <%= raw @chosen_tags %>.length) * 100) + " %</h4>" +
         "</div>" +
       "</div>"
@@ -239,7 +239,7 @@
             moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + modIndex + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
           }
           moduleCard += "</div>" +
-         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
+         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
           "<h4> 0% </h4>" +
         "</div>" +
       "</div>"
@@ -365,57 +365,69 @@
     // Sort the optional modules by their tags matched percentage
     var addedModules = [];
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
-      if(!selected_modules_per_year[_year][_i][i]) {
-        uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
-        var result = <%= raw @results.to_json%>.filter(function(mod) {
-          if(mod[0].id == uni_mod.id){
-            return mod;
-          }
-        });
-        if(result.length > 0) {
-          var tagsmatched = result[0][1];
-          target.innerHTML += "<div class =\"row\">" +
-                                "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\">" +
-                                  "<div class=\"col-md-8\" style\"width: 75%\">" +
-                                    "<p>" +  uni_mod.code + "</p>" +
-                                    "<p>" + uni_mod.name + "</p>" +
-                                  "</div>" +
-                                  "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
-                                    "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
-                                  "</div>" +
-                                  "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
-                                    "<h4>" + Math.round((tagsmatched.length / <%= raw @chosen_tags %>.length) * 100) + " %</h4>" +        
-                                  "</div>"
-                                "</button>" +
-                              "</div>";
-          addedModules.push(uni_mod);
+      uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
+      var result = <%= raw @results.to_json%>.filter(function(mod) {
+        if(mod[0].id == uni_mod.id){
+          return mod;
         }
+      });
+      if(result.length > 0) {
+        var tagsmatched = result[0][1];
+        moduleCard = "<div class =\"row\">" +
+                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\"";
+                                  if(selected_modules_per_year[_year][_i][i]) {
+                                    moduleCard += " disabled ";
+                                  }
+                                moduleCard += ">" +
+                                "<div class=\"col-md-8\" style\"width: 75%\">" +
+                                  "<p>" +  uni_mod.code + "</p>" +
+                                  "<p>" + uni_mod.name + "</p>" +
+                                "</div>" +
+                                "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
+                                  "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
+                                  if(selected_modules_per_year[_year][_i][i]) {
+                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                  }
+                                moduleCard += "</div>" +
+                                "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
+                                  "<h4>" + Math.round((tagsmatched.length / <%= raw @chosen_tags %>.length) * 100) + " %</h4>" +        
+                                "</div>"
+                              "</button>" +
+                            "</div>";
+        target.innerHTML += moduleCard;
+        addedModules.push(uni_mod);
       }
     }
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
-      if(!selected_modules_per_year[_year][_i][i]) {
-        uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
-         var foundAlready = addedModules.filter(function(mod) {
-          if(mod.id == uni_mod.id){
-            return mod;
-          }
-        });
-        if(foundAlready.length == 0) {
-          target.innerHTML += "<div class =\"row\">" +
-                                "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\">" +
-                                  "<div class=\"col-md-8\" style\"width: 75%\">" +
-                                    "<p>" +  uni_mod.code + "</p>" +
-                                    "<p>" + uni_mod.name + "</p>" +
-                                  "</div>" +
-                                  "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
-                                    "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
-                                  "</div>" +
-                                  "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
-                                    "<h4> 0% </h4>" +
-                                  "</div>"
-                                "</button>" +
-                              "</div>";
+      uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
+       var foundAlready = addedModules.filter(function(mod) {
+        if(mod.id == uni_mod.id){
+          return mod;
         }
+      });
+      if(foundAlready.length == 0) {
+        moduleCard = "<div class =\"row\">" +
+                              "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\"";
+                                if(selected_modules_per_year[_year][_i][i]) {
+                                    moduleCard += " disabled ";
+                                  }
+                                moduleCard += ">" +
+                                "<div class=\"col-md-8\" style\"width: 75%\">" +
+                                  "<p>" +  uni_mod.code + "</p>" +
+                                  "<p>" + uni_mod.name + "</p>" +
+                                "</div>" +
+                                "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
+                                  "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
+                                  if(selected_modules_per_year[_year][_i][i]) {
+                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                  } 
+                                 moduleCard += "</div>" +
+                                "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
+                                  "<h4> 0% </h4>" +
+                                "</div>"
+                              "</button>" +
+                            "</div>";
+        target.innerHTML += moduleCard;
       }
     }
 
@@ -564,7 +576,6 @@
     // TODO: validate
     selected_modules_per_year[year][group][module] = false;
     updateUI();
-    //logStatus();
   }
 
   function updateData(){

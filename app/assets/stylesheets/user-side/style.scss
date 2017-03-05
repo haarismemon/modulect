@@ -577,7 +577,8 @@ th, td {
 }
 .res-btn:active,
 .res-btn:hover,
-.res-btn:focus {
+.res-btn:focus,
+.res-btn:disabled {
     background-color: #E9E9E9;
 }
 .btnQuick {
