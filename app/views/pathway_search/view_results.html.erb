@@ -50,6 +50,21 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                   <h2 class="modal-title" id="exampleModalLabel">Select a Module:</h2>
+                  <span class="sort-area">
+                  <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
+                  Sort by: &nbsp;&nbsp;
+                    <select class="selectpicker" id="sort_by" onchange="sort()">
+                      <% sorting_options.each do |option| %>
+                        <option value="<%= option.first %>"
+                        <% if sortby == option.first %>
+                          selected
+                        <% end %>
+                          >
+                        <%= option.second %>
+                        </option>
+                      <% end %>
+                    </select>
+                  </span>
                 </div>
                 <div class="modal-body" id="optionsModalBodyYear<%= y.year_of_study_before_type_cast.to_i %>">
                 </div>
@@ -175,6 +190,11 @@
     window.print();
   });
 
+  function sort() {
+    var select = document.getElementById("sort_by");
+    var selected = select.options[select.selectedIndex].value;
+  }
+
   function savePathway() {
     $.ajax({
         type: "POST",
@@ -188,9 +208,8 @@
     })      
   }
 
-  // selected modules this year is all set to false
-  updateData();
-  
+  module_results = @results;
+  updateData();  
   updateUI();
 
   // debugging
@@ -224,7 +243,7 @@
 
 
   function create_module_card(module, isOptional, year, group, gName, modIndex) {
-    var result = <%= raw @results.to_json%>.filter(function(mod) {
+    var result = <%= raw module_results.to_json%>.filter(function(mod) {
       if(mod[0].id == module.id){
         return mod;
       }
@@ -402,7 +421,7 @@
     var addedModules = [];
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
       uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
-      var result = <%= raw @results.to_json%>.filter(function(mod) {
+      var result = <%= raw module_results.to_json%>.filter(function(mod) {
         if(mod[0].id == uni_mod.id){
           return mod;
         }

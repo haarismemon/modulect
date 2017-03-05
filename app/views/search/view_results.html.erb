@@ -104,26 +104,24 @@
         <h1>Here's what we found:</h1>
         <h5>Showing <%= @found_results.length %> modules</h5>
       </div>
-      <div class="col-md-4 text-right" style="padding-top:30px;">
-        <div class="sort-area">
-        <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
-        Sort by: &nbsp;&nbsp;
-        <form action="<%= search_view_results_path %>" style="display:inline-block;" method="GET">
-          <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
-            <% sorting_options.each do |option| %>
-              <option value="<%= option.first %>"
-              <% if sortby == option.first %>
-                selected
-              <% end %>
-                >
-              <%= option.second %>
-              </option>
+      <div class="sort-area">
+      <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
+      Sort by: &nbsp;&nbsp;
+      <form action="<%= search_view_results_path %>" style="display:inline-block;" method="GET">
+        <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
+          <% sorting_options.each do |option| %>
+            <option value="<%= option.first %>"
+            <% if sortby == option.first %>
+              selected
             <% end %>
-          </select>
-          <input type="hidden" name="chosen_tags" value="<%= @temp_array.join(",") %>">
-          <input type="hidden" name="search_course" value="<%= @search_course %>">
-        </form>
-        </div>
+              >
+            <%= option.second %>
+            </option>
+          <% end %>
+        </select>
+        <input type="hidden" name="chosen_tags" value="<%= @temp_array.join(",") %>">
+        <input type="hidden" name="search_course" value="<%= @search_course %>">
+      </form>
       </div>
     </div>
     <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
