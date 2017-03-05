@@ -8,7 +8,6 @@ class User < ApplicationRecord
 
   # A user has many saved modules.
   has_and_belongs_to_many :uni_modules
-  has_and_belongs_to_many :departments
   # A user has many pathways
   has_many :pathways
 
@@ -32,9 +31,7 @@ class User < ApplicationRecord
                        length: {minimum: 6},
                        if: :should_validate_password?
 
-
-  default_value_for :user_level, 3  #student #(needs testing)
-
+  default_value_for :user_level, :user_access
 
   class << self
     # Returns the hash digest of a given string.
@@ -89,6 +86,22 @@ class User < ApplicationRecord
     return false if authentication_token.nil?
     digest = send("#{attribute}_digest")
     BCrypt::Password.new(digest).is_password?(authentication_token)
+  end
+
+  # Reset a student user's attributes
+  def reset
+    update_attributes(year_of_study: nil,
+                      faculty_id: nil,
+                      department_id: nil,
+                      course_id: nil)
+
+    uni_modules.each do |uni_module|
+      user.unsave_module(uni_module)
+    end
+
+    pathways.each do |pathway|
+      pathways.delete(pathway)
+    end
   end
 
   # Activates an account.

@@ -254,6 +254,36 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#reset" do
+    before do
+      user.reset
+    end
+
+    it "changes the year of study to nil" do
+      expect(user.year_of_study).to be_nil
+    end
+
+    it "changes the faculty to nil" do
+      expect(user.faculty).to be_nil
+    end
+
+    it "changes the department to nil" do
+      expect(user.department).to be_nil
+    end
+
+    it "changes the course id to nil" do
+      expect(user.course).to be_nil
+    end
+
+    it "changes the selected modules to blank" do
+      expect(user.uni_modules).to be_blank
+    end
+
+    it "changes the pathways to blank" do
+      expect(user.pathways).to be_blank
+    end
+  end
+
   describe "#save_module" do
     let(:valid_uni_module) { create(:uni_module) }
 
