@@ -95,12 +95,12 @@ class User < ApplicationRecord
                       department_id: nil,
                       course_id: nil)
 
-    uni_modules.each do |uni_module|
-      user.unsave_module(uni_module)
+    self.uni_modules.each do |uni_module|
+      unsave_module(uni_module)
     end
 
-    pathways.each do |pathway|
-      pathways.delete(pathway)
+    self.pathways.each do |pathway|
+      self.pathways.delete(pathway)
     end
   end
 
