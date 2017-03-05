@@ -15,7 +15,7 @@
   <% if current_user.department_admin? %>
     <%= render 'layouts/search_beginning/department_admin_form', f: f, type: type %>
   <% else %>
-    <%= render 'layouts/search_beginning/sytem_admin_or_user_form', f: f %>
+    <%= render 'layouts/search_beginning/system_admin_or_user_form', f: f %>
   <% end %>
 
   <%= render 'layouts/search_beginning/year_of_study_form', f: f %>
