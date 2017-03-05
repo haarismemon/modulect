@@ -8,25 +8,25 @@ class UniModuleDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    users: Field::HasMany,
-    groups: Field::HasMany,
-    departments: Field::HasMany,
-    tags: Field::HasMany,
-    id: Field::Number,
-    name: Field::String,
-    code: Field::String,
-    description: Field::String,
-    lecturers: Field::String,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
-    pass_rate: Field::String,
-    assessment_methods: Field::String,
-    semester: Field::String,
-    credits: Field::Number,
-    exam_percentage: Field::Number,
-    coursework_percentage: Field::Number,
-    requirements: Field::String,
-    more_info_link: Field::String,
+      users: Field::HasMany,
+      groups: Field::HasMany,
+      departments: Field::HasMany,
+      tags: Field::HasMany,
+      id: Field::Number,
+      name: Field::String,
+      code: Field::String,
+      description: Field::String,
+      lecturers: Field::String,
+      created_at: Field::DateTime,
+      updated_at: Field::DateTime,
+      pass_rate: Field::String,
+      assessment_methods: Field::String,
+      semester: Field::String,
+      credits: Field::Number,
+      exam_percentage: Field::Number,
+      coursework_percentage: Field::Number,
+      requirements: Field::String,
+      more_info_link: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -35,53 +35,53 @@ class UniModuleDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :name,
-    :code,
-    :lecturers
+      :name,
+      :code,
+      :updated_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :users,
-    :groups,
-    :departments,
-    :tags,
-    :id,
-    :name,
-    :code,
-    :description,
-    :lecturers,
-    :created_at,
-    :updated_at,
-    :pass_rate,
-    :assessment_methods,
-    :semester,
-    :credits,
-    :exam_percentage,
-    :coursework_percentage,
-    :more_info_link,
+      :id,
+      :name,
+      :code,
+      :lecturers,
+      :users,
+      :description,
+      :groups,
+      :departments,
+      :tags,
+      :pass_rate,
+      :assessment_methods,
+      :semester,
+      :credits,
+      :exam_percentage,
+      :coursework_percentage,
+      :created_at,
+      :updated_at,
+
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :users,
-    :groups,
-    :departments,
-    :tags,
-    :name,
-    :code,
-    :description,
-    :lecturers,
-    :pass_rate,
-    :assessment_methods,
-    :semester,
-    :credits,
-    :exam_percentage,
-    :coursework_percentage,
-    :more_info_link,
+      :users,
+      :groups,
+      :departments,
+      :tags,
+      :name,
+      :code,
+      :description,
+      :lecturers,
+      :pass_rate,
+      :assessment_methods,
+      :semester,
+      :credits,
+      :exam_percentage,
+      :coursework_percentage,
+      :more_info_link,
   ].freeze
 
   # Overwrite this method to customize how uni modules are displayed

@@ -8,47 +8,48 @@ class GroupDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    year_structure: Field::BelongsTo,
-    uni_modules: Field::HasMany,
-    id: Field::Number,
-    name: Field::String,
-    total_credits: Field::Number,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+      year_structure: Field::BelongsTo,
+      uni_modules: Field::HasMany,
+      id: Field::Number,
+      name: Field::String,
+      total_credits: Field::Number,
+      created_at: Field::DateTime,
+      updated_at: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
   # an array of attributes that will be displayed on the model's index page.
   #
   # By default, it's limited to four items to reduce clutter on index pages.
-  # Feel free to add, remove, or rearrange items.
-  COLLECTION_ATTRIBUTES = [
-    :year_structure,
-    :uni_modules,
-    :id,
-    :name,
+      # Feel free to add, remove, or rearrange items.
+      COLLECTION_ATTRIBUTES = [
+      :name,
+      :year_structure,
+      :uni_modules,
+
+
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :year_structure,
-    :uni_modules,
-    :id,
-    :name,
-    :total_credits,
-    :created_at,
-    :updated_at,
+      :id,
+      :name,
+      :year_structure,
+      :total_credits,
+      :uni_modules,
+      :created_at,
+      :updated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :year_structure,
-    :uni_modules,
-    :name,
-    :total_credits,
+      :name,
+      :year_structure,
+      :uni_modules,
+      :total_credits,
   ].freeze
 
   # Overwrite this method to customize how groups are displayed

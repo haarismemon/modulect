@@ -28,6 +28,7 @@ module Admin
               notice: translate_with_resource("create.success"),
           )
         end
+        session[:data_save] = nil;
       else
         render :new, locals: {
             page: Administrate::Page::Form.new(dashboard, resource),
@@ -46,7 +47,7 @@ module Admin
       else
         redirect_to(new_admin_faculty_path,
                     notice:"#{resource.name} has been added")
-        session[:data_save] = nil
+
       end
     end
 

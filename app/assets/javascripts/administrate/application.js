@@ -1,15 +1,15 @@
-//= require jquery
-//= require jquery_ujs
-//= require selectize
-//= require moment
-//= require turbolinks
-//= require datetime_picker
-//= require_tree .
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under the MIT license
  */
+//= require jquery
+//= require jquery_ujs
+//= require moment
+//= require datetime_picker
+//= require_tree .
+//= require selectize
+
 if ("undefined" == typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");
 +function (a) {
     "use strict";
@@ -798,3 +798,13 @@ if ("undefined" == typeof jQuery)throw new Error("Bootstrap's JavaScript require
         })
     })
 }(jQuery);
+
+
+
+//allows for creation of instruction label for a particular field
+var createInstruction = function(field_name,instruction){
+    var html = '<span class="instruction-label form-actions">'+instruction+'</span>' ;
+    var label = $("[for*='" + field_name + "']");
+    label.css("margin","0px");
+    $("[for*='" + field_name + "']").parent().after(html);
+}
