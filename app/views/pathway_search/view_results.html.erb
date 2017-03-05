@@ -50,21 +50,6 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                   <h2 class="modal-title" id="exampleModalLabel">Select a Module:</h2>
-                  <span class="sort-area">
-                  <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
-                  Sort by: &nbsp;&nbsp;
-                    <select class="selectpicker" id="sort_by" onchange="sort()">
-                      <% sorting_options.each do |option| %>
-                        <option value="<%= option.first %>"
-                        <% if sortby == option.first %>
-                          selected
-                        <% end %>
-                          >
-                        <%= option.second %>
-                        </option>
-                      <% end %>
-                    </select>
-                  </span>
                 </div>
                 <div class="modal-body" id="optionsModalBodyYear<%= y.year_of_study_before_type_cast.to_i %>">
                 </div>
@@ -195,7 +180,7 @@
     var selected = select.options[select.selectedIndex].value;
 
     if(selected == "tags") {
-      module_results = @results
+      module_results = <%= raw @results.to_json%>;
       return optional_button_pressed(year, group, true);
     }
     else if(selected == "coursework") {
@@ -250,7 +235,7 @@
     })      
   }
 
-  module_results = @results;
+  module_results = <%= raw @results.to_json%>;
   updateData();  
   updateUI();
 
@@ -285,7 +270,7 @@
 
 
   function create_module_card(module, isOptional, year, group, gName, modIndex) {
-    var result = <%= raw module_results.to_json%>.filter(function(mod) {
+    var result = module_results.filter(function(mod) {
       if(mod[0].id == module.id){
         return mod;
       }
@@ -459,11 +444,22 @@
   function optional_button_pressed(_year, _i, useTags){
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
+    target.innerHTML += "<span class=\"sort-area\">" +
+                  <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
+                  "Sort by: &nbsp;&nbsp;" +
+                    "<select class=\"selectpicker\" id=\"sort_by\" onchange=\"sort(" + _year + "," + _i + " )\">" +
+                      <% sorting_options.each do |option| %>
+                        "<option value=\"<%= option.first %>\"" +
+                        "<%= option.second %>" +
+                        "</option>" +
+                      <% end %>
+                    "</select>" +
+                  "</span>";
     // Sort the optional modules by their tags matched percentage
     var addedModules = [];
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
       uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
-      var result = <%= raw module_results.to_json%>.filter(function(mod) {
+      var result = module_results.filter(function(mod) {
         if(mod[0].id == uni_mod.id){
           return mod;
         }
