@@ -112,9 +112,6 @@
   var required_modules_per_year = [];
   var optional_modules_per_year = [];
 
-  // set the starting colour for the groups
-  var currentColour = "00BFFF";
-
   var btns = [];
   var divs = [];
   for(i=1; i<10; i++){
@@ -196,16 +193,10 @@
         return mod;
       }
     });
-    var groupColour = (parseInt(currentColour, 16) + 69904).toString(16);
-    while (groupColour.length < 6) { 
-      groupColour = '0' + groupColour; 
-    }
-    currentColour = groupColour;
     if(!isOptional) {
       var moduleCard = "<div class=\"row login-card res-card result-card-blue res-btn\" id=\"" + module.id + "\">" +
         "<div class=\"col-md-8\">" +
-          "<p>" + module.code + " &nbsp;<span style=\"color:#" + groupColour + "\"><i class=\"fa fa-square\" aria-hidden=\"true\"></i></span></p>" +
-          "<p>" + module.name + "</p>" +
+          "<p>" + module.code + "</p>" +
         "</div>" +
          "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
             "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
@@ -221,8 +212,7 @@
       var tagsmatched = result[0][1];
       var moduleCard =  "<div class=\"row login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id=\"" + module.id + "\">" +
         "<div class=\"col-md-8\">" +
-          "<p>" +  module.code + " &nbsp;<span style=\"color:#" + groupColour + "\"><i class=\"fa fa-square\" aria-hidden=\"true\"></i></span></p>" +
-          "<p>" +  module.name + "</p>" +
+          "<p>" +  module.code + "</p>" +
         "</div>" +
         "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
           "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
@@ -372,12 +362,6 @@
     target.innerHTML = "";
     // Sort the optional modules by their tags matched percentage
     var addedModules = [];
-    console.log(currentColour);
-    var groupColour = (parseInt(currentColour, 16) + 69904).toString(16);
-    while (groupColour.length < 6) { 
-      groupColour = '0' + groupColour; 
-    }
-    currentColour = groupColour;
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
       uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
       var result = <%= raw @results.to_json%>.filter(function(mod) {
@@ -394,7 +378,7 @@
                                   }
                                 moduleCard += ">" +
                                 "<div class=\"col-md-8\" style\"width: 75%\">" +
-                                  "<p>" +  uni_mod.code + " &nbsp;<span style=\"color:#" + groupColour + "\"><i class=\"fa fa-square\" aria-hidden=\"true\"></i></span></p>" +
+                                  "<p>" +  uni_mod.code + "</p>" +
                                   "<p>" + uni_mod.name + "</p>" +
 
                                 "</div>" +
@@ -428,7 +412,7 @@
                                   }
                                 moduleCard += ">" +
                                 "<div class=\"col-md-8\" style\"width: 75%\">" +
-                                  "<p>" +  uni_mod.code + " &nbsp;<span style=\"color:#" + groupColour + "\"><i class=\"fa fa-square\" aria-hidden=\"true\"></i></span></p>" +
+                                  "<p>" +  uni_mod.code + "</p>" +
                                   "<p>" + uni_mod.name + "</p>" +
                                 "</div>" +
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
