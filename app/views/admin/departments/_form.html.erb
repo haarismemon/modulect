@@ -22,9 +22,9 @@ and renders all form fields for a resource's editable attributes.
         <!--checks if render request came from faculty form-->
         <% current_field_name = attribute.attribute.to_s %>
 
-        <!--skip rendering the courses field if request came from faculty form-->
+        <!--skip rendering the faculty field if request came from faculty form-->
                 <%to_hide_or_not =
-                      (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["isEdit"])?
+                      (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["from_form"])?
                           "hide-content":"select-field"%>
         <%set_drop_down_theme = current_field_name == "faculty"?"select-field-margin":""%>
 
@@ -48,6 +48,8 @@ and renders all form fields for a resource's editable attributes.
     var setValueOfFacultySelect = function () {
         //stores session cache
         <% data_store = session[:data_save]%>
+        //checks if came from faculty EDIT form
+        <%if data_store.present? && data_store["isEdit"]%>
         //sets session cache value for faculty name into faculty field
         for(var i = 0 ; i<$('.hide-content option').length;i++){
             if($(".hide-content option[value='"+i+"']").text() == "<%= data_store.present? ?
@@ -56,6 +58,7 @@ and renders all form fields for a resource's editable attributes.
                 break;
             }
         }
+        <%end%>
     };
 
 
