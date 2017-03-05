@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     resources :year_structures
     resources :career_tags
     resources :interest_tags
-    get 'upload'
+    get 'upload', to: 'upload#upload'
     root to: "application#homepage"
   end
 
