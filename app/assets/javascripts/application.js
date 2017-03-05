@@ -15,5 +15,5 @@
 //= require bootstrap-tagsinput
 //= require twitter/typeahead.min
 //= require turbolinks
-//= require_tree ./user-side
 //= require edit.js.coffee
+//= require_tree ./user-side
