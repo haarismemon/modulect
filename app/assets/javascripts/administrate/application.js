@@ -2,7 +2,8 @@
 //= require jquery_ujs
 //= require jquery.turbolinks
 //= require turbolinks
-//= require ../turbolinks-compatibility
+//= require turbolinks-compatibility
+//= require bootstrap
 //= require selectize
 //= require moment
 //= require datetime_picker
