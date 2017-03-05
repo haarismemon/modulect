@@ -184,7 +184,7 @@
       return optional_button_pressed(year, group, true);
     }
     else if(selected == "coursework") {
-      optional_modules_per_year[_year][_i].sort(function(a, b) {
+      optional_modules_per_year[year][group].sort(function(a, b) {
         if(a.coursework_percentage < b.coursework_percentage) {
           return -1;
         }
@@ -196,7 +196,7 @@
       return optional_button_pressed(year, group, false);
     }
     else if(selected == "exam") {
-      optional_modules_per_year[_year][_i].sort(function(a, b) {
+      optional_modules_per_year[year][group].sort(function(a, b) {
         if(a.coursework_percentage < b.exam_percentage) {
           return -1;
         }
@@ -208,7 +208,7 @@
       return optional_button_pressed(year, group, false);
     }
     else if(selected == "pass") {
-      optional_modules_per_year[_year][_i].sort(function(a, b) {
+      optional_modules_per_year[year][group].sort(function(a, b) {
         if(a.pass_rate < b.pass_rate) {
           return -1;
         }
@@ -444,17 +444,17 @@
   function optional_button_pressed(_year, _i, useTags){
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
-    target.innerHTML += "<span class=\"sort-area\">" +
+    target.innerHTML += "<div class=\"row\"><span style=\"margin-bottom: 20px\" class=\"sort-area\">" +
                   <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
                   "Sort by: &nbsp;&nbsp;" +
-                    "<select class=\"selectpicker\" id=\"sort_by\" onchange=\"sort(" + _year + "," + _i + " )\">" +
+                    "<select class=\"selectpicker\" id=\"sort_by\" onchange=\"sort(" + _year + "," + _i + ")\">" +
                       <% sorting_options.each do |option| %>
-                        "<option value=\"<%= option.first %>\"" +
+                        "<option value=\"<%= option.first %>\" >" +
                         "<%= option.second %>" +
                         "</option>" +
                       <% end %>
                     "</select>" +
-                  "</span>";
+                  "</span></div>";
     // Sort the optional modules by their tags matched percentage
     var addedModules = [];
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
