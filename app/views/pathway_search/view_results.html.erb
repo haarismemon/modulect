@@ -66,7 +66,7 @@
           <% if logged_in? %>
           <form onsubmit="savePathway();return false;" style="margin-top: 30px">
             <div class="col-md-3">
-              <button type="submit" class="btn btn-lg" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
+              <button type="submit" class="btn btn-lg" id="save"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
               </button>
             </div>
             <div class="col-md-4">
@@ -142,6 +142,10 @@
     for(i=0; i<divs.length; i++){
       $(divs[i]).slideDown();
     }
+  });
+
+  $("#save").click(function() {
+    document.getElementById("save").innerHTML= "<span><i class=\"fa fa-star\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Saved</span>";
   });
 
   function savePathway() {
@@ -575,6 +579,11 @@
       selected_modules_per_year[year][group][module] = true;
       updateUI();
     }
+
+
+    //Tell the user they can now save again
+    document.getElementById("save").innerHTML= "<span><i class=\"fa fa-star-o\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Save Pathway</span>";
+
     //logStatus();
   }
 
