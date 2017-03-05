@@ -61,7 +61,7 @@
           <% if logged_in? %>
           <form onsubmit="savePathway();return false;" style="margin-top: 30px">
             <div class="col-md-3">
-              <button type="submit" class="btn btn-lg save-button" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
+              <button type="submit" class="btn btn-lg" id="save"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
               </button>
             </div>
             <div class="col-md-4">
@@ -187,16 +187,17 @@
   }
 
 
-  function create_module_card(module, isOptional, year, group, modIndex) {
+  function create_module_card(module, isOptional, year, group, gName, modIndex) {
     var result = <%= raw @results.to_json%>.filter(function(mod) {
       if(mod[0].id == module.id){
         return mod;
       }
     });
     if(!isOptional) {
-      var moduleCard = "<div class=\"row login-card res-card result-card-blue res-btn\" id=\"" + module.id + "\">" +
-        "<div class=\"col-md-8\">" +
+      var moduleCard = "<div class=\"row login-card res-card result-card-blue res-btn\" id=\"" + module.id + "\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"This is a compulsory module.\">" +
+        "<div class=\"col-md-8\" >" +
           "<p>" + module.code + "</p>" +
+          "<p>" + module.name + "</p>" +
         "</div>" +
          "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
             "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
@@ -210,9 +211,10 @@
 
     if(result.length > 0) {
       var tagsmatched = result[0][1];
-      var moduleCard =  "<div class=\"row login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id=\"" + module.id + "\">" +
+      var moduleCard =  "<div class=\"row login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id=\"" + module.id + "\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\">" +
         "<div class=\"col-md-8\">" +
           "<p>" +  module.code + "</p>" +
+          "<p>" + module.name + "</p>" +
         "</div>" +
         "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
           "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
@@ -226,7 +228,7 @@
       "</div>"
       return moduleCard;
     } else {
-      var moduleCard = "<div class=\"row login-card res-card result-card-orange res-btn\" id=\"" + module.id + "\">" +
+      var moduleCard = "<div class=\"row login-card res-card result-card-orange res-btn\" id=\"" + module.id + "\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"No tags matched.\">" +
         "<div class=\"col-md-8\">" +
           "<p>" +  module.code + "</p>" +
           "<p>" + module.name + "</p>" +
@@ -372,7 +374,7 @@
       if(result.length > 0) {
         var tagsmatched = result[0][1];
         moduleCard = "<div class =\"row\">" +
-                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\"";
+                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
                                   if(selected_modules_per_year[_year][_i][i]) {
                                     moduleCard += " disabled ";
                                   }
@@ -406,7 +408,7 @@
       });
       if(foundAlready.length == 0) {
         moduleCard = "<div class =\"row\">" +
-                              "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\"";
+                              "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"No tags matched.\"";
                                 if(selected_modules_per_year[_year][_i][i]) {
                                     moduleCard += " disabled ";
                                   }
