@@ -112,10 +112,13 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
-
   #format first and second name of user into a string
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def department_admin?
+    user_level == "department_admin_access" && self.department != nil
   end
 
   private
