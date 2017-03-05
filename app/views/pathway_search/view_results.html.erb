@@ -33,7 +33,7 @@
         <div class="row">
         <%  @course_obj.year_structures.each do |y| %> 
           <button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button" style="margin-top: 5px">
-            <%= y.year_of_study_before_type_cast.to_i.ordinalize %> Year
+            <%= y.year_of_study_before_type_cast.to_i.ordinalize %> &nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
           </button>
           <div id=<%= "div_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> style="margin-top: 20px">
           </div>
@@ -193,6 +193,21 @@
         return mod;
       }
     });
+    if(!isOptional) {
+      var moduleCard = "<div class=\"row login-card res-card result-card-blue res-btn\" id=\"" + module.id + "\">" +
+        "<div class=\"col-md-8\">" +
+          "<p>" +  module.code + "</p>" +
+          "<p>" + module.name + "</p>" +
+        "</div>" +
+         "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
+            "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
+          "</div>" +
+         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; margin-left: -15px\">" +
+          "<h4> Compulsory </h4>" +
+        "</div>" +
+      "</div>"
+      return moduleCard;
+    }
 
     if(result.length > 0) {
       var tagsmatched = result[0][1];
