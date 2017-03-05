@@ -83,20 +83,6 @@
 </div>
 
 <script type="text/javascript">
-  /*
-  
-  TODO:
-  1) add valitation to select and deselect functions
-  2) add notifications
-  3) colour-code groups
-  4) right now when the year divs are updated, all the slide-down divs are getting hidden again
-    this should not be an issue since rather than having a slide-down div, we're more likely to have
-    a pop-up selection div
-  5) Check the case with multiple required groups
-
-  
-  */
-
   // get JSON object from rails
   var data = '<%=raw @course_obj.to_json(
     include:
@@ -320,19 +306,6 @@
           s1++;
         }
       }
-
-      /*
-      for(i=0; i < selected_modules_buttons_any_semester.length; i++){
-        if(s2<s1){
-          myTableOnPage.rows[s2+1].cells[1].innerHTML = create_module_card(selected_modules_buttons_second_semester[i][0], true, selected_modules_buttons_second_semester[i][1], selected_modules_buttons_second_semester[i][2], selected_modules_buttons_second_semester[i][3]);
-          s2++;
-        }else{
-          myTableOnPage.rows[s1+1].cells[0].innerHTML = create_module_card(selected_modules_buttons_second_semester[i][0], true, selected_modules_buttons_second_semester[i][1], selected_modules_buttons_second_semester[i][2], selected_modules_buttons_second_semester[i][3]);
-          s1++;
-        }
-      }
-      */
-
       // generate optional modules buttons
       modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
       modalTarget.innerHTML = "";
@@ -363,7 +336,7 @@
     // Sort the optional modules by their tags matched percentage
     var addedModules = [];
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
-      if(!selected_modules_per_year[_year][_i][i]) {
+      //if(!selected_modules_per_year[_year][_i][i]) {
         uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
         var result = <%= raw @results.to_json%>.filter(function(mod) {
           if(mod[0].id == uni_mod.id){
@@ -388,10 +361,10 @@
                               "</div>";
           addedModules.push(uni_mod);
         }
-      }
+      //}
     }
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
-      if(!selected_modules_per_year[_year][_i][i]) {
+      //if(!selected_modules_per_year[_year][_i][i]) {
         uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
          var foundAlready = addedModules.filter(function(mod) {
           if(mod.id == uni_mod.id){
@@ -399,7 +372,8 @@
           }
         });
         if(foundAlready.length == 0) {
-          target.innerHTML += "<div class =\"row\">" +
+          if(!selected_modules_per_year[_year][_i][i]) {
+            target.innerHTML += "<div class =\"row\">" +
                                 "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\">" +
                                   "<div class=\"col-md-8\" style\"width: 75%\">" +
                                     "<p>" +  uni_mod.code + "</p>" +
@@ -413,8 +387,24 @@
                                   "</div>"
                                 "</button>" +
                               "</div>";
+          }else{
+            target.innerHTML += "<div class =\"row\">" +
+                                "<button type=\"button\" class=\"login-card res-card result-card-green res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\">" +
+                                  "<div class=\"col-md-8\" style\"width: 75%\">" +
+                                    "<p>" +  uni_mod.code + "</p>" +
+                                    "<p>" + uni_mod.name + "</p>" +
+                                  "</div>" +
+                                  "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
+                                    "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>" +
+                                  "</div>" +
+                                  "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px;\">" +
+                                    "<h4> 0% </h4>" +
+                                  "</div>"
+                                "</button>" +
+                              "</div>";
+          }
         }
-      }
+      //}
     }
 
     for(i=0; i<optional_modules_per_year[_year][_i].uni_modules.length; i++){
@@ -422,8 +412,16 @@
         (function(_year_, _i_, i_){
           button = document.getElementById("btn_opt_select_year_" + _year_ + "_group_" + _i_+"_index_"+i_);
           button.addEventListener("click", function(){
-            $("#optionsModalYear" + (_year + 1)).modal('hide');
+            //$("#optionsModalYear" + (_year + 1)).modal('hide');
             selectModule(_year_,_i_,i_);
+          });
+        })(_year, _i, i);
+      }else{
+        (function(_year_, _i_, i_){
+          button = document.getElementById("btn_opt_select_year_" + _year_ + "_group_" + _i_+"_index_"+i_);
+          button.addEventListener("click", function(){
+            //$("#optionsModalYear" + (_year + 1)).modal('hide');
+            deselectModule(_year_,_i_,i_);
           });
         })(_year, _i, i);
       }
@@ -438,15 +436,25 @@
     this_module = optional_modules_per_year[year][group].uni_modules[module];
 
     // 1. Make sure we don't go over max modules per group
-    group_credits = optional_modules_per_year[year][group].total_credits;
-    console.log("max allowed credits in this group: " + group_credits);
+    max_credits = optional_modules_per_year[year][group].max_credits;
+    min_credits = optional_modules_per_year[year][group].min_credits;
+    max_modules = optional_modules_per_year[year][group].max_modules;
+    min_modules = optional_modules_per_year[year][group].min_modules;
+    
+    console.log("max credits in this group: " + max_credits);
+    console.log("min credits in this group: " + min_credits);
+    console.log("max modules in this group: " + max_modules);
+    console.log("min modules in this group: " + min_modules);
     credits_used = 0;
+    modules_selected_from_group = 0;
     for(i=0; i<selected_modules_per_year[year][group].length; i++){
       if(selected_modules_per_year[year][group][i]){
+        modules_selected_from_group++;
         credits_used += optional_modules_per_year[year][group].uni_modules[i].credits;
       }
     }
     console.log("credits already used: " + credits_used);
+    console.log("credits already selected: " + modules_selected_from_group);
     console.log("----------------------------------------");
 
     // 2. Don't select more than 120 credits worth modules per year
@@ -485,20 +493,7 @@
       else if(required_modules_per_year[year][i].semester == 2) req_modules_2nd++;
       else if(required_modules_per_year[year][i].semester == 3) {req_modules_1st++; req_modules_2nd++}
     }
-    /*
-    for(i=0; i<js_course.year_structures[year].groups[0].uni_modules.length; i++){
-      if(js_course.year_structures[year].groups[0].uni_modules[i].semester == 0)
-        req_modules_any++;
-      else if(js_course.year_structures[year].groups[0].uni_modules[i].semester == 1) 
-        req_modules_1st++;
-      else if(js_course.year_structures[year].groups[0].uni_modules[i].semester == 2) 
-        req_modules_2nd++;
-      else if(js_course.year_structures[year].groups[0].uni_modules[i].semester == 3){
-        req_modules_1st++;
-        req_modules_2nd++;  
-      }     
-    }
-    */
+   
     // add selected optional modules
     opt_modules_any = 0;
     opt_modules_1st = 0;
@@ -552,7 +547,9 @@
     console.log("Any semester: " + total_any + " modules");
     console.log("----------------------------------------");
 
-    if(credits_used>=group_credits){
+    if(credits_used>=max_credits){
+      window.alert("You have already selected enought credits from this group");
+    }else if(modules_selected_from_group>=max_modules){
       window.alert("You have already selected enought modules from this group");
     }else if(credits_this_year+this_module.credits > 120){
       window.alert("You have enough credits this year");
@@ -618,18 +615,6 @@
           selected_modules_this_year.push(selected_modules_in_this_group);
         }
       }
-
-      /*
-      selected_modules_this_year = [];
-      for(grp=1; grp<js_course.year_structures[year].groups.length; grp++){
-        selected_modules_in_this_group = [];
-        for(mod=0; mod<js_course.year_structures[year].groups[grp].uni_modules.length; mod++){
-          selected_modules_in_this_group.push(false);
-        }
-        selected_modules_this_year.push(selected_modules_in_this_group);
-      }
-      */
-
       optional_modules_per_year.push(optional_modules_this_year);
       required_modules_per_year.push(required_modules_this_year);
       selected_modules_per_year.push(selected_modules_this_year);

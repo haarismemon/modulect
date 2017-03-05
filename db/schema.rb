@@ -49,15 +49,15 @@ ActiveRecord::Schema.define(version: 20170302113120) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
-    t.integer  "total_credits"
+    t.integer  "total_credits", default: 0
     t.integer  "year_structure_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.boolean  "compulsory"
     t.integer  "min_modules", default: 0
-    t.integer  "max_modules", default: 999
+    t.integer  "max_modules", default: 8
     t.integer  "min_credits", default: 0
-    t.integer  "max_credits", default: 999
+    t.integer  "max_credits", default: 120
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
   end
 

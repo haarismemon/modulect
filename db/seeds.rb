@@ -312,7 +312,8 @@ req_1_year_2 = Group.create(
 	req_1_year_2.uni_modules << UniModule.create(code: "5BBM0219", semester: "3", credits: 30, name: "Research Skills in Pharmacology")
 opt_1_year_2 = Group.create(
 	name: "Select 30 credits from a range of optional modules", 
-	total_credits: 30, 
+	min_credits: 30,
+	max_credits: 30, 
 	compulsory: false)
 	opt_1_year_2.uni_modules << UniModule.create(code: "5BBM0217", semester: "2", credits: 15, name: "Animal Models of Disease and Injury")
 	opt_1_year_2.uni_modules << UniModule.create(code: "5BBL0210", semester: "0", credits: 15, name: "Endocrinology and Reproduction")
@@ -321,22 +322,23 @@ opt_1_year_2 = Group.create(
 	opt_1_year_2.uni_modules << UniModule.create(code: "5BBB0230", semester: "1", credits: 15, name: "Gene Cloning & Expression A")
 opt_1_year_3 = Group.create(
 	name: "You are required to take one of the following modules", 
-	total_credits: 30, 
+	min_modules: 1,
+	max_modules:1,
 	compulsory: false)
 	opt_1_year_3.uni_modules << UniModule.create(code: "6BBM0314", semester: "3", credits: 30, name: "Cell & Molecular Pharmacology")
 	opt_1_year_3.uni_modules << UniModule.create(code: "6BBM0329", semester: "3", credits: 30, name: "Cellular Basis of Drug Dependence")
 # schema needs to be change to accomodate this
 opt_2_year_3 = Group.create(
 	name: "You are also required to take one of the following options", 
-	total_credits: 30, 
+	min_modules: 1,
+	max_modules:1,
 	compulsory: false)
 	opt_2_year_3.uni_modules << UniModule.create(code: "6BBM0309", semester: "3", credits: 30, name: "Pharmacology Research Project")
 	opt_2_year_3.uni_modules << UniModule.create(code: "6AAA0001", semester: "0", credits: 15, name: "Pharmacology Library Project")
 	opt_2_year_3.uni_modules << UniModule.create(code: "6AAA0002", semester: "3", credits: 30, name: "Project Design in Pharmacology")
 	opt_2_year_3.uni_modules << UniModule.create(code: "6AAA0003", semester: "3", credits: 45, name: "Extended Pharmacology Research Project")
 opt_3_year_3 = Group.create(
-	name: "Take optional modules to bring their total credits for the year to 120", 
-	total_credits: 60, 
+	name: "Take optional modules to bring their total credits for the year to 120",
 	compulsory: false)
 	opt_3_year_3.uni_modules << UniModule.create(code: "6BBM0324", semester: "0", credits: 15, name: "Cardiovascular Pharmacology")
 	opt_3_year_3.uni_modules << UniModule.create(code: "6BBM0325", semester: "3", credits: 30, name: "Experimental Cardiovascular Pharmacology")
