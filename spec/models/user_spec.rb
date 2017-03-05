@@ -39,6 +39,29 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#department_admin?" do
+    context "when user is a department admin" do
+      before do
+        user.user_level = :department_admin_access
+        user.department = build(:department)
+      end
+
+      it "returns true" do
+        expect(user.department_admin?).to eq true
+      end
+    end
+
+    context "when user is not a department admin" do
+      before do
+        user.user_level = :user_access
+      end
+
+      it "returns false" do
+        expect(user.department_admin?).to eq false
+      end
+    end
+  end
+
   describe "before save" do
     context "when email contains capital letters" do
       before do

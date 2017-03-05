@@ -1,0 +1,8 @@
+<% if logged_in? %>
+  <% if is_admin %>
+    <%= render 'layouts/search_beginning/admin_notice', type: type  %>
+  <% end %>
+  <%= render 'layouts/search_beginning/user_form', type: type, dest: dest %>
+<% else %>
+  <%= render 'layouts/search_beginning/destination_form' %>
+<% end %>
