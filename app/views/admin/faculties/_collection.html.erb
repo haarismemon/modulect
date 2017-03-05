@@ -67,20 +67,20 @@ to display a collection of resources in an HTML table.
         <% end %>
 
         <td><%= link_to(
-                    t("administrate.actions.edit"),
-                    [:edit, namespace, resource],
-                    class: "action-edit",
-                ) %>
+                      ('<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbspEdit').html_safe,
+                      [:edit, namespace, resource],
+                      class: "action-edit",
+                  ) %>
 
           <!--if table is not being rendered in show, add a delete button which removes record-->
           <% if !(is_department_table) %>
-              <%= link_to(
-                      t("administrate.actions.destroy"),
-                      [namespace, resource],
-                      class: "table__action--destroy center",
-                      method: :delete,
-                      data: {confirm: t("administrate.actions.confirm")}
-                  ) %>
+             <%= link_to(
+                   ('<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbspDelete').html_safe,
+                    [namespace, resource],
+                    class: "table__action--destroy",
+                    method: :delete,
+                    data: {confirm: t("administrate.actions.confirm")}
+                ) %>
           <% end %>
         </td>
       </tr>

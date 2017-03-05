@@ -1,20 +1,26 @@
 <% provide(:title, 'Reset password') %>
-<h1>Reset password</h1>
-
+<div id="page">
+<div class="container" style="margin-top:25px;">
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
+<div class="col-md-6 col-md-offset-3">
+   <div class="col-md-12  login-card">
+      <h2>Change password</h2>
+      <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
-
       <%= hidden_field_tag :email, @user.email %>
-
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
-
-      <%= f.label :password_confirmation, "Confirmation" %>
-      <%= f.password_field :password_confirmation, class: 'form-control' %>
-
-      <%= f.submit "Update password", class: "btn btn-primary" %>
-    <% end %>
-  </div>
+      <div class="form-group">
+         <label for="inputPassword" class="sr-only">Password</label>
+         <%= f.password_field :password, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+         <label for="inputPassword" class="sr-only">Confirm Password</label>
+         <%= f.password_field :password_confirmation, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+         <button class="btn btn-lg btn-block" type="submit">
+         Update password&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>
+         </button>
+      </div>
+      <% end %>
+   </div>
 </div>

@@ -31,11 +31,84 @@ and renders all form fields for a resource's editable attributes.
   <% end %>
 
   <% page.attributes.each do |attribute| -%>
+    <% if attribute.name == "tags" %>
+      <div class="field-unit field-unit">
+        <label class="field-unit__label">Add New Tag</label>
+        <input type="text" name="tag_name" class="field-unit__field" id="tag_name"/>
+        <input type="radio" name="tag_type" value="InterestTag" checked id="tag_type"> Interest
+        <input type="radio" name="tag_type" value="CareerTag" id="tag_type"> Career
+        <button type="button" class="btn btn-lg btn-small" id="new-tag">New Tag</button>
+
+        <% if page.resource.id != nil %>
+        <script>
+            $("#new-tag").on("click", function(){
+                var name_of_tag = $('input[name="tag_name"]').val();
+                var type_of_tag = $('input[name="tag_type"]:checked').val()
+                $.ajax({
+                    type: "POST",
+                    url: "<%= admin_add_new_tag_path %>",
+                    data: { tag_name: name_of_tag, tag_type : type_of_tag, uni_module_id : <%=page.resource.id%>},
+                    context: document.body,
+                    success: function(){
+//                        alert("success ");
+
+                        $('input[name="tag_name"]').val("");
+                        var tags = $("#new_tags");
+                        if (tags.html() == "No new tags created") {
+                            $("#new_tags").html("<div class=\"item\">"+ name_of_tag +"</div>");
+                        } else {
+                            $("#new_tags").append("<div class=\"item\">"+ name_of_tag +"</div>");
+                        }
+                    }
+                })
+            });
+        </script>
+        <% else %>
+            <script>
+                $("#new-tag").on("click", function(){
+                    var name_of_tag = $('input[name="tag_name"]').val();
+                    var type_of_tag = $('input[name="tag_type"]:checked').val()
+                    $.ajax({
+                        type: "POST",
+                        url: "<%= admin_add_new_tag_path %>",
+                        data: { tag_name: name_of_tag, tag_type : type_of_tag},
+                        context: document.body,
+                        success: function(){
+//                            alert("success ");
+
+                            $('input[name="tag_name"]').val("");
+                            var tags = $("#new_tags");
+                            if (tags.html() == "No new tags created") {
+                                $("#new_tags").html("<div class=\"item\">"+ name_of_tag +"</div>");
+                            } else {
+                                $("#new_tags").append("<div class=\"item\">"+ name_of_tag +"</div>");
+                            }
+                        }
+                    })
+                });
+            </script>
+        <% end %>
+
+      </div>
+
+      <div>
+        <label class="field-unit__label">New Tags</label>
+        <div class="field-unit__field">
+          <div class="selectize-control multi">
+            <div id="new_tags" class="selectize-input items not-full has-options has-items" style="min-height: 36px;">No new tags created</div>
+          </div>
+        </div>
+      </div>
+    <% else %>
+
+    <% end %>
+
     <div class="row field-unit field-unit--<%= attribute.html_class %>">
       <div class="col-xs-12">
         <%= render_field attribute, f: f %>
       </div>
     </div>
+
   <% end -%>
 
   <div class="form-actions">

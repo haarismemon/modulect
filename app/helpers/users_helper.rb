@@ -7,11 +7,11 @@ module UsersHelper
   # Returns the string representation of an user's privilege level.
   def privileges_description_for(user)
     case user.user_level
-    when 3
+    when "user_access"
       "Student"
-    when 2
+    when "department_admin_access"
       "Department Administrator"
-    when 1
+    when "super_admin_access"
       "System Administrator"
     end
   end

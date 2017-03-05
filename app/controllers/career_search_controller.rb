@@ -19,6 +19,10 @@ class CareerSearchController < ApplicationController
 		    else
 		      @courses = {}
 		    end
+
+		    if(@user.department_id.present?)
+		      @all_courses = Department.find_by_id(@user.department_id).courses
+		     end
 		end
 	end
 
@@ -26,13 +30,13 @@ class CareerSearchController < ApplicationController
 
 
   def choose
-	if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
-		 @year_of_study = params[:year]
-	      @course = params[:course]
-	      @course_obj = Course.find_by_id(@course) 
-	else
-		redirect_to "/career-search/"
-	end
+    if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
+       	  @year_of_study = params[:year]
+          @course = params[:course]
+          @course_obj = Course.find_by_id(@course) 
+    else
+      redirect_to career_search_path
+    end
   end
 
   def view_results

@@ -16,3 +16,4 @@
 //= require twitter/typeahead.min
 //= require turbolinks
 //= require_tree ./user-side
+//= require edit.js.coffee

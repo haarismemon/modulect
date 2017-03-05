@@ -57,7 +57,7 @@ FactoryGirl.define do
     password_confirmation   "password"
     activated               true
     activated_at            Time.zone.now
-    user_level              3
+    user_level              :user_access
     entered_before          false
   end
 
