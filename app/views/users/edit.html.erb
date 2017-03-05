@@ -31,13 +31,13 @@
             <% if is_admin %>
             <div class="col-md-12 login-card module-row" style="padding-bottom:27px;">
                <h3>Adminstration</h3>
-               <p>You are currently logged in as a <%= admin_type %> Administrator. As a result, you will be unable to change the Department and Faculty.</p>  
-               <p><%= link_to "Access Administration area >", admin_path %></p>    
-               </div>         
+               <p>You are currently logged in as a <%= admin_type %> Administrator. As a result, you will be unable to change the Department and Faculty.</p>
+               <p><%= link_to "Access Administration area >", admin_path %></p>
+               </div>
             <% else %>
             <div class="col-md-12 login-card module-row" style="padding-bottom:27px;">
                <h3>Danger zone</h3>
-               <p>Want to start over? Rest your account below.</p>
+               <p>Want to start over? Reset your account below.</p>
                <%= form_for @user, url: { action: :update } do |f|%>
                <div class="form-group">
                   <input type="hidden" name="user[year_of_study]" value="">
