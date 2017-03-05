@@ -31,6 +31,11 @@
       <div id = "log"></div>
       <div class="col-md-12">
         <div class="row">
+          <h1> Time to start picking your modules </h1>
+          <h4> We've added compulsory modules for you. Just click pick a module and go through the different groups of modules available. </h4>
+          <h5> Don't forget that we've given you a tag match percentage to show you how much a module matches your interests and aspirations. </h5>
+        </div>
+        <div class="row">
         <%  @course_obj.year_structures.each do |y| %> 
           <button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button" style="margin-top: 5px">
             <%= y.year_of_study_before_type_cast.to_i.ordinalize %> Year&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
