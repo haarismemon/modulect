@@ -33,7 +33,7 @@
         <div class="row">
         <%  @course_obj.year_structures.each do |y| %> 
           <button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button" style="margin-top: 5px">
-            <%= y.year_of_study_before_type_cast.to_i.ordinalize %> &nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
+            <%= y.year_of_study_before_type_cast.to_i.ordinalize %> Year&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
           </button>
           <div id=<%= "div_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> style="margin-top: 20px">
           </div>
