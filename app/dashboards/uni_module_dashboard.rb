@@ -8,7 +8,6 @@ class UniModuleDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-      users: Field::HasMany,
       groups: Field::HasMany,
       departments: Field::HasMany,
       tags: Field::HasMany,
@@ -47,7 +46,6 @@ class UniModuleDashboard < Administrate::BaseDashboard
       :name,
       :code,
       :lecturers,
-      :users,
       :description,
       :groups,
       :departments,
@@ -67,7 +65,6 @@ class UniModuleDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-      :users,
       :groups,
       :departments,
       :tags,
