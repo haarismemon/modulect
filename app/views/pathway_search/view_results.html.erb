@@ -245,8 +245,6 @@
 
   module_results = <%= raw @results.to_json%>;
   updateData();  
-  updateUI();
-
   //Initialise selected data
   for(year = 0; year < selected_modules_per_year.length; ++year) {
     selected_ids[year] = [];
@@ -260,6 +258,8 @@
       }
     }
   }
+updateUI();
+
 
   // debugging
   // logStatus();
@@ -368,15 +368,21 @@
       selected_modules_buttons_second_semester = [];
       selected_modules_buttons_year_long = [];
       for(g=0; g<optional_modules_per_year[year].length; g++){
-        for(index=0; index<selected_modules_per_year[year][g].length; index++){
-          if(selected_modules_per_year[year][g][index]){
-            semester = optional_modules_per_year[year][g].uni_modules[index].semester;
-            sel_module = [optional_modules_per_year[year][g].uni_modules[index], year, g, index];
-            if(semester == 0) selected_modules_buttons_any_semester.push(sel_module);
-            if(semester == 1) selected_modules_buttons_first_semester.push(sel_module);
-            if(semester == 2) selected_modules_buttons_second_semester.push(sel_module);
-            if(semester == 3) selected_modules_buttons_year_long.push(sel_module);
+        for(index=0; index<selected_ids[year][g].length; index++){
+          var findWithId = selected_ids[year][g][index];
+          var semester = -1;
+          var sel_module = [];
+          for(item = 0; item < selected_modules_per_year[year][g].length; ++item) {
+            if(optional_modules_per_year[year][g].uni_modules[item].id == findWithId) {
+              semester = optional_modules_per_year[year][g].uni_modules[item].semester;
+              sel_module = [optional_modules_per_year[year][g].uni_modules[item], year, g, item];
+            }
           }
+          if(semester == 0) selected_modules_buttons_any_semester.push(sel_module);
+          if(semester == 1) selected_modules_buttons_first_semester.push(sel_module);
+          if(semester == 2) selected_modules_buttons_second_semester.push(sel_module);
+          if(semester == 3) selected_modules_buttons_year_long.push(sel_module);
+          if(semester == -1) console.log("ERROR");
         }
       }
 
@@ -595,6 +601,7 @@
         (function(_year_, _i_, i_){
           button = document.getElementById("btn_opt_select_year_" + _year_ + "_group_" + _i_+"_index_"+i_);
           button.addEventListener("click", function(){
+            console.log("hit");
             $("#optionsModalYear" + (_year + 1)).modal('hide');
             selectModule(_year_,_i_,i_);
           });
