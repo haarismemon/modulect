@@ -7,6 +7,7 @@ module Admin
 
    	include SessionsHelper
    	include ApplicationHelper
+   	include AdminHelper
 
 	 def authenticate_admin
 	      
