@@ -65,8 +65,8 @@ X departments
         <td><a class="action-edit" href="<%= edit_admin_faculty_path(faculty) %>"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbspEdit</a>
 
           <!--if table is not being rendered in show, add a delete button which removes record-->
+             <a class="table__action--destroy" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href=""><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbspDelete</a>
 
-          <%= link_to '<i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbspDelete'.html_safe, admin_faculty, method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>
 
