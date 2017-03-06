@@ -26,7 +26,7 @@ class UserDashboard < Administrate::BaseDashboard
     activated_at: Field::DateTime,
     reset_digest: Field::String,
     reset_sent_at: Field::DateTime,
-  #  departments: Field::HasMany,
+    department: Field::BelongsTo,
     faculty: Field::BelongsTo,
     password: PasswordField,
     password_confirmation: PasswordField,
@@ -72,7 +72,7 @@ class UserDashboard < Administrate::BaseDashboard
     :password_confirmation,
     :course,
     :year_of_study,
-    #:departments,
+    :department,
 
   ].freeze
 

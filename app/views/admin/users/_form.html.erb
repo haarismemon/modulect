@@ -54,7 +54,7 @@ Highlighted with !important
                 check_user_level(params[:id],3)))? "":"hide-content"%>
             <% class_to_add = "select-field "+to_hide %>
 
-          <% when "departments" %>
+          <% when "department" %>
             <% to_hide = !is_edit_form(params) || (is_edit_form(params) &&
                 !check_user_level(params[:id],1))? "":"hide-content"%>
             <% class_to_add = "select-field "+to_hide %>
@@ -68,6 +68,7 @@ Highlighted with !important
           </div>
         </div>
     <% end -%>
+
 
     <div class="form-actions"><%= f.submit %></div>
 <% end %>
@@ -90,8 +91,12 @@ Highlighted with !important
         // i.e shows certain fields that were initially hidden
         var $select = $('.select-field select').selectize({ onChange: function(value) {
             if(value == "user_access"){
+                $(".department span").remove()
+                createInstruction("department","*This is the lead department incharge of course");
                 addAllFieldsBack()
             }else if(value == "department_admin_access"){
+                $(".department span").remove()
+                createInstruction("department","*This is the department, which the user has access over");
                 addAllFieldsBack();
                 removeField("course");
                 removeField("year_of_study");

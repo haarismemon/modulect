@@ -153,7 +153,7 @@ module ApplicationHelper
     user_level = User.user_levels[User.find(params[:id]).user_level]
     # super admin's attributes not to show
     super_admin_filter = user_level == 1 && attribute != "course" &&
-        attribute != "year_of_study" && attribute != "faculty" && attribute != "departments"
+        attribute != "year_of_study" && attribute != "faculty" && attribute != "department"
     # department admin's attributes not to show
     department_admin_filter = user_level == 2 && attribute != "course" &&
         attribute != "year_of_study"

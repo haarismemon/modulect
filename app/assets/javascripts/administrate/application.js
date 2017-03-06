@@ -803,7 +803,7 @@ if ("undefined" == typeof jQuery)throw new Error("Bootstrap's JavaScript require
 
 //allows for creation of instruction label for a particular field
 var createInstruction = function(field_name,instruction){
-    var html = '<span class="instruction-label form-actions">'+instruction+'</span>' ;
+    var html = '<span class="instruction-label form-actions "+field_name+"">'+instruction+'</span>' ;
     var label = $("[for*='" + field_name + "']");
     label.css("margin","0px");
     $("[for*='" + field_name + "']").parent().after(html);
