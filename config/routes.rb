@@ -1,11 +1,8 @@
 Rails.application.routes.draw do
 
   get 'career_search/choose'
-
   get 'career_search/view'
-
   get 'errors/not_found'
-
   get 'errors/internal_server_error'
 
   namespace :admin do
@@ -24,6 +21,7 @@ Rails.application.routes.draw do
   end
 
   namespace :modulect_admin do
+    resources :users, except: [:show, :destroy, :edit, :update]
     root to: "dashboard#index"
   end
 
