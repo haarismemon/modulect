@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap-tagsinput
 //= require twitter/typeahead.min
 //= require turbolinks
 //= require edit.js.coffee
