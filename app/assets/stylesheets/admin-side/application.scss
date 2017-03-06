@@ -404,6 +404,12 @@ a.action-edit{margin-right:10px;}
     margin-bottom:35px;
 }
 
+
+.pagination .current{font-style: normal;}
+.pagination > * {
+    margin-right: 5px;
+}
+
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
 	display:none;

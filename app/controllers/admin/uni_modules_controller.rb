@@ -3,7 +3,7 @@ module Admin
     
         
   	def index
-      @uni_modules = UniModule.paginate(page: params[:page])
+      @uni_modules = UniModule.paginate(page: params[:page], :per_page => 20).order('name ASC')
   	end
 
   	def new
