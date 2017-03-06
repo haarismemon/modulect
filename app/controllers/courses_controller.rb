@@ -1,28 +1,5 @@
 class CoursesController < ApplicationController
 
-  # GET /courses
-  # GET /courses.json
-  def index
-    #returns all tags by order of tag name
-    @courses = Course.alphabetically_order_by("name")
-  end
-
-  def show
-    @courses = Course.find(params[:id])
-  end
-
-  # GET /courses/new
-  def new
-    @course = Course.new
-  end
-
-  def edit
-    #! looks for object to ready populate form with the associated tag's data ready for modification by admin
-    @course = Course.find(params[:id])
-  end
-
-
-
   def create
     @course = Course.new(course_params)
     # Save the object
@@ -48,17 +25,6 @@ class CoursesController < ApplicationController
       # If save fails, redisplay the form so user can fix problems
       render('edit')
     end
-end
-
-
-  def destroy
-    #find by id
-    @course = Course.find(params[:id])
-    #delete tuple object from db
-    @course.destroy
-    flash[:notice] =  @course.name+"was deleted successfully."
-    #redirect to action which displays all courses
-    redirect_to(courses_path)
   end
 
   private
