@@ -42,7 +42,7 @@
         <select id="upload-resource" class="">
           <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
               <% if [:uni_modules, :courses, :departments, :users, :year_structures, :faculties].include? resource %>
-                  <option><%= display_resource_name(resource) %></option>
+                  <option value="<%= resource %>"><%= display_resource_name(resource) %></option>
               <% end %>
           <% end %>
         </select>
