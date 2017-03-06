@@ -455,7 +455,7 @@
         (function(_year, _i){
           button = document.getElementById("btn_opt_year_" + _year + "_group_" + _i);
           button.addEventListener("click", function(){
-            optional_button_pressed(_year, _i, true);
+            optional_button_pressed(_year, _i, true, "tags");
           });
         })(year, i);  
       }
@@ -466,10 +466,10 @@
   function optional_button_pressed(_year, _i, useTags, sortby){
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
-    target.innerHTML += "<div class=\"row\"><span style=\"margin-bottom: 20px\" class=\"sort-area\">" +
+    target.innerHTML += "<div class=\"row\"><span style=\"margin-bottom: 20px; display:inline-block;\" class=\"sort-area\">" +
                   <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
                   "Sort by: &nbsp;&nbsp;" +
-                    " <select class=\"selectpicker\" id=\"sort_by\" onchange=\"sort(" + _year + "," + _i + ")\">" +
+                    " <select class=\"selectpicker\" id=\"sort_by\" style=\"display:inline-block !important;\" onchange=\"sort(" + _year + "," + _i + ")\">" +
                       <% sorting_options.each do |option| %>
                         "<option value=\"<%= option.first %>\"" +
                          " >" +
