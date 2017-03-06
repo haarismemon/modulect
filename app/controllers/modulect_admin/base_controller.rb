@@ -6,6 +6,7 @@ module ModulectAdmin
 	 layout "modulect_admin/modulect_admin"
 
    		include SessionsHelper
+   		include ApplicationHelper
 
 	    def authenticate_admin
 	      

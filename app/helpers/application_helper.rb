@@ -10,6 +10,16 @@ module ApplicationHelper
 	    end
 	end
 
+	# A simple helper method which sets the page title on admin
+	def full_title_admin(page_title = '')
+	    base_title = "Admin - Modulect"
+	    if page_title.empty?
+	      base_title
+	    else
+	      page_title + " | " + base_title
+	    end
+	end
+
 
 	def get_careers_for_module(valid_uni_module)
 	    @careers = []
