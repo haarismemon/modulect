@@ -39,7 +39,7 @@
     <h3>Step 1: Select the resource to upload</h3>
     <form>
       <div class="form-entry text-center" style="margin-top: 20px;">
-        <select id="upload-resource" class="form-control">
+        <select id="upload-resource" class="">
           <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
               <% if [:uni_modules, :courses, :departments, :users, :year_structures, :faculties].include? resource %>
                   <option><%= display_resource_name(resource) %></option>
@@ -82,10 +82,12 @@
         $("#upload-2-next").on("click", function () {
             $("#upload-step-3").show();
 
+            var resource = $("select#upload-resource").val();
+            console.log(resource);
             $.ajax({
                 type: "POST",
                 url: "<%= admin_download_path %>",
-                data: { resource_choice: "bananas"},
+                data: { resource_choice: resource},
                 context: document.body,
                 success: function(){
                   alert("success ");
