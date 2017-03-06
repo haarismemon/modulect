@@ -28,7 +28,7 @@ module Admin
   	def destroy
       UniModule.find(params[:id]).destroy
       flash[:success] = "Module successfully deleted."
-      redirect_to admin_uni_modules_path
+      redirect_back_or admin_uni_modules_path
   	end
 
   end

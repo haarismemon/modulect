@@ -25,7 +25,8 @@
 
 						<div class="col-md-3"><%= link_to "<i class='fa fa-external-link' aria-hidden='true'></i> View".html_safe, uni_module, method: :get, target: :blank %></div>
 
-						 <div class="col-md-3"><a class="table__action--destroy" data-confirm="Are you sure?" data-method="delete" href="/admin/uni_modules/2" rel="nofollow"><i aria-hidden="true" class="fa fa-trash"></i>&nbsp;&nbspDelete</a></div>
+						 <div class="col-md-3"><%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_uni_module_path(uni_module), method: :delete,
+                                  data: { confirm: "Are you sure?" } , class: "table__action--destroy" %></div>
 					</td>
 				</tr><%end %>
 			</tbody>
