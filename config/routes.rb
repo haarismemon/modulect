@@ -20,8 +20,18 @@ Rails.application.routes.draw do
     root to: "application#homepage"
   end
 
+  # remove the except to get a resource to work
   namespace :modulect_admin do
-    resources :users, except: [:show, :destroy, :edit, :update]
+    resources :courses, except: [:index, :show, :destroy, :edit, :update]
+    resources :departments, except: [:index, :show, :destroy, :edit, :update]
+    resources :faculties, except: [:index, :show, :destroy, :edit, :update]
+    resources :groups, except: [:index, :show, :destroy, :edit, :update]
+    resources :tags, except: [:index, :show, :destroy, :edit, :update]
+    resources :uni_modules, except: [:index, :show, :destroy, :edit, :update]
+    resources :users, except: [:index, :show, :destroy, :edit, :update]
+    resources :year_structures, except: [:index, :show, :destroy, :edit, :update]
+    resources :career_tags, except: [:index, :show, :destroy, :edit, :update]
+    resources :interest_tags, except: [:index, :show, :destroy, :edit, :update]
     root to: "dashboard#index"
   end
 
