@@ -213,19 +213,19 @@
 
     if(selected == "tags") {
       module_results = <%= raw @results.to_json%>;
-      return optional_button_pressed(year, group, true);
+      return optional_button_pressed(year, group, true, "tags");
     }
     else if(selected == "coursework") {
-      optional_modules_per_year[year][group].uni_modules.sort(courseworkCompare(a, b));
-      return optional_button_pressed(year, group, false);
+      optional_modules_per_year[year][group].uni_modules.sort(courseworkCompare);
+      return optional_button_pressed(year, group, false, "coursework");
     }
     else if(selected == "exam") {
-      optional_modules_per_year[year][group].uni_modules.sort(examCompare(a, b));
-      return optional_button_pressed(year, group, false);
+      optional_modules_per_year[year][group].uni_modules.sort(examCompare);
+      return optional_button_pressed(year, group, false, "exam");
     }
     else if(selected == "pass") {
-      optional_modules_per_year[year][group].uni_modules.sort(passRateCompare(a, b));
-      return optional_button_pressed(year, group, false);
+      optional_modules_per_year[year][group].uni_modules.sort(passRateCompare);
+      return optional_button_pressed(year, group, false, "pass");
     }
 
   }
@@ -463,7 +463,7 @@
     }
   }
 
-  function optional_button_pressed(_year, _i, useTags){
+  function optional_button_pressed(_year, _i, useTags, sortby){
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
     target.innerHTML += "<div class=\"row\"><span style=\"margin-bottom: 20px\" class=\"sort-area\">" +
@@ -471,17 +471,15 @@
                   "Sort by: &nbsp;&nbsp;" +
                     "<select class=\"selectpicker\" id=\"sort_by\" onchange=\"sort(" + _year + "," + _i + ")\">" +
                       <% sorting_options.each do |option| %>
-                        "<option value=\"<%= option.first %>\"" + 
-                        <% if option.first == "tags"%>
-                          " selected" +
-                        <% end %>
-                        " >" +
+                        "<option value=\"<%= option.first %>\"" +
+                         " >" +
                         "<%= option.second %>" +
                         "</option>" +
                       <% end %>
                     "</select>" +
                   "</span></div>";
     // Sort the optional modules by their tags matched percentage
+    document.getElementById("sort_by").value = sortby;
     var addedModules = [];
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
       uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
@@ -494,9 +492,11 @@
         var tagsmatched = result[0][1];
         moduleCard = "<div class =\"row\">" +
                               "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
-                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
+                                  if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
+                                    console.log("fond");
                                   }
+                                  console.log(uni_mod.id);
                                 moduleCard += ">" +
                                 "<div class=\"col-md-8\" style\"width: 75%\">" +
                                   "<p>" +  uni_mod.code + "</p>" +
@@ -505,7 +505,7 @@
                                 "</div>" +
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
-                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
+                                  if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   }
                                 moduleCard += "</div>" +
@@ -525,20 +525,23 @@
           return mod;
         }
       });
+      var result = [];
+      var hasTags = [];
       if(foundAlready.length == 0) {
-        var checkForTagmatch = false;
-        if(result.length > 0 && !useTags) {
-          var hasTags = result.filter(function(mod) {
-            if(mod.id == uni_mod.id) {
-              checkForTagmatch = true;
+        console.log("Got here 1");
+        if(!useTags) {
+          var hasTags = module_results.filter(function(mod) {
+            if(mod[0].id == uni_mod.id) {
+              return mod;
             }
           });
         }
-        if(checkForTagmatch) {
+        if(hasTags.length > 0) {
+          console.log("GOt here");
           var tagsmatched = hasTags[0][1];
           moduleCard = "<div class =\"row\">" +
                               "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
-                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
+                                  if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
                                 moduleCard += ">" +
@@ -549,7 +552,7 @@
                                 "</div>" +
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
-                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
+                                  if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   }
                                 moduleCard += "</div>" +
@@ -561,7 +564,7 @@
         } else {
           moduleCard = "<div class =\"row\">" +
                               "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"No tags matched.\"";
-                                if(selected_ids.indexOf(uni_mod.id) > -1) {
+                                if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
                                 moduleCard += ">" +
@@ -571,7 +574,7 @@
                                 "</div>" +
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
-                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
+                                  if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   } 
                                  moduleCard += "</div>" +
