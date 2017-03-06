@@ -70,16 +70,16 @@
 
 <script>
     $(function () {
-        $("#upload-start").bind("click", function () {
+        $("#upload-start").on("click", function () {
             $("#upload-step-1").show();
             $("#upload-instructions").hide();
         });
 
-        $("#upload-1-next").bind("click", function () {
+        $("#upload-1-next").on("click", function () {
             $("#upload-step-2").show();
         });
 
-        $("#upload-2-next").bind("click", function () {
+        $("#upload-2-next").on("click", function () {
             $("#upload-step-3").show();
         });
     });
