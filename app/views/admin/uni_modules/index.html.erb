@@ -18,7 +18,7 @@
 				<tr class="table__row" data-url="<%= edit_admin_uni_module_path(uni_module) %>" role="link" tabindex="0">
 					<td class="cell-data cell-data--string"><%= uni_module.name %></td>
 					<td class="cell-data cell-data--string"><%= uni_module.code %></td>
-					<td class="cell-data cell-data--string"><%= uni_module.semester %></td>
+					<td class="cell-data cell-data--string"><%= make_semester_nice uni_module.semester %></td>
 					<td>
 						<span style="margin-right:10px;"><a class="action-edit" href="<%= edit_admin_uni_module_path(uni_module) %>"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbspEdit</a></span>
 
