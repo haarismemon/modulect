@@ -81,6 +81,16 @@
 
         $("#upload-2-next").on("click", function () {
             $("#upload-step-3").show();
+
+            $.ajax({
+                type: "POST",
+                url: "<%= admin_download_path %>",
+                data: { resource_choice: "bananas"},
+                context: document.body,
+                success: function(){
+                  alert("success ");
+                }
+            })
         });
     });
 </script>
