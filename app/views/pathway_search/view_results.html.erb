@@ -128,6 +128,7 @@
   var selected_modules_per_year = <%= @selected %>;
   var required_modules_per_year = [];
   var optional_modules_per_year = [];
+  var selected_ids = [];
 
   var btns = [];
   var divs = [];
@@ -216,17 +217,14 @@
     }
     else if(selected == "coursework") {
       optional_modules_per_year[year][group].uni_modules.sort(courseworkCompare(a, b));
-      selected_modules_per_year[year][group].uni_modules.sort(courseworkCompare(a, b));
       return optional_button_pressed(year, group, false);
     }
     else if(selected == "exam") {
       optional_modules_per_year[year][group].uni_modules.sort(examCompare(a, b));
-      selected_modules_per_year[year][group].uni_modules.sort(examCompare(a, b));
       return optional_button_pressed(year, group, false);
     }
     else if(selected == "pass") {
       optional_modules_per_year[year][group].uni_modules.sort(passRateCompare(a, b));
-      selected_modules_per_year[year][group].uni_modules.sort(passRateCompare(a, b));
       return optional_button_pressed(year, group, false);
     }
 
@@ -248,6 +246,20 @@
   module_results = <%= raw @results.to_json%>;
   updateData();  
   updateUI();
+
+  //Initialise selected data
+  for(year = 0; year < selected_modules_per_year.length; ++year) {
+    selected_ids[year] = [];
+    for(group = 0; group < selected_modules_per_year[year].length; ++group) {
+        selected_ids[year][group] = [];
+      for(module = 0; module < selected_modules_per_year[year][group].length; ++module) {
+        if(selected_modules_per_year[year][group][i]) {
+          var id = selected_modules_per_year[year][group].uni_modules[i].id;
+          selected_ids[year][group].push(id);
+        }
+      }
+    }
+  }
 
   // debugging
   // logStatus();
@@ -482,7 +494,7 @@
         var tagsmatched = result[0][1];
         moduleCard = "<div class =\"row\">" +
                               "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
-                                  if(selected_modules_per_year[_year][_i][i] && selected_modules_per_year[_year][_i][i].id == uni_mod.id) {
+                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
                                 moduleCard += ">" +
@@ -493,7 +505,7 @@
                                 "</div>" +
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
-                                  if(selected_modules_per_year[_year][_i][i] && selected_modules_per_year[_year][_i][i].id == uni_mod.id) {
+                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
                                     moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   }
                                 moduleCard += "</div>" +
@@ -526,7 +538,7 @@
           var tagsmatched = hasTags[0][1];
           moduleCard = "<div class =\"row\">" +
                               "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
-                                  if(selected_modules_per_year[_year][_i][i] && selected_modules_per_year[_year][_i][i].id == uni_mod.id) {
+                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
                                 moduleCard += ">" +
@@ -537,7 +549,7 @@
                                 "</div>" +
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
-                                  if(selected_modules_per_year[_year][_i][i] && selected_modules_per_year[_year][_i][i].id == uni_mod.id) {
+                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
                                     moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   }
                                 moduleCard += "</div>" +
@@ -549,8 +561,7 @@
         } else {
           moduleCard = "<div class =\"row\">" +
                               "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"No tags matched.\"";
-                                console.log(selected_modules_per_year[_year][_i]);
-                                if(selected_modules_per_year[_year][_i][i] && selected_modules_per_year[_year][_i][i].id == uni_mod.id) {
+                                if(selected_ids.indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
                                 moduleCard += ">" +
@@ -560,7 +571,7 @@
                                 "</div>" +
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
-                                  if(selected_modules_per_year[_year][_i][i] && selected_modules_per_year[_year][_i][i].id == uni_mod.id) {
+                                  if(selected_ids.indexOf(uni_mod.id) > -1) {
                                     moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   } 
                                  moduleCard += "</div>" +
@@ -706,16 +717,19 @@
     }else if(credits_this_year+this_module.credits > 120){
       window.alert("You have enough credits this year");
     }else if(!can_add){
-      window.alert("Addind this module would exceed the maximum allowed number of modules per semester");
+      window.alert("Adding this module would exceed the maximum allowed number of modules per semester");
     }
     else{
       selected_modules_per_year[year][group][module] = true;
+      selected_ids[year][group].push(this_module.id);
       updateUI();
     }
 
 
     //Tell the user they can now save again
+    <% if logged_in? %>
     document.getElementById("save").innerHTML= "<span><i class=\"fa fa-star-o\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Save Pathway</span>";
+    <% end %>
 
     //logStatus();
   }
@@ -723,6 +737,11 @@
   function deselectModule(year, group, module){
     // TODO: validate
     selected_modules_per_year[year][group][module] = false;
+    var id = selected_modules_per_year[year][group].uni_modules[module].id;
+    var index = selected_ids[year][group].indexOf(id);
+    if(index > -1) {
+      selected_ids.splice(index, 1);
+    }
     updateUI();
   }
 
