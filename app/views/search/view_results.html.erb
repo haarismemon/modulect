@@ -104,6 +104,7 @@
         <h1>Here's what we found:</h1>
         <h5>Showing <%= @found_results.length %> modules</h5>
       </div>
+       <div class="col-md-4 text-right" style="padding-top:30px;">
       <div class="sort-area">
       <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
       Sort by: &nbsp;&nbsp;
@@ -122,6 +123,7 @@
         <input type="hidden" name="chosen_tags" value="<%= @temp_array.join(",") %>">
         <input type="hidden" name="search_course" value="<%= @search_course %>">
       </form>
+      </div>
       </div>
     </div>
     <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
