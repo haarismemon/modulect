@@ -6,6 +6,7 @@ module Admin
 	layout "admin/application"
 
    	include SessionsHelper
+   	include ApplicationHelper
    	include AdminHelper
 
 	 def authenticate_admin
