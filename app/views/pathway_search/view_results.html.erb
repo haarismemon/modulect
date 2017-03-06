@@ -767,7 +767,11 @@
       selected_modules_per_year.push(selected_modules_this_year);
     }
 
-    document.getElementById('btn_year_<%=@year_of_study%>').click();
+    if(<%=@year_of_study %> > divs.length) {
+      document.getElementById('btn_all_years').click();
+    } else {
+      document.getElementById('btn_year_<%=@year_of_study%>').click();
+    }
   }
 </script>
 
