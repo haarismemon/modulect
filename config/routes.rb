@@ -23,6 +23,11 @@ Rails.application.routes.draw do
     root to: "application#homepage"
   end
 
+  namespace :modulect_admin do
+    root to: "dashboard#index"
+  end
+
+
   # General
   root 'search#home'
   get '/about', to: 'static_pages#about'
