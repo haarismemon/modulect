@@ -179,6 +179,20 @@ module ApplicationHelper
      (page.resource && page.resource.errors.size == 0)
   end
 
+  def make_semester_nice(semester_number)
+	if semester_number == "No data available"
+	  "No data available"
+	elsif semester_number == "0"
+	  "1 or 2"
+	elsif semester_number == "1"
+	  "1"
+	elsif semester_number == "2"
+	  "2"
+	else
+	  "1 & 2"
+	end
+  end
+
   private
   # determines what the link needs to be to redirect back to faculty form
   def determine_redirect_link_from_previous_state
