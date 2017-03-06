@@ -14,9 +14,18 @@
 <div class="row" style="margin: 0;">
   <div id="upload-step-1" class="col-lg-4 col-lg-offse col-sm-12 login-card" style="margin-bottom: 20px; display: none;">
     <h3>Step 1: Select the resource to upload</h3>
-    <div class="form-entry text-center" style="margin-top: 20px;">
-      <a id="upload-1-next" class="btn btn-md">Next ></a>
-    </div>
+    <form>
+      <div class="form-entry text-center" style="margin-top: 20px;">
+        <select class="form-control">
+          <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
+              <% if [:uni_modules, :courses, :departments, :users, :year_structures, :faculties].include? resource %>
+                  <option><%= display_resource_name(resource) %></option>
+              <% end %>
+          <% end %>
+        </select>
+        <a id="upload-1-next" class="btn btn-md">Next ></a>
+      </div>
+    </form>
   </div>
 
   <div id="upload-step-2" class="col-lg-4 col-sm-12 login-card" style="margin-bottom: 20px; display: none;">
@@ -46,6 +55,4 @@
             $("#upload-step-3").show();
         });
     });
-
-
 </script>
