@@ -1,5 +1,5 @@
 module Admin
-  class FacultiesController < Admin::ApplicationController
+  class FacultiesController < Admin::BaseController
    
     
   	def index

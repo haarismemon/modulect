@@ -20,7 +20,6 @@ Rails.application.routes.draw do
     root to: "application#homepage"
   end
 
-  # remove the except to get a resource to work
   namespace :admin do
     resources :courses
     resources :departments

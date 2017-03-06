@@ -1,5 +1,5 @@
 module Admin
-  class CareerTagsController < Admin::ApplicationController
+  class CareerTagsController < Admin::BaseController
     
   	def index
   	end

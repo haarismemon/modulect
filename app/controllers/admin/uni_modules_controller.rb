@@ -1,5 +1,5 @@
 module Admin
-  class UniModulesController < Admin::ApplicationController
+  class UniModulesController < Admin::BaseController
     
         
   	def index

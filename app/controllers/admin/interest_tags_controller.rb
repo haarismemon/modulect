@@ -1,5 +1,5 @@
 module Admin
-  class InterestTagsController < Admin::ApplicationController
+  class InterestTagsController < Admin::BaseController
        
   	def index
   	end

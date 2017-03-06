@@ -1,5 +1,5 @@
 module Admin
-  class TagsController < Admin::ApplicationController
+  class TagsController < Admin::BaseController
    
     
   	def index

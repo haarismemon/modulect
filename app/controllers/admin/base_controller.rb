@@ -5,10 +5,10 @@ module Admin
 
 	layout "admin/application"
 
-   		include SessionsHelper
-   		include ApplicationHelper
+   	include SessionsHelper
+   	include ApplicationHelper
 
-	    def authenticate_admin
+	 def authenticate_admin
 	      
 	      # if not an admin, display a flash
 	      if logged_in? && !admin_user

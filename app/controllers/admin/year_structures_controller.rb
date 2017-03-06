@@ -1,5 +1,5 @@
 module Admin
-  class YearStructuresController < Admin::ApplicationController
+  class YearStructuresController < Admin::BaseController
    
     
   	def index

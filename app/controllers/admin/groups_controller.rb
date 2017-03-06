@@ -1,5 +1,5 @@
 module Admin
-  class GroupsController < Admin::ApplicationController
+  class GroupsController < Admin::BaseController
        
   	def index
   	end

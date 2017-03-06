@@ -1,5 +1,5 @@
 module Admin
-  class DepartmentsController < Admin::ApplicationController
+  class DepartmentsController < Admin::BaseController
     
     
   	def index
