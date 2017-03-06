@@ -54,7 +54,7 @@ class UserDashboard < Administrate::BaseDashboard
     :user_level,
     :year_of_study,
     :course,
-  #  :departments,
+   :department,
     :created_at,
     :updated_at,
     :activated,

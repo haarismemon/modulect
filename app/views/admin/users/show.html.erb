@@ -32,6 +32,9 @@ as well as a link to its edit page.
 <dl>
   <% page.attributes.each do |attribute| %>
 
+      <!--retrieve current attribute name and filter it with current state of user_lever
+      to determine whether that information should be shown or not-->
+      <!--code specifying the filter conditions is defined in application_helper-->
       <% if filter_for_user_show(attribute.attribute.to_s) %>
       <div class="row">
         <div class="col-md-2 col-xs-12">
@@ -41,12 +44,12 @@ as well as a link to its edit page.
                     default: attribute.name.titleize,
                 ) %>
           </dt>
-        </div>
-        <div class="col-md-10 col-xs-12">
+            </div>
+          <div class="col-md-10 col-xs-12">
           <dd class="attribute-data attribute-data--<%= attribute.html_class %>"
           ><%= render_field attribute %></dd>
-        </div>
-      </div>
-          <%end%>
-  <% end %>
+            </div>
+          </div>
+        <%end%>
+      <% end %>
 </dl>
