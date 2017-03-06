@@ -42,7 +42,7 @@
         <select id="upload-resource" class="form-control">
           <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
               <% if [:uni_modules, :courses, :departments, :users, :year_structures, :faculties].include? resource %>
-                  <option value="<%= resource %>"><%= display_resource_name(resource) %></option>
+                  <option value=<%= resource %>><%= display_resource_name(resource) %></option>
               <% end %>
           <% end %>
         </select>
@@ -83,7 +83,6 @@
             $("#upload-step-3").show();
 
             var resource = $("select#upload-resource").val();
-            console.log(resource);
             $.ajax({
                 type: "POST",
                 url: "<%= admin_download_path %>",
