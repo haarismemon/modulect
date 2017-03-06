@@ -1,25 +1,12 @@
-<%#
-   # Application Layout
-   
-   This view template is used as the layout
-   for every page that Administrate generates.
-   
-   By default, it renders:
-   - Sidebar for navigation
-   - Content for a search bar
-     (if provided by a `content_for` block in a nested page)
-   - Flashes
-   - Links to stylesheets and Javascripts
-   %>
 <!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
+<html>
    <head>
       <meta charset="utf-8" />
       <meta name="ROBOTS" content="NOODP" />
       <meta name="viewport" content="initial-scale=1" />
-      <title><%= content_for(:title) %> - Admin | Modulect</title>
-      <%= stylesheet_link_tag 'administrate/application' %>
-      <%= javascript_include_tag 'administrate/application' %>
+      <title><%= full_title_admin( yield(:title) ) %></title>
+      <%= stylesheet_link_tag 'admin-side/application' %>
+      <%= javascript_include_tag 'admin-side/application' %>
       <script src="https://use.fontawesome.com/bbc851b668.js"></script>
       <%= favicon_link_tag 'favicon.ico' %>
       <%= csrf_meta_tags %>
@@ -36,42 +23,10 @@
          
       </script>
    </head>
-   <%= render 'header' %>
+                     <%= render "admin/layouts/header" %>
    <div id="wrapper">
       <!-- Sidebar -->
-      <div id="sidebar-wrapper">
-         <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-               <a href="/admin" id="sidebar-title">
-               Admin Dashboard
-               </a>
-            </li>
-            <% if current_user.user_level == "department_admin_access" %>
-            <li class="sidebar-brand" style="margin-top:-10px;font-size:13px;line-height:normal; color:#fff;text-indent:0px;    padding-left: 20px;height:inherit;padding-bottom: 25px;
-               border-bottom: 1px solid #888888;">
-               Department: <%= Department.find(current_user.department_id).name %>
-            </li>
-            <% else %>                     
-               <li class="sidebar-brand" style="margin-top:-10px;font-size:13px;line-height:normal; color:#fff;text-indent:0px;    padding-left: 20px;height:inherit;padding-bottom: 25px;
-                  border-bottom: 1px solid #888888;">System Administrator
-               </li>
-            <% end %>
-            <li class="menu-item"><%= link_to '<i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Home'.html_safe, admin_path %></li>
-            <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
-            <li class="menu-item">
-               <% if [:uni_modules, :courses, :departments, :users, :faculties].include? resource%>
-               <% icons = {"Courses" => "fa fa-graduation-cap", "Departments" => "fa fa-building", "Faculties" => "fa fa-university", "Uni Modules" => "fa fa-pencil-square", "Users" => "fa fa-users"} %>
-               <%= link_to(
-                  ('<i class="' + icons[display_resource_name(resource)] + '" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;' + display_resource_name(resource)).html_safe,
-                  [namespace, resource]
-                  ) %>
-               <% end%>
-            </li>
-            <% end %>
-            <li class="menu-item"><%= link_to "<i class='fa fa-upload' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;Upload data".html_safe, admin_upload_path %></li>
-            <li class="menu-item no-desktop"><%= link_to "<i class='fa fa-sign-out' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;Log out".html_safe, logout_path, method: "delete" %></li>
-         </ul>
-      </div>
+                     <%= render "admin/layouts/sidebar" %>
       <!-- /#sidebar-wrapper -->
       <!-- Page Content -->
       <div id="page-content-wrapper" style="padding-top:7px;">
@@ -79,9 +34,9 @@
             <div class="row">
                <div class="col-lg-12">
                   <main role="main">
-                     <%= render "flashes" -%>
+                     <%= render "admin/layouts/flashes" %>
                      <div class="no-desktop-search">
-                        <%= content_for(:search) %>
+                     <%= render "admin/layouts/search" %>
                      </div>
                      <%= yield %>
                      <div class="text-center" style="font-size:12px;margin-top:20px;">Modulect for KCL by Recursive Husky</div>

@@ -1,9 +1,9 @@
-module ModulectAdmin
+module Admin
 
-	class ModulectAdmin::BaseController < ApplicationController
+	class Admin::BaseController < ApplicationController
 	before_action :authenticate_admin
 
-	 layout "modulect_admin/modulect_admin"
+	layout "admin/application"
 
    		include SessionsHelper
    		include ApplicationHelper

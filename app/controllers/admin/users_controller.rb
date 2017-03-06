@@ -1,19 +1,31 @@
 module Admin
-  class UsersController < Admin::ApplicationController
-    # To customize the behavior of this controller,
-    # simply overwrite any of the RESTful actions. For example:
-    #
-    # def index
-    #   super
-    #   @resources = User.all.paginate(10, params[:page])
-    # end
+	class UsersController < Admin::BaseController
 
-    # Define a custom finder by overriding the `find_resource` method:
-    # def find_resource(param)
-    #   User.find_by!(slug: param)
-    # end
 
-    # See https://administrate-docs.herokuapp.com/customizing_controller_actions
-    # for more information
-  end
+	    
+  	def index
+  	end
+
+  	def new
+  	end
+
+  	def create
+  	end
+
+  	def show
+  	end
+
+  	def edit
+  	end
+
+  	def update
+  	end
+
+  	def destroy
+  	end
+
+ 
+
+
+	end
 end

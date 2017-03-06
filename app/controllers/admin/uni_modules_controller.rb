@@ -1,19 +1,27 @@
 module Admin
   class UniModulesController < Admin::ApplicationController
-    # To customize the behavior of this controller,
-    # simply overwrite any of the RESTful actions. For example:
-    #
-    # def index
-    #   super
-    #   @resources = UniModule.all.paginate(10, params[:page])
-    # end
+    
+        
+  	def index
+  	end
 
-    # Define a custom finder by overriding the `find_resource` method:
-    # def find_resource(param)
-    #   UniModule.find_by!(slug: param)
-    # end
+  	def new
+  	end
 
-    # See https://administrate-docs.herokuapp.com/customizing_controller_actions
-    # for more information
+  	def create
+  	end
+
+  	def show
+  	end
+
+  	def edit
+  	end
+
+  	def update
+  	end
+
+  	def destroy
+  	end
+
   end
 end

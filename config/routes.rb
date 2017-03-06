@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get 'errors/not_found'
   get 'errors/internal_server_error'
 
-  namespace :admin do
+  namespace :old_admin do
     resources :courses
     resources :departments
     resources :faculties
@@ -21,17 +21,18 @@ Rails.application.routes.draw do
   end
 
   # remove the except to get a resource to work
-  namespace :modulect_admin do
-    resources :courses, except: [:index, :show, :destroy, :edit, :update]
-    resources :departments, except: [:index, :show, :destroy, :edit, :update]
-    resources :faculties, except: [:index, :show, :destroy, :edit, :update]
-    resources :groups, except: [:index, :show, :destroy, :edit, :update]
-    resources :tags, except: [:index, :show, :destroy, :edit, :update]
-    resources :uni_modules, except: [:index, :show, :destroy, :edit, :update]
-    resources :users, except: [:index, :show, :destroy, :edit, :update]
-    resources :year_structures, except: [:index, :show, :destroy, :edit, :update]
-    resources :career_tags, except: [:index, :show, :destroy, :edit, :update]
-    resources :interest_tags, except: [:index, :show, :destroy, :edit, :update]
+  namespace :admin do
+    resources :courses
+    resources :departments
+    resources :faculties
+    resources :groups
+    resources :tags
+    resources :uni_modules
+    resources :users
+    resources :year_structures
+    resources :career_tags
+    resources :interest_tags
+    get 'upload'
     root to: "dashboard#index"
   end
 
