@@ -157,10 +157,6 @@
     }
   });
 
-  $("#save").click(function() {
-    document.getElementById("save").innerHTML= "<span><i class=\"fa fa-star\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Saved</span>";
-  });
-
   $("#mailto").click(function() {
     document.getElementById("mailto").setAttribute("href", "mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A" +
       "<%= request.original_url.gsub("&", "%26") %>" + "%26selected=" + JSON.stringify(selected_modules_per_year) +
@@ -231,6 +227,7 @@
   }
 
   function savePathway() {
+    console.log("SAVING");
     $.ajax({
         type: "POST",
         url: "<%= application_save_pathway_path %>",
@@ -240,7 +237,8 @@
             year: <%= @year_of_study.to_i %>,
             course: <%= @course.to_i %>
         }
-    })      
+    })
+    document.getElementById("save").innerHTML= "<span><i class=\"fa fa-star\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Saved</span>";     
   }
 
   module_results = <%= raw @results.to_json%>;
@@ -251,14 +249,14 @@
     for(group = 0; group < selected_modules_per_year[year].length; ++group) {
         selected_ids[year][group] = [];
       for(module = 0; module < selected_modules_per_year[year][group].length; ++module) {
-        if(selected_modules_per_year[year][group][i]) {
-          var id = selected_modules_per_year[year][group].uni_modules[i].id;
+        if(selected_modules_per_year[year][group][module]) {
+          var id = optional_modules_per_year[year][group].uni_modules[module].id;
           selected_ids[year][group].push(id);
         }
       }
     }
   }
-updateUI();
+  updateUI();
 
 
   // debugging
@@ -759,6 +757,11 @@ updateUI();
 
   function updateData(){
     // go through each year
+    //if this was from a save
+    var initSelected = false;
+    if(selected_modules_per_year.length == 0) {
+      initSelected = true;
+    }
     for(year=0; year<js_course.year_structures.length; year++){
 
       // sort required modules for this year
@@ -784,18 +787,20 @@ updateUI();
         optional_modules_this_year.push(js_course.year_structures[year].groups[grp]);
       }
 
-      selected_modules_this_year = [];
-      for(grp=1; grp<js_course.year_structures[year].groups.length; grp++){
-        selected_modules_in_this_group = [];
-        for(mod=0; mod<js_course.year_structures[year].groups[grp].uni_modules.length; mod++){
-          selected_modules_in_this_group.push(false);
+      if(initSelected) {
+        selected_modules_this_year = [];
+        for(grp=1; grp<js_course.year_structures[year].groups.length; grp++){
+          selected_modules_in_this_group = [];
+          for(mod=0; mod<js_course.year_structures[year].groups[grp].uni_modules.length; mod++){
+            selected_modules_in_this_group.push(false);
+          }
+          selected_modules_this_year.push(selected_modules_in_this_group);
         }
-        selected_modules_this_year.push(selected_modules_in_this_group);
+        selected_modules_per_year.push(selected_modules_this_year);
       }
 
       optional_modules_per_year.push(optional_modules_this_year);
       required_modules_per_year.push(required_modules_this_year);
-      selected_modules_per_year.push(selected_modules_this_year);
     }
 
     if(<%=@year_of_study %> > divs.length) {
