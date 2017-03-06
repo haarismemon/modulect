@@ -469,7 +469,7 @@
     target.innerHTML += "<div class=\"row\"><span style=\"margin-bottom: 20px\" class=\"sort-area\">" +
                   <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
                   "Sort by: &nbsp;&nbsp;" +
-                    "<select class=\"selectpicker\" id=\"sort_by\" onchange=\"sort(" + _year + "," + _i + ")\">" +
+                    " <select class=\"selectpicker\" id=\"sort_by\" onchange=\"sort(" + _year + "," + _i + ")\">" +
                       <% sorting_options.each do |option| %>
                         "<option value=\"<%= option.first %>\"" +
                          " >" +
@@ -479,7 +479,6 @@
                     "</select>" +
                   "</span></div>";
     // Sort the optional modules by their tags matched percentage
-    document.getElementById("sort_by").value = sortby;
     var addedModules = [];
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
       uni_mod = optional_modules_per_year[_year][_i].uni_modules[i];
@@ -587,6 +586,9 @@
         target.innerHTML += moduleCard;
       }
     }
+
+    var selecter = document.getElementById("sort_by");
+    selecter.value = sortby;
 
     for(i=0; i<optional_modules_per_year[_year][_i].uni_modules.length; i++){
       if(!selected_modules_per_year[_year][_i][i]){
