@@ -8,12 +8,12 @@ class CareerTagDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    uni_modules: Field::HasMany,
-    id: Field::Number,
-    name: Field::String,
-    type: Field::String,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+      uni_modules: Field::HasMany,
+      id: Field::Number,
+      name: Field::String,
+      type: Field::String,
+      created_at: Field::DateTime,
+      updated_at: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -22,30 +22,31 @@ class CareerTagDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :uni_modules,
-    :id,
-    :name,
-    :type,
+      :id,
+      :name,
+      :type,
+      :uni_modules,
+
+
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :uni_modules,
-    :id,
-    :name,
-    :type,
-    :created_at,
-    :updated_at,
+      :name,
+      :type,
+      :uni_modules,
+      :created_at,
+      :updated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :uni_modules,
-    :name,
-    :type,
+      :uni_modules,
+      :name,
+      :type,
   ].freeze
 
   # Overwrite this method to customize how career tags are displayed

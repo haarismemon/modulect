@@ -14,28 +14,23 @@ and renders all form fields for a resource's editable attributes.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
-<%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
+<%= form_for([namespace, page.resource], html: { class: "form"}) do |f| %>
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
     <%= error_messages_for(page.resource) %>
 
     <% page.attributes.each do |attribute| -%>
         <!--checks if render request came from faculty form-->
         <% current_field_name = attribute.attribute.to_s %>
-        <!--print info message on top of courses field-->
-        <% if (current_field_name=="courses") %>
-            <span class="instruction-label form-actions">*courses can be linked at a later time if preferred</span>
-        <% end %>
-        <!--skip rendering the courses field if request came from faculty form-->
+
+        <!--skip rendering the faculty field if request came from faculty form-->
                 <%to_hide_or_not =
-                      (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["isEdit"])?
-                          "hide-content":"faculty-field"%>
+                      (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["from_form"])?
+                          "hide-content":"select-field"%>
         <%set_drop_down_theme = current_field_name == "faculty"?"select-field-margin":""%>
 
         <div class="field-unit field-unit--<%= attribute.html_class %> <%=to_hide_or_not%> <%= set_drop_down_theme %> ">
               <%= render_field attribute, f: f %>
-            </div>
-
-
+        </div>
 
     <% end %>
 
@@ -47,10 +42,15 @@ and renders all form fields for a resource's editable attributes.
 
 <!--js embedded with ruby-->
 
-<script>
-    $( document ).ready(function() {
-        $('.faculty-field select').selectize();
+<script data-turbolinks="false">
+    //sets value of the faculty select to a initial value{only triggered
+    //when redirect from faculty form occurs}
+    var setValueOfFacultySelect = function () {
+        //stores session cache
         <% data_store = session[:data_save]%>
+        //checks if came from faculty EDIT form
+        <%if data_store.present? && data_store["isEdit"]%>
+        //sets session cache value for faculty name into faculty field
         for(var i = 0 ; i<$('.hide-content option').length;i++){
             if($(".hide-content option[value='"+i+"']").text() == "<%= data_store.present? ?
              ((data_store["faculty"].present?)? data_store["faculty"]["name"]:"") : "" %>"){
@@ -58,18 +58,37 @@ and renders all form fields for a resource's editable attributes.
                 break;
             }
         }
-    });
+        <%end%>
+    };
+
+
 
     //two-way caching between faculty and department
     $( document ).ready(function() {
+        //intialize select dropdown
+        $('.select-field select').selectize();
+        createInstruction("course","*Courses can be linked at a later time if preferred");
+        setValueOfFacultySelect();
+
+        //on load of page, check if data store exists in cache
         data_request_store = localStorage['data_store'];
+        //cache object which will carry information back to faculty on redirect{used to check authenticity}
         data_to_be_accepted = localStorage['data_store_accept'];
+        //checks if there is a data store and if data doesn't already exist on data_store_accept
+        // {if it does, this indicates this page was visited twice in a row, breaking the chain}
         if((data_request_store&& JSON.parse(data_request_store))&&(!data_to_be_accepted || !JSON.parse(data_to_be_accepted))) {
+            //store in new data cache object
             localStorage['data_store_accept'] = data_request_store;
         }else{
-            localStorage['data_store_accept'] = null;
+            //do not clear cache in instance of invalid validation of form
+            <% if form_valid?(page) %>
+              //clear cache
+              localStorage['data_store_accept'] = null;
+            <%end%>
         }
+        //set to null because its no longer in use
         localStorage['data_store'] = null;
     });
+
 
 </script>

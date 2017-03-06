@@ -12,7 +12,6 @@ class UsersController < ApplicationController
 
   def show
     redirect_to(edit_user_path)
-
   end
 
   # Displays signup form.
@@ -88,9 +87,10 @@ class UsersController < ApplicationController
   def update_courses
     d = Department.find(params[:department_id])
     @courses = d.courses.where("department_id = ?", params[:department_id])
-                    respond_to do |format|
-                      format.js
-                    end
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update
@@ -99,48 +99,24 @@ class UsersController < ApplicationController
     @task = params[:task]
 
     if @task == "reset"
-       flash[:success] = "You have successfully reset your account"
-
-       # update course/year attributes
-       @user.update_attributes("year_of_study" => "", "faculty_id" => "",  "department_id" => "",  "course_id" => "")
-       
-       # delete saved modules
-       @user.uni_modules.each do |uni_module|
-        @user.unsave_module(uni_module)
-       end
-
-       # delete saved pathways
-       @user.pathways.each do |pathway|
-        @user.pathways.delete(pathway)
-       end
+       @user.reset
+       flash[:success] = "You have successfully reset your account."
        redirect_to(edit_user_path)
-      
-    else  
+    else
       if @user.update_attributes(update_params)
-        # If save succeeds, redirect to the index action
-        flash[:success] = "Successfully updated your account"
+        flash[:success] = "Successfully updated your account."
         if params.has_key?(:dest) && !params[:dest].empty?
           redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s
         else
           redirect_to(edit_user_path)
         end
       else
-        # If save fails, restart form and notify user
         flash[:error] = "Please check that you have entered your details correctly and try again."
         render 'edit'
       end
     end
   end
 
-  def destroy
-    #find by id
-    @user = User.find(params[:id])
-    #delete tuple object from db
-    @user.destroy
-    flash[:success] = @user.full_name+" has been deleted successfully."
-    #redirect to action which displays all users
-    redirect_back_or users_path
-  end
 
   private
     def user_params

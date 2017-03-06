@@ -8,7 +8,6 @@ class User < ApplicationRecord
 
   # A user has many saved modules.
   has_and_belongs_to_many :uni_modules
-  has_and_belongs_to_many :departments
   # A user has many pathways
   has_many :pathways
 
@@ -32,9 +31,7 @@ class User < ApplicationRecord
                        length: {minimum: 6},
                        if: :should_validate_password?
 
-
-  default_value_for :user_level, 3  #student #(needs testing)
-
+  default_value_for :user_level, :user_access
 
   class << self
     # Returns the hash digest of a given string.
@@ -91,6 +88,22 @@ class User < ApplicationRecord
     BCrypt::Password.new(digest).is_password?(authentication_token)
   end
 
+  # Reset a student user's attributes
+  def reset
+    update_attributes(year_of_study: nil,
+                      faculty_id: nil,
+                      department_id: nil,
+                      course_id: nil)
+
+    self.uni_modules.each do |uni_module|
+      unsave_module(uni_module)
+    end
+
+    self.pathways.each do |pathway|
+      self.pathways.delete(pathway)
+    end
+  end
+
   # Activates an account.
   def activate
     update_columns(activated: true, activated_at: Time.zone.now)
@@ -112,10 +125,13 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
-
   #format first and second name of user into a string
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def department_admin?
+    user_level == "department_admin_access" && self.department != nil
   end
 
   private

@@ -1,0 +1,42 @@
+<%#
+## Local variables:
+
+ - `type` :
+   The kind of search this form is being used for.
+   See `pathway_search/begin` and `career_search/begin` for passed values.
+
+ - `dest` :
+   Submission URL.
+
+%>
+
+<%= form_for @user do |f|%>
+  <%= render 'shared/error_messages', object: f.object %>
+  <% if current_user.department_admin? %>
+    <%= render 'layouts/search_beginning/department_admin_form', f: f, type: type %>
+  <% else %>
+    <%= render 'layouts/search_beginning/system_admin_or_user_form', f: f %>
+  <% end %>
+
+  <%= render 'layouts/search_beginning/year_of_study_form', f: f %>
+
+  <input type="hidden" name="dest" value="<%= dest %>" >
+
+  <% if type == "user_edit" %>
+    <div class="form-group">
+       <button class="btn btn-lg btn-block" type="submit">Save&nbsp;&nbsp;
+       <i class="fa fa-angle-right" aria-hidden="true"></i>
+       </button>
+    </div>
+  <% end %>
+
+  <% if type != "user_edit" %>
+  <div class="row" >
+     <div class="col-md-12" style="margin-top: 30px;padding-left:0px">
+        <div class="form-group">
+           <button class="btn btn-lg" type="submit">Next ></button>
+        </div>
+     </div>
+  </div>
+  <% end %>
+<% end %>

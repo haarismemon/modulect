@@ -160,5 +160,48 @@ module ApplicationHelper
     # user's attributes not to show
     user_filter = user_level == 3
     super_admin_filter || department_admin_filter || user_filter
+	end
+
+
+  # Creates redirect back button for department form only
+  def back_redirect_for_department(page)
+     if !form_valid?(page)
+      # redirects back to faculty form if initially came from there
+      determine_redirect_link_from_previous_state
+     else
+      #or just go back to last page like normal-->
+      link_to 'Back', :back, class: "button"
+     end
+  end
+
+  # specifies whether current admin form has any errors
+  def form_valid?(page)
+     (page.resource && page.resource.errors.size == 0)
+  end
+
+  def make_semester_nice(semester_number)
+	if semester_number == "No data available"
+	  "No data available"
+	elsif semester_number == "0"
+	  "1 or 2"
+	elsif semester_number == "1"
+	  "1"
+	elsif semester_number == "2"
+	  "2"
+	else
+	  "1 & 2"
+	end
+  end
+
+  private
+  # determines what the link needs to be to redirect back to faculty form
+  def determine_redirect_link_from_previous_state
+    # redirect back to edit form of faculty
+    if(session[:data_save]["faculty"].present?&&session[:data_save]["isEdit"])
+      link_to 'Back', edit_admin_faculty_path(id: session[:data_save]["faculty"]["id"]), class: "button"
+    else
+      #redirect back to new form
+      link_to 'Back', new_admin_faculty_path, class: "button"
+    end
   end
 end

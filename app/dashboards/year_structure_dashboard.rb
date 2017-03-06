@@ -22,17 +22,18 @@ class YearStructureDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
+      :year_of_study,
       :course,
-      :year_of_study
+      :updated_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-      :course,
-      :groups,
       :id,
+      :course,
       :year_of_study,
+      :groups,
       :created_at,
       :updated_at,
   ].freeze
@@ -42,8 +43,8 @@ class YearStructureDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
       :course,
-      :groups,
       :year_of_study,
+      :groups,
   ].freeze
 
   # Overwrite this method to customize how year structures are displayed

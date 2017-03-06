@@ -1,0 +1,4 @@
+<div class="form-group" id="yos-group">
+   <label for="year-of-study">Year Of Study <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify which year you are studying in e.g. 1st year of degree">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+   <%= f.select(:year_of_study, options_for_select(1..7, @user.year_of_study), {:include_blank => true}, {:class => 'form-control', :autocomplete => "off" , :required => true} )%>
+</div>
