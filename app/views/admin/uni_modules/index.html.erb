@@ -12,6 +12,7 @@
 					<th class="cell-label cell-label--string cell-label--false" scope="col">Name</th>
 					<th class="cell-label cell-label--string cell-label--false" scope="col">Code</th>
 					<th class="cell-label cell-label--string cell-label--false" scope="col">Semester</th>
+					<th class="cell-label cell-label--string cell-label--false" scope="col">Actions</th>
 				</tr>
 			</thead><%= will_paginate %><%@uni_modules.each do |uni_module| %>
 			<tbody>
@@ -20,11 +21,11 @@
 					<td class="cell-data cell-data--string"><%= uni_module.code %></td>
 					<td class="cell-data cell-data--string"><%= make_semester_nice uni_module.semester %></td>
 					<td>
-						<span style="margin-right:10px;"><a class="action-edit" href="<%= edit_admin_uni_module_path(uni_module) %>"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbspEdit</a></span>
+					<div class="col-md-3"><a class="action-edit" href="<%= edit_admin_uni_module_path(uni_module) %>"><i class="fa fa-pencil" aria-hidden="true" ></i>&nbsp;&nbspEdit</a></div>
 
-						<span style="margin-right:10px;"><%= link_to "<i class='fa fa-external-link' aria-hidden='true'></i> View".html_safe, uni_module, method: :get, target: :blank %></span>
+						<div class="col-md-3"><%= link_to "<i class='fa fa-external-link' aria-hidden='true'></i> View".html_safe, uni_module, method: :get, target: :blank %></div>
 
-						 <a class="table__action--destroy" data-confirm="Are you sure?" data-method="delete" href="/admin/uni_modules/2" rel="nofollow"><i aria-hidden="true" class="fa fa-trash"></i>&nbsp;&nbspDelete</a>
+						 <div class="col-md-3"><a class="table__action--destroy" data-confirm="Are you sure?" data-method="delete" href="/admin/uni_modules/2" rel="nofollow"><i aria-hidden="true" class="fa fa-trash"></i>&nbsp;&nbspDelete</a></div>
 					</td>
 				</tr><%end %>
 			</tbody>
