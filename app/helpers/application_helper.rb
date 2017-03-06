@@ -12,11 +12,11 @@ module ApplicationHelper
 
 	# A simple helper method which sets the page title on admin
 	def full_title_admin(page_title = '')
-	    base_title = "Admin - Modulect"
+	    base_title = "Modulect"
 	    if page_title.empty?
-	      base_title
+	     "Admin | " + base_title
 	    else
-	      page_title + " | " + base_title
+	      page_title + " - Admin | " + base_title
 	    end
 	end
 
