@@ -4,7 +4,8 @@ module Admin
     def upload
     end
 
-
+    def download
+    end
 
   end
 end
