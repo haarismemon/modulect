@@ -1,1 +1,12 @@
-test
+<% provide(:title, 'Modules') %>
+<h1>All users</h1>
+
+<%= will_paginate %>
+
+<ul class="users">
+  <% @uni_modules.each do |uni_module| %>
+  <%= uni_module.name %>
+  <% end %>
+</ul>
+
+<%= will_paginate %>
