@@ -7,7 +7,7 @@
     tedious.</h4>
   <h4>To begin uploading simply click the button below:</h4>
   <div class="form-entry text-center" style="margin-top: 20px;">
-    <a class="btn btn-lg">Start ></a>
+    <a id="upload-start" class="btn btn-lg">Start ></a>
   </div>
 </div>
 
@@ -24,3 +24,14 @@
     <h3>Step 3: Upload data</h3>
   </div>
 </div>
+
+<script>
+    $(function () {
+        $("#upload-step-1, #upload-step-2, #upload-step-3").hide();
+
+        $("#upload-start").bind("click", function () {
+            $("#upload-step-1").show();
+            $("#upload-instructions").hide();
+        });
+    });
+</script>
