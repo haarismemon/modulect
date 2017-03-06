@@ -2,7 +2,8 @@ module Admin
   class CoursesController < Admin::BaseController
 
     def index
-      @courses = Course.alphabetically_order_by(:name)
+      @courses = Course.paginate(page: params[:page], :per_page => 20)
+                          .alphabetically_order_by(:name)
     end
 
     def new

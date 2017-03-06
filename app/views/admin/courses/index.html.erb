@@ -28,36 +28,34 @@
       <th colspan="2" scope="col"></th>
     </tr>
     </thead>
-
     <tbody>
+      <%= will_paginate %>
+      <% @courses.each do |course| %>
 
-  <% @courses.each do |course| %>
+       <tr class="table__row"
+                role="link"
+                tabindex="0"
+                data-url="<%= edit_admin_course_path(course) %>"
+            >
+          <td class="cell-data cell-data--string">
 
-   <tr class="table__row"
-            role="link"
-            tabindex="0"
-            data-url="<%= edit_admin_course_path(course) %>"
-        >
-      <td class="cell-data cell-data--string">
+          <%= course.name %>
 
-      <%= course.name %>
+          </td>
+          <td class="cell-data cell-data--has-many">
+            <%= course.departments.count %> departments
+          </td>
 
-      </td>
-      <td class="cell-data cell-data--has-many">
-        <%= course.departments.count %> departments
-      </td>
-
-      <td><a class="action-edit" href="<%= edit_admin_course_path(course) %>"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbspEdit</a>
-        <!--if table is not being rendered in show, add a delete button which removes record-->
-        <a class="table__action--destroy"
-           data-confirm="Are you sure?" rel="nofollow"
-           data-method="delete" href="/admin/courses/<%= course.id %>">
-           <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbspDelete</a>
-      </td>
-    </tr>
-
-  <% end %>
-
+          <td><a class="action-edit" href="<%= edit_admin_course_path(course) %>"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbspEdit</a>
+            <!--if table is not being rendered in show, add a delete button which removes record-->
+            <a class="table__action--destroy"
+               data-confirm="Are you sure?" rel="nofollow"
+               data-method="delete" href="/admin/courses/<%= course.id %>">
+               <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbspDelete</a>
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
+  <%= will_paginate %>
 </div>
