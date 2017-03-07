@@ -1,0 +1,29 @@
+<% sorting_columns.each_with_index do |column, i| %>
+  <% if searching == true %>
+     <th class="cell-label cell-label--string cell-label--false" scope="col">
+        <% if i == 0 %>
+                   <%= column.first %> <i class='fa fa-arrow-up' aria-hidden='true'></i>
+                  <% else %>
+                      <%= column.second %>
+               
+        <% end %>
+  <% else %>
+            <th class="cell-label cell-label--string cell-label--false" scope="col">
+               <% if request.query_parameters["sortby"].present? && request.query_parameters["order"].present? %>
+                  <% if request.query_parameters["sortby"] == column.first %>
+                     <% if request.query_parameters["order"] == "asc" %>
+                      <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc" ), method: :get %>
+                     <% else %>		
+                      <%= link_to (column.second + " <i class='fa fa-arrow-down' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "asc" ), method: :get %>
+                     <% end %>
+                     <% else %>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc" ), method: :get %>
+                  <% end %>
+               <% elsif i == 0 %>
+                  <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc" ), method: :get %>
+                  <% else %>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc" ), method: :get %>
+               <% end %>
+            </th>
+            <% end %>
+        <% end %>
