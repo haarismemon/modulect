@@ -3,7 +3,7 @@
   <h1 class="header__heading" id="page-title">Users</h1>
   <div class="header__actions">
     <%= link_to(
-            "<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;&nbsp;New User",
+            "<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;&nbsp;New User".html_safe,
             new_admin_user_path,
             class: "button",
         ) %>
@@ -40,7 +40,11 @@
           <td><%= user.user_level%></td>
           <td>
             <span style="margin-right:10px;">
-            <%= link_to(edit_admin_user_path(user)) do%><i class="fa fa-pencil" aria-hidden="true" ></i>Edit<%end%>
+                        <%= link_to(
+                                ('<i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;&nbspEdit').html_safe,
+                                edit_admin_user_path(user),
+                                class: "action-edit",
+                            ) %>
             </span>
             <%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_user_path(user), method: :delete,
                         data: { confirm: "Are you sure?" } , class: "table__action--destroy" %>
