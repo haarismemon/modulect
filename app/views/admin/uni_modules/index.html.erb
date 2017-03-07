@@ -7,14 +7,45 @@
    <h1 id="page-title">Modules</h1>
    <div class="header__actions">
 <div class="col-md-12">
+
+<% if @uni_modules.size > 0 %>
 <span id="bulk-area">
                <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bulk Actions  <span class="caret"></span>
                </button>
                <ul class="dropdown-menu">
-                  <li> <a data-method="get" href="/admin">Delete selected</a>
+                  <li> <a id="delete-all" href="<%= request.original_fullpath %>">Delete selected</a>
                   </li>
                </ul>
+
+
+
+
+
+               <script>
+
+            $("#delete-all").on("click", function(){
+               var data = { 'check_action[]' : []};
+               $(":checked").each(function() {
+                 data['check_action[]'].push($(this).val());
+               });
+
+console.log(data);
+                $.ajax({
+                   type: "POST",
+                    url: "<%=admin_uni_modules_bulk_delete_path %>",
+  data: {module_ids: data},
+                    context: document.body
+                })
+            
+            
+            
+            
+            });
+            
+            
+         </script>
 </span>
+<% end %>
       <a class="button" href="%3C%=%20new_admin_uni_module_path%20%%3E"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New uni module</a>
       </div>
    </div>
@@ -49,7 +80,7 @@
          <td class="no-link checkboxes">
 
      <div class="checkbox" style="margin:0px">
-              <input type="checkbox" name="check_individual" id="check_individual" value="true" class="toggle-bulk" /><label for="check_individual"><span></span></label>
+              <input type="checkbox" name="check_action[]" id="check_individual" value="<%= uni_module.id %>" class="toggle-bulk" /><label for="check_individual"><span></span></label>
            </div>
 
 
@@ -69,11 +100,11 @@
       </tbody>
    </table>
    <%= will_paginate @uni_modules %>
-
+</div>
               <%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query} %>
 
 
-</div>
+
 <% elsif request.query_parameters["search"].present?%>
 <h4 style="margin-bottom:30px;">Unfortunately, we couldn't find any modules related to your search query.</h4>
 

@@ -73,7 +73,18 @@ module Admin
 
   	end
 
+  end
+
+
+  def bulk_delete
+    @received = params[:module_ids]
+
+    @received.each do |number|
+      UniModule.find(number.to_i).update_attribute("name" => "Aqib")
+    end
+
 
 
   end
+
 end

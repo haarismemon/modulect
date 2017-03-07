@@ -31,6 +31,10 @@ Rails.application.routes.draw do
     resources :year_structures, except: [:show]
     resources :career_tags, except: [:show]
     resources :interest_tags, except: [:show]
+
+
+    post 'uni_modules/bulk_delete', to: 'uni_modules#bulk_delete' 
+
     get 'upload'
     root to: "dashboard#index"
   end
