@@ -6,7 +6,17 @@
 <header class="header index-header-area">
    <h1 id="page-title">Modules</h1>
    <div class="header__actions">
+<div class="col-md-12">
+<span id="bulk-area">
+               <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bulk Actions  <span class="caret"></span>
+               </button>
+               <ul class="dropdown-menu">
+                  <li> <a data-method="get" href="/admin">Delete selected</a>
+                  </li>
+               </ul>
+</span>
       <a class="button" href="%3C%=%20new_admin_uni_module_path%20%%3E"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New uni module</a>
+      </div>
    </div>
 </header>
 <style>
@@ -19,7 +29,7 @@
          <tr class="table-header-fields">
          <td style="width:20px;">
           <div class="checkbox" style="margin:0px">
-              <input type="checkbox" name="check_all" id="check_all" value="true" /><label for="check_all"><span></span></label>
+              <input type="checkbox" name="check_all" id="check_all" value="true" class="toggle-bulk" /><label for="check_all"><span></span></label>
            </div>
          </td>
             <% sorting_columns = {"name" => "Name", "code" => "Code"} %>
@@ -39,7 +49,7 @@
          <td class="no-link checkboxes">
 
      <div class="checkbox" style="margin:0px">
-              <input type="checkbox" name="check_individual" id="check_individual" value="true" /><label for="check_individual"><span></span></label>
+              <input type="checkbox" name="check_individual" id="check_individual" value="true" class="toggle-bulk" /><label for="check_individual"><span></span></label>
            </div>
 
 
