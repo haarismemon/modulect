@@ -14,6 +14,7 @@
    <table aria-labelledby="page-title" class="collection-data table">
       <thead>
          <tr class="table-header-fields">
+         <td><input type="checkbox"></td>
             <% sorting_columns = {"name" => "Name", "code" => "Code"} %>
             <% if request.query_parameters["search"].present?%>
               <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: true, per_page: @per_page} %>
@@ -28,6 +29,7 @@
       <%= will_paginate %><%@uni_modules.each do |uni_module| %>
       <tbody>
          <tr class="table__row" data-url="<%= edit_admin_uni_module_path(uni_module) %>" role="link" tabindex="0">
+         <td class="no-link"><input type="checkbox"></td>
             <td class="cell-data cell-data--string"><%= uni_module.name %></td>
             <td class="cell-data cell-data--string"><%= uni_module.code %></td>
             <td class="cell-data cell-data--string"><%= make_semester_nice uni_module.semester %></td>
