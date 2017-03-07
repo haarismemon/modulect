@@ -9,6 +9,7 @@
       <a class="button" href="%3C%=%20new_admin_uni_module_path%20%%3E"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New uni module</a>
    </div>
 </header>
+<% if @uni_modules.size > 0 %>
 <div class="table-responsive">
    <table aria-labelledby="page-title" class="collection-data table">
       <thead>
@@ -46,3 +47,9 @@
 
 
 </div>
+<% elsif request.query_parameters["search"].present?%>
+<h4 style="margin-bottom:30px;">Unfortunately, we couldn't find any modules related to your search query.</h4>
+
+<% else %>
+<h4 style="margin-bottom:30px;">No modules found</h4> 
+<% end %>
