@@ -1,0 +1,53 @@
+<% provide(:title, "Edit #{@uni_module.code}") %>
+<header class="header index-header-area">
+  <h1 id="page-title">Edit <%= @uni_module.name %> </h1>
+  <div class="header__actions">
+  <%= link_to "<i class='fa fa-eye' aria-hidden='true'></i>&nbsp;&nbsp;View Module".html_safe, @uni_module, method: :get, class: "button" %>
+  </div>
+</header>
+<div class="col-md-12">
+  <%= form_for @uni_module, url: { action: :update } do |f|%>
+    <div class="form-group">
+      <label for="inputName">Name</label>
+      <%= f.text_field :name, class: 'form-control', :required => true %>
+    </div>
+    <div class="form-group">
+      <label for="inputName">Code</label>
+      <%= f.text_field :code, class: 'form-control', :required => true %>
+    </div>
+    <%= f.fields_for :departments do |d| %>
+      <div class="form-group">
+        <label for="faculty">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="If a module is used across departments also select those other departments to give them permission to edit this modul ">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+        <%= d.text_field :department_id, class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"}, :required => true %>
+      </div>
+    <% end %>
+  <% end %>
+<script>
+
+// This might not be needed
+$("div.bootstrap-tagsinput").remove();
+
+var depts = <%= raw Department.all.pluck(:name) %>
+var departmentsBloodhound = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.whitespace,
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    local: depts
+  });
+ 
+tagsBloodhound.initialize();
+ 
+$('input#department_id').tagsinput({
+  typeaheadjs: {
+    name: 'departmentsBloodhound',
+    source: departmentsBloodhound.ttAdapter()
+  },
+  freeInput: false
+});
+
+</script>
+         
+</div>
+
+
+
+

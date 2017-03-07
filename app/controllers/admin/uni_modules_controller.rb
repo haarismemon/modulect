@@ -40,8 +40,10 @@ module Admin
   	end
 
 
-    # For Feras
   	def edit
+      if params[:id].present?
+        @uni_module = UniModule.find(params[:id])
+      end
   	end
 
 
