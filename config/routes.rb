@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     resources :career_tags, except: [:show]
     resources :interest_tags, except: [:show]
 
-    get 'upload'
+    get 'upload', to: 'upload#upload'
     root to: "dashboard#index"
   end
 
