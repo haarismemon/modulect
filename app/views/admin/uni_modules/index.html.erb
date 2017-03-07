@@ -1,4 +1,8 @@
+<% if request.query_parameters["search"].present?%>
+<% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Modules') %>
+<% else %>
 <% provide(:title, 'Modules') %>
+<% end %>
 <header class="header">
    <h1 class="header__heading" id="page-title">Modules</h1>
    <div class="header__actions">

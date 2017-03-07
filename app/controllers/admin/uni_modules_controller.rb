@@ -14,10 +14,12 @@ module Admin
     
 
       # if sorting present
-      if params[:sortby].present? && params[:order].present? && !params[:search].present?
+      if params[:search].present?
+        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20)      
+      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @uni_modules = sort(UniModule, @uni_modules, params[:sortby], params[:order], 20)
       else
-        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20)
+        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20).order('name ASC')
       end
 
   	end
