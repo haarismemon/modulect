@@ -36,13 +36,15 @@ module Admin
       logger.debug(resource_header)
 
       require 'csv'
-      CSV.open("#{resource_name}_upload.csv", "wb") do |csv|
+      CSV.open("app/assets/admin_upload.csv", "wb") do |csv|
         csv << resource_header
       end
 
-      # CSV.foreach("#{resource_name}_upload.csv") do |row|
+      # CSV.foreach("admin_upload.csv") do |row|
       #   logger.debug(row)
       # end
+
+      send_file "app/assets/admin_upload.csv", :type=>"text/csv", :x_sendfile=>true
 
       head :no_content
     end
