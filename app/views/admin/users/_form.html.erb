@@ -93,7 +93,17 @@
     </div>
 
 
+    <div class="row field-unit field-unit--select user_level" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :year_of_study %>
+        </div>
+        <div class="field-unit__field select-field">
+          <%= f.select :year_of_study, (1..10).to_a,{:prompt=>"",:size => 5},class: "year-drop"%>
 
+        </div>
+      </div>
+    </div>
 
 
 
