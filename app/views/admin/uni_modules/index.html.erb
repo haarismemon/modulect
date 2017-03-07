@@ -3,8 +3,8 @@
 <% else %>
 <% provide(:title, 'Modules') %>
 <% end %>
-<header class="header">
-   <h1 class="header__heading" id="page-title">Modules</h1>
+<header class="header index-header-area">
+   <h1 id="page-title">Modules</h1>
    <div class="header__actions">
       <a class="button" href="%3C%=%20new_admin_uni_module_path%20%%3E"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New uni module</a>
    </div>
@@ -12,7 +12,7 @@
 <div class="table-responsive">
    <table aria-labelledby="page-title" class="collection-data table">
       <thead>
-         <tr>
+         <tr class="table-header-fields">
             <% sorting_columns = {"name" => "Name", "code" => "Code"} %>
             <% if request.query_parameters["search"].present?%>
               <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: true, per_page: @per_page} %>
@@ -42,7 +42,7 @@
    </table>
    <%= will_paginate @uni_modules %>
 
-              <%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page} %>
+              <%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query} %>
 
 
 </div>

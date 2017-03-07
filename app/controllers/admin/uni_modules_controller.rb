@@ -13,6 +13,7 @@ module Admin
       end
 
       if params[:search].present?
+        @search_query = params[:search]
         # find the correct modules,sort alphabetically and paginate
         @uni_modules = @uni_modules.select { |uni_module| uni_module.name.downcase.include?(params[:search].downcase) }.sort_by{|uni_module| uni_module[:name]}.paginate(page: params[:page], :per_page => @per_page)      
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?

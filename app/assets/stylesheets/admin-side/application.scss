@@ -410,6 +410,27 @@ a.action-edit{margin-right:10px;}
     margin-right: 5px;
 }
 
+.pagination{width:100%;}
+
+#pagination-bottom{margin-top:7px;width:100%;text-align:center;margin-bottom:15px;}
+
+#pagination-bottom .dropdown-toggle,
+#pagination-bottom .dropdown-toggle:hover,
+#pagination-bottom .dropdown-toggle:focus,
+#pagination-bottom .dropdown-toggle:active {
+    background: #dfe2e1;
+    color: #333;
+    box-shadow: 0px 3px 0px 0px #999;
+    outline: none;
+    width:100px;
+}
+
+#pagination-bottom .bootstrap-select{width:100px}
+
+.table-header-fields{margin-top:20px;}
+
+.index-header-area{margin-bottom:-20px;}
+
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
 	display:none;
