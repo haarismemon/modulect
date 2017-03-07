@@ -5,21 +5,21 @@ module Admin
 
   	def index      
 
-      @uni_modules = UniModule.all
-    
-      if params[:search].present?
-        @uni_modules = @uni_modules.select { |uni_module| uni_module.name.downcase.include?(params[:search].downcase) }
-        @uni_modules = @uni_modules.sort_by{|uni_module| uni_module[:name]}
-      end
-    
+      @uni_modules = UniModule.all 
 
-      # if sorting present
-      if params[:search].present?
-        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20)      
-      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
-        @uni_modules = sort(UniModule, @uni_modules, params[:sortby], params[:order], 20)
+      if params[:per_page].present?
+        @per_page = params[:per_page].to_i
       else
-        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20).order('name ASC')
+        @per_page = 20
+      end
+
+      if params[:search].present?
+        # find the correct modules,sort alphabetically and paginate
+        @uni_modules = @uni_modules.select { |uni_module| uni_module.name.downcase.include?(params[:search].downcase) }.sort_by{|uni_module| uni_module[:name]}.paginate(page: params[:page], :per_page => @per_page)      
+      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
+        @uni_modules = sort(UniModule, @uni_modules, params[:sortby], params[:order], @per_page)
+      else
+        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
       end
 
   	end
