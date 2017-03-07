@@ -9,8 +9,9 @@
 		<table aria-labelledby="page-title" class="collection-data table">
 			<thead>
 				<tr>
-					<th class="cell-label cell-label--string cell-label--false" scope="col">Name</th>
-					<th class="cell-label cell-label--string cell-label--false" scope="col">Code</th>
+					<th class="cell-label cell-label--string cell-label--false" scope="col">
+					<%= link_to 'Name', url_for( :sortby => 'name' ), method: :get %></th>
+					<th class="cell-label cell-label--string cell-label--false" scope="col"><%= link_to 'Code', url_for( :sortby => 'code' ), method: :get %></th>
 					<th class="cell-label cell-label--string cell-label--false" scope="col">Semester</th>
 					<th class="cell-label cell-label--string cell-label--false" scope="col">Available actions</th>
 				</tr>
