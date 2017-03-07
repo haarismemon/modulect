@@ -1,7 +1,7 @@
 <% if action_name == "index" && controller_name != "dashboard"  %>
 	<form class="search" action="<%= request.original_fullpath %>" method="get">
 	    <i class="fa fa-search" aria-hidden="true"></i>
-	    <input type="text" name="search" class="search__input" placeholder="Type anywhere to search" value="<% if request.query_parameters["search"].present?%> <%= request.query_parameters["search"] %> <% end %>" aria-label="Search" />
+	    <input type="text" name="search" class="search__input" placeholder="Type anywhere to search" value="<% if request.query_parameters["search"].present?%><%= request.query_parameters["search"] %><% end %>" aria-label="Search" />
 	    <span class="search__clear">
 	  </span>
 	</form>
