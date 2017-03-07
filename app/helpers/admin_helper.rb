@@ -28,4 +28,16 @@ module AdminHelper
       valid_department.courses.size
     end
 
+    def get_num_depts_for_faculty(valid_faculty)
+      count = 0
+
+      Department.all.each do |department|
+        if department.faculty_id == valid_faculty.id
+          count+= 1
+        end
+      end
+
+      count
+    end
+
 end
