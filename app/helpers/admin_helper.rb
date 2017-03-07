@@ -40,4 +40,19 @@ module AdminHelper
       count
     end
 
+    def get_num_departments_for_course(valid_course)
+      count = 0
+      Department.all.each do |department|
+        if department.courses.include?(valid_course)
+          count+= 1
+        end
+      end
+
+      if count == 1 
+        count.to_s + " Department"
+      else 
+        count.to_s + "Departments"
+      end
+    end
+
 end
