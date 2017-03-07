@@ -10,7 +10,12 @@
       <thead>
          <tr>
             <% sorting_columns = {"name" => "Name", "code" => "Code"} %>
-             <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns} %>
+            <% if request.query_parameters["search"].present?%>
+              <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: true} %>
+            <% else %>
+              <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: false} %>
+            <% end %>
+
             <th class="cell-label cell-label--string cell-label--false" scope="col">Semester</th>
             <th class="cell-label cell-label--string cell-label--false" scope="col">Available actions</th>
          </tr>
