@@ -13,13 +13,12 @@ module Admin
 
       if params[:search].present?
         @search_query = params[:search]
-        # find the correct modules,sort alphabetically and paginate
         @faculties = @faculties.select { |faculty| faculty.name.downcase.include?(params[:search].downcase) }.sort_by{|faculty| faculty[:name]}.paginate(page: params[:page], :per_page => @per_page) 
 
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
-        @faculties = sort(UniModule, @faculties, @sort_by, @order, @per_page)
+        @faculties = sort(Faculty, @faculties, @sort_by, @order, @per_page, "name")
       else
         @faculties = @faculties.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
       end

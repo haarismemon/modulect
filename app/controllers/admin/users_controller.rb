@@ -1,6 +1,5 @@
 module Admin
-  class UsersController < ApplicationController
-    layout 'admin/application'
+  class UsersController < Admin::BaseController
     def new
       @user = User.new
     end
@@ -47,11 +46,18 @@ module Admin
     def destroy
       #find by id
       @user = User.find(params[:id])
-      #delete tuple object from db
-      @user.destroy
-      flash[:success] = @user.full_name+" has been deleted successfully."
-      #redirect to action which displays all users
-      redirect_to(admin_users_path)
+      
+      if @user.user_level == "super_admin_access"
+        flash[:error] = "For security, super admins cannot be deleted through Modulect. Please use the database instead."
+        redirect_to(admin_users_path)
+      else
+        #delete tuple object from db
+        @user.destroy
+        flash[:success] = @user.full_name+" has been deleted successfully."
+        #redirect to action which displays all users
+        redirect_to(admin_users_path)
+      end
+
     end
 
     def show
@@ -62,7 +68,26 @@ module Admin
 
     def index
       #returns all users by order of last_name
-      @users = User.paginate(:page => params[:page])
+     @users = User.all 
+
+      if params[:per_page].present? && params[:per_page].to_i > 0
+        @per_page = params[:per_page].to_i
+      else
+        @per_page = 20
+      end
+
+      if params[:search].present?
+        @search_query = params[:search]
+        @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}.paginate(page: params[:page], :per_page => @per_page) 
+
+      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
+        @sort_by = params[:sortby]
+        @order = params[:order]
+        @users = sort(User, @users, @sort_by, @order, @per_page, "first_name")
+      else
+        @users = @users.paginate(page: params[:page], :per_page => @per_page).order('first_name ASC')
+      end
+
     end
 
     private
