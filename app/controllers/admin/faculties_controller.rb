@@ -1,48 +1,63 @@
 module Admin
   class FacultiesController < Admin::BaseController
-   
-    # must paginate
-  	def index
-      @faculties = Faculty.all
-  	end
-
-  	def new
-      @faculty = Faculty.new
-  	end
-
-  	def create
-    @faculty = Faculty.new(user_params)
-    if @faculty.save
-      flash[:info] = "Faculty succesffully created"
-      redirect_to admin_edit_faculty_path(@faculty)
-    else
-      render 'new'
-    end
-  end
-
-  	def edit
-  	end
-
-  	def update
-      if @user.update_attributes(user_params)
-        flash[:success] = "Faculty updated"
-      redirect_to admin_edit_faculty_path(@faculty)
-      else
-        render 'edit'
-      end
-  	end
-
-  	def destroy
-       Faculty.find(params[:id]).destroy
-        flash[:success] = "Faculty deleted"
-        redirect_to admin_faculties_path
-  	end
-
-
-    private
     
-    def faculty_params
-      params.require(:faculty).permit(:name)
+    
+    def index      
+      @faculties = Faculty.all 
+
+      if params[:per_page].present? && params[:per_page].to_i > 0
+        @per_page = params[:per_page].to_i
+      else
+        @per_page = 20
+      end
+
+      if params[:search].present?
+        @search_query = params[:search]
+        # find the correct modules,sort alphabetically and paginate
+        @faculties = @faculties.select { |faculty| faculty.name.downcase.include?(params[:search].downcase) }.sort_by{|faculty| faculty[:name]}.paginate(page: params[:page], :per_page => @per_page) 
+
+      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
+        @sort_by = params[:sortby]
+        @order = params[:order]
+        @faculties = sort(UniModule, @faculties, @sort_by, @order, @per_page)
+      else
+        @faculties = @faculties.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+      end
+
+    end
+
+    def new
+    end
+
+    def create
+    end
+
+    def edit
+    end
+
+    def update
+    end
+
+    def destroy
+      @faculty = Faculty.find(params[:id])
+      can_delete = true
+
+      # check if being used
+      Department.all.each do |department|
+        if department.faculty_id == @faculty.id
+          can_delete = false
+          break
+        end
+      end
+      
+      if can_delete
+        @faculty.destroy
+        flash[:success] = "Faculty successfully deleted"
+        redirect_back_or admin_faculties_path
+      else 
+        flash[:error] = "Faculty contains departments, can't delete"
+        redirect_back_or admin_faculties_path
+      end
     end
 
 
