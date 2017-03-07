@@ -1,6 +1,6 @@
 module Admin
   class UsersController < ApplicationController
-
+    layout 'admin/application'
     def new
       @user = User.new
     end
@@ -58,7 +58,7 @@ module Admin
 
     def index
       #returns all users by order of last_name
-      @users = User.paginate(page: params[:page])
+      @users = User.paginate(:page => params[:page])
     end
 
     private
