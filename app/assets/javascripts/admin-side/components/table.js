@@ -17,3 +17,7 @@ $(function () {
      $('input:checkbox').not(this).closest('tr').toggleClass("highlight", this.checked);
  });
 });
+
+$(window).load(function(){
+    $('.collection-data').find('input[type="checkbox"]:checked').closest('tr').addClass("highlight");
+});
