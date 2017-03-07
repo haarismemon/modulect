@@ -17,7 +17,7 @@ module Admin
         redirect_to(admin_users_path)
       else
         # If save fails, redisplay the form so user can fix problems
-        render(:new)
+        render("admin/users/new")
 
       end
     end

@@ -26,49 +26,76 @@ module Admin
 
     end
 
-  	def new
-  	end
+    def new
+      @department = Department.new
+    end
 
-  	def create
-  	end
+    def create
+      # Instantiate a new object using form parameters
+      @department = Department.new(department_params)
+      # Save the object
+      if @department.save
+        # If save succeeds, redirect to the index action
+        flash[:notice] = "You have successfully created #{@department.name}"
+        redirect_to(admin_departments_path)
+      else
+        # If save fails, redisplay the form so user can fix problems
+        render("admin/departments/new")
 
-  	def edit
-  	end
+      end
+    end
 
-  	def update
-  	end
+    def edit
+      #! allows for template's form to be ready populated with the associated users data ready for modification by admin
+      @department = Department.find(params[:id])
+    end
+
+    def update
+      # Find a  object using id parameters
+      @department = Department.find(params[:id])
+      # Update the object
+      if @user.update_attributes(department_params)
+        # If save succeeds, redirect to the index action
+        flash[:success] = "Successfully updated "+ @department.name
+        redirect_to(admin_departments_path) and return
+      else
+        # If save fails, redisplay the form so user can fix problems
+        render('admin/users/edit')
+      end
+    end
 
   	def destroy
       @department = Department.find(params[:id])
-      can_delete = true
-
-      # check if being used
-      UniModule.all.each do |uni_module|
-        if uni_module.department_ids.include?(@department.id)
-          can_delete = false
-          break
-        end
-      end
-
-      if can_delete
-        # check if being used
-        Course.all.each do |course|
-          if course.department_ids.include?(@department.id)
-            can_delete = false
-            break
-          end
-        end
-      end
-      
-      if can_delete
+      # check for constraints
+      if has_no_course_dependacies && has_no_uni_module_dependacies
+        #delete tuple object from db
         @department.destroy
-        flash[:success] = "Department successfully deleted"
-        redirect_back_or admin_departments_path
-      else 
-        flash[:error] = "Department is linked to a course/module, unable to delete"
-        redirect_back_or admin_departments_path
+        flash[:success] = @department.name+" has been deleted successfully."
+      else
+        flash[:error] = @department.name+" is linked to a course/module, first either move or delete those modules."
       end
-  	end
+      #redirect to action which displays all departments
+      redirect_back_or admin_departments_path
+    end
+
+    private
+
+    def department_params
+      #!add params that want to be recognized by this application
+      params.require(:department).permit(:name, :courses, :faculty)
+    end
+
+      # checks no uni module is linked to it already
+      def has_no_uni_module_dependacies
+        @department.uni_modules.empty??true:false
+      end
+
+
+      # checks no course is linked to it already
+    def has_no_course_dependacies
+      @department.courses.empty??true:false
+    end
+
 
 
   end

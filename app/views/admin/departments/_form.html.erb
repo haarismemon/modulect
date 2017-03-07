@@ -1,0 +1,46 @@
+
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(f.object) %>
+
+
+        <!--renders attributes-->
+        <div class="row field-unit field-unit--string name" >
+          <div class="col-xs-12">
+            <div class="field-unit__label">
+              <%= f.label :name %>
+            </div>
+            <div class="field-unit__field">
+              <%= f.text_field :name %>
+            </div>
+          </div>
+        </div>
+
+
+      <div class="row field-unit field-unit--select faculty user-field" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :faculty%>
+        </div>
+        <div class="field-unit__field default-select-field">
+              <%= collection_select(:faculty, :faculty_id, Faculty.all, :id, :name, :prompt => '',:include_blank => true)%>
+        </div>
+      </div>
+    </div>
+
+
+    <!--<div class="row field-unit field-unit&#45;&#45;select department department-admin-field user-field" >-->
+      <!--<div class="col-xs-12">-->
+        <!--<div class="field-unit__label">-->
+          <!--<%= f.label :department %>-->
+        <!--</div>-->
+        <!--<div class="field-unit__field default-select-field">-->
+          <!--<%= collection_select(:department, :depaartment_id, Department.all, :id, :name, :prompt => '',:include_blank => true)%>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--</span>-->
+
+
+    <div class="form-actions"><%= f.submit%></div>
+
