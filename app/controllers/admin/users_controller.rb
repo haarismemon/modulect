@@ -1,6 +1,5 @@
 module Admin
-  class UsersController < ApplicationController
-    layout 'admin/application'
+  class UsersController < Admin::BaseController
     def new
       @user = User.new
     end
@@ -49,7 +48,7 @@ module Admin
       @user = User.find(params[:id])
       
       if @user.user_level == "super_admin_access"
-        flash[:error] = "For security, super admins cannot be deleted through Modulect. Please use database instead."
+        flash[:error] = "For security, super admins cannot be deleted through Modulect. Please use the database instead."
         redirect_to(admin_users_path)
       else
         #delete tuple object from db
