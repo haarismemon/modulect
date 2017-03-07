@@ -39,7 +39,7 @@
     <h3>Step 1: Select the resource to upload</h3>
     <form>
       <div class="form-entry text-center" style="margin-top: 20px;">
-        <select id="upload-resource" class="form-control">
+        <select id="upload-resource" class="form-control" style="font-size: 14px; padding: 6px 12px">
           <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
               <% if [:uni_modules, :courses, :departments, :users, :year_structures, :faculties].include? resource %>
                   <option value=<%= resource %>><%= display_resource_name(resource) %></option>
