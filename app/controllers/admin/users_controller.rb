@@ -63,11 +63,18 @@ module Admin
     def destroy
       #find by id
       @user = User.find(params[:id])
-      #delete tuple object from db
-      @user.destroy
-      flash[:success] = @user.full_name+" has been deleted successfully."
-      #redirect to action which displays all users
-      redirect_to(admin_users_path)
+      
+      if @user.user_level == "super_admin_access"
+        flash[:error] = "For security, super admins cannot be deleted through Modulect. Please use database instead."
+        redirect_to(admin_users_path)
+      else
+        #delete tuple object from db
+        @user.destroy
+        flash[:success] = @user.full_name+" has been deleted successfully."
+        #redirect to action which displays all users
+        redirect_to(admin_users_path)
+      end
+
     end
 
     def show
