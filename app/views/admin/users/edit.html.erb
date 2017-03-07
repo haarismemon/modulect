@@ -11,5 +11,6 @@
         ) %>
   </div>
 </header>
-
-<%= render "form", page: page %>
+<%= form_for(@user, html: {class: "form"}) do |f| %>
+  <%= render "form", f: f%>
+<% end %>
