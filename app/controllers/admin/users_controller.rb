@@ -12,7 +12,7 @@ module Admin
       if @user.save
         # If save succeeds, redirect to the index action
         flash[:notice] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
-        redirect_to(users_path)
+        redirect_to(admin_users_path)
       else
         # If save fails, redisplay the form so user can fix problems
         render(:new)
@@ -30,7 +30,7 @@ module Admin
       # Find a  object using id parameters
       @user = User.find(params[:id])
       # Update the object
-      if @user.update_attributes(user_params)
+      if @user.update_attributes(admin_user_params)
         # If save succeeds, redirect to the index action
         flash[:success] = "Successfully updated "+ @user.full_name
         redirect_to(admin_user_path(@user)) and return
@@ -47,7 +47,7 @@ module Admin
       @user.destroy
       flash[:success] = @user.full_name+" has been deleted successfully."
       #redirect to action which displays all users
-      redirect_to(users_path)
+      redirect_to(admin_users_path)
     end
 
     def show
