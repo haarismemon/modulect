@@ -21,6 +21,10 @@ module Admin
     end
 
 
+    def edit
+      #! allows for template's form to be ready populated with the associated users data ready for modification by admin
+      @user = User.find(params[:id])
+    end
 
   end
 end
