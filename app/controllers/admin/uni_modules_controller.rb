@@ -12,7 +12,6 @@ module Admin
         @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20).order('name ASC')
       end
 
-
   	end
 
   	def new
