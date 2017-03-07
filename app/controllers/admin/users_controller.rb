@@ -8,6 +8,8 @@ module Admin
     def create
       # Instantiate a new object using form parameters
       @user = User.new(user_params)
+      # add faculty value inferred from department
+      automatic_faculty_update
       # Save the object
       if @user.save
         # If save succeeds, redirect to the index action
@@ -29,14 +31,16 @@ module Admin
     def update
       # Find a  object using id parameters
       @user = User.find(params[:id])
+      # add faculty value inferred from department
+      automatic_faculty_update
       # Update the object
-      if @user.update_attributes(admin_user_params)
+      if @user.update_attributes(user_params)
         # If save succeeds, redirect to the index action
         flash[:success] = "Successfully updated "+ @user.full_name
-        redirect_to(admin_user_path(@user)) and return
+        redirect_to(admin_users_path) and return
       else
         # If save fails, redisplay the form so user can fix problems
-        render('edit')
+        render('admin/users/edit')
       end
     end
 
@@ -66,6 +70,13 @@ module Admin
     def user_params
       #!add params that want to be recognized by this application
       params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level)
+    end
+
+    # Infers users faculty from department
+    def automatic_faculty_update
+      if(@user.department.present?)
+        @user.faculty = @user.department.faculty
+      end
     end
 
   end

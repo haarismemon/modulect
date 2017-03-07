@@ -8,6 +8,6 @@
   </div>
 </header>
 
-  <%= form_for(@user, html: {class: "form"}) do |f| %>
-      <%= render "form", f: f%>
+  <%= form_for(@user, html: {class: "form",:onsubmit => "removeVoidFields()"}) do |f| %>
+      <%= render "form", f: f,parent:"new"%>
   <% end %>

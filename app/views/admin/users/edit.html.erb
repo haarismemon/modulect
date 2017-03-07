@@ -11,6 +11,6 @@
         ) %>
   </div>
 </header>
-<%= form_for(@user, html: {class: "form"}) do |f| %>
-  <%= render "form", f: f%>
+<%= form_for(@user, :url => { :action => "update",:method => "put" }, html: {class: "form",:onsubmit => "removeVoidFields()" })do |f| %>
+  <%= render "form", f: f,parent: "edit"%>
 <% end %>
