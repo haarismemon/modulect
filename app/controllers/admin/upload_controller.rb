@@ -36,9 +36,12 @@ module Admin
       logger.debug(resource_header)
 
       require 'csv'
-      # CSV.open("#{resource_name}_upload.csv") do |csv|
-      #   csv << ["animal", "count", "price"]
-      #   csv << ["fox", "1", "$90.00"]
+      CSV.open("#{resource_name}_upload.csv", "wb") do |csv|
+        csv << resource_header
+      end
+
+      # CSV.foreach("#{resource_name}_upload.csv") do |row|
+      #   logger.debug(row)
       # end
 
       head :no_content
