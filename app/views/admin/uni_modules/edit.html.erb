@@ -17,10 +17,34 @@
     </div>
     <%= f.fields_for :departments do |d| %>
       <div class="form-group">
-        <label for="faculty">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="If a module is used across departments also select those other departments to give them permission to edit this modul ">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+        <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="If a module is used across departments also select those other departments to give them permission to edit this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
         <%= d.text_field :department_id, class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"}, :required => true %>
       </div>
     <% end %>
+    <div class="form-group">
+      <label for="description">Description <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify a description about this module which will be shown to users.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.text_field :description, class: 'form-control'%>
+    </div>
+    <div class="form-group">
+      <label for="semester">Semester <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the semester(s) this module will take place in.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.select(:semester, options_for_select([["1","1"], ["2","2"], ["1 & 2","3"], ["1 or 2", "0"]], @uni_module.semester), {}, {:class => 'form-control', :required => true, :style => 'height: 50px; padding-top: 12px; padding-bottom: 12px'} )%>
+    </div>
+    <div class="form-group">
+      <label for="credits">Credits <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the number of credits this module is worth.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.text_field :credits, class: 'form-control', :required => true %>
+    </div>
+    <div class="form-group">
+      <label for="lecturers">Lecturers <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify all the names of the lecturers of this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.text_field :lecturers, class: 'form-control'%>
+    </div>
+    <h3>Tags</h3>
+    <%= f.fields_for :tags do |t| %>
+      <div class="form-group">
+        <label for="careerTags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="If a module is used across departments also select those other departments to give them permission to edit this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+        <%= t.text_field :department_id, class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"}, :required => true %>
+      </div>
+    <% end %>
+
   <% end %>
 <script>
 
