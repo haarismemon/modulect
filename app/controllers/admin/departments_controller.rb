@@ -13,7 +13,6 @@ module Admin
 
       if params[:search].present?
         @search_query = params[:search]
-        # find the correct modules,sort alphabetically and paginate
         @departments = @departments.select { |department| department.name.downcase.include?(params[:search].downcase) }.sort_by{|department| department[:name]}.paginate(page: params[:page], :per_page => @per_page) 
 
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
