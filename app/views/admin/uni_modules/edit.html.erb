@@ -57,7 +57,7 @@
       <%= f.text_field :exam_percentage, class: 'form-control'%>
     </div>
     <div class="form-group">
-      <label for="coursework_percentage">Exam percentage <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the percentage of marks which are from coursework for this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <label for="coursework_percentage">Coursework percentage <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the percentage of marks which are from coursework for this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
       <%= f.text_field :coursework_percentage, class: 'form-control'%>
     </div>
     <div class="form-group">
@@ -66,7 +66,7 @@
     </div>
     <div class="form-group">
       <label for="more_info_link">More info link <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify a link e.g. to a departmental website which has more information about this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-      <%= f.text_field :pass_rate, class: 'form-control'%>
+      <%= f.text_field :more_info_link, class: 'form-control'%>
     </div>
 
   <% end %>
@@ -81,15 +81,49 @@ var departmentsBloodhound = new Bloodhound({
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     local: depts
   });
- 
-tagsBloodhound.initialize();
- 
+
+departmentsBloodhound.initialize();
+
 $('input#department_id').tagsinput({
   typeaheadjs: {
     name: 'departmentsBloodhound',
     source: departmentsBloodhound.ttAdapter()
   },
   freeInput: false
+});
+
+var careerTags = <%= raw Tag.where("type = ?", "CareerTag").pluck(:name) %>
+var careerBloodhound = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.whitespace,
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    local: careerTags
+  });
+
+careerBloodhound.initialize();
+
+$('input#department_id').tagsinput({
+  typeaheadjs: {
+    name: 'careerBloodhound',
+    source: careerBloodhound.ttAdapter()
+  },
+  freeInput: true
+});
+
+var interestTags = <%= raw Tag.where("type = ?", "InterestTag").pluck(:name) %>
+var interestBloodhound = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.whitespace,
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    local: interestTags
+  });
+
+interestBloodhound.initialize();
+
+ $('input#department_id').tagsinput({
+  typeaheadjs: {
+    name: 'interestBloodhound',
+    source: interestBloodhound.ttAdapter()
+  },
+  freeInput: true
 });
 
 </script>
