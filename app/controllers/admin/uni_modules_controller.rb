@@ -1,9 +1,15 @@
 module Admin
   class UniModulesController < Admin::BaseController
-    
         
   	def index      
+
       @uni_modules = UniModule.all
+
+    
+     # if params[:search].present?
+     #   @uni_modules = @uni_modules.select { |uni_module| uni_module.name.include?(params[:search]) }
+     # end
+    
 
       # if sorting present
       if params[:sortby].present? && params[:order].present?
@@ -11,6 +17,9 @@ module Admin
       else
         @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20).order('name ASC')
       end
+
+
+
 
 
   	end

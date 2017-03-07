@@ -9,21 +9,8 @@
    <table aria-labelledby="page-title" class="collection-data table">
       <thead>
          <tr>
-            <% # use this for sorting, specify columns to sort by, and that's it %> 
-            <% sorting_colums = {"name" => "Name", "code" => "Code"} %>
-            <% sorting_colums.each do |column| %>
-            <th class="cell-label cell-label--string cell-label--false" scope="col">
-               <% if request.query_parameters["sortby"] == column.first %>
-               <% if request.query_parameters["order"] == "asc" %>
-               <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc" ), method: :get %>
-               <% else %>		
-               <%= link_to (column.second + " <i class='fa fa-arrow-down' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "asc" ), method: :get %>
-               <% end %>
-               <% else %>
-               <%= link_to column.second, url_for( :sortby => column.first, :order => "asc" ), method: :get %>
-               <% end %>
-            </th>
-            <% end %>
+            <% sorting_columns = {"name" => "Name", "code" => "Code"} %>
+             <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns} %>
             <th class="cell-label cell-label--string cell-label--false" scope="col">Semester</th>
             <th class="cell-label cell-label--string cell-label--false" scope="col">Available actions</th>
          </tr>
