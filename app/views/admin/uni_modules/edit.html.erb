@@ -40,10 +40,34 @@
     <h3>Tags</h3>
     <%= f.fields_for :tags do |t| %>
       <div class="form-group">
-        <label for="careerTags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="If a module is used across departments also select those other departments to give them permission to edit this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= t.text_field :department_id, class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"}, :required => true %>
+        <label for="careerTags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+        <%= t.text_field :tag_id, class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :required => true %>
+      </div>
+      <div class="form-group">
+        <label for="interestTags">Interest Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the interests this module may suit.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+        <%= t.text_field :tag_id, class: 'form-control', :placeholder => 'Type to add a interest tag', data: {:role => "tagsinput"}, :required => true %>
       </div>
     <% end %>
+    <div class="form-group">
+      <label for="assessment">Assessment Methods <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the assessment method(s) which are used in this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.text_field :assessment_methods, class: 'form-control'%>
+    </div>
+    <div class="form-group">
+      <label for="exam_percentage">Exam percentage <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the percentage of marks which are from exams for this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.text_field :exam_percentage, class: 'form-control'%>
+    </div>
+    <div class="form-group">
+      <label for="coursework_percentage">Exam percentage <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the percentage of marks which are from coursework for this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.text_field :coursework_percentage, class: 'form-control'%>
+    </div>
+    <div class="form-group">
+      <label for="pass_rate">Pass Rate <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the percentage of students which pass this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.text_field :pass_rate, class: 'form-control'%>
+    </div>
+    <div class="form-group">
+      <label for="more_info_link">More info link <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify a link e.g. to a departmental website which has more information about this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      <%= f.text_field :pass_rate, class: 'form-control'%>
+    </div>
 
   <% end %>
 <script>
