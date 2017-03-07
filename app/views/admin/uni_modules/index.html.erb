@@ -42,25 +42,7 @@
    </table>
    <%= will_paginate @uni_modules %>
 
+              <%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page} %>
 
-<% per_page = [10,20,50,250,500] %>
-<form action="<%= request.original_fullpath %>">
-   <select name="per_page"  onchange="this.form.submit()">
-
-<% if !per_page.include?(@per_page) %>
-<option value="<%= @per_page %>"><%= @per_page %></option>
-<% end %>
-
-
-    <% per_page.each do |number| %>
-
-    <option value="<%= number %>" <% if @per_page == number %>selected="selected"<% end %>><%= number %></option>
-
-    <% end %>
-
-</select>​
-<input type="hidden" name="sort_by" value="<%= @sort_by %>">
-<input type="hidden" name="order" value="<%= @order %>">
-</form>
 
 </div>
