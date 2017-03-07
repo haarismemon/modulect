@@ -1,17 +1,23 @@
 $(function() {
-  var keycodes = { space: 32, enter: 13 };
-
-  var visitDataUrl = function(event) {
-    if (event.type=="click" ||
-        event.keyCode == keycodes.space ||
-        event.keyCode == keycodes.enter) {
-
-      if(!event.target.href) {
+  $('.table__row').on('click', 'td:not(.no-link)', function(){
         window.location = $(event.target).closest("tr").data("url");
-      }
-    }
-  };
+    });
+});
 
-  $("table").on("click", ".table__row", visitDataUrl);
-  $("table").on("keydown", ".table__row", visitDataUrl);
+$(function(){
+    $("input[type='checkbox']").on('change', function() {
+        $(this).closest('tr').toggleClass("highlight", this.checked);
+    });
+});
+
+
+$(function () {
+  $("#check_all").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+     $('input:checkbox').not(this).closest('tr').toggleClass("highlight", this.checked);
+ });
+});
+
+$(window).load(function(){
+    $('.collection-data').find('input[type="checkbox"]:checked').closest('tr').addClass("highlight");
 });

@@ -24,13 +24,14 @@ Rails.application.routes.draw do
     resources :courses, except: [:show]
     resources :departments, except: [:show]
     resources :faculties, except: [:show]
-    resources :groups, except: [:show], except: [:show]
+    resources :groups, except: [:show]
     resources :tags, except: [:show]
     resources :uni_modules, except: [:show]
     resources :users, except: [:show]
     resources :year_structures, except: [:show]
     resources :career_tags, except: [:show]
     resources :interest_tags, except: [:show]
+
     get 'upload'
     root to: "dashboard#index"
   end
