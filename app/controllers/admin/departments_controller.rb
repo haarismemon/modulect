@@ -18,7 +18,7 @@ module Admin
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
-        @departments = sort(Department, @departments, @sort_by, @order, @per_page)
+        @departments = sort(Department, @departments, @sort_by, @order, @per_page, "name")
       else
         @departments = @departments.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
       end

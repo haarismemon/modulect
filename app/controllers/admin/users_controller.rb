@@ -3,26 +3,7 @@ module Admin
     layout 'admin/application'
 
     def new
-      @users = User.all 
-
-      if params[:per_page].present? && params[:per_page].to_i > 0
-        @per_page = params[:per_page].to_i
-      else
-        @per_page = 20
-      end
-
-      if params[:search].present?
-        @search_query = params[:search]
-        @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}.paginate(page: params[:page], :per_page => @per_page) 
-
-      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
-        @sort_by = params[:sortby]
-        @order = params[:order]
-        @users = sort(User, @users, @sort_by, @order, @per_page)
-      else
-        @users = @users.paginate(page: params[:page], :per_page => @per_page).order('first_name ASC')
-      end
-
+       @user = User.new
     end
 
     def create
@@ -85,7 +66,26 @@ module Admin
 
     def index
       #returns all users by order of last_name
-      @users = User.paginate(:page => params[:page])
+     @users = User.all 
+
+      if params[:per_page].present? && params[:per_page].to_i > 0
+        @per_page = params[:per_page].to_i
+      else
+        @per_page = 20
+      end
+
+      if params[:search].present?
+        @search_query = params[:search]
+        @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}.paginate(page: params[:page], :per_page => @per_page) 
+
+      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
+        @sort_by = params[:sortby]
+        @order = params[:order]
+        @users = sort(User, @users, @sort_by, @order, @per_page, "first_name")
+      else
+        @users = @users.paginate(page: params[:page], :per_page => @per_page).order('first_name ASC')
+      end
+
     end
 
     private
