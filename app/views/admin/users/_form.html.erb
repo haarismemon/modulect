@@ -1,0 +1,223 @@
+
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(f.object) %>
+
+
+        <!--renders attributes-->
+        <div class="row field-unit field-unit--string first_name" >
+          <div class="col-xs-12">
+            <div class="field-unit__label">
+              <%= f.label :first_name %>
+            </div>
+            <div class="field-unit__field">
+              <%= f.text_field :first_name %>
+            </div>
+          </div>
+        </div>
+
+
+    <div class="row field-unit field-unit--string last_name" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :last_name %>
+        </div>
+        <div class="field-unit__field">
+          <%= f.text_field :last_name %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row field-unit field-unit--select user_level" >
+      <div class="col-xs-12">
+        <div class="field-unit__label ">
+          <%= f.label :user_level, {style: "margin: 0px"} %>
+        </div>
+        <span  class="instruction-label form-actions" >*Warning: Super admin access gives unbound access to modify, create and delete</span>
+        <div class="field-unit__field user-level-select-field">
+          <%= f.select(
+                  :user_level,
+                  options_for_select(
+                      f.object.class.public_send("user_levels")
+                          .map { |k, v| [k.humanize, k] },
+                      f.object.public_send("user_level")),
+                  include_blank: true) %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row field-unit field-unit--string email" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :email %>
+        </div>
+        <div class="field-unit__field">
+          <%= f.text_field :email %>
+        </div>
+      </div>
+    </div>
+
+    <%if parent=="edit"  %>
+        <a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a>
+    <%end%>
+
+    <div class="<%= parent=="edit"?"password-hidden":""%>">
+    <div class="row field-unit field-unit--string password" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :password %>
+        </div>
+        <div class="field-unit__field">
+          <%= f.text_field :password %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row field-unit field-unit--string password_confirmation" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :password_confirmation %>
+        </div>
+        <div class="field-unit__field">
+          <%= f.text_field :password_confirmation %>
+        </div>
+      </div>
+    </div>
+
+      </div>
+
+    <span class="additional-fields">
+
+      <div class="page-header additional-info">Additional information</div>
+
+      <div class="row field-unit field-unit--select course user-field" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :course%>
+        </div>
+        <div class="field-unit__field default-select-field">
+              <%= collection_select(:course, :course_id, Course.all, :id, :name, :prompt => '',:include_blank => true)%>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row field-unit field-unit--select year_of_study user-field" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :year_of_study %>
+        </div>
+        <div class="field-unit__field default-select-field">
+          <%= f.select :year_of_study, (1..9).to_a,{:prompt=>"",:size => 5},class: "year-drop",:include_blank => true%>
+        </div>
+      </div>
+    </div>
+
+    <div class="row field-unit field-unit--select department department-admin-field user-field" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :department %>
+        </div>
+        <div class="field-unit__field default-select-field">
+          <%= collection_select(:department, :depaartment_id, Department.all, :id, :name, :prompt => '',:include_blank => true)%>
+        </div>
+      </div>
+    </div>
+
+    </span>
+
+
+    <div class="form-actions"><%= f.submit%></div>
+
+    <script>
+
+
+        //allows for creation of instruction label for a particular field
+        var createInstruction = function(field_name,instruction){
+            var html = '<span class="instruction-label form-actions "+field_name+"">'+instruction+'</span>' ;
+            var label = $("."+field_name+" label");
+            label.css("margin","0px");
+            if($("."+field_name+" .instruction-label").length>0){
+                $("."+field_name+" .instruction-label").remove();
+            }
+            label.parent().after(html);
+        };
+
+        //remove the void fields that dont need to be submitted{based on user_level submitted}
+        var removeVoidFields = function(){
+            var value = $( ".user_level select" ).val();
+                if(value == "user_access"){
+                }else if(value == "department_admin_access"){
+                   $(".course").remove();
+                   $(".year_of_study").remove();
+                }else if(value == "super_admin_access"){
+                    $(".user-field").remove();
+                }
+        };
+
+        //based of current user_level selected
+        //manipulates the page depending on what the select item value is for user_level field
+        // i.e shows certain fields that were initially not rendered
+        var determineFieldsToShow = function(value){
+            if(value == "user_access"){
+                appendFieldSection("user-field")
+                createInstruction("department","*This is the lead department incharge of course");
+            }else if(value == "department_admin_access"){
+                appendFieldSection("department-admin-field");
+                createInstruction("department","*This is the department, which the user has access over");
+            }else if(value == "super_admin_access"){
+                clearAllAdditionalFields();
+            }
+        };
+
+        //toggles the password field to appear and disappear
+        var openPasswordFields = function () {
+            $(".password-hidden").slideToggle("slow");
+            $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
+        };
+
+        var additional_info_header
+        $(document).ready(function () {
+            //store of key component
+            additional_info_header = $(".additional-info");
+
+            determineFieldsToShow($( ".user_level select" ).val());
+
+            //select statements being initialized
+            $('.default-select-field select').selectize();
+            var $select = $('.user-level-select-field select').selectize({ onChange: function(value) {
+                determineFieldsToShow(value)
+            }});
+
+        });
+
+
+
+
+        //A section is a set of fields for a particular type of user
+
+        //clears all sections{all fields that are additional}
+        var clearAllAdditionalFields =  function(){
+            $(".user-field").css("display","none");
+            $(".department-admin-field").css("display","none");
+            additional_info_header.css("display","none");
+        }
+
+        //adds all fields releated to a section for a particular user_level to form
+        var appendFieldSection = function(section){
+            additional_info_header.css("display","block");
+            if(section=="user-field"){
+                $(".department-admin-field").css("display","none");
+                $(".user-field").css("display","block");
+
+            }else if(section=="department-admin-field"){
+                $(".user-field").css("display","none");
+                $(".department-admin-field").css("display","block");
+            }
+
+        }
+
+
+    </script>
