@@ -20,30 +20,6 @@
 
 
 
-
-               <script>
-
-            $("#delete-all").on("click", function(){
-               var data = { 'check_action[]' : []};
-               $(":checked").each(function() {
-                 data['check_action[]'].push($(this).val());
-               });
-
-console.log(data);
-                $.ajax({
-                   type: "POST",
-                    url: "<%=admin_uni_modules_bulk_delete_path %>",
-  data: {module_ids: data},
-                    context: document.body
-                })
-            
-            
-            
-            
-            });
-            
-            
-         </script>
 </span>
 <% end %>
       <a class="button" href="%3C%=%20new_admin_uni_module_path%20%%3E"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New uni module</a>
