@@ -40,6 +40,26 @@ module Admin
       end
     end
 
+    def destroy
+      #find by id
+      @user = User.find(params[:id])
+      #delete tuple object from db
+      @user.destroy
+      flash[:success] = @user.full_name+" has been deleted successfully."
+      #redirect to action which displays all users
+      redirect_to(users_path)
+    end
+
+    def show
+      @user = User.find(params[:id])
+    end
+
+
+
+    def index
+      #returns all users by order of last_name
+      @users = User.paginate(page: params[:page])
+    end
 
     private
 
