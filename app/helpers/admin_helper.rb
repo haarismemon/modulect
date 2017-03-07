@@ -24,4 +24,8 @@ module AdminHelper
 
     end
 
+    def get_num_courses_for_department(valid_department)
+      valid_department.courses.size
+    end
+
 end
