@@ -12,17 +12,17 @@
                <% if request.query_parameters["sortby"].present? && request.query_parameters["order"].present? %>
                   <% if request.query_parameters["sortby"] == column.first %>
                      <% if request.query_parameters["order"] == "asc" %>
-                      <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc" ), method: :get %>
+                      <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page ), method: :get %>
                      <% else %>		
-                      <%= link_to (column.second + " <i class='fa fa-arrow-down' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "asc" ), method: :get %>
+                      <%= link_to (column.second + " <i class='fa fa-arrow-down' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "asc", :per_page => per_page  ), method: :get %>
                      <% end %>
                      <% else %>
-                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc" ), method: :get %>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc", :per_page => per_page  ), method: :get %>
                   <% end %>
                <% elsif i == 0 %>
-                  <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc" ), method: :get %>
+                  <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page  ), method: :get %>
                   <% else %>
-                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc" ), method: :get %>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc", :per_page => per_page  ), method: :get %>
                <% end %>
             </th>
             <% end %>

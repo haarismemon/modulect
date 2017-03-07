@@ -4,22 +4,29 @@ module Admin
 
 
   	def index      
+      @uni_modules = UniModule.all 
 
-      @uni_modules = UniModule.all
-    
-      if params[:search].present?
-        @uni_modules = @uni_modules.select { |uni_module| uni_module.name.downcase.include?(params[:search].downcase) }
-        @uni_modules = @uni_modules.sort_by{|uni_module| uni_module[:name]}
-      end
-    
-
-      # if sorting present
-      if params[:search].present?
-        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20)      
-      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
-        @uni_modules = sort(UniModule, @uni_modules, params[:sortby], params[:order], 20)
+      if params[:per_page].present? && params[:per_page].to_i > 0
+        @per_page = params[:per_page].to_i
       else
-        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => 20).order('name ASC')
+        @per_page = 20
+      end
+
+      if params[:search].present?
+        @search_query = params[:search]
+        # find the correct modules,sort alphabetically and paginate
+        @uni_modules = @uni_modules.select { |uni_module| uni_module.name.downcase.include?(params[:search].downcase) }.sort_by{|uni_module| uni_module[:name]}.paginate(page: params[:page], :per_page => @per_page) 
+
+        if @uni_modules.size == 0
+          @uni_modules = UniModule.all.select { |uni_module| uni_module.code.downcase.include?(params[:search].downcase) }.sort_by{|uni_module| uni_module[:code]}.paginate(page: params[:page], :per_page => @per_page)
+        end 
+
+      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
+        @sort_by = params[:sortby]
+        @order = params[:order]
+        @uni_modules = sort(UniModule, @uni_modules, @sort_by, @order, @per_page)
+      else
+        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
       end
 
   	end

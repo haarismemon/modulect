@@ -1,0 +1,18 @@
+<div id="pagination-bottom">
+   <% per_page_numbers = [10,20,50,250,500] %>
+   <form action="<%= request.original_fullpath %>">
+      Show&nbsp;&nbsp;
+      <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+         <% if !per_page_numbers.include?(per_page) %>
+         <option value="<%= per_page %>"><%= per_page %></option>
+         <% end %>
+         <% per_page_numbers.each do |number| %>
+         <option value="<%= number %>" <% if per_page == number %>selected="selected"<% end %>><%= number %></option>
+         <% end %>
+      </select>
+      &nbsp;&nbsp;per page
+      <input type="hidden" name="search" value="<%= search_query %>">
+      <input type="hidden" name="sort_by" value="<%= sort_by %>">
+      <input type="hidden" name="order" value="<%= order %>">
+   </form>
+</div>
