@@ -25,6 +25,18 @@ module Admin
     def edit
       #! allows for template's form to be ready populated with the associated users data ready for modification by admin
       @user = User.find(params[:id])
+      @faculties = Faculty.all
+    #Initialise departments and courses to be empty unless previously selected
+    if(@user.department_id.present?)
+      @departments = Faculty.find_by_id(@user.faculty_id).departments
+    else
+      @departments = {}
+    end
+    if(@user.department_id.present? && @user.course_id.present?)
+      @courses = Department.find_by_id(@user.department_id).courses
+    else
+      @courses = {}
+    end
     end
 
     def update
@@ -42,6 +54,24 @@ module Admin
         render('admin/users/edit')
       end
     end
+
+    # Change the value of @departments if faculty changes
+  def update_departments
+    @departments = Department.where("faculty_id = ?", params[:faculty_id])
+                  respond_to do |format|
+                    format.js
+                  end
+  end
+
+  # Change the value of @courses if department changes
+  def update_courses
+    d = Department.find(params[:department_id])
+    @courses = d.courses.where("department_id = ?", params[:department_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
 
     def destroy
       #find by id
