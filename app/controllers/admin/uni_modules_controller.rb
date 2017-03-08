@@ -53,16 +53,27 @@ module Admin
   	def update
       @uni_module = UniModule.find(params[:id])
 
+      #Update associated departments
+      if params[:departments].present? && !params[:departments].empty?
+        
+      
+      else
+        # Failed to update
+        # If save fails, redisplay the form so user can fix problems
+        render(edit_admin_uni_module_path(@uni_module))
+      end
+
       #Update the module with the new attributes
       if @uni_module.update_attributes(uni_module_params)
         # Successfully updated
         flash[:success] = "Successfully updated #{@uni_module.name}"
-        redirect_to(@uni_module) and return
+        redirect_to(edit_admin_uni_module_path(@uni_module)) and return
       else
         # Failed to update
         # If save fails, redisplay the form so user can fix problems
-        render('admin/uni_module/edit')
+        render(edit_admin_uni_module_path(uni_module))
       end
+
   	end
 
   	def destroy

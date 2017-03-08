@@ -19,7 +19,7 @@
     <%= f.fields_for :departments do |d| %>
       <div class="form-group">
         <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="If a module is used across departments also select those other departments to give them permission to edit this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= d.text_field :department_id, :value => @departments.join(","), class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"} %>
+        <%= d.text_field :department, :value => @departments.join(","), class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"}, :id => "departments" %>
       </div>
     <% end %>
     <div class="form-group">
@@ -42,11 +42,11 @@
     <%= f.fields_for :tags do |t| %>
       <div class="form-group">
         <label for="career_tags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= t.text_field :tag_id, :value => @careerTags.join(","), class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :id => "career_tags", :required => true %>
+        <%= t.text_field :career_tags, :value => @careerTags.join(","), class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :id => "career_tags", :required => true %>
       </div>
       <div class="form-group">
         <label for="interest_tags">Interest Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the interests this module may suit.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= t.text_field :tag_id, :value => @interestTags.join(","), class: 'form-control', :placeholder => 'Type to add a interest tag', data: {:role => "tagsinput"}, :id => "interest_tags", :required => true %>
+        <%= t.text_field :interest_tags, :value => @interestTags.join(","), class: 'form-control', :placeholder => 'Type to add a interest tag', data: {:role => "tagsinput"}, :id => "interest_tags", :required => true %>
       </div>
     <% end %>
     <div class="form-group">
@@ -83,7 +83,6 @@ $("moduleForm").on("keypress", function (e) {
     }
 });
 
-// This might not be needed
 $("div.bootstrap-tagsinput").remove();
 
 var depts = <%= raw Department.all.pluck(:name) %>
@@ -95,7 +94,7 @@ var departmentsBloodhound = new Bloodhound({
 
 departmentsBloodhound.initialize();
 
-$('input#uni_module_departments_department_id').tagsinput({
+$('input#departments').tagsinput({
   typeaheadjs: {
     name: 'departmentsBloodhound',
     source: departmentsBloodhound.ttAdapter()
