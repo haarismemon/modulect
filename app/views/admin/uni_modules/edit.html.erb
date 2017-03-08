@@ -18,7 +18,7 @@
     <%= f.fields_for :departments do |d| %>
       <div class="form-group">
         <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="If a module is used across departments also select those other departments to give them permission to edit this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= d.text_field :department_id, class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"}, :required => true %>
+        <%= d.text_field :department_id, :value => @departments.join(","), class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"}, :required => true %>
       </div>
     <% end %>
     <div class="form-group">
@@ -41,11 +41,11 @@
     <%= f.fields_for :tags do |t| %>
       <div class="form-group">
         <label for="career_tags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= t.text_field :tag_id, class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :id => "career_tags", :required => true %>
+        <%= t.text_field :tag_id, :value => @careerTags.join(","), class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :id => "career_tags", :required => true %>
       </div>
       <div class="form-group">
         <label for="interest_tags">Interest Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the interests this module may suit.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= t.text_field :tag_id, class: 'form-control', :placeholder => 'Type to add a interest tag', data: {:role => "tagsinput"}, :id => "interest_tags", :required => true %>
+        <%= t.text_field :tag_id, :value => @interestTags.join(","), class: 'form-control', :placeholder => 'Type to add a interest tag', data: {:role => "tagsinput"}, :id => "interest_tags", :required => true %>
       </div>
     <% end %>
     <div class="form-group">
@@ -68,8 +68,12 @@
       <label for="more_info_link">More info link <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify a link e.g. to a departmental website which has more information about this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
       <%= f.text_field :more_info_link, class: 'form-control'%>
     </div>
-
+    <div class="form-group">
+      <button class="btn btn-lg btn-block" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update Module
+      </button>
+    </div>
   <% end %>
+</div>
 <script>
 
 // This might not be needed

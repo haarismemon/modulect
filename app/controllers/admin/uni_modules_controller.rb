@@ -43,6 +43,10 @@ module Admin
   	def edit
       if params[:id].present?
         @uni_module = UniModule.find(params[:id])
+
+        @departments = @uni_module.department_ids.pluck(:name)
+        @careerTags = @uni_module.career_tags.pluck(:name)
+        @interestTags = @uni_module.interest_tags.pluck(:name)
       end
   	end
 
