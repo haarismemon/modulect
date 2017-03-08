@@ -50,10 +50,19 @@ module Admin
       end
   	end
 
-
-    # For Feras
   	def update
+      @uni_module = UniModule.find(params[:id])
 
+      #Update the module with the new attributes
+      if @uni_module.update_attributes(uni_module_params)
+        # Successfully updated
+        flash[:success] = "Successfully updated #{@uni_module.name}"
+        redirect_to(@uni_module) and return
+      else
+        # Failed to update
+        # If save fails, redisplay the form so user can fix problems
+        render('admin/uni_module/edit')
+      end
   	end
 
   	def destroy
@@ -79,7 +88,10 @@ module Admin
 
   	end
 
-
+    private
+    def uni_module_params
+      params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
+    end
 
   end
 end

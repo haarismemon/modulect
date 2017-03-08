@@ -5,8 +5,9 @@
   <%= link_to "<i class='fa fa-eye' aria-hidden='true'></i>&nbsp;&nbsp;View Module".html_safe, @uni_module, method: :get, class: "button" %>
   </div>
 </header>
-<div class="col-md-12">
-  <%= form_for @uni_module, url: { action: :update } do |f|%>
+<div id="moduleForm" class="col-md-12">
+  <%= form_for @uni_module, :url => { :action => "update",:method => "put" }, html: {class: "form" } do |f|%>
+  <%= error_messages_for(f.object) %>
     <div class="form-group">
       <label for="inputName">Name</label>
       <%= f.text_field :name, class: 'form-control', :required => true %>
@@ -18,7 +19,7 @@
     <%= f.fields_for :departments do |d| %>
       <div class="form-group">
         <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="If a module is used across departments also select those other departments to give them permission to edit this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= d.text_field :department_id, :value => @departments.join(","), class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"}, :required => true %>
+        <%= d.text_field :department_id, :value => @departments.join(","), class: 'form-control', :placeholder => 'Search for department', data: {:role => "tagsinput"} %>
       </div>
     <% end %>
     <div class="form-group">
@@ -75,6 +76,12 @@
   <% end %>
 </div>
 <script>
+
+$("moduleForm").on("keypress", function (e) {
+    if (e.keyCode == 13) {
+        return false;
+    }
+});
 
 // This might not be needed
 $("div.bootstrap-tagsinput").remove();
