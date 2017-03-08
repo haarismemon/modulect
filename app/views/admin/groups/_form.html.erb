@@ -6,10 +6,11 @@
   <%= f.number_field :total_credits %>
 
   <%= f.label :uni_modules %>
-  <div id="select-modules">
+  <div id="select-modules-from-group-form">
     <%= f.select :uni_module_ids, UniModule.all.collect {|x| [x.code, x.id]}, {},
     :multiple => true, class: 'selectize' %>
   </div>
+
 
   <p>
     <%= f.check_box :compulsory %>

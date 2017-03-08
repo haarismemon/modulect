@@ -4,4 +4,6 @@ $(document).ready(function() {
   });
 
   $('#select-departments > .selectize').selectize({});
+
+  $('#select-modules-from-group-form > .selectize').selectize({});
 });
