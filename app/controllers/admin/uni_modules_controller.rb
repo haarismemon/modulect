@@ -35,8 +35,16 @@ module Admin
       @uni_module = UniModule.new
   	end
 
-    # For Feras
   	def create
+      @uni_module = UniModule.new(uni_module_params)
+      if @uni_module.save
+        # If save succeeds, redirect to the index action
+        flash[:notice] = "Succesfully created module"
+        redirect_to(admin_uni_modules_path)
+      else
+        # If save fails, redisplay the form so user can fix problems
+        render(:new)
+      end
   	end
 
 
