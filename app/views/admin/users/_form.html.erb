@@ -50,8 +50,18 @@
       <div class="field-unit__label">
          <%= f.label :email %>
       </div>
-      <div class="field-unit__field">
+      <div class="field-unit__field ">
          <%= f.text_field :email %>
+      </div>
+   </div>
+</div>
+<div class="row field-unit field-unit--checkbox activated" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <%= f.label :activated %>
+      </div>
+      <div class="field-unit__field checkbox">
+         <%= f.check_box :activated %><label for="user_activated"><span></span></label>
       </div>
    </div>
 </div>
@@ -129,7 +139,12 @@
    </div>
 </span>
 <div class="form-actions"><button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>New<% end %> user" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
-<%if parent=="edit"  %>Update<% else %>New<% end %> user</button></div>
+   <%if parent=="edit"  %>Update<% else %>New<% end %> user</button>
+   <% if parent == "edit" && @user.user_level != "super_admin_access" %>
+   &nbsp;&nbsp;&nbsp;<%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete user".html_safe, admin_user_path(@user), method: :delete,
+      data: { confirm: "Are you sure you want to delete this user?" } , class: "table__action--destroy" %>
+   <% end %>
+</div>
 <script>
    document.getElementById('user_level_select').addEventListener('change', function () {
        var style = this.value == "super_admin_access" ? 'none' : 'block';

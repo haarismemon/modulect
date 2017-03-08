@@ -58,7 +58,7 @@ module Admin
       # Save the object
       if @user.save
         # If save succeeds, redirect to the index action
-        flash[:notice] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
+        flash[:notice] = "You have successfully created #{@user.full_name} and its privileges have been granted"
         redirect_to(admin_users_path)
       else
         # If save fails, redisplay the form so user can fix problems
@@ -160,7 +160,7 @@ module Admin
 
     def user_params
       #!add params that want to be recognized by this application
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level, :faculty_id, :department_id, :course_id, :year_of_study)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level, :faculty_id, :department_id, :course_id, :year_of_study, :activated)
     end
 
 
