@@ -1,12 +1,26 @@
-<% if flash.any? %>
 <div id="flash-container">
-   <div class="row">
-      <div class="col-md-12">
-    <% flash.each do |key, value| -%>
-      <div class="flash-alert flash-alert-<%= key %>">
-            <i class="fa fa-info" aria-hidden="true"></i> <%= value %></div>
-    <% end -%>
-  </div>
-  </div>
-  </div>
-<% end %>
+   <% if flash.any? %>
+   <div id="flash-container">
+      <div class="row">
+         <div class="col-md-12">
+            <% flash.each do |key, value| -%>
+            <div class="flash-alert flash-alert-<%= key %>">
+               <i class="fa fa-info" aria-hidden="true"></i> <%= value %>
+            </div>
+            <% end %>
+         </div>
+      </div>
+   </div>
+   <% end %>
+   <% if request.query_parameters["ba"].present? && request.query_parameters["ba"] == "true"%>
+   <div id="flash-container">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="flash-alert flash-alert-success">
+               <i class="fa fa-info" aria-hidden="true"></i> Bulk action applied
+            </div>
+         </div>
+      </div>
+   </div>
+   <% end %>
+</div>

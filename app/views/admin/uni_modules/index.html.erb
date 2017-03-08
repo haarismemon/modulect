@@ -1,3 +1,19 @@
+<% if request.query_parameters["ba"].present?%>
+<script>
+// get the string following the ?
+var query = window.location.search.substring(1)
+
+// is there anything there ?
+if(query.length) {
+   // are the new history methods available ?
+   if(window.history != undefined && window.history.pushState != undefined) {
+        // if pushstate exists, add a new state the the history, this changes the url without reloading the page
+
+        window.history.pushState({}, document.title, window.location.pathname);
+   }
+}
+</script>
+<% end %>
 <% if request.query_parameters["search"].present?%>
 <% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Modules') %>
 <% else %>
@@ -67,10 +83,6 @@
    <%= will_paginate @uni_modules %>
 </div>
 <%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query} %>
-
-
-
-
 <script>
 
          $(document).ready(function() {
@@ -87,19 +99,11 @@
                     context: document.body,
                     data: {
                         ids : JSON.stringify(checkboxValues)
-                     },
-                      success: function(){  
-                        alert(JSON.stringify(checkboxValues));
                      }
                 })  
              });
          });
 </script>
-
-
-
-
-
 <% elsif request.query_parameters["search"].present?%>
 <h4 style="margin-bottom:30px;">Unfortunately, we couldn't find any modules related to your search query.</h4>
 <% else %>

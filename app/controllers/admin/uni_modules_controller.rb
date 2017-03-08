@@ -52,24 +52,9 @@ module Admin
 
   	def destroy
       @uni_module = UniModule.find(params[:id])
-      can_delete = true
-
-      # check if being used
-      Group.all.each do |group|
-        if group.uni_modules.include?(@uni_module)
-          can_delete = false
-          break
-        end
-      end
-
-      if can_delete
-        @uni_module.destroy
-        flash[:success] = "Module successfully deleted"
-        redirect_back_or admin_uni_modules_path
-      else 
-        flash[:error] = "Module is linked to a course, remove from course first"
-        redirect_back_or admin_uni_modules_path
-      end
+      @uni_module.destroy
+      flash[:success] = "Module successfully deleted"
+      redirect_back_or admin_uni_modules_path
 
   	end
 
@@ -83,9 +68,11 @@ module Admin
       uni_module = UniModule.find(id.to_i)
 
       if !uni_module.nil?
-        uni_module.update_attribute("name", "AB")
+        uni_module.update_attribute("name", "AZZ")
       end
     end
+
+    render :js => "window.location = '/admin/uni_modules?ba=true'"
 
   end
 
