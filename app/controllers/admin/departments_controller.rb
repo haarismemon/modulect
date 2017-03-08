@@ -82,7 +82,7 @@ module Admin
 
     def department_params
       #!add params that want to be recognized by this application
-      params.require(:department).permit(:faculty,:courses,:name)
+      params.require(:department).permit(:faculty_id,:name,:course_ids=>[])
     end
 
       # checks no uni module is linked to it already
