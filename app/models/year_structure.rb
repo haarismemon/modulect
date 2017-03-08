@@ -9,6 +9,14 @@ class YearStructure < ApplicationRecord
 
   accepts_nested_attributes_for :groups
 
+  def self.max_year_of_study
+    7
+  end
+
+  def groups_existent?
+    self.groups.count > 0
+  end
+
   def to_s
     "#{year_of_study.titleize}"
   end

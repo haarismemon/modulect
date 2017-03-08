@@ -17,6 +17,26 @@ class Course < ApplicationRecord
 
   has_many :users
 
+  def create_year_structures
+    for y in 1..self.duration_in_years
+      self.year_structures << YearStructure.create(year_of_study: y)
+    end
+  end
+
+  def update_year_structures(duration_in_years_pre_update)
+    duration_in_years_post_update = self.duration_in_years
+    if duration_in_years_post_update > duration_in_years_pre_update
+      last_year_of_study = self.year_structures.last.year_of_study_before_type_cast
+      max_year_of_study = YearStructure.max_year_of_study
+      for new_year_of_study in last_year_of_study + 1 .. duration_in_years_post_update
+        if new_year_of_study <= max_year_of_study
+          self.year_structures << YearStructure.create(
+                                  year_of_study: new_year_of_study)
+        end
+      end
+    end
+  end
+
   # Registers a department as belonging to this course.
   def add_department(valid_department)
     departments << valid_department

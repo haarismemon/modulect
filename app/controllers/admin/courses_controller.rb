@@ -17,9 +17,7 @@ module Admin
     def create
       @course = Course.new(course_params)
       if @course.save
-        for y in 1..@course.duration_in_years
-          @course.year_structures << YearStructure.new(year_of_study: y)
-        end
+        @course.create_year_structures
         flash[:notice] = @course.name+ " was created successfully. "
         redirect_to(edit_admin_course_path @course)
       else
@@ -32,9 +30,10 @@ module Admin
     end
 
     def update
-      # TODO: Handle the duration_in_years update properly
       @course = Course.find(params[:id])
+      duration_in_years_pre_update = @course.duration_in_years
       if @course.update_attributes course_params
+        @course.update_year_structures(duration_in_years_pre_update)
         flash[:notice] = "#{@course.name} successfully updated."
         redirect_to edit_admin_course_path(@course)
       else
@@ -55,6 +54,5 @@ module Admin
                   :duration_in_years, :year, department_ids: [],
                   year_structures_attributes: [:id, :year_of_study, :_destroy])
     end
-
   end
 end
