@@ -40,7 +40,7 @@
                 <div class="field-unit__field">
                   <input id="new-faculty-name" name="names" type="text">
                 </div>
-                <link_to id="new-faculty-btn" class="button " style="margin-top:2% " >Add faculty</link_to>
+                <a id="new-faculty-btn" class="button " style="margin-top:2% " >Add faculty</a>
               </div>
             </div>
 
@@ -61,8 +61,18 @@
               data: { faculty_name: faculty_name},
               context: document.body,
               success: function(){
-                  $("input#new-faculty-name").val("")
-                  openFacultyCreation()
+                  $("input#new-faculty-name").val("");
+                  openFacultyCreation();
+
+                  var count = $(".selectize-dropdown-content")[0].children.length + 1;
+
+                  $("#department_faculty_id").append("<option value=\"" + count + "\" selected=\"selected\">" + faculty_name + "</option>");
+
+                  $(".selectize-input.items.full.has-options.has-items").children().first().remove()
+                  $(".selectize-input.items.full.has-options.has-items").prepend("<div class=\"item\" data-value=\""+count+"\">"+faculty_name+"</div>")
+
+                  $(".selectize-dropdown-content").first().find("*").removeClass("selected");
+                  $(".selectize-dropdown-content").first().append("<div class=\"option selected\" data-selectable data-value=\"" +count+ "\">"+faculty_name+"</div>")
               }
           })
 
@@ -96,5 +106,8 @@
           $(".default-select-field select").selectize();
       });
 
+      $("input[type='submit']").on("click", function(){
+          dsfd
+      });
 
     </script>
