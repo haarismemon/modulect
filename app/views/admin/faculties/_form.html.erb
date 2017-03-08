@@ -11,6 +11,21 @@
       </div>
    </div>
 </div>
+<style>
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){width:100%}
+.departments .bootstrap-select button{box-shadow:0 0 0 0 #fff;text-shadow:none;font-family:"Varela Round";font-size:16px;background:#fff;padding:10px 15px;color:#555459;border:1px solid #dfe0e1;text-transform: none;}
+</style>
+<div class="row field-unit field-unit--string departments" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <label for="faculty_department_ids">Departments</label>
+      </div>
+      <div class="field-unit__field">
+         <%= f.collection_select :department_ids, Department.order(:name), :id, :name, {}, {multiple: true, "data-actions-box"=>"true", :class=>"selectpicker"}%>
+      </div>
+   </div>
+</div>
+
 <div class="form-actions">
 <button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>New<% end %> faculty" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
 <%if parent=="edit"  %>Update<% else %>New<% end %> faculty</button>

@@ -86,7 +86,7 @@ module Admin
 
       def faculty_params
         #!add params that want to be recognized by this application
-        params.require(:faculty).permit(:name)
+        params.require(:faculty).permit(:name, :department_ids=>[])
       end
 
 

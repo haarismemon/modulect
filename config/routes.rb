@@ -32,6 +32,9 @@ Rails.application.routes.draw do
     resources :career_tags, except: [:show]
     resources :interest_tags, except: [:show]
     get 'upload', to: 'upload#upload'
+
+    post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
+
     root to: "dashboard#index"
   end
 
