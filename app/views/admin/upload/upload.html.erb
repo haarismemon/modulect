@@ -82,16 +82,8 @@
         $("#upload-2-next").on("click", function () {
             $("#upload-step-3").show();
 
-            var resource = $("select#upload-resource").val();
-            $.ajax({
-                type: "POST",
-                url: "<%= admin_download_path %>",
-                data: { resource_choice: resource},
-                context: document.body,
-//                success: function(){
-//                  alert("success ");
-//                }
-            })
+            var resource_name = $("select#upload-resource").val();
+            $("form.button_to").attr("action", "/admin/download?resource_choice=" + resource_name)
         });
     });
 </script>
