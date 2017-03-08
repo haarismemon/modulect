@@ -3,8 +3,12 @@ module Admin
   require 'will_paginate/array'
 
 
-  	def index      
-      @uni_modules = UniModule.all 
+  	def index
+      if current_user.user_level == "super_admin_access"     
+        @uni_modules = UniModule.all
+      else
+        @uni_modules = Department.find(current_user.department_id).uni_modules
+      end  
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
