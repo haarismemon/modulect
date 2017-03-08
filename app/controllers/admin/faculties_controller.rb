@@ -26,15 +26,35 @@ module Admin
     end
 
     def new
+      @faculty = Faculty.new
     end
 
     def create
+      @faculty = Faculty.new(faculty_params)
+      if @faculty.save
+        # If save succeeds, redirect to the index action
+        flash[:notice] = "Succesfully created faculty"
+        redirect_to(admin_faculties_path)
+      else
+        # If save fails, redisplay the form so user can fix problems
+        render(:new)
+
     end
 
     def edit
+      @faculty = Faculty.find(params[:id])
     end
 
     def update
+      @faculty = Faculty.find(params[:id])
+      # Update the object
+      if @faculty.update_attributes(user_params)
+        # If save succeeds, redirect to the index action
+        flash[:success] = "Successfully updated "+ @faculty.name
+        redirect_to(edit_admin_faculty_path) and return
+      else
+        # If save fails, redisplay the form so user can fix problems
+        render('admin/users/faculty')
     end
 
     def destroy
@@ -61,4 +81,16 @@ module Admin
 
 
   end
+
+  private
+
+    def faculty_params
+      #!add params that want to be recognized by this application
+      params.require(:faculty).permit(:name)
+    end
+
+
+  end
+
+
 end

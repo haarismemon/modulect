@@ -108,7 +108,7 @@ module Admin
       # Find a  object using id parameters
       @user = User.find(params[:id])
 
- @faculties = Faculty.all
+     @faculties = Faculty.all
       #Initialise departments and courses to be empty unless previously selected
       if(@user.department_id.present?)
         @departments = Faculty.find_by_id(@user.faculty_id).departments
