@@ -54,7 +54,17 @@
     <script>
       $("button#new-faculty-btn").on("click", function(){
           var faculty_name = $("input#new-faculty-name").val()
-          console.log(faculty_name)
+
+          $.ajax({
+              type: "POST",
+              url: "<%= admin_add_new_faculty_path %>",
+              data: { faculty_name: faculty_name},
+              context: document.body,
+              success: function(){
+                alert("success");
+              }
+          })
+
       })
     </script>
 

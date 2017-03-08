@@ -66,6 +66,8 @@ module Admin
       if new_faculty.nil?
         new_faculty = Faculty.create(name: params[:faculty_name])
       end
+
+      head :no_content
     end
 
 
