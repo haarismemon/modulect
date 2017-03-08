@@ -112,6 +112,10 @@ label {
     padding: 25px 15px;
 }
 
+select.form-control{
+    padding:15px;
+    height:52px ;
+  }
 @-moz-document url-prefix() {
     .form-control {
         height: auto;
