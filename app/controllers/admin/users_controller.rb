@@ -2,6 +2,18 @@ module Admin
   class UsersController < Admin::BaseController
     def new
       @user = User.new
+      @faculties = Faculty.all
+      #Initialise departments and courses to be empty unless previously selected
+      if(@user.department_id.present?)
+        @departments = Faculty.find_by_id(@user.faculty_id).departments
+      else
+        @departments = {}
+      end
+      if(@user.department_id.present? && @user.course_id.present?)
+        @courses = Department.find_by_id(@user.department_id).courses
+      else
+        @courses = {}
+      end
     end
 
     def create
@@ -26,17 +38,17 @@ module Admin
       #! allows for template's form to be ready populated with the associated users data ready for modification by admin
       @user = User.find(params[:id])
       @faculties = Faculty.all
-    #Initialise departments and courses to be empty unless previously selected
-    if(@user.department_id.present?)
-      @departments = Faculty.find_by_id(@user.faculty_id).departments
-    else
-      @departments = {}
-    end
-    if(@user.department_id.present? && @user.course_id.present?)
-      @courses = Department.find_by_id(@user.department_id).courses
-    else
-      @courses = {}
-    end
+      #Initialise departments and courses to be empty unless previously selected
+      if(@user.department_id.present?)
+        @departments = Faculty.find_by_id(@user.faculty_id).departments
+      else
+        @departments = {}
+      end
+      if(@user.department_id.present? && @user.course_id.present?)
+        @courses = Department.find_by_id(@user.department_id).courses
+      else
+        @courses = {}
+      end
     end
 
     def update
@@ -48,7 +60,7 @@ module Admin
       if @user.update_attributes(user_params)
         # If save succeeds, redirect to the index action
         flash[:success] = "Successfully updated "+ @user.full_name
-        redirect_to(admin_users_path) and return
+        redirect_to(edit_admin_user_path) and return
       else
         # If save fails, redisplay the form so user can fix problems
         render('admin/users/edit')
@@ -124,7 +136,7 @@ module Admin
 
     def user_params
       #!add params that want to be recognized by this application
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level, :faculty_id, :department_id, :course_id, :year_of_study)
     end
 
     # Infers users faculty from department
