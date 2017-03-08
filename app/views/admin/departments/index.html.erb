@@ -56,7 +56,11 @@
             <td class="cell-data cell-data--string"><%= department.name %></td>
             <td class="cell-data cell-data--string"><%= get_num_courses_for_department(department) %></td>
             <td class="cell-data cell-data--string">
+               <% if department.faculty_id.present? %>
                <a href="<%= edit_admin_faculty_path(Faculty.find(department.faculty_id)) %>"><%= Faculty.find(department.faculty_id).name %></a>
+               <% else %>
+               - 
+               <% end %>
 
             </td>
             <td class="no-link">
