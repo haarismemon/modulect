@@ -66,15 +66,28 @@ module Admin
         @uni_module.destroy
         flash[:success] = "Module successfully deleted"
         redirect_back_or admin_uni_modules_path
-      else 
-        flash[:error] = "Module is linked to a course, remove from course first"
-        redirect_back_or admin_uni_modules_path
       end
 
   	end
 
+  
+
+  def bulk_delete
+    module_ids_string = params[:ids]
+    module_ids = eval(module_ids_string)
+
+    module_ids.each do |id|
+      uni_module = UniModule.find(id.to_i)
+
+      if !uni_module.nil?
+        uni_module.update_attribute("name", "AB")
+      end
+    end
+
+
+
   end
 
-
+end
  
 end
