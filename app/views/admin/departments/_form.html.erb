@@ -16,31 +16,47 @@
         </div>
 
 
-      <div class="row field-unit field-unit--select faculty user-field" >
+      <div class="row field-unit field-unit--select faculty" >
       <div class="col-xs-12">
         <div class="field-unit__label">
           <%= f.label :faculty%>
         </div>
         <div class="field-unit__field default-select-field">
-              <%= collection_select(:faculty, :faculty_id, Faculty.all, :id, :name, :prompt => '',:include_blank => true)%>
+              <%= collection_select( :faculty,:faculty_id, Faculty.all, :id, :name,{ :prompt => '',:include_blank => true})%>
+          <div class="col-xs-12">
+            <!--link that redirects to new of faculty-->
+            <%= link_to(
+                    "Create new faculty",
+                    new_admin_faculty_path,
+                    {class: "add-depart", :onclick => "cache()"},
+                ) %>
+          </div>
         </div>
       </div>
     </div>
 
 
-    <!--<div class="row field-unit field-unit&#45;&#45;select department department-admin-field user-field" >-->
-      <!--<div class="col-xs-12">-->
-        <!--<div class="field-unit__label">-->
-          <!--<%= f.label :department %>-->
-        <!--</div>-->
-        <!--<div class="field-unit__field default-select-field">-->
-          <!--<%= collection_select(:department, :depaartment_id, Department.all, :id, :name, :prompt => '',:include_blank => true)%>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+    <div class="row field-unit field-unit--select  courses" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label "Courses associated" %>
+        </div>
+        <div class="field-unit__field default-select-field">
+              <%= collection_select(:courses, :course_id, Course.all, :id, :name, {},:multiple=>true)%>
 
-    <!--</span>-->
+        </div>
+      </div>
+    </div>
 
 
     <div class="form-actions"><%= f.submit%></div>
 
+    <script>
+        $(document).ready(function () {
+
+            //select statements being initialized
+            $('.default-select-field select').selectize();
+
+        });
+
+    </script>

@@ -54,13 +54,13 @@ module Admin
       # Find a  object using id parameters
       @department = Department.find(params[:id])
       # Update the object
-      if @user.update_attributes(department_params)
+      if @department.update_attributes(department_params)
         # If save succeeds, redirect to the index action
         flash[:success] = "Successfully updated "+ @department.name
         redirect_to(admin_departments_path) and return
       else
         # If save fails, redisplay the form so user can fix problems
-        render('admin/users/edit')
+        render('admin/departments/edit')
       end
     end
 
@@ -82,7 +82,7 @@ module Admin
 
     def department_params
       #!add params that want to be recognized by this application
-      params.require(:department).permit(:name, :courses, :faculty)
+      params.require(:department).permit(:faculty,:courses,:name)
     end
 
       # checks no uni module is linked to it already
