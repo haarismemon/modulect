@@ -85,5 +85,10 @@
             var resource_name = $("select#upload-resource").val();
             $("form.button_to").attr("action", "/admin/download?resource_choice=" + resource_name)
         });
+
+        $("select#upload-resource").change(function() {
+            $("#upload-step-2").hide();
+            $("#upload-step-3").hide();
+        })
     });
 </script>
