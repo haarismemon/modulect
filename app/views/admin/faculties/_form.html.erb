@@ -1,0 +1,20 @@
+<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+<%= error_messages_for(f.object) %>
+<!--renders attributes-->
+<div class="row field-unit field-unit--string name" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <%= f.label :name %>
+      </div>
+      <div class="field-unit__field">
+         <%= f.text_field :name %>
+      </div>
+   </div>
+</div>
+<div class="form-actions">
+<button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>New<% end %> faculty" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
+<%if parent=="edit"  %>Update<% else %>New<% end %> faculty</button>
+<% if parent == "edit" %>
+&nbsp;&nbsp;&nbsp;<%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete faculty".html_safe, admin_faculty_path(@faculty), method: :delete,
+   data: { confirm: "Are you sure you want to delete this faculty?" } , class: "table__action--destroy" %>
+   <% end %>

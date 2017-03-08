@@ -48,13 +48,14 @@ module Admin
       def update
         @faculty = Faculty.find(params[:id])
         # Update the object
-        if @faculty.update_attributes(user_params)
+        if @faculty.update_attributes(faculty_params)
           # If save succeeds, redirect to the index action
           flash[:success] = "Successfully updated "+ @faculty.name
           redirect_to(edit_admin_faculty_path) and return
         else
           # If save fails, redisplay the form so user can fix problems
-          render('admin/users/faculty')
+          render('admin/faculty/new')
+        end
       end
 
       def destroy
@@ -72,10 +73,10 @@ module Admin
         if can_delete
           @faculty.destroy
           flash[:success] = "Faculty successfully deleted"
-          redirect_back_or admin_faculties_path
+          redirect_to admin_faculties_path
         else 
           flash[:error] = "Faculty contains departments, can't delete"
-          redirect_back_or admin_faculties_path
+          redirect_to admin_faculties_path
         end
       end
 
@@ -91,8 +92,5 @@ module Admin
 
     end
 
-
-
-  end
 
 end
