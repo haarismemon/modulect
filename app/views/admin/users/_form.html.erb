@@ -1,232 +1,161 @@
-
-    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
-    <%= error_messages_for(f.object) %>
-
-
-        <!--renders attributes-->
-        <div class="row field-unit field-unit--string first_name" >
-          <div class="col-xs-12">
-            <div class="field-unit__label">
-              <%= f.label :first_name %>
-            </div>
-            <div class="field-unit__field">
-              <%= f.text_field :first_name %>
-            </div>
-          </div>
-        </div>
+<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+<%= error_messages_for(f.object) %>
+<!--renders attributes-->
 
 
-    <div class="row field-unit field-unit--string last_name" >
+<style>
+#super-admin-warning{display: none;}
+<% if @user.user_level == "super_admin_access" %>
+#additional-area{display: none}
+#super-admin-warning{display: block;margin-bottom:10px;}
+<% elsif @user.user_level =="department_admin_access" %>
+#hide-for-department-admin{display:none;}
+<% end %>
+.user-level-margin{margin-top:5px;}
+</style>
+
+<div class="row field-unit field-unit--string first_name" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <%= f.label :first_name %>
+      </div>
+      <div class="field-unit__field">
+         <%= f.text_field :first_name %>
+      </div>
+   </div>
+</div>
+<div class="row field-unit field-unit--string last_name" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <%= f.label :last_name %>
+      </div>
+      <div class="field-unit__field">
+         <%= f.text_field :last_name %>
+      </div>
+   </div>
+</div>
+<div class="row field-unit field-unit--select user_level" >
+   <div class="col-xs-12">
+      <div class="field-unit__label ">
+         <%= f.label :user_level, {style: "margin-bottom: 5px"} %>
+      <span  class="instruction-label" id="super-admin-warning" >*Warning: Super admin access gives unbound access to modify, create and delete</span>
+      </div>
+      <div class="form-group field-unit__field user-level-select-field">
+         <%= f.select(:user_level,  options_for_select(
+            f.object.class.public_send("user_levels")
+                .map { |k, v| [k.humanize, k] },
+            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'form-control user-level-margin', :id => "user_level_select", :autocomplete => "off"   }) %>
+      </div>
+   </div>
+</div>
+<div class="row field-unit field-unit--string email" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <%= f.label :email %>
+      </div>
+      <div class="field-unit__field">
+         <%= f.text_field :email %>
+      </div>
+   </div>
+</div>
+<%if parent=="edit"  %>
+<div style="margin-bottom:20px;"><a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a></div>
+<%end%>
+<div class="<%= parent=="edit"?"password-hidden":""%>">
+   <div class="row field-unit field-unit--string password" >
       <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label :last_name %>
-        </div>
-        <div class="field-unit__field">
-          <%= f.text_field :last_name %>
-        </div>
+         <div class="field-unit__label">
+            <%= f.label :password %>
+         </div>
+         <div class="field-unit__field">
+            <%= f.text_field :password %>
+         </div>
       </div>
-    </div>
-
-
-    <div class="row field-unit field-unit--select user_level" >
+   </div>
+   <div class="row field-unit field-unit--string password_confirmation" >
       <div class="col-xs-12">
-        <div class="field-unit__label ">
-          <%= f.label :user_level, {style: "margin: 0px"} %>
-        </div>
-        <span  class="instruction-label form-actions" >*Warning: Super admin access gives unbound access to modify, create and delete</span>
-        <div class="form-group field-unit__field user-level-select-field">
-          <%= f.select(:user_level,  options_for_select(
-                      f.object.class.public_send("user_levels")
-                          .map { |k, v| [k.humanize, k] },
-                      f.object.public_send("user_level")), {:include_blank => false}, {:class => 'form-control', :id => "user_level_select", :autocomplete => "off"   }) %>
-
-
-
-
-
-        </div>
+         <div class="field-unit__label">
+            <%= f.label :password_confirmation %>
+         </div>
+         <div class="field-unit__field">
+            <%= f.text_field :password_confirmation %>
+         </div>
       </div>
-    </div>
-
-
-    <div class="row field-unit field-unit--string email" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label :email %>
-        </div>
-        <div class="field-unit__field">
-          <%= f.text_field :email %>
-        </div>
-      </div>
-    </div>
-
-    <%if parent=="edit"  %>
-        <a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a>
-    <%end%>
-
-    <div class="<%= parent=="edit"?"password-hidden":""%>">
-    <div class="row field-unit field-unit--string password" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label :password %>
-        </div>
-        <div class="field-unit__field">
-          <%= f.text_field :password %>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="row field-unit field-unit--string password_confirmation" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label :password_confirmation %>
-        </div>
-        <div class="field-unit__field">
-          <%= f.text_field :password_confirmation %>
-        </div>
-      </div>
-    </div>
-
-      </div>
-
-    <span class="additional-fields">
-
-      <div class="page-header additional-info">Additional information</div>
-
-      
-
-
-
-
-
-
-<div class="form-group">
-   <label for="faculty">Faculty <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the faculty to which your course's department belongs">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-   <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
-      [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  , :required => true  }) %>
+   </div>
 </div>
 
-<div class="form-group">
-   <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the department to which you belong">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-   <%= f.select(:department_id, options_for_select(@departments.collect { |department|
-      [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"  , :required => true }) %>
-</div>
+<span class="additional-fields" id="additional-area">
+   <div class="page-header additional-info">Additional information</div>
+   <div class="row field-unit field-unit--select faculty department-admin-field user-field" >
+      <div class="col-xs-12">
+         <div class="field-unit__label">
+            <%= f.label :faculty %>
+         </div>
+         <div class="field-unit__field default-select-field">
+            <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
+               [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  }) %>
+         </div>
+      </div>
+   </div>
+   <div class="row field-unit field-unit--select department department-admin-field user-field" >
+      <div class="col-xs-12">
+         <div class="field-unit__label">
+            <%= f.label :department %>
+         </div>
+         <div class="field-unit__field default-select-field">
+            <%= f.select(:department_id, options_for_select(@departments.collect { |department|
+               [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"  }) %>
+         </div>
+      </div>
+   </div>
+   <div id="hide-for-department-admin">
+   <div class="row field-unit field-unit--select course user-field" >
+      <div class="col-xs-12">
+         <div class="field-unit__label">
+            <%= f.label :course%>
+         </div>
+         <div class="field-unit__field default-select-field">
+            <%= f.select(:course_id, options_for_select(@courses.collect { |course|
+               [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"   }) %>
+         </div>
+      </div>
+   </div>
+   <div class="row field-unit field-unit--select year_of_study user-field" >
+      <div class="col-xs-12">
+         <div class="field-unit__label">
+            <%= f.label :year_of_study %>
+         </div>
+         <div class="field-unit__field default-select-field">
+            <%= f.select(:year_of_study, options_for_select(1..7, @user.year_of_study), {:include_blank => true}, {:class => 'form-control', :autocomplete => "off" } )%>
+         </div>
+      </div>
+      </div>
+   </div>
+</span>
+<div class="form-actions"><button type="submit" name="commit" data-disable-with="<i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;Update user" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;Update user</button></div>
+<script>
 
-<div class="form-group" id="course-group">
-   <label for="course">Course/Programme <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the course/degree you are taking. The year indicates the year the course was started">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-   <%= f.select(:course_id, options_for_select(@courses.collect { |course|
-      [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
-</div>
+document.getElementById('user_level_select').addEventListener('change', function () {
+    var style = this.value == "super_admin_access" ? 'none' : 'block';
+    document.getElementById('additional-area').style.display = style;
 
-
-
-
-
-
-
-
-
-
-
-
-
-      
-
-
-
-    </span>
-
-
-      <div class="form-actions"><button type="submit" name="commit" data-disable-with="<i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;Update user" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;Update user</button></div>
-
-    <script>
-
-
-        //allows for creation of instruction label for a particular field
-        var createInstruction = function(field_name,instruction){
-            var html = '<span class="instruction-label form-actions "+field_name+"">'+instruction+'</span>' ;
-            var label = $("."+field_name+" label");
-            label.css("margin","0px");
-            if($("."+field_name+" .instruction-label").length>0){
-                $("."+field_name+" .instruction-label").remove();
-            }
-            label.parent().after(html);
-        };
-
-        //remove the void fields that dont need to be submitted{based on user_level submitted}
-        var removeVoidFields = function(){
-            var value = $( ".user_level select" ).val();
-                if(value == "user_access"){
-                }else if(value == "department_admin_access"){
-                   $(".course").remove();
-                   $(".year_of_study").remove();
-                }else if(value == "super_admin_access"){
-                    $(".user-field").remove();
-                }
-        };
-
-        //based of current user_level selected
-        //manipulates the page depending on what the select item value is for user_level field
-        // i.e shows certain fields that were initially not rendered
-        var determineFieldsToShow = function(value){
-            if(value == "user_access"){
-                appendFieldSection("user-field")
-                createInstruction("department","*This is the lead department incharge of course");
-            }else if(value == "department_admin_access"){
-                appendFieldSection("department-admin-field");
-                createInstruction("department","*This is the department, which the user has access over");
-            }else if(value == "super_admin_access"){
-                clearAllAdditionalFields();
-            }
-        };
-
-        //toggles the password field to appear and disappear
-        var openPasswordFields = function () {
-            $(".password-hidden").slideToggle("slow");
-            $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
-        };
-
-        var additional_info_header
-        $(document).ready(function () {
-            //store of key component
-            additional_info_header = $(".additional-info");
-
-            determineFieldsToShow($( ".user_level select" ).val());
-
-            //select statements being initialized
-            $('.default-select-field select').selectize();
-            var $select = $('.user-level-select-field select').selectize({ onChange: function(value) {
-                determineFieldsToShow(value)
-            }});
-
-        });
+    var style2 = this.value == "super_admin_access" ? 'block' : 'none';
+    document.getElementById('super-admin-warning').style.display = style2;
+});
 
 
+document.getElementById('user_level_select').addEventListener('change', function () {
+    var style = this.value == "department_admin_access" ? 'none' : 'block';
+    document.getElementById('hide-for-department-admin').style.display = style;
+});
 
-
-        //A section is a set of fields for a particular type of user
-
-        //clears all sections{all fields that are additional}
-        var clearAllAdditionalFields =  function(){
-            $(".user-field").css("display","none");
-            $(".department-admin-field").css("display","none");
-            additional_info_header.css("display","none");
-        }
-
-        //adds all fields releated to a section for a particular user_level to form
-        var appendFieldSection = function(section){
-            additional_info_header.css("display","block");
-            if(section=="user-field"){
-                $(".department-admin-field").css("display","none");
-                $(".user-field").css("display","block");
-
-            }else if(section=="department-admin-field"){
-                $(".user-field").css("display","none");
-                $(".department-admin-field").css("display","block");
-            }
-
-        }
-
-
-    </script>
+   //toggles the password field to appear and disappear
+   var openPasswordFields = function () {
+       $(".password-hidden").slideToggle("slow");
+       $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
+   };
+   
+   
+   
+   
+</script>
