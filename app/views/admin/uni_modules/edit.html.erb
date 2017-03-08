@@ -40,12 +40,12 @@
     <h3>Tags</h3>
     <%= f.fields_for :tags do |t| %>
       <div class="form-group">
-        <label for="careerTags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= t.text_field :tag_id, class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :required => true %>
+        <label for="career_tags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+        <%= t.text_field :tag_id, class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :id => "career_tags", :required => true %>
       </div>
       <div class="form-group">
-        <label for="interestTags">Interest Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the interests this module may suit.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-        <%= t.text_field :tag_id, class: 'form-control', :placeholder => 'Type to add a interest tag', data: {:role => "tagsinput"}, :required => true %>
+        <label for="interest_tags">Interest Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the interests this module may suit.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+        <%= t.text_field :tag_id, class: 'form-control', :placeholder => 'Type to add a interest tag', data: {:role => "tagsinput"}, :id => "interest_tags", :required => true %>
       </div>
     <% end %>
     <div class="form-group">
@@ -84,7 +84,7 @@ var departmentsBloodhound = new Bloodhound({
 
 departmentsBloodhound.initialize();
 
-$('input#department_id').tagsinput({
+$('input#uni_module_departments_department_id').tagsinput({
   typeaheadjs: {
     name: 'departmentsBloodhound',
     source: departmentsBloodhound.ttAdapter()
@@ -101,7 +101,7 @@ var careerBloodhound = new Bloodhound({
 
 careerBloodhound.initialize();
 
-$('input#department_id').tagsinput({
+$('input#career_tags').tagsinput({
   typeaheadjs: {
     name: 'careerBloodhound',
     source: careerBloodhound.ttAdapter()
@@ -118,7 +118,7 @@ var interestBloodhound = new Bloodhound({
 
 interestBloodhound.initialize();
 
- $('input#department_id').tagsinput({
+ $('input#interest_tags').tagsinput({
   typeaheadjs: {
     name: 'interestBloodhound',
     source: interestBloodhound.ttAdapter()
