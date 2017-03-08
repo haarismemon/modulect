@@ -1,0 +1,2 @@
+module TagGeneratorHelper
+end
