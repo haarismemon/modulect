@@ -43,8 +43,18 @@ module Admin
     def create
       # Instantiate a new object using form parameters
       @user = User.new(user_params)
-      # add faculty value inferred from department
-      automatic_faculty_update
+      @faculties = Faculty.all
+      #Initialise departments and courses to be empty unless previously selected
+      if(@user.department_id.present?)
+        @departments = Faculty.find_by_id(@user.faculty_id).departments
+      else
+        @departments = {}
+      end
+      if(@user.department_id.present? && @user.course_id.present?)
+        @courses = Department.find_by_id(@user.department_id).courses
+      else
+        @courses = {}
+      end
       # Save the object
       if @user.save
         # If save succeeds, redirect to the index action
@@ -97,8 +107,22 @@ module Admin
   def update
       # Find a  object using id parameters
       @user = User.find(params[:id])
-      # add faculty value inferred from department
-      automatic_faculty_update
+
+ @faculties = Faculty.all
+      #Initialise departments and courses to be empty unless previously selected
+      if(@user.department_id.present?)
+        @departments = Faculty.find_by_id(@user.faculty_id).departments
+      else
+        @departments = {}
+      end
+      if(@user.department_id.present? && @user.course_id.present?)
+        @courses = Department.find_by_id(@user.department_id).courses
+      else
+        @courses = {}
+      end
+
+
+
       # Update the object
       if @user.update_attributes(user_params)
         # If save succeeds, redirect to the index action
@@ -139,12 +163,6 @@ module Admin
       params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level, :faculty_id, :department_id, :course_id, :year_of_study)
     end
 
-    # Infers users faculty from department
-    def automatic_faculty_update
-      if(@user.department.present?)
-        @user.faculty = @user.department.faculty
-      end
-    end
 
   end
 end

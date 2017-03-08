@@ -65,7 +65,7 @@
             <%= f.label :password %>
          </div>
          <div class="field-unit__field">
-            <%= f.text_field :password %>
+            <%= f.password_field :password %>
          </div>
       </div>
    </div>
@@ -75,7 +75,7 @@
             <%= f.label :password_confirmation %>
          </div>
          <div class="field-unit__field">
-            <%= f.text_field :password_confirmation %>
+            <%= f.password_field :password_confirmation %>
          </div>
       </div>
    </div>
@@ -128,7 +128,8 @@
       </div>
    </div>
 </span>
-<div class="form-actions"><button type="submit" name="commit" data-disable-with="<i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;Update user" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;Update user</button></div>
+<div class="form-actions"><button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>New<% end %> user" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
+<%if parent=="edit"  %>Update<% else %>New<% end %> user</button></div>
 <script>
    document.getElementById('user_level_select').addEventListener('change', function () {
        var style = this.value == "super_admin_access" ? 'none' : 'block';
