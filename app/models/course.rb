@@ -2,6 +2,7 @@ class Course < ApplicationRecord
 
   validates :name, presence: true
   validates :year, presence: true
+  validates :duration_in_years, presence: true
 
   # There cannot be two entries with same name and year.
   validates :name, uniqueness: { scope: [:year] }

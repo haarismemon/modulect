@@ -1,39 +1,24 @@
-<%= form_for @course, url: admin_course_path(@course) do |f| %>
+<%= form_for [:admin, @course] do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
 
+  <%= f.label :owner_department %>
+  <div id="select-departments">
+    <%= f.select :department_ids, Department.all.collect {|x| [x.name, x.id]}, {},
+    :multiple => true, class: 'selectize' %>
+  </div>
   <%= f.label :name %>
   <%= f.text_field :name, class: 'form-control' %>
+
+  <%= f.label :start_year %>
+  <%= f.number_field :year, default: Date.current.year %>
 
   <%= f.label :description %>
   <%= f.text_area :description, class: 'form-control' %>
 
+  <%= f.label :duration_in_years %>
+  <%= f.number_field :duration_in_years, class: 'form-control' %>
+
   <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
 
-  <h3>Year structures</h3>
-
-  <!--  Go over every group and display them no -->
-  <div id="landing" style="margin-left:10px;">
-    <div class="row" style="margin-top:20px;">
-      <% @course.year_structures.each do |year_structure| %>
-      <div class="col-md-4 text-center">
-        <div class="col-md-12 login-card">
-          <div class="col-md-12">
-            <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
-            <div>
-              <h3><%= year_structure.year_of_study.titleize %></h3>
-              <h5 style="margin-top: 20px">Groups #: <%= year_structure.groups.count %></h5>
-            </div>
-            <div>
-              <div style="margin-top: 30px;padding-left:0px">
-                <div class="form-group">
-                  <a href="<%= admin_courses_path %>" class="btn btn-lg"><span>Modify ></span></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <% end %>
-  </div>
 <% end %>

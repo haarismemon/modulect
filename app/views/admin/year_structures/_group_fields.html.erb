@@ -1,11 +1,23 @@
 <div class="nested-fields">
   <div class="field">
-    <%= f.label :name %>
+    <%= f.label :name, placeholder: 'i.e: Semester 1' %>
     <%= f.text_field :name %>
 
     <%= f.label :total_credits %>
     <%= f.number_field :total_credits %>
+
+    <%= f.label :uni_modules %>
+    <div id="select-modules">
+      <%= f.select :uni_module_ids, UniModule.all.collect {|x| [x.code, x.id]}, {},
+      :multiple => true, class: 'selectize' %>
+    </div>
+
+    <p>
+      <%= f.check_box :compulsory %>
+      <%= f.label "All Modules Compulsory" %>
+    </p>
   </div>
+
   <div class="remove-field">
     <%= link_to_remove_association "Remove Module Group", f %>
   </div>

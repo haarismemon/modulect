@@ -1,6 +1,33 @@
-<% provide :title, 'Edit course' %>
+<% provide :title, "Edit #{@course.name}" %>
 <% provide :submit_button_text, 'Update' %>
 
 <h1>Edit Course</h1>
+
+<h3>Year structures</h3>
+
+<div id="landing" style="margin-left:10px;">
+  <div class="row" style="margin-top:20px;">
+    <% @course.year_structures.each do |year_structure| %>
+    <div class="col-md-4 text-center">
+      <div class="col-md-12 login-card">
+        <div class="col-md-12">
+          <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
+          <div>
+            <h3><%= year_structure.year_of_study.titleize %></h3>
+            <h5 style="margin-top: 20px">Module groups: <%= year_structure.groups.count %></h5>
+          </div>
+          <div>
+            <div style="margin-top: 30px;padding-left:0px">
+              <div class="form-group">
+                <a href="<%= edit_admin_year_structure_path(year_structure) %>" class="btn btn-lg"><span>Modify ></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
 
 <%= render 'form' %>

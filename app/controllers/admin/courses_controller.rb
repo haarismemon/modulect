@@ -6,19 +6,22 @@ module Admin
                           .alphabetically_order_by(:name)
     end
 
-    def new
-      @course = Course.new
-    end
-
     def show
       redirect_to edit_admin_course_path(params[:id])
+    end
+
+    def new
+      @course = Course.new
     end
 
     def create
       @course = Course.new(course_params)
       if @course.save
-        flash[:notice] = @course.name+" was created successfully."
-        redirect_to(courses_path)
+        for y in 1..@course.duration_in_years
+          @course.year_structures << YearStructure.new(year_of_study: y)
+        end
+        flash[:notice] = @course.name+ " was created successfully. "
+        redirect_to(edit_admin_course_path @course)
       else
         render('new')
       end
@@ -29,6 +32,7 @@ module Admin
     end
 
     def update
+      # TODO: Handle the duration_in_years update properly
       @course = Course.find(params[:id])
       if @course.update_attributes course_params
         flash[:notice] = "#{@course.name} successfully updated."
@@ -48,7 +52,8 @@ module Admin
     private
     def course_params
       params.require(:course).permit(:name, :description,
-        year_structures_attributes: [:id, :year_of_study, :_destroy])
+                  :duration_in_years, :year, department_ids: [],
+                  year_structures_attributes: [:id, :year_of_study, :_destroy])
     end
 
   end

@@ -10,10 +10,6 @@ class YearStructure < ApplicationRecord
   accepts_nested_attributes_for :groups
 
   def to_s
-    if course
-      "#{course.year} #{year_of_study.titleize}"
-    else
-      "#{year_of_study}"
-    end
+    "#{year_of_study.titleize}"
   end
 end

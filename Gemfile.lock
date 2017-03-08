@@ -317,6 +317,7 @@ DEPENDENCIES
   rspec-mocks (~> 3.4, >= 3.4.1)
   rspec-rails (~> 3.5)
   sass-rails (~> 5.0)
+  selectize-rails
   spring (= 1.7.2)
   spring-watcher-listen (~> 2.0.0)
   sqlite3
