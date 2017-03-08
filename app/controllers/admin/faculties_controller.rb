@@ -60,6 +60,14 @@ module Admin
       end
     end
 
+    def add_new_faculty
+      new_faculty = Faculty.find_by_name(params[:faculty_name])
+
+      if new_faculty.nil?
+        new_faculty = Faculty.create(name: params[:faculty_name])
+      end
+    end
+
 
   end
 end
