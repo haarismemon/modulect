@@ -29,4 +29,11 @@ RSpec.describe YearStructure, type: :model do
       end
     end
   end
+
+  describe "#to_s" do
+    it "stringifies the object as 'course.year' + 'year_of_study.titleize'" do
+      expect(year_structure.to_s).to eq
+      "#{year_structure.course.year} #{year_structure.year_of_study.titleize}"
+    end
+  end
 end

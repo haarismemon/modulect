@@ -1,0 +1,62 @@
+<%= form_for @year_structure, url: admin_year_structure_path(@year_structure) do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+  <!-- Edit existing groups -->
+
+   <style>
+      @media (min-width: 990px) {
+      #landing .row {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display:         flex;
+      flex-wrap: wrap;
+      width:100%;
+      text-align: center;
+      }
+      #landing .row > [class*='col-'] {
+      display: flex;
+      flex-direction: column;
+      }
+      .login-card{    height: 100%;
+      text-align: center;}
+      }
+   </style>
+
+  <!--  Go over every group and display them no -->
+  <div id="landing" style="margin-left:10px;">
+    <div class="row" style="margin-top:20px;">
+      <% @year_structure.groups.each do |group| %>
+      <div class="col-md-4 text-center">
+        <div class="col-md-12 login-card">
+          <div class="col-md-12">
+            <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
+            <div>
+              <h3><%= group.name %></h3>
+              <h5 style="margin-top: 20px">Total credits: <%= group.total_credits %></h5>
+            </div>
+            <div>
+              <div style="margin-top: 30px;padding-left:0px">
+                <div class="form-group">
+                  <a href="<%= admin_courses_path %>" class="btn btn-lg"><span>Modify ></span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+
+  <!-- Let them create a new group -->
+  <% f.fields_for :groups do |group| %>
+    <%= render 'group_fields', :f => group %>
+  <% end %>
+
+  <div class='links'>
+    <%= link_to_add_association "Add Module Group", f, :groups%>
+  </div>
+  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
+<% end %>

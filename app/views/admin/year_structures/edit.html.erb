@@ -1,0 +1,8 @@
+<% provide :title, 'Edit Year Structure' %>
+<% provide :submit_button_text, 'Update' %>
+
+<h1>
+  Edit <a href="<%= admin_course_path(@year_structure.course) %>">
+    <%= @year_structure.course.name %></a> <%= @year_structure.to_s %></h1>
+
+<%= render 'form' %>
