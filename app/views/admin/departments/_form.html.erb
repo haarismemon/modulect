@@ -40,7 +40,7 @@
                 <div class="field-unit__field">
                   <input id="new-faculty-name" name="names" type="text">
                 </div>
-                <button id="new-faculty-btn" class="button " style="margin-top:2% " >Add faculty</button>
+                <link_to id="new-faculty-btn" class="button " style="margin-top:2% " >Add faculty</link_to>
               </div>
             </div>
 
@@ -52,7 +52,7 @@
     </div>
 
     <script>
-      $("button#new-faculty-btn").on("click", function(){
+      $("#new-faculty-btn").on("click", function(){
           var faculty_name = $("input#new-faculty-name").val()
 
           $.ajax({
