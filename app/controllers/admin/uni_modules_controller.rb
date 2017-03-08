@@ -33,6 +33,10 @@ module Admin
 
   	def new
       @uni_module = UniModule.new
+
+        @departments = []
+        @careerTags = []
+        @interestTags = []
   	end
 
   	def create

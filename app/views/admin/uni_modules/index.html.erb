@@ -6,7 +6,7 @@
 <header class="header index-header-area">
    <h1 id="page-title">Modules</h1>
    <div class="header__actions">
-      <a class="button" href="%3C%=%20new_admin_uni_module_path%20%%3E"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New uni module</a>
+      <%= link_to "<i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New uni module".html_safe, new_admin_uni_module_path, method: :get, class: "button" %>
    </div>
 </header>
 <% if @uni_modules.size > 0 %>
