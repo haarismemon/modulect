@@ -14,8 +14,6 @@ module Admin
         end
       end
 
-      logger.debug(resource)
-
       resource_header = []
 
       case resource.to_s
@@ -32,8 +30,6 @@ module Admin
         when "year_structures"
           resource_header = YearStructure.attribute_names
       end
-
-      logger.debug(resource_header)
 
       require 'csv'
       CSV.open("app/assets/admin_upload.csv", "wb") do |csv|
