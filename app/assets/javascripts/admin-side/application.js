@@ -4,4 +4,5 @@
 //= require selectize
 //= require moment
 //= require datetime_picker
-//= require_tree .
+//= require_tree
+//= require twitter/typeahead.min
