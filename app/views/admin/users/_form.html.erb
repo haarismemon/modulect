@@ -34,14 +34,15 @@
           <%= f.label :user_level, {style: "margin: 0px"} %>
         </div>
         <span  class="instruction-label form-actions" >*Warning: Super admin access gives unbound access to modify, create and delete</span>
-        <div class="field-unit__field user-level-select-field">
-          <%= f.select(
-                  :user_level,
-                  options_for_select(
+        <div class="form-group field-unit__field user-level-select-field">
+          <%= f.select(:user_level,  options_for_select(
                       f.object.class.public_send("user_levels")
                           .map { |k, v| [k.humanize, k] },
-                      f.object.public_send("user_level")),
-                  include_blank: true) %>
+                      f.object.public_send("user_level")), {:include_blank => false}, {:class => 'form-control', :id => "user_level_select", :autocomplete => "off"   }) %>
+
+
+
+
 
         </div>
       </div>
@@ -94,24 +95,43 @@
       <div class="page-header additional-info">Additional information</div>
 
       
+
+
+
+
+
+
 <div class="form-group">
    <label for="faculty">Faculty <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the faculty to which your course's department belongs">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
    <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
-      [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"   }) %>
+      [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  , :required => true  }) %>
 </div>
 
 <div class="form-group">
    <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the department to which you belong">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
    <%= f.select(:department_id, options_for_select(@departments.collect { |department|
-      [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"   }) %>
+      [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"  , :required => true }) %>
 </div>
 
 <div class="form-group" id="course-group">
    <label for="course">Course/Programme <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the course/degree you are taking. The year indicates the year the course was started">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
    <%= f.select(:course_id, options_for_select(@courses.collect { |course|
-      [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"   }) %>
+      [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+      
 
 
 

@@ -1,5 +1,29 @@
 module Admin
   class UsersController < Admin::BaseController
+    def index
+      #returns all users by order of last_name
+     @users = User.all 
+
+      if params[:per_page].present? && params[:per_page].to_i > 0
+        @per_page = params[:per_page].to_i
+      else
+        @per_page = 20
+      end
+
+      if params[:search].present?
+        @search_query = params[:search]
+        @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) || user.last_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}.paginate(page: params[:page], :per_page => @per_page) 
+
+      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
+        @sort_by = params[:sortby]
+        @order = params[:order]
+        @users = sort(User, @users, @sort_by, @order, @per_page, "first_name")
+      else
+        @users = @users.paginate(page: params[:page], :per_page => @per_page).order('first_name ASC')
+      end
+
+    end
+
     def new
       @user = User.new
       @faculties = Faculty.all
@@ -51,22 +75,7 @@ module Admin
       end
     end
 
-    def update
-      # Find a  object using id parameters
-      @user = User.find(params[:id])
-      # add faculty value inferred from department
-      automatic_faculty_update
-      # Update the object
-      if @user.update_attributes(user_params)
-        # If save succeeds, redirect to the index action
-        flash[:success] = "Successfully updated "+ @user.full_name
-        redirect_to(edit_admin_user_path) and return
-      else
-        # If save fails, redisplay the form so user can fix problems
-        render('admin/users/edit')
-      end
-    end
-
+    
     # Change the value of @departments if faculty changes
   def update_departments
     @departments = Department.where("faculty_id = ?", params[:faculty_id])
@@ -85,6 +94,23 @@ module Admin
     end
   end
 
+  def update
+      # Find a  object using id parameters
+      @user = User.find(params[:id])
+      # add faculty value inferred from department
+      automatic_faculty_update
+      # Update the object
+      if @user.update_attributes(user_params)
+        # If save succeeds, redirect to the index action
+        flash[:success] = "Successfully updated "+ @user.full_name
+        redirect_to(edit_admin_user_path) and return
+      else
+        # If save fails, redisplay the form so user can fix problems
+        render('admin/users/edit')
+      end
+    end
+
+
     def destroy
       #find by id
       @user = User.find(params[:id])
@@ -102,35 +128,9 @@ module Admin
 
     end
 
-    def show
-      @user = User.find(params[:id])
-    end
 
 
-
-    def index
-      #returns all users by order of last_name
-     @users = User.all 
-
-      if params[:per_page].present? && params[:per_page].to_i > 0
-        @per_page = params[:per_page].to_i
-      else
-        @per_page = 20
-      end
-
-      if params[:search].present?
-        @search_query = params[:search]
-        @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) || user.last_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}.paginate(page: params[:page], :per_page => @per_page) 
-
-      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
-        @sort_by = params[:sortby]
-        @order = params[:order]
-        @users = sort(User, @users, @sort_by, @order, @per_page, "first_name")
-      else
-        @users = @users.paginate(page: params[:page], :per_page => @per_page).order('first_name ASC')
-      end
-
-    end
+   
 
     private
 
