@@ -45,8 +45,6 @@ module Admin
       # end
 
       send_file "app/assets/admin_upload.csv", :type=>"text/csv", :x_sendfile=>true
-
-      head :no_content
     end
 
   end
