@@ -38,9 +38,9 @@
                 </div>
                 <span  class="instruction-label form-actions" >*Faculty will not be added unless it's selected for this department</span>
                 <div class="field-unit__field">
-                  <input name="names" type="text">
+                  <input id="new-faculty-name" name="names" type="text">
                 </div>
-                <button class="button " style="margin-top:2% " >Add faculty</button>
+                <button id="new-faculty-btn" class="button " style="margin-top:2% " >Add faculty</button>
               </div>
             </div>
 
@@ -51,7 +51,12 @@
       </div>
     </div>
 
-
+    <script>
+      $("button#new-faculty-btn").on("click", function(){
+          var faculty_name = $("input#new-faculty-name").val()
+          console.log(faculty_name)
+      })
+    </script>
 
 
     <div class="row field-unit field-unit--select  courses" >
