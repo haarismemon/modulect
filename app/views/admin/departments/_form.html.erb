@@ -61,7 +61,8 @@
               data: { faculty_name: faculty_name},
               context: document.body,
               success: function(){
-                alert("success");
+                  $("input#new-faculty-name").val("")
+                  openFacultyCreation()
               }
           })
 
