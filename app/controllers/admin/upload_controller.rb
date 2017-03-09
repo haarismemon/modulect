@@ -1,8 +1,11 @@
 module Admin
   class UploadController < Admin::ApplicationController
-   
+
     def upload
-      logger.debug("Got here m8 Awesome work!")
+    end
+
+    def upload_csv
+      logger.debug("Awesome work, got here m8")
     end
 
     def download
