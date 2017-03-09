@@ -60,19 +60,20 @@
               url: "<%= admin_add_new_faculty_path %>",
               data: { faculty_name: faculty_name, department_id: <%= params[:id] %>},
               context: document.body,
-              success: function(){
+              success: function(data){
                   $("input#new-faculty-name").val("");
                   openFacultyCreation();
 
-                  var count = $(".selectize-dropdown-content")[0].children.length + 1;
+                  var count = data.new_faculty_id;
 
+                  $("#department_faculty_id").first().find("*").first().remove();
                   $("#department_faculty_id").append("<option value=\"" + count + "\" selected=\"selected\">" + faculty_name + "</option>");
 
-                  $(".selectize-input.items.full.has-options.has-items").children().first().remove()
-                  $(".selectize-input.items.full.has-options.has-items").prepend("<div class=\"item\" data-value=\""+count+"\">"+faculty_name+"</div>")
+                  $(".selectize-input.items.full.has-options.has-items").children().first().remove();
+                  $(".selectize-input.items.full.has-options.has-items").prepend("<div class=\"item\" data-value=\""+count+"\">"+faculty_name+"</div>");
 
                   $(".selectize-dropdown-content").first().find("*").removeClass("selected");
-                  $(".selectize-dropdown-content").first().append("<div class=\"option selected\" data-selectable data-value=\"" +count+ "\">"+faculty_name+"</div>")
+                  $(".selectize-dropdown-content").first().append("<div class=\"option selected\" data-selectable data-value=\"" +count+ "\">"+faculty_name+"</div>");
               }
           })
 
@@ -104,10 +105,6 @@
       $(document).ready(function () {
           open_faculty_creation = $(".faculty-creation-link").text()
           $(".default-select-field select").selectize();
-      });
-
-      $("input[type='submit']").on("click", function(){
-          dsfd
       });
 
     </script>
