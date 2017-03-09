@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :courses, except: [:show]
+    resources :courses do
+      resources :year_structures, only: :edit
+    end
     resources :departments, except: [:show]
     resources :faculties, except: [:show]
     resources :groups, except: [:show]

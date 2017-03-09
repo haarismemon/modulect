@@ -106,3 +106,23 @@
 table *{
   font-family: "Open Sans";
 }
+
+// Course creation
+#year_structures {
+  #existing {
+    font-size: 1.2em;
+  }
+}
+.remove-field {
+  margin-left: 10px;
+}
+
+.nested-fields {
+  .remove-field {
+    margin-bottom: 10px;
+  }
+}
+
+.links {
+  font-size: 1.5em;
+}

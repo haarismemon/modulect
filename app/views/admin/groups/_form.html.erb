@@ -1,0 +1,21 @@
+<%= form_for [:admin, @group] do |f| %>
+  <%= f.label :name, placeholder: 'i.e: Semester 1' %>
+  <%= f.text_field :name %>
+
+  <%= f.label :total_credits %>
+  <%= f.number_field :total_credits %>
+
+  <%= f.label :uni_modules %>
+  <div id="select-modules-from-group-form">
+    <%= f.select :uni_module_ids, UniModule.all.collect {|x| [x.code, x.id]}, {},
+    :multiple => true, class: 'selectize' %>
+  </div>
+
+
+  <p>
+    <%= f.check_box :compulsory %>
+    <%= f.label "All Modules Compulsory" %>
+  </p>
+
+  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
+<% end %>
