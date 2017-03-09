@@ -10,16 +10,6 @@ module ApplicationHelper
 	    end
 	end
 
-	# A simple helper method which sets the page title on admin
-	def full_title_admin(page_title = '')
-	    base_title = "Modulect"
-	    if page_title.empty?
-	     "Admin | " + base_title
-	    else
-	      page_title + " - Admin | " + base_title
-	    end
-	end
-
 
 	def get_careers_for_module(valid_uni_module)
 	    @careers = []
@@ -187,6 +177,20 @@ module ApplicationHelper
   # specifies whether current admin form has any errors
   def form_valid?(page)
      (page.resource && page.resource.errors.size == 0)
+  end
+
+  def make_semester_nice(semester_number)
+	if semester_number == "No data available"
+	  "No data available"
+	elsif semester_number == "0"
+	  "1 or 2"
+	elsif semester_number == "1"
+	  "1"
+	elsif semester_number == "2"
+	  "2"
+	else
+	  "1 & 2"
+	end
   end
 
   private
