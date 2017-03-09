@@ -1,0 +1,248 @@
+
+//flash notice
+.flash-box{
+  margin-top: 10px;
+  *{
+    background: dimgrey;
+    color: white;
+  }
+}
+
+//form error boxes
+.flash-alert {
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  color: #555459;
+  margin-bottom: 15px;
+  border-left-width: 5px;
+  border-radius: .25rem;
+  font-family: "Open Sans";
+}
+.flash-alert-error {
+  border-left-color: #cb5234;
+}
+.flash-alert-error i {
+  color: #cb5234;
+  margin-right: 8px;
+}
+.flash-alert-success {
+  border-left-color: #2ab27b;
+}
+.flash-alert-success i {
+  color: #2ab27b;
+  margin-right: 8px;
+}
+
+.flash-alert{
+  padding: 15px;
+  margin-top: 20px;
+}
+
+#error-box{
+  margin: 0px 0px 40px 0px;
+}
+
+#error-box{
+  li{
+    list-style-type: disc;
+    margin-left: 30px;
+  }
+}
+
+//for fields that disapear
+.to-hide,.hide-content,.password-hidden{
+  display: none;
+}
+//instruction text
+.instruction-label{
+  margin-top: 0px;
+  margin-right: 30px;
+  font-size: 0.8em;
+  color: #828282;
+  margin-top: 0px;
+}
+
+
+
+//special instruction text instance
+.field-label{
+  margin-left: 10%;
+  margin-top: 0px;
+  margin-bottom: 28px;
+  width: 80%;
+  text-align: left;
+}
+
+
+
+//for textarea glitch
+// dont change the colour -  Aqib
+.transparent,.transparent *{
+  background: #fff;
+}
+
+//margin of faculty field in department form
+.select-field-margin{
+  //margin-top: %;
+  margin: 30px 0px 10px 0px;
+}
+
+.password-hidden{
+  margin-top: 20px;
+
+}
+
+.password-show-toggle{
+  cursor: pointer;margin-bottom:10px;
+}
+
+
+.additional-info{
+  border-color: #bababa;
+  padding-bottom: 3px;
+}
+
+
+table *{
+  font-family: "Open Sans";
+}
+
+
+.faculty .default-select-field select{
+  margin-bottom: 0.5%;
+}
+
+#faculty-creation-box{
+  display: none;
+  margin-top: 10px;
+  padding-bottom: 0px;
+}
+/* Taginput styling by Feras */
+
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+}
+.twitter-typeahead .tt-hint {
+    display: none;
+}
+.tt-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    width: 100%;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+    cursor: pointer;
+}
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    color: #333333;
+    white-space: nowrap;
+}
+.tt-suggestion:hover,
+.tt-suggestion:focus {
+    color: #ffffff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #428bca;
+}
+.bootstrap-tagsinput {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 7px 6px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 4px;
+    line-height: 35px;
+    cursor: text;
+    display: inline-block;
+    width: auto;
+    margin: auto 0;
+    width: 100% !important;
+}
+.bootstrap-tagsinput input {
+    border: none !important;
+    box-shadow: none;
+    outline: none;
+    display: inline-block;
+    background-color: transparent;
+    padding: 0 6px;
+    margin: 0;
+    font-size: 18px;
+    border-color: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    text-overflow: ellipsis;
+    width: 100% !important;
+}
+.bootstrap-tagsinput.form-control input::-moz-placeholder {
+    color: #777;
+    opacity: 1;
+}
+.bootstrap-tagsinput.form-control input:-ms-input-placeholder {
+    color: #777;
+}
+.bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
+    color: #777;
+}
+.bootstrap-tagsinput input:focus {
+    border: none;
+    box-shadow: none;
+}
+.bootstrap-tagsinput .tag {
+    margin-right: 2px;
+    color: white;
+    background-color: #2ab27b;
+    font-size: 18px;
+}
+.bootstrap-tagsinput .tag [data-role="remove"] {
+    margin-left: 8px;
+    cursor: pointer;
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+    content: "x";
+    padding: 0px 2px;
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:hover {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+// Course creation
+#year_structures {
+  #existing {
+    font-size: 1.2em;
+  }
+}
+.remove-field {
+  margin-left: 10px;
+}
+
+.nested-fields {
+  .remove-field {
+    margin-bottom: 10px;
+  }
+}
+
+.links {
+  font-size: 1.5em;
+}
