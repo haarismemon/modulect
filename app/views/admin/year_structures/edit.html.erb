@@ -1,0 +1,34 @@
+<% provide :title, 'Edit Year Structure' %>
+<% provide :submit_button_text, 'Update' %>
+
+<h1>
+  Edit <%= @year_structure.to_s %> of <a href="<%= admin_course_path(@year_structure.course) %>">
+    <%= @year_structure.course.name %></a> <%= @year_structure.course.year %>
+</h1>
+
+<div id="landing" style="margin-left:10px;">
+  <div class="row" style="margin-top:20px;">
+    <% @year_structure.groups.each do |group| %>
+    <div class="col-md-4 text-center">
+      <div class="col-md-12 login-card">
+        <div class="col-md-12">
+          <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
+          <div>
+            <h3><%= group.name %></h3>
+            <h5 style="margin-top: 20px">Total credits: <%= group.total_credits %></h5>
+          </div>
+          <div>
+            <div style="margin-top: 30px;padding-left:0px">
+              <div class="form-group">
+                <a href="<%= edit_admin_group_path(group)%>" class="btn btn-lg"><span>Modify ></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<%= render 'form' %>

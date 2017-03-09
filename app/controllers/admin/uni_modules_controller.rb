@@ -3,8 +3,12 @@ module Admin
   require 'will_paginate/array'
 
 
-  	def index      
-      @uni_modules = UniModule.all 
+  	def index
+      if current_user.user_level == "super_admin_access"     
+        @uni_modules = UniModule.all
+      else
+        @uni_modules = Department.find(current_user.department_id).uni_modules
+      end  
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
@@ -24,7 +28,7 @@ module Admin
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
-        @uni_modules = sort(UniModule, @uni_modules, @sort_by, @order, @per_page)
+        @uni_modules = sort(UniModule, @uni_modules, @sort_by, @order, @per_page, "name")
       else
         @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
       end
@@ -112,12 +116,41 @@ module Admin
         redirect_back_or admin_uni_modules_path
       end
 
-  	end
+  	end  
 
-    private
+  def bulk_delete
+    module_ids_string = params[:ids]
+    module_ids = eval(module_ids_string)
+
+    module_ids.each do |id|
+      uni_module = UniModule.find(id.to_i)
+
+      if !uni_module.nil?
+
+      Group.all.each do |group|
+        if group.uni_modules.include?(uni_module)
+          can_delete = false
+          break
+        end
+      end
+
+      if can_delete
+        uni_module.destroy
+      end
+
+
+      end
+    end
+
+    head :no_content
+
+  end
+
+   private
     def uni_module_params
       params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
     end
 
-  end
+end
+ 
 end

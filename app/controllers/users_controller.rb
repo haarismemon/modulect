@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     # Save the object
     if @user.save
       # If save succeeds, redirect to the index action
-      flash[:success] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
+      flash[:success] = "You have successfully created user: #{@user.full_name} and their privileges have been granted"
       redirect_to(users_path)
     else
       # If save fails, redisplay the form so user can fix problems
