@@ -1,55 +1,100 @@
 module Admin
-  class DepartmentsController < Admin::ApplicationController
-    # To customize the behavior of this controller,
-    # simply overwrite any of the RESTful actions. For example:
-    #
-    # def index
-    #   super
-    #   @resources = Department.all.paginate(10, params[:page])
-    # end
+  class DepartmentsController < Admin::BaseController
+    
+     
+  	def index      
+      @departments = Department.all 
 
-    # Define a custom finder by overriding the `find_resource` method:
-    # def find_resource(param)
-    #   Department.find_by!(slug: param)
-    # end
+      if params[:per_page].present? && params[:per_page].to_i > 0
+        @per_page = params[:per_page].to_i
+      else
+        @per_page = 20
+      end
 
-    # See https://administrate-docs.herokuapp.com/customizing_controller_actions
-    # for more information
-    before_action :make_data_store_nil, only: [:index,:show]
+      if params[:search].present?
+        @search_query = params[:search]
+        @departments = @departments.select { |department| department.name.downcase.include?(params[:search].downcase) }.sort_by{|department| department[:name]}.paginate(page: params[:page], :per_page => @per_page) 
+
+      elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
+        @sort_by = params[:sortby]
+        @order = params[:order]
+        @departments = sort(Department, @departments, @sort_by, @order, @per_page, "name")
+      else
+        @departments = @departments.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+      end
+
+    end
+
+    def new
+      @department = Department.new
+    end
+
     def create
-      resource = resource_class.new(resource_params)
-      if resource.save
-        session_for_adding = session[:data_save]
-        if !session_for_adding.nil? && session_for_adding["from_form"]
-          locate_redirect_back(session_for_adding,resource)
-        else
-          redirect_to(
-              [namespace, resource],
-              notice: translate_with_resource("create.success"),
-          )
-        end
-        session[:data_save] = nil;
+      # Instantiate a new object using form parameters
+      @department = Department.new(department_params)
+      # Save the object
+      if @department.save
+        # If save succeeds, redirect to the index action
+        flash[:notice] = "You have successfully created #{@department.name}"
+        redirect_to(admin_departments_path)
       else
-        render :new, locals: {
-            page: Administrate::Page::Form.new(dashboard, resource),
-        }
+        # If save fails, redisplay the form so user can fix problems
+        render("admin/departments/new")
+
       end
     end
 
-    # See https://administrate-docs.herokuapp.com/customizing_controller_actions
-    # for more information
+    def edit
+      #! allows for template's form to be ready populated with the associated users data ready for modification by admin
+      @department = Department.find(params[:id])
+    end
+
+    def update
+      # Find a  object using id parameters
+      @department = Department.find(params[:id])
+      # Update the object
+      if @department.update_attributes(department_params)
+        # If save succeeds, redirect to the index action
+        flash[:success] = "Successfully updated "+ @department.name
+        redirect_to(admin_departments_path) and return
+      else
+        # If save fails, redisplay the form so user can fix problems
+        render('admin/departments/edit')
+      end
+    end
+
+  	def destroy
+      @department = Department.find(params[:id])
+      # check for constraints
+      if has_no_course_dependacies && has_no_uni_module_dependacies
+        #delete tuple object from db
+        @department.destroy
+        flash[:success] = @department.name+" has been deleted successfully."
+      else
+        flash[:error] = @department.name+" is linked to a course/module, first either move or delete those modules."
+      end
+      #redirect to action which displays all departments
+      redirect_back_or admin_departments_path
+    end
+
     private
-    def locate_redirect_back(store,resource)
-      if (store["isEdit"])
 
-        redirect_to(edit_admin_faculty_path(id: store["faculty"]["id"]),
-                    notice:"#{resource.name} has been added")
-      else
-        redirect_to(new_admin_faculty_path,
-                    notice:"#{resource.name} has been added")
-
-      end
+    def department_params
+      #!add params that want to be recognized by this application
+      params.require(:department).permit(:faculty_id,:name,:course_ids=>[])
     end
+
+      # checks no uni module is linked to it already
+      def has_no_uni_module_dependacies
+        @department.uni_modules.empty??true:false
+      end
+
+
+      # checks no course is linked to it already
+    def has_no_course_dependacies
+      @department.courses.empty??true:false
+    end
+
 
 
   end

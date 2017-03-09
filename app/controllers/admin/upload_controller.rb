@@ -1,10 +1,8 @@
 module Admin
-  class UploadController < Admin::ApplicationController
-   
-    def upload
-    end
+	class UploadController < Admin::BaseController
 
-
-
-  end
+		def upload
+		end
+		
+	end
 end

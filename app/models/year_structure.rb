@@ -1,5 +1,5 @@
 class YearStructure < ApplicationRecord
-  belongs_to :course, optional: true
+  belongs_to :course
   has_many :groups
   validates :year_of_study, presence: true
   validates :course_id, presence: true
@@ -7,11 +7,17 @@ class YearStructure < ApplicationRecord
                         fourth_year: 4, fifth_year: 5, sixth_year: 6,
                         seventh_year: 7 }
 
+  accepts_nested_attributes_for :groups
+
+  def self.max_year_of_study
+    7
+  end
+
+  def groups_existent?
+    self.groups.count > 0
+  end
+
   def to_s
-    if course
-      "#{course.name} #{course.year} #{year_of_study}"
-    else
-      "#{year_of_study}"
-    end
+    "#{year_of_study.titleize}"
   end
 end

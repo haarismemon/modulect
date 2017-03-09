@@ -1,14 +1,11 @@
 Rails.application.routes.draw do
 
   get 'career_search/choose'
-
   get 'career_search/view'
-
   get 'errors/not_found'
-
   get 'errors/internal_server_error'
 
-  namespace :admin do
+  namespace :old_admin do
     resources :courses
     resources :departments
     resources :faculties
@@ -23,13 +20,34 @@ Rails.application.routes.draw do
     root to: "application#homepage"
   end
 
+  namespace :admin do
+    resources :courses do
+      resources :year_structures, only: :edit
+    end
+    resources :departments, except: [:show]
+    resources :faculties, except: [:show]
+    resources :groups, except: [:show]
+    resources :tags, except: [:show]
+    resources :uni_modules, except: [:show]
+    resources :users, except: [:show]
+    resources :year_structures, except: [:show]
+    resources :career_tags, except: [:show]
+    resources :interest_tags, except: [:show]
+    get 'upload', to: 'upload#upload'
+
+    post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
+
+    root to: "dashboard#index"
+  end
+
+
   # General
   root 'search#home'
   get '/about', to: 'static_pages#about'
   get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
-  get '/admin', to: 'admin#homepage'
+  get '/admin', to: 'admin#dashboard'
 
   # Authentication
   get     '/login',   to: 'sessions#new'
@@ -65,6 +83,7 @@ Rails.application.routes.draw do
   post 'application/save_pathway'
   post 'application/delete_pathway'
   post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
+  post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
 
   # Profile
   get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }

@@ -1,94 +1,110 @@
-<%#
-# Form Partial
 
-This partial is rendered on a resource's `new` and `edit` pages,
-and renders all form fields for a resource's editable attributes.
-
-## Local variables:
-
-- `page`:
-  An instance of [Administrate::Page::Form][1].
-  Contains helper methods to display a form,
-  and knows which attributes should be displayed in the resource's form.
-
-[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
-%>
-
-<%= form_for([namespace, page.resource], html: { class: "form"}) do |f| %>
     <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
-    <%= error_messages_for(page.resource) %>
+    <%= error_messages_for(f.object) %>
 
-    <% page.attributes.each do |attribute| -%>
-        <!--checks if render request came from faculty form-->
-        <% current_field_name = attribute.attribute.to_s %>
 
-        <!--skip rendering the faculty field if request came from faculty form-->
-                <%to_hide_or_not =
-                      (current_field_name == "faculty" && session[:data_save].present? && session[:data_save]["from_form"])?
-                          "hide-content":"select-field"%>
-        <%set_drop_down_theme = current_field_name == "faculty"?"select-field-margin":""%>
-
-        <div class="field-unit field-unit--<%= attribute.html_class %> <%=to_hide_or_not%> <%= set_drop_down_theme %> ">
-              <%= render_field attribute, f: f %>
+        <!--renders attributes-->
+        <div class="row field-unit field-unit--string name" >
+          <div class="col-xs-12">
+            <div class="field-unit__label">
+              <%= f.label :name %>
+            </div>
+            <div class="field-unit__field">
+              <%= f.text_field :name %>
+            </div>
+          </div>
         </div>
 
-    <% end %>
 
-    <div class="form-actions">
-  <%= f.submit %>
-</div>
-<% end %>
+      <div class="row field-unit field-unit--select faculty">
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :faculty%>
+        </div>
+        <div class="field-unit__field default-select-field">
+          <%= f.select(:faculty_id, options_for_select(Faculty.all.collect { |faculty|
 
+            [faculty.name.titleize, faculty.id] }, @department.faculty_id), {:include_blank => true}, { }) %>
 
-<!--js embedded with ruby-->
+            <!--link that redirects to new of faculty-->
+            <a onclick="openFacultyCreation()" class="faculty-creation-link" style="cursor: pointer">Create a new faculty</a>
 
-<script data-turbolinks="false">
-    //sets value of the faculty select to a initial value{only triggered
-    //when redirect from faculty form occurs}
-    var setValueOfFacultySelect = function () {
-        //stores session cache
-        <% data_store = session[:data_save]%>
-        //checks if came from faculty EDIT form
-        <%if data_store.present? && data_store["isEdit"]%>
-        //sets session cache value for faculty name into faculty field
-        for(var i = 0 ; i<$('.hide-content option').length;i++){
-            if($(".hide-content option[value='"+i+"']").text() == "<%= data_store.present? ?
-             ((data_store["faculty"].present?)? data_store["faculty"]["name"]:"") : "" %>"){
-                $(".hide-content select")[0].selectedIndex = i;
-                break;
-            }
-        }
-        <%end%>
-    };
+          <div class="alert alert-success fade in alert-dismissable" id="faculty-creation-box" >
 
+            <div class="field-unit field-unit--string  " >
+              <div class="col-xs-12">
+                <div class="field-unit__label">
+                  <%= f.label "Name of new faculty" %>
+                </div>
+                <span  class="instruction-label form-actions" >*Faculty will not be added unless it's selected for this department</span>
+                <div class="field-unit__field">
+                  <input id="new-faculty-name" name="names" type="text">
+                </div>
+                <a id="new-faculty-btn" class="button " style="margin-top:2% " >Add faculty</a>
+              </div>
+            </div>
 
-
-    //two-way caching between faculty and department
-    $( document ).ready(function() {
-        //intialize select dropdown
-        $('.select-field select').selectize();
-        createInstruction("course","*Courses can be linked at a later time if preferred");
-        setValueOfFacultySelect();
-
-        //on load of page, check if data store exists in cache
-        data_request_store = localStorage['data_store'];
-        //cache object which will carry information back to faculty on redirect{used to check authenticity}
-        data_to_be_accepted = localStorage['data_store_accept'];
-        //checks if there is a data store and if data doesn't already exist on data_store_accept
-        // {if it does, this indicates this page was visited twice in a row, breaking the chain}
-        if((data_request_store&& JSON.parse(data_request_store))&&(!data_to_be_accepted || !JSON.parse(data_to_be_accepted))) {
-            //store in new data cache object
-            localStorage['data_store_accept'] = data_request_store;
-        }else{
-            //do not clear cache in instance of invalid validation of form
-            <% if form_valid?(page) %>
-              //clear cache
-              localStorage['data_store_accept'] = null;
-            <%end%>
-        }
-        //set to null because its no longer in use
-        localStorage['data_store'] = null;
-    });
+          </div>
 
 
-</script>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $("#new-faculty-btn").on("click", function(){
+          var faculty_name = $("input#new-faculty-name").val()
+
+          $.ajax({
+              type: "POST",
+              url: "<%= admin_add_new_faculty_path %>",
+              data: { faculty_name: faculty_name, current_department_id: <%= params[:id].nil? ? -1 : params[:id] %>},
+              context: document.body,
+              success: function(data){
+                  $("input#new-faculty-name").val("");
+                  openFacultyCreation();
+
+                  var count = data.new_faculty_id;
+
+                  $("#department_faculty_id").children().first().remove();
+                  $("#department_faculty_id").append("<option value=\"" + count + "\" selected=\"selected\">" + faculty_name + "</option>");
+
+                  $(".selectize-input.items.full.has-options.has-items,.selectize-input.items.not-full.has-options").first().children().first().remove();
+                  $(".selectize-input.items.full.has-options.has-items,.selectize-input.items.not-full.has-options").first().prepend("<div class=\"item\" data-value=\""+count+"\">"+faculty_name+"</div>");
+
+                  $(".selectize-dropdown-content").find("*").removeClass("selected");
+                  $(".selectize-dropdown-content").append("<div class=\"option selected\" data-selectable data-value=\"" +count+ "\">"+faculty_name+"</div>");
+              }
+          })
+
+      })
+    </script>
+
+
+    <div class="row field-unit field-unit--select  courses" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label "Courses associated" %>
+        </div>
+        <div class="field-unit__field default-select-field">
+          <%= f.collection_select :course_ids, Course.order(:name), :id, :name, {}, {multiple: true} %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-actions"><%= f.submit%></div>
+
+    <script>
+      var openFacultyCreation = function(){
+          $("#faculty-creation-box").slideToggle("slow");
+          $(".faculty-creation-link").text($(".faculty-creation-link").text()==open_faculty_creation?"Close box":open_faculty_creation);;
+      }
+
+      var open_faculty_creation;
+      $(document).ready(function () {
+          open_faculty_creation = $(".faculty-creation-link").text()
+          $(".default-select-field select").selectize();
+      });
+
+    </script>

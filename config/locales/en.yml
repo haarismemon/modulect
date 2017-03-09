@@ -21,9 +21,10 @@
 
 
 en:
-  helpers:
-    label:
-      course:
-        year: "Year of creation"
-      faculty:
-        departments: "Departments Accessible"
+  cocoon:
+    defaults:
+      add: "Add record"
+      remove: "Remove record"
+    year_structures:
+      add: "Add Year Structure"
+      remove: "Remove Year Structure"
