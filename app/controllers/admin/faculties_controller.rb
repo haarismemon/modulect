@@ -80,6 +80,25 @@ module Admin
         end
       end
 
+      def add_new_faculty
+        new_faculty = Faculty.find_by_name(params[:faculty_name])
+
+        if new_faculty.nil?
+          new_faculty = Faculty.create(name: params[:faculty_name])
+
+          unless params[:department_id].nil? || params[:current_department_id] == -1
+            department = Department.find(params[:current_department_id])
+            unless department.nil?
+              department.faculty = new_faculty
+            end
+          end
+
+        end
+
+        data = {new_faculty_id: new_faculty.id}
+        render json: data
+      end
+
 
 
     private
@@ -91,25 +110,5 @@ module Admin
 
 
     end
-
-    def add_new_faculty
-      new_faculty = Faculty.find_by_name(params[:faculty_name])
-
-      if new_faculty.nil?
-        new_faculty = Faculty.create(name: params[:faculty_name])
-
-        unless params[:department_id].nil? || params[:current_department_id] == -1
-          department = Department.find(params[:current_department_id])
-          unless department.nil?
-            department.faculty = new_faculty
-          end
-        end
-
-      end
-
-      data = {new_faculty_id: new_faculty.id}
-      render json: data
-    end
-
 
 end
