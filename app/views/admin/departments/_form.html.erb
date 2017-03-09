@@ -58,7 +58,7 @@
           $.ajax({
               type: "POST",
               url: "<%= admin_add_new_faculty_path %>",
-              data: { faculty_name: faculty_name, department_id: <%= params[:id].nil? ? -1 : params[:id] %>},
+              data: { faculty_name: faculty_name, current_department_id: <%= params[:id].nil? ? -1 : params[:id] %>},
               context: document.body,
               success: function(data){
                   $("input#new-faculty-name").val("");
@@ -66,14 +66,14 @@
 
                   var count = data.new_faculty_id;
 
-                  $("#department_faculty_id").first().find("*").first().remove();
+                  $("#department_faculty_id").children().first().remove();
                   $("#department_faculty_id").append("<option value=\"" + count + "\" selected=\"selected\">" + faculty_name + "</option>");
 
-                  $(".selectize-input.items.full.has-options.has-items").children().first().remove();
-                  $(".selectize-input.items.full.has-options.has-items").prepend("<div class=\"item\" data-value=\""+count+"\">"+faculty_name+"</div>");
+                  $(".selectize-input.items.full.has-options.has-items,.selectize-input.items.not-full.has-options").first().children().first().remove();
+                  $(".selectize-input.items.full.has-options.has-items,.selectize-input.items.not-full.has-options").first().prepend("<div class=\"item\" data-value=\""+count+"\">"+faculty_name+"</div>");
 
-                  $(".selectize-dropdown-content").first().find("*").removeClass("selected");
-                  $(".selectize-dropdown-content").first().append("<div class=\"option selected\" data-selectable data-value=\"" +count+ "\">"+faculty_name+"</div>");
+                  $(".selectize-dropdown-content").find("*").removeClass("selected");
+                  $(".selectize-dropdown-content").append("<div class=\"option selected\" data-selectable data-value=\"" +count+ "\">"+faculty_name+"</div>");
               }
           })
 
