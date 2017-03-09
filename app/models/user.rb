@@ -147,4 +147,14 @@ class User < ApplicationRecord
   def should_validate_password?
     updating_password || new_record?
   end
+
+  def self.to_csv
+    attributes = %w{first_name last_name faculty course department}
+    CSV.generate(headers:true)do |csv|
+      csv << attributes
+      all.each do |course|
+        csv << course.attributes.values_at(*attributes)
+      end
+    end
+  end
 end

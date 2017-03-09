@@ -22,6 +22,10 @@ module Admin
         @users = @users.paginate(page: params[:page], :per_page => @per_page).order('first_name ASC')
       end
 
+     respond_to do |format|
+       format.html
+       format.csv {send_data @users.to_csv}
+     end
     end
 
     def new
