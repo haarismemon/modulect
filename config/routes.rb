@@ -65,7 +65,6 @@ Rails.application.routes.draw do
   post 'application/save_pathway'
   post 'application/delete_pathway'
   post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
-  post 'admin/download',   to: 'admin/upload#download'
 
   # Profile
   get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }
@@ -97,5 +96,8 @@ Rails.application.routes.draw do
   # Error pages
   match "/404", :to => "errors#not_found", :via => :all
   match "/500", :to => "errors#internal_server_error", :via => :all
+
+  # CSV Upload
+  post 'admin/download',   to: 'admin/upload#download'
 
 end
