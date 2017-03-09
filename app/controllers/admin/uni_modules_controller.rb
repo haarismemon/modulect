@@ -69,19 +69,6 @@ module Admin
   	def update
       @uni_module = UniModule.find(params[:id])
 
-      #Update associated departments
-      if params[:name].present?
-        params[:departments].each do |dept|
-          if @uni_module.departments.where("department_id = ?", dept.id).empty?
-            @uni_module.departments << dept
-          end
-        end
-      else
-        # Failed to update
-        # If save fails, redisplay the form so user can fix problems
-        render(edit_admin_uni_module_path(@uni_module))
-      end
-
       #Update the module with the new attributes
       if @uni_module.update_attributes(uni_module_params)
         # Successfully updated
