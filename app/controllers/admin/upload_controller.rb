@@ -43,11 +43,6 @@ module Admin
         csv << resource_header
       end
 
-      # Debugging to check file has been generated correctly
-      # CSV.foreach("admin_upload.csv") do |row|
-      #   logger.debug(row)
-      # end
-
       # Send the file for download
       send_file "app/assets/admin_upload.csv", :type=>"text/csv", :x_sendfile=>true
     end
