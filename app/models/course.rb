@@ -24,6 +24,10 @@ class Course < ApplicationRecord
   end
 
   def update_year_structures(duration_in_years_pre_update)
+    if (self.year_structures.empty?)
+      create_year_structures
+      return
+    end
     duration_in_years_post_update = self.duration_in_years
     if duration_in_years_post_update > duration_in_years_pre_update
       last_year_of_study = self.year_structures.last.year_of_study_before_type_cast
