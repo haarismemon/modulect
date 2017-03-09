@@ -50,19 +50,10 @@
                <div class="checkbox" style="margin:0px;display:inline-block;">
                   <input type="checkbox" name="check_action[]" id="check_individual" value="<%= uni_module.id %>" class="toggle-bulk" /><label for="check_individual"><span></span></label>
                </div>
-               <div style="display:inline-block;color: #aa0000;">
-               <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="This modules has no linked tags"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></a>
+              <% if !has_linked_tags(uni_module) %>
+              <%= render partial: "admin/layouts/index_warning", locals: {message: "This module has no linked career or interest tags", destination: edit_admin_uni_module_path(uni_module)} %>
+              <% end %>
 
-<script>  
-  $(document).ready(function(){
-       jQuery('[data-toggle="tooltip"]').tooltip();
-
- });
-</script>
-
-               </div>
-
-               
             </td>
             <td class="cell-data cell-data--string"><%= uni_module.name %></td>
             <td class="cell-data cell-data--string"><%= uni_module.code %></td>

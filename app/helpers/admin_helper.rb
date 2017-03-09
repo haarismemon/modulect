@@ -55,4 +55,12 @@ module AdminHelper
       end
     end
 
+    def has_linked_tags(valid_module)
+      if valid_module.tags.size > 0
+        true
+      else
+        false
+      end
+    end
+
 end
