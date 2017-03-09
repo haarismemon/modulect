@@ -16,7 +16,7 @@
             </ul>
          </span>
          <% end %>
-         <a class="button" href="%3C%=%20new_admin_uni_module_path%20%%3E"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New module</a>
+         <%= link_to "<i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Module".html_safe, new_admin_uni_module_path, method: :get, class: "button" %>
       </div>
    </div>
 </header>

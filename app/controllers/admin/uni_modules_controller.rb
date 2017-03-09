@@ -37,20 +37,61 @@ module Admin
 
   	def new
       @uni_module = UniModule.new
+
+        @departments = []
+        @careerTags = []
+        @interestTags = []
   	end
 
-    # For Feras
   	def create
+      @uni_module = UniModule.new(uni_module_params)
+      if @uni_module.save
+        # If save succeeds, redirect to the index action
+        flash[:notice] = "Succesfully created module"
+        redirect_to(admin_uni_modules_path)
+      else
+        # If save fails, redisplay the form so user can fix problems
+        render(:new)
+      end
   	end
 
 
-    # For Feras
   	def edit
+      if params[:id].present?
+        @uni_module = UniModule.find(params[:id])
+
+        @departments = @uni_module.department_ids.pluck(:name)
+        @careerTags = @uni_module.career_tags.pluck(:name)
+        @interestTags = @uni_module.interest_tags.pluck(:name)
+      end
   	end
 
-
-    # For Feras
   	def update
+      @uni_module = UniModule.find(params[:id])
+
+      #Update associated departments
+      if params[:name].present?
+        params[:departments].each do |dept|
+          if @uni_module.departments.where("department_id = ?", dept.id).empty?
+            @uni_module.departments << dept
+          end
+        end
+      else
+        # Failed to update
+        # If save fails, redisplay the form so user can fix problems
+        render(edit_admin_uni_module_path(@uni_module))
+      end
+
+      #Update the module with the new attributes
+      if @uni_module.update_attributes(uni_module_params)
+        # Successfully updated
+        flash[:success] = "Successfully updated #{@uni_module.name}"
+        redirect_to(edit_admin_uni_module_path(@uni_module)) and return
+      else
+        # Failed to update
+        # If save fails, redisplay the form so user can fix problems
+        render(edit_admin_uni_module_path(uni_module))
+      end
 
   	end
 
@@ -75,9 +116,7 @@ module Admin
         redirect_back_or admin_uni_modules_path
       end
 
-  	end
-
-  
+  	end  
 
   def bulk_delete
     module_ids_string = params[:ids]
@@ -106,6 +145,11 @@ module Admin
     head :no_content
 
   end
+
+   private
+    def uni_module_params
+      params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
+    end
 
 end
  
