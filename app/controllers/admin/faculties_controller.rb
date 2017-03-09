@@ -1,6 +1,6 @@
 module Admin
   class FacultiesController < Admin::BaseController
-    
+    before_action :verify_super_admin, only: [:new, :create, :update, :edit, :index,]
       
       def index      
         @faculties = Faculty.all 
@@ -106,6 +106,11 @@ module Admin
       def faculty_params
         #!add params that want to be recognized by this application
         params.require(:faculty).permit(:name, :department_ids=>[])
+      end
+      
+      def verify_super_admin
+       redirect_to admin_path unless current_user.user_level == "super_admin_access"
+
       end
 
 
