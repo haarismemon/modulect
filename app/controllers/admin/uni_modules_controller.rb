@@ -11,13 +11,11 @@ module Admin
         @uni_modules = Department.find(current_user.department_id).uni_modules
       end  
 
-
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
       else
         @per_page = 20
       end
-
 
       if params[:search].present?
         @search_query = params[:search]

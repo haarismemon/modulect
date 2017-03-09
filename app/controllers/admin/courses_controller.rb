@@ -18,16 +18,20 @@ module Admin
         @per_page = 20
       end
 
+
       if params[:search].present?
         @search_query = params[:search]
-        @courses = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) }.sort_by{|course| course[:name]}.paginate(page: params[:page], :per_page => @per_page)
+        @courses = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) }.sort_by{|course| course[:name]}
 
+        @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(@per_page)
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
         @courses = sort(Course, @courses, @sort_by, @order, @per_page, "name")
+        @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(@per_page)
+
       else
-        @courses = @courses.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+         @courses = @courses.order('name ASC').page(params[:page]).per(@per_page)
       end
     end
 

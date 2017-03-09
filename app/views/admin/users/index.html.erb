@@ -46,7 +46,7 @@
          </tr>
       </thead>
       <tbody>
-         <%= will_paginate %><%@users.each do |user| %>
+         <%@users.each do |user| %>
          <tr class="table__row" data-url="<%= edit_admin_user_path(user) %>" role="link" tabindex="0">
             <td class="no-link checkboxes">
                <div class="checkbox" style="margin:0px">
@@ -75,7 +75,7 @@
          <%end %>
       </tbody>
    </table>
-   <%= will_paginate @users %>
+   <%= paginate @users %>
 </div>
 <%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query} %>
 <% elsif request.query_parameters["search"].present?%>
