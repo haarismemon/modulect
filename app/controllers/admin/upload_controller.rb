@@ -5,7 +5,8 @@ module Admin
     end
 
     def upload_csv
-      logger.debug("Awesome work, got here m8")
+      uploaded_io = params[:csv_upload]
+      head :no_content
     end
 
     def download
