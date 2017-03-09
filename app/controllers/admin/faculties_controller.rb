@@ -66,7 +66,7 @@ module Admin
       if new_faculty.nil?
         new_faculty = Faculty.create(name: params[:faculty_name])
 
-        unless params[:department_id].nil?
+        unless params[:department_id].nil? || params[:department_id] == -1
           department = Department.find(params[:department_id])
           unless department.nil?
             department.faculty = new_faculty
