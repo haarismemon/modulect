@@ -1,6 +1,6 @@
 module Admin
   class DepartmentsController < Admin::BaseController
-    
+    before_action :verify_super_admin, only: [:new, :create, :update, :edit, :index,]
      
   	def index      
       @departments = Department.all 
@@ -93,6 +93,11 @@ module Admin
       # checks no course is linked to it already
     def has_no_course_dependacies
       @department.courses.empty??true:false
+    end
+
+    def verify_super_admin
+       redirect_to admin_path unless current_user.user_level == "super_admin_access"
+
     end
 
 
