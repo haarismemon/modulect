@@ -47,9 +47,13 @@
          <%= will_paginate %><%@uni_modules.each do |uni_module| %>
          <tr class="table__row" data-url="<%= edit_admin_uni_module_path(uni_module) %>" role="link" tabindex="0">
             <td class="no-link checkboxes">
-               <div class="checkbox" style="margin:0px">
+               <div class="checkbox" style="margin:0px;display:inline-block;">
                   <input type="checkbox" name="check_action[]" id="check_individual" value="<%= uni_module.id %>" class="toggle-bulk" /><label for="check_individual"><span></span></label>
                </div>
+              <% if !has_linked_tags(uni_module) %>
+              <%= render partial: "admin/layouts/index_warning", locals: {message: "This module has no linked career or interest tags", destination: edit_admin_uni_module_path(uni_module)} %>
+              <% end %>
+
             </td>
             <td class="cell-data cell-data--string"><%= uni_module.name %></td>
             <td class="cell-data cell-data--string"><%= uni_module.code %></td>
