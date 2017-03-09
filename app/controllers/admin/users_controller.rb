@@ -121,15 +121,20 @@ module Admin
         @courses = {}
       end
 
-
-      # Update the object
-      if @user.update_attributes(user_params)
-        # If save succeeds, redirect to the index action
-        flash[:success] = "Successfully updated "+ @user.full_name
+      # if a request to a super admin requested, check that there will still be at least one super admin left by checking the incoming user level parameter
+      if @user.user_level == "super_admin_access" && user_params[:user_level] != "super_admin_access" && get_num_super_admins == 1
+        flash[:error] = "For security, there must always be at least one super/system administrator"
         redirect_to(edit_admin_user_path) and return
       else
-        # If save fails, redisplay the form so user can fix problems
-        render('admin/users/edit')
+        # Update the object
+        if @user.update_attributes(user_params)
+          # If save succeeds, redirect to the index action
+          flash[:success] = "Successfully updated "+ @user.full_name
+          redirect_to(edit_admin_user_path) and return
+        else
+          # If save fails, redisplay the form so user can fix problems
+          render('admin/users/edit')
+        end
       end
     end
 
