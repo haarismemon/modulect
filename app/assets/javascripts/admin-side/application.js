@@ -3,8 +3,6 @@
 //= require bootstrap
 //= require cocoon
 //= require selectize
-//= require moment
-//= require datetime_picker
 //= require edit.js.coffee
 //= require_tree
 //= require twitter/typeahead.min
