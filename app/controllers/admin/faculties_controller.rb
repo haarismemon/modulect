@@ -13,14 +13,16 @@ module Admin
 
         if params[:search].present?
           @search_query = params[:search]
-          @faculties = @faculties.select { |faculty| faculty.name.downcase.include?(params[:search].downcase) }.sort_by{|faculty| faculty[:name]}.paginate(page: params[:page], :per_page => @per_page) 
+          @faculties = @faculties.select { |faculty| faculty.name.downcase.include?(params[:search].downcase) }.sort_by{|faculty| faculty[:name]}
+          @faculties = Kaminari.paginate_array(@faculties).page(params[:page]).per(@per_page)
 
         elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
           @sort_by = params[:sortby]
           @order = params[:order]
           @faculties = sort(Faculty, @faculties, @sort_by, @order, @per_page, "name")
+          @faculties = Kaminari.paginate_array(@faculties).page(params[:page]).per(@per_page)
         else
-          @faculties = @faculties.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+         @faculties = @faculties.order('name ASC').page(params[:page]).per(@per_page)
         end
 
       end
