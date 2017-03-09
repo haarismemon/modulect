@@ -23,6 +23,10 @@ module Admin
           @faculties = @faculties.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
         end
 
+        respond_to do |format|
+          format.html
+          format.csv {send_data @faculties.to_csv}
+        end
       end
 
       def new
