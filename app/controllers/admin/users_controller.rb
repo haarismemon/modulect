@@ -2,7 +2,10 @@ module Admin
   class UsersController < Admin::BaseController
     def index
       #returns all users by order of last_name
-     @users = User.all 
+     
+       @users = User.all 
+      
+
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
@@ -58,7 +61,7 @@ module Admin
       # Save the object
       if @user.save
         # If save succeeds, redirect to the index action
-        flash[:notice] = "You have successfully created #{@user.full_name} and its privileges have been granted"
+        flash[:notice] = "You have successfully created #{@user.full_name} and their privileges have been granted"
         redirect_to(admin_users_path)
       else
         # If save fails, redisplay the form so user can fix problems

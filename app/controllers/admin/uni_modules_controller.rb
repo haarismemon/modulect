@@ -1,14 +1,16 @@
 module Admin
   class UniModulesController < Admin::BaseController
-  require 'will_paginate/array'
+#  require 'will_paginate/array'
 
 
   	def index
+
       if current_user.user_level == "super_admin_access"     
         @uni_modules = UniModule.all
       else
         @uni_modules = Department.find(current_user.department_id).uni_modules
       end  
+
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
@@ -16,21 +18,27 @@ module Admin
         @per_page = 20
       end
 
+
       if params[:search].present?
         @search_query = params[:search]
         # find the correct modules,sort alphabetically and paginate
-        @uni_modules = @uni_modules.select { |uni_module| uni_module.name.downcase.include?(params[:search].downcase) }.sort_by{|uni_module| uni_module[:name]}.paginate(page: params[:page], :per_page => @per_page) 
+        @uni_modules = @uni_modules.select { |uni_module| uni_module.name.downcase.include?(params[:search].downcase) }.sort_by{|uni_module| uni_module[:name]}
 
+        # perhaps they were looking for a code
         if @uni_modules.size == 0
-          @uni_modules = UniModule.all.select { |uni_module| uni_module.code.downcase.include?(params[:search].downcase) }.sort_by{|uni_module| uni_module[:code]}.paginate(page: params[:page], :per_page => @per_page)
+          @uni_modules = UniModule.all.select { |uni_module| uni_module.code.downcase.include?(params[:search].downcase) }.sort_by{|uni_module| uni_module[:name]}
         end 
+        @uni_modules = Kaminari.paginate_array(@uni_modules).page(params[:page]).per(@per_page)
 
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
         @uni_modules = sort(UniModule, @uni_modules, @sort_by, @order, @per_page, "name")
+       @uni_modules = Kaminari.paginate_array(@uni_modules).page(params[:page]).per(@per_page)
+
+
       else
-        @uni_modules = @uni_modules.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+        @uni_modules = @uni_modules.order('name ASC').page(params[:page]).per(@per_page)
       end
 
   	end

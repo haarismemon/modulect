@@ -16,13 +16,13 @@ module AdminHelper
     def sort(table_name, list, sort_by, order, per_page, default)
 
       if table_name.has_attribute?(sort_by) && (order == "asc" || order == "desc")
-        list.paginate(page: params[:page], :per_page => per_page).order(sort_by + ' ' + order.upcase)
+        list.order(sort_by + ' ' + order.upcase)
       else
         # default case
-        list.paginate(page: params[:page], :per_page => per_page).order(default +' ASC')
+        list.order(default +' ASC')
       end
 
-    end
+    end 
 
     def get_num_courses_for_department(valid_department)
       valid_department.courses.size
