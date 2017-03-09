@@ -1,1 +1,14 @@
-test
+<% provide :title, 'New course' %>
+<% provide :submit_button_text, 'Create' %>
+
+<div class="row">
+  <div class="col-md-1" %>
+    <a href="<%= admin_courses_path %>">
+      <i class="fa fa-arrow-circle-left fa-4x" aria-hidden="true"></i>
+    </a>
+  </div>
+  <div class="col-md-11 text-center">
+    <h1>Create course</h1>
+  </div>
+</div>
+<%= render 'form' %>

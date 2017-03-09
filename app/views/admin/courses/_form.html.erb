@@ -1,0 +1,24 @@
+<%= form_for [:admin, @course] do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :owner_departments %>
+  <div id="select-departments">
+    <%= f.select :department_ids, Department.all.collect {|x| [x.name, x.id]}, {},
+    :multiple => true, class: 'selectize' %>
+  </div>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form-control' %>
+
+  <%= f.label :start_year %>
+  <%= f.number_field :year, default: Date.current.year %>
+
+  <%= f.label :description %>
+  <%= f.text_area :description, class: 'form-control' %>
+
+  <%= f.label :duration_in_years %>
+  <%= f.number_field :duration_in_years, class: 'form-control' %>
+
+  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
+
+<% end %>

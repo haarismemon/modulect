@@ -85,7 +85,8 @@ class User < ApplicationRecord
   def authenticated?(attribute, authentication_token)
     return false if authentication_token.nil?
     digest = send("#{attribute}_digest")
-    BCrypt::Password.new(digest).is_password?(authentication_token)
+    return digest != nil &&
+           BCrypt::Password.new(digest).is_password?(authentication_token)
   end
 
   # Reset a student user's attributes

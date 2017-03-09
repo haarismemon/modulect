@@ -12,7 +12,7 @@
             <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-               <li> <a id="delete-all" href="<%= request.original_fullpath %>">Delete selected</a>
+               <li> <a id="delete-all">(None available)</a>
                </li>
             </ul>
          </span>
@@ -34,14 +34,12 @@
                   <input type="checkbox" name="check_all" id="check_all" value="true" class="toggle-bulk" /><label for="check_all"><span></span></label>
                </div>
             </td>
-            <% sorting_columns = {"name" => "Name"} %>
+            <% sorting_columns = {"name" => "Name","courses" =>"No. Course","faculty" => "Faculty"} %>
             <% if request.query_parameters["search"].present?%>
             <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: true, per_page: @per_page} %>
             <% else %>
             <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: false, per_page: @per_page} %>
             <% end %>
-            <th class="cell-label cell-label--string cell-label--false" scope="col">Courses</th>
-            <th class="cell-label cell-label--string cell-label--false" scope="col">Faculty</th>
             <th class="cell-label cell-label--string cell-label--false" scope="col">Available actions</th>
          </tr>
       </thead>
@@ -54,6 +52,7 @@
                </div>
             </td>
             <td class="cell-data cell-data--string"><%= department.name %></td>
+
             <td class="cell-data cell-data--string"><%= get_num_courses_for_department(department) %></td>
             <td class="cell-data cell-data--string">
                <% if department.faculty_id.present? %>
@@ -61,7 +60,6 @@
                <% else %>
                - 
                <% end %>
-
             </td>
             <td class="no-link">
                <div class="col-md-3"><a class="action-edit" href="<%= edit_admin_department_path(department) %>"><i class="fa fa-pencil" aria-hidden="true" ></i>&nbsp;&nbspEdit</a></div>
@@ -80,3 +78,4 @@
 <% else %>
 <h4 style="margin-bottom:30px;">No departments found</h4>
 <% end %>
+

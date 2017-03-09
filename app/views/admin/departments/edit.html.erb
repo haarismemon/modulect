@@ -1,0 +1,16 @@
+<% content_for(:title) { "Edit #{Department.find(params[:id]).name}" } %>
+
+
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+    <%= link_to(
+            "<i class='fa fa-user' aria-hidden='true'></i>&nbsp;&nbsp;Show User".html_safe,
+            admin_department_path(@department),
+            class: "button",
+        ) %>
+  </div>
+</header>
+<%= form_for(@department, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>
+    <%= render "form", f: f,parent: "edit"%>
+<% end %>

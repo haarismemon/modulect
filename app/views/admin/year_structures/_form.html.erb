@@ -1,0 +1,35 @@
+<%= form_for @year_structure, url: admin_year_structure_path(@year_structure) do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+  <!-- Edit existing groups -->
+
+   <style>
+      @media (min-width: 990px) {
+      #landing .row {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display:         flex;
+      flex-wrap: wrap;
+      width:100%;
+      text-align: center;
+      }
+      #landing .row > [class*='col-'] {
+      display: flex;
+      flex-direction: column;
+      }
+      .login-card{    height: 100%;
+      text-align: center;}
+      }
+   </style>
+
+  <% f.fields_for :groups do |group| %>
+    <%= render 'group_fields', :f => group %>
+  <% end %>
+
+  <div class='links'>
+    <%= link_to_add_association "Add Module Group", f, :groups%>
+  </div>
+  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
+
+<% end %>
