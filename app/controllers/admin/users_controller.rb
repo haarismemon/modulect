@@ -15,14 +15,16 @@ module Admin
 
       if params[:search].present?
         @search_query = params[:search]
-        @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) || user.last_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}.paginate(page: params[:page], :per_page => @per_page) 
+        @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) || user.last_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}
+        @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page) 
 
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
         @users = sort(User, @users, @sort_by, @order, @per_page, "first_name")
+        @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
       else
-        @users = @users.paginate(page: params[:page], :per_page => @per_page).order('first_name ASC')
+         @users = @users.order('first_name ASC').page(params[:page]).per(@per_page)
       end
 
     end
