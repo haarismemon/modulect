@@ -1,4 +1,4 @@
-<% content_for(:title) { "New User"} %>
+<% content_for(:title) { "New Department"} %>
 
 
 <header class="header">
@@ -8,6 +8,6 @@
   </div>
 </header>
 
-<%= form_for(@department, html: {class: "form"}) do |f| %>
+<%= form_for( @department, :url => { :action => "create",:method => "post" }, html: {class: "form"}) do |f| %>
     <%= render "form", f: f,parent:"new"%>
 <% end %>

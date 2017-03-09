@@ -38,9 +38,9 @@
                 </div>
                 <span  class="instruction-label form-actions" >*Faculty will not be added unless it's selected for this department</span>
                 <div class="field-unit__field">
-                  <input name="names" type="text">
+                  <input id="new-faculty-name" name="names" type="text">
                 </div>
-                <button class="button " style="margin-top:2% " >Add faculty</button>
+                <a id="new-faculty-btn" class="button " style="margin-top:2% " >Add faculty</a>
               </div>
             </div>
 
@@ -51,7 +51,34 @@
       </div>
     </div>
 
+    <script>
+      $("#new-faculty-btn").on("click", function(){
+          var faculty_name = $("input#new-faculty-name").val()
 
+          $.ajax({
+              type: "POST",
+              url: "<%= admin_add_new_faculty_path %>",
+              data: { faculty_name: faculty_name, current_department_id: <%= params[:id].nil? ? -1 : params[:id] %>},
+              context: document.body,
+              success: function(data){
+                  $("input#new-faculty-name").val("");
+                  openFacultyCreation();
+
+                  var count = data.new_faculty_id;
+
+                  $("#department_faculty_id").children().first().remove();
+                  $("#department_faculty_id").append("<option value=\"" + count + "\" selected=\"selected\">" + faculty_name + "</option>");
+
+                  $(".selectize-input.items.full.has-options.has-items,.selectize-input.items.not-full.has-options").first().children().first().remove();
+                  $(".selectize-input.items.full.has-options.has-items,.selectize-input.items.not-full.has-options").first().prepend("<div class=\"item\" data-value=\""+count+"\">"+faculty_name+"</div>");
+
+                  $(".selectize-dropdown-content").find("*").removeClass("selected");
+                  $(".selectize-dropdown-content").append("<div class=\"option selected\" data-selectable data-value=\"" +count+ "\">"+faculty_name+"</div>");
+              }
+          })
+
+      })
+    </script>
 
 
     <div class="row field-unit field-unit--select  courses" >
@@ -79,6 +106,5 @@
           open_faculty_creation = $(".faculty-creation-link").text()
           $(".default-select-field select").selectize();
       });
-
 
     </script>
