@@ -17,4 +17,14 @@ class Course < ApplicationRecord
   def add_department(valid_department)
     departments << valid_department
   end
+
+  def self.to_csv
+    attributes = %w{name year}
+    CSV.generate(headers:true)do |csv|
+      csv << attributes
+      all.each do |course|
+        csv << course.attributes.values_at(*attributes)
+      end
+    end
+  end
 end

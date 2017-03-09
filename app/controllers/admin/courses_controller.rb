@@ -4,7 +4,7 @@ module Admin
 
       
     def index      
-      @courses = Course.all 
+      @courses = Course.all
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
@@ -22,6 +22,11 @@ module Admin
         @courses = sort(Course, @courses, @sort_by, @order, @per_page, "name")
       else
         @courses = @courses.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+      end
+
+      respond_to do |format|
+        format.html
+        format.csv {send_data @courses.to_csv}
       end
 
     end
