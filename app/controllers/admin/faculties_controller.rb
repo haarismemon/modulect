@@ -75,7 +75,8 @@ module Admin
 
       end
 
-      head :no_content
+      data = {new_faculty_id: new_faculty.id}
+      render json: data
     end
 
 
