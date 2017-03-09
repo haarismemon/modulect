@@ -7,7 +7,7 @@ module Admin
       if current_user.user_level == "super_admin_access"
         @users = User.all 
       else
-        @users = User.select{|user| user.department_id == current_user.department_id}
+        @users = User.select{|user| user.department_id == current_user.department_id && user.user_level != "super_admin_access"}
       end
 
 
