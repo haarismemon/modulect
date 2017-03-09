@@ -5,21 +5,6 @@ Rails.application.routes.draw do
   get 'errors/not_found'
   get 'errors/internal_server_error'
 
-  namespace :old_admin do
-    resources :courses
-    resources :departments
-    resources :faculties
-    resources :groups
-    resources :tags
-    resources :uni_modules
-    resources :users
-    resources :year_structures
-    resources :career_tags
-    resources :interest_tags
-    get 'upload'
-    root to: "application#homepage"
-  end
-
   namespace :admin do
     resources :courses do
       resources :year_structures, only: :edit
