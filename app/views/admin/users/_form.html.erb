@@ -38,10 +38,17 @@
          <span  class="instruction-label" id="super-admin-warning" >*Warning: Super admin access gives unbound access to modify, create and delete</span>
       </div>
       <div class="form-group field-unit__field user-level-select-field">
+      <% if current_user.user_level == "super_admin_access" %>
          <%= f.select(:user_level,  options_for_select(
             f.object.class.public_send("user_levels")
                 .map { |k, v| [k.humanize, k] },
             f.object.public_send("user_level")), {:include_blank => false}, {:class => 'form-control user-level-margin', :id => "user_level_select", :autocomplete => "off"   }) %>
+      <% else %>
+         <%= f.select(:user_level,  options_for_select(
+            f.object.class.public_send("user_levels").select { |user_level| user_level == "user_access" || user_level == "department_admin_access"}
+                .map { |k, v| [k.humanize, k] },
+            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'form-control user-level-margin', :id => "user_level_select", :autocomplete => "off"   }) %>
+      <% end %>
       </div>
    </div>
 </div>

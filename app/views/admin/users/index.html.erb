@@ -4,7 +4,7 @@
 <% provide(:title, 'Users') %>
 <% end %>
 <header class="header index-header-area">
-   <h1 id="page-title">Users</h1>
+   <h1 id="page-title"><%if current_user.user_level == "department_admin_access" %><%= Department.find(current_user.department_id).name %> <% end %>Users</h1>
    <div class="header__actions">
       <div class="col-md-12">
          <% if @users.size > 0 %>
