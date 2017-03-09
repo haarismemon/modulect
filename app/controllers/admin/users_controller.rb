@@ -122,7 +122,6 @@ module Admin
       end
 
 
-
       # Update the object
       if @user.update_attributes(user_params)
         # If save succeeds, redirect to the index action
@@ -139,8 +138,8 @@ module Admin
       #find by id
       @user = User.find(params[:id])
       
-      if @user.user_level == "super_admin_access"
-        flash[:error] = "For security, super admins cannot be deleted through Modulect. Please use the database instead."
+      if @user.user_level == "super_admin_access" && get_num_super_admins == 1
+        flash[:error] = "For security, there must always be at least one super/system administrator"
         redirect_to(admin_users_path)
       else
         #delete tuple object from db
@@ -161,6 +160,11 @@ module Admin
     def user_params
       #!add params that want to be recognized by this application
       params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level, :faculty_id, :department_id, :course_id, :year_of_study, :activated)
+    end
+
+    def get_num_super_admins
+      super_admins = User.all.select { |user| user.user_level == "super_admin_access" }
+      super_admins.size
     end
 
 

@@ -140,7 +140,7 @@
 </span>
 <div class="form-actions"><button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>New<% end %> user" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
    <%if parent=="edit"  %>Update<% else %>New<% end %> user</button>
-   <% if parent == "edit" && @user.user_level != "super_admin_access" %>
+   <% if parent == "edit" %>
    &nbsp;&nbsp;&nbsp;<%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete user".html_safe, admin_user_path(@user), method: :delete,
       data: { confirm: "Are you sure you want to delete this user?" } , class: "table__action--destroy" %>
    <% end %>
