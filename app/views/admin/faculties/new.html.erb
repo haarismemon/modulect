@@ -1,1 +1,13 @@
-test
+<% content_for(:title) { "New Faculty"} %>
+
+
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+    <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, :back, class: "button" %>
+  </div>
+</header>
+
+  <%= form_for(@faculty, :url => { :action => "create",:method => "put" }, html: {class: "form"}) do |f| %>
+      <%= render "form", f: f,parent:"new"%>
+  <% end %>

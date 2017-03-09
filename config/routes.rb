@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :courses, except: [:show]
+    resources :courses do
+      resources :year_structures, only: :edit
+    end
     resources :departments, except: [:show]
     resources :faculties, except: [:show]
     resources :groups, except: [:show]
@@ -31,8 +33,10 @@ Rails.application.routes.draw do
     resources :year_structures, except: [:show]
     resources :career_tags, except: [:show]
     resources :interest_tags, except: [:show]
+    get 'upload', to: 'upload#upload'
 
-    get 'upload'
+    post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
+
     root to: "dashboard#index"
   end
 
@@ -43,7 +47,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
-  get '/admin', to: 'admin#homepage'
+  get '/admin', to: 'admin#dashboard'
 
   # Authentication
   get     '/login',   to: 'sessions#new'

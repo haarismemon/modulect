@@ -5,8 +5,8 @@
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
     <%= link_to(
-            "<i class='fa fa-user' aria-hidden='true'></i>&nbsp;&nbsp;Show User".html_safe,
-         user_path(@user),
+            "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe,
+        admin_users_path,
             class: "button",
         ) %>
   </div>

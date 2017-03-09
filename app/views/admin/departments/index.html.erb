@@ -12,7 +12,7 @@
             <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-               <li> <a id="delete-all" href="<%= request.original_fullpath %>">Delete selected</a>
+               <li> <a id="delete-all">(None available)</a>
                </li>
             </ul>
          </span>
@@ -55,7 +55,11 @@
 
             <td class="cell-data cell-data--string"><%= get_num_courses_for_department(department) %></td>
             <td class="cell-data cell-data--string">
-              <%=generate_linked_attribute(department.faculty.present??edit_admin_faculty_path(Faculty.find(department.faculty_id)):"",department,:faculty)%>
+               <% if department.faculty_id.present? %>
+               <a href="<%= edit_admin_faculty_path(Faculty.find(department.faculty_id)) %>"><%= Faculty.find(department.faculty_id).name %></a>
+               <% else %>
+               - 
+               <% end %>
             </td>
             <td class="no-link">
                <div class="col-md-3"><a class="action-edit" href="<%= edit_admin_department_path(department) %>"><i class="fa fa-pencil" aria-hidden="true" ></i>&nbsp;&nbspEdit</a></div>

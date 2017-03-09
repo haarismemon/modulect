@@ -67,7 +67,7 @@ button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type=
     color: #fff;
     text-decoration:none;
 }
-.btn:active, button:active, input[type="button"]:active, input[type="reset"]:active, input[type="submit"]:active, .button:active { 
+.btn:active, button:active, input[type="button"]:active, input[type="reset"]:active, input[type="submit"]:active, .button:active {
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
@@ -112,6 +112,10 @@ label {
     padding: 25px 15px;
 }
 
+select.form-control{
+    padding:15px;
+    height:52px ;
+  }
 @-moz-document url-prefix() {
     .form-control {
         height: auto;
@@ -211,7 +215,7 @@ a.action-edit{margin-right:10px;}
     font-family: "Varela Round";
     font-size: 16px;
     /*  box-shadow: 0px 10px 0px 0px #D3D3D3;*/
-    
+
     border-bottom: 1px solid #D3D3D3;
     border-radius: 0px;
 }

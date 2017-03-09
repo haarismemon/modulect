@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/typeahead.min
+//= require selectize
 //= require turbolinks
 //= require edit.js.coffee
 //= require_tree ./user-side
