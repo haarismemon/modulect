@@ -99,5 +99,5 @@ Rails.application.routes.draw do
 
   # CSV Upload
   post 'admin/download',   to: 'admin/upload#download'
-
+  post 'admin/upload/upload_csv', to: 'admin/upload#upload'
 end

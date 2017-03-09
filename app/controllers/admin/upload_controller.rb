@@ -2,6 +2,7 @@ module Admin
   class UploadController < Admin::ApplicationController
    
     def upload
+      logger.debug("Got here m8 Awesome work!")
     end
 
     def download
