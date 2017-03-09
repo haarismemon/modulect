@@ -83,6 +83,7 @@ Rails.application.routes.draw do
   post 'application/save_pathway'
   post 'application/delete_pathway'
   post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
+  post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
 
   # Profile
   get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }

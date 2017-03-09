@@ -107,6 +107,16 @@ table *{
   font-family: "Open Sans";
 }
 
+
+.faculty .default-select-field select{
+  margin-bottom: 0.5%;
+}
+
+#faculty-creation-box{
+  display: none;
+  margin-top: 10px;
+  padding-bottom: 0px;
+}
 /* Taginput styling by Feras */
 
 .twitter-typeahead .tt-query,

@@ -191,7 +191,20 @@ module ApplicationHelper
 	else
 	  "1 & 2"
 	end
-  end
+	end
+
+	#attribute object must have name as an attrbute
+	#check if obect has a link with the another
+	#if it does create a link to edit page of that object on click
+	def generate_linked_attribute(path,object,attribute)
+		collection = object.send(attribute)
+		if collection.present?
+			return link_to object.send(attribute).name.to_s,path
+		end
+		"-"
+	end
+
+
 
   private
   # determines what the link needs to be to redirect back to faculty form
