@@ -38,13 +38,14 @@ module Admin
 
       # Create a CSV file in the specified path
       require 'csv'
-      CSV.open("app/assets/admin_upload.csv", "wb") do |csv|
+      file_name = "app/assets/#{resource.to_s}_upload.csv"
+      CSV.open(file_name, "wb") do |csv|
         # Add the attribute names as the header/first row
         csv << resource_header
       end
 
       # Send the file for download
-      send_file "app/assets/admin_upload.csv", :type=>"text/csv", :x_sendfile=>true
+      send_file file_name, :type=>"text/csv", :x_sendfile=>true
     end
 
   end
