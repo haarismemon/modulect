@@ -14,5 +14,3 @@
 <%= form_for(@department, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>
     <%= render "form", f: f,parent: "edit"%>
 <% end %>
-
-<%= params.inspect %>
