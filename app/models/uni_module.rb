@@ -160,4 +160,15 @@ class UniModule < ApplicationRecord
     return pathway_results
   end
 
+  def self.to_csv
+    attributes = %w{name code description lecturers pass_rate semester credits}
+    caps = []
+    attributes.each{|att| caps.push att.titleize.capitalize}
+    CSV.generate(headers:true)do |csv|
+      csv << caps
+      all.each do |course|
+        csv << course.attributes.values_at(*attributes)
+      end
+    end
+  end
 end
