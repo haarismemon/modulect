@@ -10,4 +10,14 @@ class Department < ApplicationRecord
   def add_course(valid_course)
     courses << valid_course
   end
+
+  def self.to_csv
+    attributes = %w{name}
+    CSV.generate(headers:true)do |csv|
+      csv << [attributes.first.capitalize,'Faculty']
+      all.each do |dept|
+        csv << dept.attributes.values_at(*attributes) + [*Faculty.find(dept.faculty_id).name]
+      end
+    end
+  end
 end

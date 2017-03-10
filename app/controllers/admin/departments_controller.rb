@@ -32,6 +32,10 @@ module Admin
          @departments = @departments.order('name ASC').page(params[:page]).per(@per_page)
       end
 
+      respond_to do |format|
+        format.html
+        format.csv {send_data @departments.to_csv}
+      end
     end
 
     def new

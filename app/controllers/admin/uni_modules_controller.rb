@@ -44,6 +44,10 @@ module Admin
         @uni_modules = @uni_modules.order('name ASC').page(params[:page]).per(@per_page)
       end
 
+      respond_to do |format|
+        format.html
+        format.csv {send_data @uni_modules.to_csv}
+      end
   	end
 
   	def new

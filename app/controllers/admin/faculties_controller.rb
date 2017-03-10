@@ -25,6 +25,10 @@ module Admin
          @faculties = @faculties.order('name ASC').page(params[:page]).per(@per_page)
         end
 
+        respond_to do |format|
+          format.html
+          format.csv {send_data @faculties.to_csv}
+        end
       end
 
       def new

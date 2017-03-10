@@ -38,6 +38,10 @@ module Admin
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
       end
 
+     respond_to do |format|
+       format.html
+       format.csv {send_data @users.to_csv}
+     end
     end
 
     def new
