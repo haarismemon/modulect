@@ -9,7 +9,7 @@ module Admin
       
       if current_user.user_level == "super_admin_access"
         if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
-          @dept = params[:dept].to_i
+          @dept_filter_id = params[:dept].to_i
           @users = User.select{|user| user.department_id == params[:dept].to_i && user.user_level != "super_admin_access"}
         else
           @users = User.all 
