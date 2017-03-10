@@ -4,8 +4,8 @@ module Admin
      
   	def index      
 
-      if params[:fac].present? && params[:fac].to_i != 0 && Faculty.exists?(params[:fac].to_i)
-          @faculty_filter_id = params[:fac].to_i
+      if params[:faculty].present? && params[:faculty].to_i != 0 && Faculty.exists?(params[:faculty].to_i)
+          @faculty_filter_id = params[:faculty].to_i
           @departments = Faculty.find(@faculty_filter_id).departments
         else
           @departments = Department.all 
