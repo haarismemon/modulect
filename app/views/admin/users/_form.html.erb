@@ -105,8 +105,14 @@
             <%= f.label :faculty %>
          </div>
          <div class="field-unit__field default-select-field">
-            <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
-               [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  }) %>
+            
+         <% if current_user.user_level == "super_admin_access" %>
+         <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
+                        [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  }) %>
+         <% else %>
+         <%= f.select(:faculty_id, options_for_select([Faculty.find(current_user.faculty_id).name.titleize], Faculty.find(current_user.faculty_id).name.titleize), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off", :readonly=> "true", :disabled=>true  }) %>
+
+            <% end %>   
          </div>
       </div>
    </div>
@@ -116,8 +122,13 @@
             <%= f.label :department %>
          </div>
          <div class="field-unit__field default-select-field">
+
+         <% if current_user.user_level == "super_admin_access" %>
             <%= f.select(:department_id, options_for_select(@departments.collect { |department|
                [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"  }) %>
+            <% else %>
+             <%= f.select(:department_id,options_for_select([Department.find(current_user.department_id).name.titleize], Department.find(current_user.department_id).name.titleize), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off", :readonly=> "true", :disabled=>true   }) %>
+            <% end %>
          </div>
       </div>
    </div>
