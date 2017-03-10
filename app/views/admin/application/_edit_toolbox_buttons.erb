@@ -1,0 +1,69 @@
+<a onclick="openPrintForm('<%= blacklist_attributes%>','<%=entity_attributes%>')"
+     class="button tool-box"><span class="glyphicon glyphicon-print" style=" margin-right: 2px"></span>  Print data</a>
+<a onclick="exportToHTML('<%= blacklist_attributes%>','<%=entity_attributes%>')" class="button tool-box"><span class="glyphicon glyphicon-cloud-upload" style=" margin-right: 2px"></span> Export as simple data</a>
+<a href="javascript:genPDF('<%=name_of_file%>','<%= blacklist_attributes%>','<%=entity_attributes%>')" class="button tool-box"><span class="glyphicon glyphicon-file" style=" margin-right: 2px"></span> Download As PDF</a>
+<%= link_to "<i class='glyphicon glyphicon-arrow-left' aria-hidden='true' style='margin-right: 2px'></i>&nbsp;&nbsp;Back".html_safe, :back, class: "button tool-box" %>
+
+
+<script>
+
+    function notPresent(arr, obj) {
+        for(var i=0; i<arr.length; i++) {
+            if (arr[i] == obj) return false;
+        }
+        return true;
+    }
+
+    var printForm = function (blackListFields,relationshipFields) {
+        var blacklist = blackListFields.split(',');
+        var relationships = relationshipFields.split(',');
+        var form_data = $(".form").serializeArray();
+        var html = "<div id='to-print'>Modulect data<table class='collection-data table' ' cellpadding='10'  border='1' style='border-collapse: collapse; font-family: Arial'>"
+        <% object.attributes.each do |attr| %>
+        var name = "<%=attr[0].to_s.titleize %>"
+        var value= "<%= attr[1].to_s.titleize %>" == ""?" - ":"<%= attr[1].to_s.titleize %>"
+        console.log(name);
+//        console.log(value);
+        if(notPresent(blacklist,name)){
+            if(!notPresent(relationships,name)) {
+                if("<%= attr[1] %>"!=""){
+                    value = "<%= find_name_of_association(object,attr[0].to_s.titleize.downcase)%>";
+                }
+            }
+            html += "<tr> <td>" + name + " : " + value + "</td> </tr>";
+        }
+        <%end%>
+        html+="</table>";
+        return html;
+    }
+
+    function openPrintForm(blackListFields,relationshipFields){
+        var html = printForm(blackListFields,relationshipFields);
+        w=window.open();
+        w.document.write(html);
+        w.print();
+        w.close();
+    }
+
+    function genPDF(name,blackListFields,relationshipFields) {
+        var html = printForm(blackListFields,relationshipFields)
+        var doc = new jsPDF();
+        $(".form").after($.parseHTML( html ));
+        $("#to-print").css("display","none");
+        doc.fromHTML($("#to-print").get(0), 20,20,{
+            'width':500
+        });
+        doc.save("Modulect_"+name+'.pdf');
+        $("#to-print").remove();
+
+    }
+
+    function exportToHTML(blackListFields,relationshipFields) {
+        var html = printForm(blackListFields,relationshipFields);
+        w=window.open();
+        w.document.write(html);
+    }
+
+
+
+</script>
