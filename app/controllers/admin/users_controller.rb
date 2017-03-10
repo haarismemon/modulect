@@ -13,7 +13,8 @@ module Admin
           @users = User.all
         end
       else
-        @users = User.select{|user| user.department_id == current_user.department_id && user.user_level != "super_admin_access"}
+       # @users = User.select{|user| user.department_id == current_user.department_id && user.user_level != "super_admin_access"}
+        @users = User.where("department_id = ? AND (user_level = ? OR user_level = ?)", current_user.department_id, "2", "3")
       end
 
       respond_to do |format|
