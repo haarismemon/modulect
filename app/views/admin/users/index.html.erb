@@ -4,15 +4,21 @@
 <% provide(:title, 'Users') %>
 <% end %>
 <header class="header index-header-area">
-   <h1 id="page-title"><%if current_user.user_level == "department_admin_access" %><%= Department.find(current_user.department_id).name %> <% end %>Users</h1>
+   <h1 id="page-title"><%if current_user.user_level == "department_admin_access" %>
+   <%= Department.find(current_user.department_id).name %>
+   <% elsif request.query_parameters["dept"] && Department.exists?(@dept) %>
+   <%= Department.find(@dept).name %>
+   <% end %>Users</h1>
    <div class="header__actions">
       <div class="col-md-12">
          <div class="btn-group">
             <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department filter  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-               <li> <a id="delete-all">test</a>
-               </li>
+               <li> <%= link_to ("View All"), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0  ), method: :get %></li>
+               <% Department.all.sort_by{|department| department[:name]}.each do |department| %>
+                  <li> <%= link_to (department.name.titleize), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => department.id  ), method: :get %></li>
+               <% end %>
             </ul>
             </div>
          <% if @users.size > 0 %>
