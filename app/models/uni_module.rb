@@ -17,6 +17,9 @@ class UniModule < ApplicationRecord
     :foreign_key => "uni_module_id",
     :association_foreign_key => "required_uni_module_id")
 
+  # A UniModule has many comments (reviews)
+  has_many :comments
+
   scope :search, lambda {|tag|
     joins(:tags).where(["tags.name = ?", tag])
   }
