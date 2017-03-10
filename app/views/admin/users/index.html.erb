@@ -68,8 +68,10 @@
             </td>
             <td class="no-link">
                <div class="col-md-3"><a class="action-edit" href="<%= edit_admin_user_path(user) %>"><i class="fa fa-pencil" aria-hidden="true" ></i>&nbsp;&nbspEdit</a></div>
-               <div class="col-md-3"><%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_user_path(user), method: :delete,
+              
+            <% if current_user.id != user.id %> <div class="col-md-3"><%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_user_path(user), method: :delete,
                   data: { confirm: "Are you sure you want to delete this user?" } , class: "table__action--destroy" %></div>
+            <% end %>
             </td>
          </tr>
          <%end %>
