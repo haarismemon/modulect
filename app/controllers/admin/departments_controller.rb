@@ -1,9 +1,15 @@
 module Admin
   class DepartmentsController < Admin::BaseController
-    
+    before_action :verify_super_admin, only: [:destroy, :new, :create, :update, :edit, :index,]
      
   	def index      
-      @departments = Department.all 
+
+      if params[:faculty].present? && params[:faculty].to_i != 0 && Faculty.exists?(params[:faculty].to_i)
+          @faculty_filter_id = params[:faculty].to_i
+          @departments = Faculty.find(@faculty_filter_id).departments
+        else
+          @departments = Department.all 
+        end
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
@@ -13,14 +19,17 @@ module Admin
 
       if params[:search].present?
         @search_query = params[:search]
-        @departments = @departments.select { |department| department.name.downcase.include?(params[:search].downcase) }.sort_by{|department| department[:name]}.paginate(page: params[:page], :per_page => @per_page) 
+        @departments = @departments.select { |department| department.name.downcase.include?(params[:search].downcase) }.sort_by{|department| department[:name]}
+        @departments = Kaminari.paginate_array(@departments).page(params[:page]).per(@per_page) 
 
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
         @departments = sort(Department, @departments, @sort_by, @order, @per_page, "name")
+        @departments = Kaminari.paginate_array(@departments).page(params[:page]).per(@per_page)
+
       else
-        @departments = @departments.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+         @departments = @departments.order('name ASC').page(params[:page]).per(@per_page)
       end
 
     end
@@ -93,6 +102,11 @@ module Admin
       # checks no course is linked to it already
     def has_no_course_dependacies
       @department.courses.empty??true:false
+    end
+
+    def verify_super_admin
+       redirect_to admin_path unless current_user.user_level == "super_admin_access"
+
     end
 
 
