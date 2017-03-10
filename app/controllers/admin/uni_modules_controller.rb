@@ -6,7 +6,12 @@ module Admin
   	def index
 
       if current_user.user_level == "super_admin_access"     
-        @uni_modules = UniModule.all
+        if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
+          @dept_filter_id = params[:dept].to_i
+          @uni_modules = Department.find(@dept_filter_id).uni_modules
+        else
+          @uni_modules = UniModule.all 
+        end
       else
         @uni_modules = Department.find(current_user.department_id).uni_modules
       end  

@@ -3,9 +3,7 @@ module Admin
     before_action :verify_correct_department, only: [:destroy, :update, :edit]
     
 
-    def index
-      #returns all users by order of last_name
-     
+    def index    
       
       if current_user.user_level == "super_admin_access"
         if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
@@ -36,7 +34,7 @@ module Admin
         @users = sort(User, @users, @sort_by, @order, @per_page, "first_name")
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
       else
-        @users = @users.sort_by{|user| user[:first_name]}
+        @users = @users.sort_by{|user| user[:first_name].downcase}
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
       end
 

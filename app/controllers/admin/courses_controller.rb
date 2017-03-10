@@ -7,7 +7,12 @@ module Admin
 
     def index
       if current_user.user_level == "super_admin_access"
-        @courses = Course.all
+         if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
+          @dept_filter_id = params[:dept].to_i
+          @courses = Department.find(@dept_filter_id).courses
+        else
+          @courses = Course.all 
+        end
       else
         @courses = Department.find(current_user.department_id).courses
       end

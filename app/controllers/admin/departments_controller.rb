@@ -3,7 +3,13 @@ module Admin
     before_action :verify_super_admin, only: [:destroy, :new, :create, :update, :edit, :index,]
      
   	def index      
-      @departments = Department.all 
+
+      if params[:fac].present? && params[:fac].to_i != 0 && Faculty.exists?(params[:fac].to_i)
+          @faculty_filter_id = params[:fac].to_i
+          @departments = Faculty.find(@faculty_filter_id).departments
+        else
+          @departments = Department.all 
+        end
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
