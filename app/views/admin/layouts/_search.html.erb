@@ -3,5 +3,10 @@
 	    <i class="fa fa-search" aria-hidden="true"></i>
 	    <input type="text" name="search" class="search__input" placeholder="Type anywhere to search"value="<% if request.query_parameters["search"].present?%><%= request.query_parameters["search"] %><% end %>"  <% if !request.query_parameters["search"].present?%>autofocus="autofocus"<% end %>  aria-label="Search" />
 	    <% if request.query_parameters["search"].present?%><a style="color:#555459" href="<%= request.path%>"><span class="search__clear"><i class="fa fa-times" aria-hidden="true"></i></span></a><% end %>
+	    <% request.query_parameters.each do |first, second| %>
+	    	<% if first != "search" %>
+	    		<input type="hidden" name="<%= first %>" value="<%= second %>">
+	    	<% end %>
+	    <% end %>
 	</form>
 <% end %>
