@@ -138,6 +138,10 @@ module Admin
       if @user.user_level == "super_admin_access" && user_params[:user_level] != "super_admin_access" && get_num_super_admins == 1
         flash[:error] = "For security, there must always be at least one super/system administrator"
         redirect_to(edit_admin_user_path) and return
+      # if a department admin tries to delete all the department admins, then this stops them. a super admin can do as they please
+      elsif current_user.user_level != "super_admin_access" && @user.user_level == "department_admin_access" && user_params[:user_level] != "department_admin_access" && get_num_dept_admins(current_user.department_id) == 1
+        flash[:error] = "There must be at least one Department admin"
+        redirect_to(edit_admin_user_path) and return
       else
         # Update the object
         if @user.update_attributes(user_params)
@@ -183,6 +187,11 @@ module Admin
     def get_num_super_admins
       super_admins = User.all.select { |user| user.user_level == "super_admin_access" }
       super_admins.size
+    end
+
+    def get_num_dept_admins(department_id)
+      department_admins = User.all.select { |user| user.user_level == "department_admin_access" && user.department_id == department_id }
+      department_admins.size
     end
 
     def verify_correct_department
