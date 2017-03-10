@@ -163,6 +163,9 @@
       </div>
    </div>
 </span>
+<%= f.hidden_field :faculty_id, :value => current_user.faculty_id %>
+<%= f.hidden_field :department_id, :value => current_user.department_id %>
+
 <div class="form-actions"><button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>New<% end %> user" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
    <%if parent=="edit"  %>Update<% else %>New<% end %> user</button>
    <% if parent == "edit" && current_user.id != @user.id %>
