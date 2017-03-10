@@ -85,7 +85,9 @@ Rails.application.routes.draw do
 
   # UNI MODULES
   # Uni Modules
-  resources :uni_modules, only: [:show]
+  resources :uni_modules, only: [:show] do
+    resources :comments
+  end
 
 
   # AJAX
