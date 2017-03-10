@@ -2,6 +2,7 @@ module Admin
 
 	class Admin::BaseController < ApplicationController
 	before_action :authenticate_admin
+	before_action :admin_has_dept
 
 	layout "admin/application"
 
@@ -20,9 +21,17 @@ module Admin
 	        store_location
 	        redirect_to admin_login_path
 	      end
-	    end
+	end
+
+
+	def admin_has_dept
+		if logged_in? && admin_user && current_user.user_level == "department_admin_access" && !current_user.department_id.present?
+			redirect_to root_path
+	        flash[:error] = "You have not been assigned a department. Contact the System Administrator."
+		end
+	end
+	
 
 
 	end
-	
 end
