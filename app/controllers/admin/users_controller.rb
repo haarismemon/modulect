@@ -187,7 +187,7 @@ module Admin
 
     def verify_correct_department
       @user = User.find(params[:id])
-       redirect_to admin_path unless current_user.department_id == @user.department_id || current_user.user_level == "super_admin_access"
+       redirect_to admin_path unless (current_user.department_id == @user.department_id && @user.user_level != "super_admin_access") || current_user.user_level == "super_admin_access"
 
       end
 
