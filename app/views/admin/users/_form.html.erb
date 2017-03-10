@@ -127,7 +127,7 @@
             <%= f.select(:department_id, options_for_select(@departments.collect { |department|
                [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"  }) %>
             <% else %>
-             <%= f.select(:department_id,options_for_select([Department.find(current_user.department_id).name.titleize], Department.find(current_user.department_id).name.titleize), {:include_blank => false}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off", :readonly=> "true", :disabled=>true   }) %>
+             <%= f.select(:department_id,options_for_select([Department.find(current_user.department_id).name.titleize], @user.department_id), {:include_blank => false}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off", :readonly=> "true", :disabled=>true   }) %>
             <% end %>
          </div>
       </div>
@@ -144,7 +144,7 @@
                   [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"   }) %>
             <% else %>
                <%= f.select(:course_id, options_for_select(Department.find(current_user.department_id).courses.collect { |course|
-                                 [course.name + " (from " + course.year.to_s+")", course.id] }), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"   }) %>
+                                 [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"   }) %>
             <% end %>
             </div>
          </div>
