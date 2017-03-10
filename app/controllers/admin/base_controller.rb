@@ -26,6 +26,7 @@ module Admin
 
 	def admin_has_dept
 		if logged_in? && admin_user && current_user.user_level == "department_admin_access" && !current_user.department_id.present?
+			log_out
 			redirect_to root_path
 	        flash[:error] = "You have not been assigned a department. Contact the System Administrator."
 		end

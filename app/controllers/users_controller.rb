@@ -47,7 +47,7 @@ class UsersController < ApplicationController
     if @user.save
       UserMailer.account_activation(@user).deliver_now
       redirect_to "/"
-      flash[:success] = "Please check your email to activate your account."
+      flash[:success] = "Please check your email to activate your account or contact an administrator."
     else
       render 'new'
     end
