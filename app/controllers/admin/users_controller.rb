@@ -1,5 +1,8 @@
 module Admin
   class UsersController < Admin::BaseController
+    before_action :verify_correct_department, only: [:destroy, :update, :edit]
+    
+
     def index
       #returns all users by order of last_name
      
@@ -181,6 +184,12 @@ module Admin
       super_admins = User.all.select { |user| user.user_level == "super_admin_access" }
       super_admins.size
     end
+
+    def verify_correct_department
+      @user = User.find(params[:id])
+       redirect_to admin_path unless current_user.department_id == @user.department_id || current_user.user_level == "super_admin_access"
+
+      end
 
 
   end

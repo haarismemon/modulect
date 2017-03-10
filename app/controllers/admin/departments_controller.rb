@@ -1,6 +1,6 @@
 module Admin
   class DepartmentsController < Admin::BaseController
-    before_action :verify_super_admin, only: [:new, :create, :update, :edit, :index,]
+    before_action :verify_super_admin, only: [:destroy, :new, :create, :update, :edit, :index,]
      
   	def index      
       @departments = Department.all 

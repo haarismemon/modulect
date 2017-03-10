@@ -1,6 +1,6 @@
 module Admin
   class FacultiesController < Admin::BaseController
-    before_action :verify_super_admin, only: [:new, :create, :update, :edit, :index,]
+    before_action :verify_super_admin, only: [:destroy, :new, :create, :update, :edit, :index,]
       
       def index      
         @faculties = Faculty.all 
