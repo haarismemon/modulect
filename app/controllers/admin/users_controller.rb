@@ -1,21 +1,25 @@
 module Admin
   class UsersController < Admin::BaseController
     before_action :verify_correct_department, only: [:destroy, :update, :edit]
-    
 
-    def index    
-      
+
+    def index
+
       if current_user.user_level == "super_admin_access"
         if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
           @dept_filter_id = params[:dept].to_i
           @users = User.select{|user| user.department_id == params[:dept].to_i && user.user_level != "super_admin_access"}
         else
-          @users = User.all 
+          @users = User.all
         end
       else
         @users = User.select{|user| user.department_id == current_user.department_id && user.user_level != "super_admin_access"}
       end
 
+      respond_to do |format|
+        format.html
+        format.csv {send_data @users.to_csv}
+      end
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
@@ -26,7 +30,7 @@ module Admin
       if params[:search].present?
         @search_query = params[:search]
         @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) || user.last_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}
-        @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page) 
+        @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
 
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
@@ -38,10 +42,6 @@ module Admin
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
       end
 
-     respond_to do |format|
-       format.html
-       format.csv {send_data @users.to_csv}
-     end
     end
 
     def new
@@ -105,30 +105,30 @@ module Admin
       end
     end
 
-    
+
     # Change the value of @departments if faculty changes
-  def update_departments
-    @departments = Department.where("faculty_id = ?", params[:faculty_id])
-                  respond_to do |format|
-                    format.js
-                  end
-  end
-
-  # Change the value of @courses if department changes
-  def update_courses
-    d = Department.find(params[:department_id])
-    @courses = d.courses.where("department_id = ?", params[:department_id])
-
-    respond_to do |format|
-      format.js
+    def update_departments
+      @departments = Department.where("faculty_id = ?", params[:faculty_id])
+      respond_to do |format|
+        format.js
+      end
     end
-  end
 
-  def update
+    # Change the value of @courses if department changes
+    def update_courses
+      d = Department.find(params[:department_id])
+      @courses = d.courses.where("department_id = ?", params[:department_id])
+
+      respond_to do |format|
+        format.js
+      end
+    end
+
+    def update
       # Find a  object using id parameters
       @user = User.find(params[:id])
 
-     @faculties = Faculty.all
+      @faculties = Faculty.all
       #Initialise departments and courses to be empty unless previously selected
       if(@user.department_id.present?)
         @departments = Faculty.find_by_id(@user.faculty_id).departments
@@ -145,7 +145,7 @@ module Admin
       if @user.user_level == "super_admin_access" && user_params[:user_level] != "super_admin_access" && get_num_super_admins == 1
         flash[:error] = "For security, there must always be at least one super/system administrator"
         redirect_to(edit_admin_user_path) and return
-      # if a department admin tries to delete all the department admins, then this stops them. a super admin can do as they please
+        # if a department admin tries to delete all the department admins, then this stops them. a super admin can do as they please
       elsif current_user.user_level != "super_admin_access" && @user.user_level == "department_admin_access" && user_params[:user_level] != "department_admin_access" && get_num_dept_admins(current_user.department_id) == 1
         flash[:error] = "There must be at least one Department Admin"
         redirect_to(edit_admin_user_path) and return
@@ -166,7 +166,7 @@ module Admin
     def destroy
       #find by id
       @user = User.find(params[:id])
-      
+
       if @user.user_level == "super_admin_access" && get_num_super_admins == 1
         flash[:error] = "For security, there must always be at least one super/system administrator"
         redirect_to(admin_users_path)
@@ -185,7 +185,7 @@ module Admin
 
 
 
-   
+
 
     private
 
@@ -206,9 +206,9 @@ module Admin
 
     def verify_correct_department
       @user = User.find(params[:id])
-       redirect_to admin_path unless (current_user.department_id == @user.department_id && @user.user_level != "super_admin_access") || current_user.user_level == "super_admin_access"
+      redirect_to admin_path unless (current_user.department_id == @user.department_id && @user.user_level != "super_admin_access") || current_user.user_level == "super_admin_access"
 
-      end
+    end
 
 
   end
