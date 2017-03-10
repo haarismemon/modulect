@@ -24,7 +24,7 @@ class TagGeneratorController < ApplicationController
 "A spokesman said: “Insects could become a regular feature on western menus in the future as they’re a green and sustainable protein source compared to other meats.</Body></Docunent>\n";
 		post_body2 = []
 		post_body2 << "<Document><Body>"
-		post_body2 << params[:desc]
+		post_body2 << ActionView::Base.full_sanitizer.sanitize(params[:desc])
 		post_body2 << "</Body></Document>"
 		request = Net::HTTP::Post.new(uri.request_uri)
 		request.add_field("Content-Type","text/xml")

@@ -15,4 +15,5 @@
 //= require bootstrap-tagsinput
 //= require twitter/typeahead.min
 //= require turbolinks
+//= require widgEditor.js
 //= require_tree ./user-side
