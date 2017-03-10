@@ -1,6 +1,6 @@
 module Admin
   class FacultiesController < Admin::BaseController
-    
+    before_action :verify_super_admin, only: [:destroy, :new, :create, :update, :edit, :index,]
       
       def index      
         @faculties = Faculty.all 
@@ -13,14 +13,16 @@ module Admin
 
         if params[:search].present?
           @search_query = params[:search]
-          @faculties = @faculties.select { |faculty| faculty.name.downcase.include?(params[:search].downcase) }.sort_by{|faculty| faculty[:name]}.paginate(page: params[:page], :per_page => @per_page) 
+          @faculties = @faculties.select { |faculty| faculty.name.downcase.include?(params[:search].downcase) }.sort_by{|faculty| faculty[:name]}
+          @faculties = Kaminari.paginate_array(@faculties).page(params[:page]).per(@per_page)
 
         elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
           @sort_by = params[:sortby]
           @order = params[:order]
           @faculties = sort(Faculty, @faculties, @sort_by, @order, @per_page, "name")
+          @faculties = Kaminari.paginate_array(@faculties).page(params[:page]).per(@per_page)
         else
-          @faculties = @faculties.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+         @faculties = @faculties.order('name ASC').page(params[:page]).per(@per_page)
         end
 
       end
@@ -106,6 +108,11 @@ module Admin
       def faculty_params
         #!add params that want to be recognized by this application
         params.require(:faculty).permit(:name, :department_ids=>[])
+      end
+      
+      def verify_super_admin
+       redirect_to admin_path unless current_user.user_level == "super_admin_access"
+
       end
 
 
