@@ -4,13 +4,11 @@
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
-    <%= link_to(
-            "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe,
-        admin_users_path,
-            class: "button",
-        ) %>
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons', :locals => {:object => User.find(params[:id]),:name_of_file=>User.find(params[:id]).first_name+"_"+User.find(params[:id]).last_name,:blacklist_attributes=>"Password Digest,Activation Digest,Reset Digest,Reset Sent At,Remember Digest",:entity_attributes=>"Department,Faculty,Course"})%>
+
   </div>
 </header>
 <%= form_for(@user, :url => { :action => "update",:method => "put" }, html: {class: "form",:onsubmit => "removeVoidFields()" })do |f| %>
   <%= render "form", f: f,parent: "edit"%>
 <% end %>
+
