@@ -140,7 +140,7 @@ module Admin
         redirect_to(edit_admin_user_path) and return
       # if a department admin tries to delete all the department admins, then this stops them. a super admin can do as they please
       elsif current_user.user_level != "super_admin_access" && @user.user_level == "department_admin_access" && user_params[:user_level] != "department_admin_access" && get_num_dept_admins(current_user.department_id) == 1
-        flash[:error] = "There must be at least one Department admin"
+        flash[:error] = "There must be at least one Department Admin"
         redirect_to(edit_admin_user_path) and return
       else
         # Update the object
@@ -163,6 +163,9 @@ module Admin
       if @user.user_level == "super_admin_access" && get_num_super_admins == 1
         flash[:error] = "For security, there must always be at least one super/system administrator"
         redirect_to(admin_users_path)
+      elsif current_user.user_level != "super_admin_access" && @user.user_level == "department_admin_access" && @user.user_level == "department_admin_access" && get_num_dept_admins(current_user.department_id) == 1
+        flash[:error] = "There must be at least one Department Admin"
+        redirect_to(edit_admin_user_path) and return
       else
         #delete tuple object from db
         @user.destroy
