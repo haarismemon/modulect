@@ -11,6 +11,9 @@
          <% end %>
       </select>
       &nbsp;&nbsp;per page
+      <% if controller_name == "users" %>
+      <input type="hidden" name="dept" value="<%= dept_filter_id %>">
+      <% end %>
       <input type="hidden" name="search" value="<%= search_query %>">
       <input type="hidden" name="sort_by" value="<%= sort_by %>">
       <input type="hidden" name="order" value="<%= order %>">

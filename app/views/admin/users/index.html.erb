@@ -7,16 +7,23 @@
    <h1 id="page-title"><%if current_user.user_level == "department_admin_access" %><%= Department.find(current_user.department_id).name %> <% end %>Users</h1>
    <div class="header__actions">
       <div class="col-md-12">
+         <div class="btn-group">
+            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department filter  <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+               <li> <a id="delete-all">test</a>
+               </li>
+            </ul>
+            </div>
          <% if @users.size > 0 %>
-         <span id="bulk-area">
+         <div class="btn-group">
             <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                <li> <a id="delete-all">(None available)</a>
                </li>
-               </li>
             </ul>
-         </span>
+            </div>
          <% end %>
          <a class="button" href="<%= new_admin_user_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New user</a>
       </div>
@@ -83,7 +90,7 @@
    </table>
    <%= paginate @users %>
 </div>
-<%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query} %>
+<%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query, dept_filter_id: @dept_filter_id} %>
 <% elsif request.query_parameters["search"].present?%>
 <h4 style="margin-bottom:30px;">Unfortunately, we couldn't find any users related to your search query.</h4>
 <% else %>

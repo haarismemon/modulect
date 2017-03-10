@@ -8,7 +8,11 @@ module Admin
      
       
       if current_user.user_level == "super_admin_access"
-        @users = User.all 
+        if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
+          @users = User.select{|user| user.department_id == params[:dept].to_i && user.user_level != "super_admin_access"}
+        else
+          @users = User.all 
+        end
       else
         @users = User.select{|user| user.department_id == current_user.department_id && user.user_level != "super_admin_access"}
       end
@@ -31,7 +35,7 @@ module Admin
         @users = sort(User, @users, @sort_by, @order, @per_page, "first_name")
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
       else
-        @users.sort_by{|user| user[:first_name]}
+        @users = @users.sort_by{|user| user[:first_name]}
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
       end
 
