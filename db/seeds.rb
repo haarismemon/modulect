@@ -305,3 +305,17 @@ sophie = User.create!(first_name:  "Sophie",
             activated: true,
             activated_at: Time.zone.now,
             user_level: 3)
+
+
+
+# Department-uni_module seed
+informatics.uni_modules << prp
+informatics.uni_modules << pra
+informatics.uni_modules << fc1
+informatics.uni_modules << fc2
+informatics.uni_modules << iai
+informatics.uni_modules << dst
+informatics.uni_modules << ins
+informatics.uni_modules << ela
+informatics.uni_modules << dbs
+informatics.uni_modules << cs1
