@@ -1,8 +1,31 @@
-<div id = "response-div"><%= @response.body %></div>
-<script type="text/javascript">
-	var res = <%= @response.body %>;
-	//var json_res = jQuery.parseJSON(res);
-	console.log(res);
+<div id = "response-div">response goes here</div>
+<textarea id = "txtarea_description_input"></textarea>
+<button id = "btn_generate_tags">generate tags
+</button>
 
+
+
+
+<script type="text/javascript">
+var social_tags = [];
+$(function() {
+  $("#btn_generate_tags").on("click", function(event) {
+    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "tag_generator/generate_tags",
+      data: {desc: $("#txtarea_description_input").val()},
+      success: function(result) {
+        document.getElementById("response-div").innerHTML = result;
+        console.log(result);
+        for(key in result){
+        	// console.log(result[key]);
+        	if(result[key]._typeGroup == "socialTag")
+        		console.log(result[key].name);
+        }
+      },
+    });
+  });
+});
 
 </script>

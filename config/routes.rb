@@ -100,4 +100,7 @@ Rails.application.routes.draw do
   # OPEN CALAIS sample page
   get '/tag_generator/', to: 'tag_generator#index'
 
+  post 'tag_generator/generate_tags', to: 'tag_generator#generate_tags'
+
+
 end

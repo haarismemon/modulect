@@ -2,9 +2,7 @@
 	require 'net/http'
 class TagGeneratorController < ApplicationController
 
-	def index
-		# BOUNDARY = "AaB03x"
-
+	def generate_tags
 		uri = URI.parse("https://api.thomsonreuters.com/permid/calais")
 
 		post_body = []
@@ -24,14 +22,22 @@ class TagGeneratorController < ApplicationController
 "A spokesman for the firm, which was set up in Bristol in 2003, said it was inspired by Mexican street food, where crickets are often erved up to hungry punters.\n"+
 "They mixed the crickets with black beans and a ‘rich tomato, chipotle chilli and sour cream sauce’ before finishing it off with fresh lime and coriander.\n"+
 "A spokesman said: “Insects could become a regular feature on western menus in the future as they’re a green and sustainable protein source compared to other meats.</Body></Docunent>\n";
+		post_body2 = []
+		post_body2 << "<Document><Body>"
+		post_body2 << params[:desc]
+		post_body2 << "</Body></Document>"
 		request = Net::HTTP::Post.new(uri.request_uri)
 		request.add_field("Content-Type","text/xml")
 		request.add_field("outputFormat","application/json")
 		#request.add_field("outputFormat","text/n3")		
 		request.add_field("x-ag-access-token","fY7WUM3GGCXHm9ATOhtzhrvlWX8oPo5X")
-		request.body = post_body.join
+		request.body = post_body2.join
 		# request["Content-Type"] = "multipart/form-data, boundary=#{BOUNDARY}"
 
-		@response = http.request(request)
+		render :json => http.request(request).body
 	end
+	def index
+	end
+
+	helper_method :generate_tags
 end
