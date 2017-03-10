@@ -15,9 +15,9 @@
          <div class="btn-group">
             <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department filter  <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu scrollable-submenu">
                <li> <%= link_to ("View All"), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0  ), method: :get %></li>
-               <% Department.all.sort_by{|department| department[:name]}.each do |department| %>
+               <% Department.all.sort_by{|department| department[:name].downcase}.each do |department| %>
                   <li> <%= link_to (department.name.titleize), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => department.id, :search => @search_query  ), method: :get %></li>
                <% end %>
             </ul>
