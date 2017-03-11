@@ -18,7 +18,6 @@ Rails.application.routes.draw do
 
     # BULK ACTIONS
     post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
-    post '/uni_modules/clone', to: 'uni_modules#clone'
 
     root to: "dashboard#index"
   end

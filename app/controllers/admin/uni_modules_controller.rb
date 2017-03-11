@@ -166,26 +166,6 @@ module Admin
   end
 
 
-  def clone
-    module_ids_string = params[:ids]
-    module_ids = eval(module_ids_string)
-
-    module_ids.each do |id|
-      uni_module = UniModule.find(id.to_i)
-      
-
-      if !uni_module.nil?
-        cloned = uni_module.dup
-        cloned.update_attribute("name", cloned.name + "-CLONE")
-      end
-
-    end
-
-    head :no_content
-
-  end
-
-
 
    private
     def uni_module_params
