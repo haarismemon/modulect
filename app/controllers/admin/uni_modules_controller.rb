@@ -41,7 +41,7 @@ module Admin
 
 
       else
-        @uni_modules = @uni_modules.order('name ASC').page(params[:page]).per(@per_page)
+        @uni_modules = @uni_modules.order('LOWER(name) ASC').page(params[:page]).per(@per_page)
       end
 
       respond_to do |format|
@@ -126,22 +126,23 @@ module Admin
 
     module_ids.each do |id|
       uni_module = UniModule.find(id.to_i)
-
+      can_delete = true
       if !uni_module.nil?
 
-      Group.all.each do |group|
-        if group.uni_modules.include?(uni_module)
-          can_delete = false
-          break
+        Group.all.each do |group|
+          if group.uni_modules.include?(uni_module)
+            can_delete = false
+            break
+          end
         end
-      end
 
-      if can_delete
-        uni_module.destroy
-      end
-
+        if can_delete
+          uni_module.destroy
+        end
 
       end
+      #uni_module.update_attribute("name", id)
+
     end
 
     head :no_content
