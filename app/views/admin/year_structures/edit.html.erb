@@ -1,6 +1,14 @@
 <% provide :title, 'Edit Year Structure' %>
 <% provide :submit_button_text, 'Update' %>
 
+
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons', :locals => {:object => YearStructure.find(params[:id]),:name_of_file=>YearStructure.find(params[:id]).course.name+"_year"+YearStructure.find(params[:id]).year_of_study,:blacklist_attributes=>"",:entity_attributes=>"Course"})%>
+  </div>
+</header>
+
 <h1>
   Edit <%= @year_structure.to_s %> of <a href="<%= admin_course_path(@year_structure.course) %>">
     <%= @year_structure.course.name %></a> <%= @year_structure.course.year %>

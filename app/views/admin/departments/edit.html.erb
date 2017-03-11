@@ -4,11 +4,8 @@
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
-    <%= link_to(
-            "<i class='fa fa-user' aria-hidden='true'></i>&nbsp;&nbsp;Show User".html_safe,
-            admin_department_path(@department),
-            class: "button",
-        ) %>
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons', :locals => {:object => Department.find(params[:id]),:name_of_file=>Department.find(params[:id]).name.tr(' ','').underscore,:blacklist_attributes=>"",:entity_attributes=>""})%>
+
   </div>
 </header>
 <%= form_for(@department, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>

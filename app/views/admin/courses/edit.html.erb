@@ -1,17 +1,13 @@
-<% provide :title, "Edit #{@course.name}" %>
+<% provide :title, "Edit #{Course.find(params[:id]).name}" %>
 <% provide :submit_button_text, 'Update' %>
 
 
-<div class="row">
-  <div class="col-md-1" %>
-    <a href="<%= admin_courses_path %>">
-      <i class="fa fa-arrow-circle-left fa-4x" aria-hidden="true"></i>
-    </a>
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons', :locals => {:object => Course.find(params[:id]),:name_of_file=>Course.find(params[:id]).name.to_s,:blacklist_attributes=>"",:entity_attributes=>""})%>
   </div>
-  <div class="col-md-11 text-center">
-    <h1>Edit <%= @course.name %></h1>
-  </div>
-</div>
+</header>
 
 <div id="landing" style="margin-left:10px;">
   <div class="row" style="margin-top:20px;">

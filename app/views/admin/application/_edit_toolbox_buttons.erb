@@ -17,7 +17,6 @@
     var printForm = function (blackListFields,relationshipFields) {
         var blacklist = blackListFields.split(',');
         var relationships = relationshipFields.split(',');
-        var form_data = $(".form").serializeArray();
         var html = "<div id='to-print'>Modulect data<table class='collection-data table' ' cellpadding='10'  border='1' style='border-collapse: collapse; font-family: Arial'>"
         <% object.attributes.each do |attr| %>
         var name = "<%=attr[0].to_s.titleize %>"
@@ -33,6 +32,7 @@
             html += "<tr> <td>" + name + " : " + value + "</td> </tr>";
         }
         <%end%>
+        $(".tool-box").blur();
         html+="</table>";
         return html;
     }
@@ -48,7 +48,7 @@
     function genPDF(name,blackListFields,relationshipFields) {
         var html = printForm(blackListFields,relationshipFields)
         var doc = new jsPDF();
-        $(".form").after($.parseHTML( html ));
+        $("form").after($.parseHTML( html ));
         $("#to-print").css("display","none");
         doc.fromHTML($("#to-print").get(0), 20,20,{
             'width':500
