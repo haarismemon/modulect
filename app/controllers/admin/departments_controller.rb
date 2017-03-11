@@ -92,27 +92,28 @@ module Admin
 
     private
 
-    def department_params
-      #!add params that want to be recognized by this application
-      params.require(:department).permit(:faculty_id,:name,:course_ids=>[])
-    end
-
-      # checks no uni module is linked to it already
-      def has_no_uni_module_dependacies
-        @department.uni_modules.empty??true:false
+      def department_params
+        #!add params that want to be recognized by this application
+        params.require(:department).permit(:faculty_id,:name,:course_ids=>[])
       end
 
+        # checks no uni module is linked to it already
+        def has_no_uni_module_dependacies
+          @department.uni_modules.empty??true:false
+        end
 
-      # checks no course is linked to it already
-    def has_no_course_dependacies
-      @department.courses.empty??true:false
-    end
 
-    def verify_super_admin
-       redirect_to admin_path unless current_user.user_level == "super_admin_access"
+        # checks no course is linked to it already
+      def has_no_course_dependacies
+        @department.courses.empty??true:false
+      end
 
-    end
+      def verify_super_admin
+         redirect_to admin_path unless current_user.user_level == "super_admin_access"
 
+      end
+
+      
 
 
   end

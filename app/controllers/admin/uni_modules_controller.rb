@@ -1,6 +1,6 @@
 module Admin
   class UniModulesController < Admin::BaseController
-#  require 'will_paginate/array'
+    before_action :verify_correct_department, only: [:update, :edit]
 
 
   	def index
@@ -43,8 +43,6 @@ module Admin
       else
         @uni_modules = @uni_modules.order('LOWER(name) ASC').page(params[:page]).per(@per_page)
       end
-
-
      
       @uni_modules_to_export = @uni_modules
       if params[:export].present?
@@ -66,9 +64,6 @@ module Admin
         format.html
         format.csv {send_data @uni_modules_to_export.to_csv}
       end
-
-
-
 
   	end
 
@@ -174,6 +169,11 @@ module Admin
    private
     def uni_module_params
       params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
+    end
+
+    def verify_correct_department
+      @uni_module = UniModule.find(params[:id])
+      redirect_to admin_path unless Department.find(current_user.department_id).uni_module_ids.include?(@uni_module.id) || current_user.user_level == "super_admin_access"
     end
 
 end
