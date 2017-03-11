@@ -135,9 +135,8 @@ module Admin
             break
           end
         end
-        can_delete = true
         if can_delete
-          uni_module.destroy
+         uni_module.destroy
         end
 
       end
