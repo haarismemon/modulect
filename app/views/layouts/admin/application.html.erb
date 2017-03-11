@@ -64,6 +64,7 @@ var ready;
 ready = function() {
   window.myCustomConfirmBox = function(message, callback) {
     return bootbox.dialog({
+      title: "Confirmation",
       message: message,
       closeButton: false,
       buttons: {

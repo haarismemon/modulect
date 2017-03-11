@@ -23,6 +23,7 @@ ready = function() {
   window.myCustomConfirmBox = function(message, callback) {
     return bootbox.dialog({
       message: message,
+      title: "Confirmation",
       closeButton: false,
       buttons: {
         success: {
