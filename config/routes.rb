@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     post '/users/bulk_delete', to: 'users#bulk_delete'
     post '/users/make_student_user', to: 'users#make_student_user'
     post '/users/make_department_admin', to: 'users#make_department_admin'
-    post '/users/make_system_admin', to: 'users#make_system_admin'
+    post '/users/make_super_admin', to: 'users#make_super_admin'
 
 
     root to: "dashboard#index"

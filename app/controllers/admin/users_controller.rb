@@ -260,7 +260,7 @@ module Admin
         user = User.find(id.to_i)
         
           if !user.nil? && user != current_user
-            user.update_attribute("user_level", "3")
+            user.update_attribute("user_level", "user_access")
           end
         
       end
@@ -276,7 +276,7 @@ module Admin
         user = User.find(id.to_i)
         
           if !user.nil? && user != current_user
-            user.update_attribute("user_level", "2")
+            user.update_attribute("user_level", "department_admin_access")
           end
         
       end
@@ -292,7 +292,7 @@ module Admin
         user = User.find(id.to_i)
         
           if !user.nil? && user != current_user
-            user.update_attribute("user_level", "1")
+            user.update_attribute("user_level", "super_admin_access")
           end
         
       end
