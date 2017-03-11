@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     post '/users/bulk_deactivate', to: 'users#bulk_deactivate'
     post '/users/bulk_delete', to: 'users#bulk_delete'
     post '/users/bulk_limit', to: 'users#bulk_limit'
+    post '/users/bulk_unlimit', to: 'users#bulk_unlimit'
     post '/users/make_student_user', to: 'users#make_student_user'
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
