@@ -5,7 +5,11 @@ class CommentsController < ApplicationController
 
     @comment = @uni_module.comments.create(comment_params)
 
-    redirect_to uni_module_path(@uni_module)
+    @updated_comments = @uni_module.comments.order("created_at DESC").page(params[:page]).per(5)
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
