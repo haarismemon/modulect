@@ -174,7 +174,10 @@ module Admin
 
     def verify_correct_department
       @uni_module = UniModule.find(params[:id])
-      redirect_to admin_path unless Department.find(current_user.department_id).uni_module_ids.include?(@uni_module.id) || current_user.user_level == "super_admin_access"
+
+      if current_user.user_level == "department_admin_access" && !Department.find(current_user.department_id).uni_module_ids.include?(@uni_module.id)
+        redirect_to admin_path
+      end
     end
 
 end
