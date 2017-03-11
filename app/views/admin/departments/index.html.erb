@@ -165,7 +165,7 @@ $(document).ready(function() {
         var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
             return $(this).val();
         }).get(); // <----
-         console.log(checkboxValues);
+        // console.log(checkboxValues);
         ids = JSON.stringify(checkboxValues);
         window.location.replace("<%=admin_departments_path%>.csv?export="+ids);
 

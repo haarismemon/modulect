@@ -22,6 +22,9 @@ Rails.application.routes.draw do
     post '/departments/bulk_delete', to: 'departments#bulk_delete'
     post '/departments/clone', to: 'departments#clone'
 
+    post '/faculties/bulk_delete', to: 'faculties#bulk_delete'
+    post '/faculties/clone', to: 'faculties#clone'
+
     root to: "dashboard#index"
   end
 
