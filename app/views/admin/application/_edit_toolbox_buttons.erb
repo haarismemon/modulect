@@ -1,8 +1,47 @@
-<a onclick="openPrintForm('<%= blacklist_attributes%>','<%=entity_attributes%>')"
-     class="button tool-box"><span class="glyphicon glyphicon-print" style=" margin-right: 2px"></span>  Print data</a>
-<a onclick="exportToHTML('<%= blacklist_attributes%>','<%=entity_attributes%>')" class="button tool-box"><span class="glyphicon glyphicon-cloud-upload" style=" margin-right: 2px"></span> Export as simple data</a>
-<a href="javascript:genPDF('<%=name_of_file%>','<%= blacklist_attributes%>','<%=entity_attributes%>')" class="button tool-box"><span class="glyphicon glyphicon-file" style=" margin-right: 2px"></span> Download As PDF</a>
+<div class="btn-group">
+<button  style="height: 37px; outline: none" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin toolbox" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Toolbox <span class="caret"></span>
+</button>
+<ul class="dropdown-menu scrollable-submenu">
+  <li> <a onclick="openPrintForm('<%= blacklist_attributes%>','<%=entity_attributes%>')"
+          ><span class="glyphicon glyphicon-print" style=" margin-right: 2px"></span>  Print data</a>
+  </li>
+  <li>
+    <a onclick="exportToHTML('<%= blacklist_attributes%>','<%=entity_attributes%>')" ><span class="glyphicon glyphicon-cloud-upload" style=" margin-right: 2px"></span> Export as simple data</a>
+  </li>
+  <li>
+    <a href="javascript:genPDF('<%=name_of_file%>','<%= blacklist_attributes%>','<%=entity_attributes%>')" ><span class="glyphicon glyphicon-file" style=" margin-right: 2px"></span> Download As PDF</a>
+  </li>
+</ul>
+</div>
 <%= link_to "<i class='glyphicon glyphicon-arrow-left' aria-hidden='true' style='margin-right: 2px'></i>&nbsp;&nbsp;Back".html_safe, :back, class: "button tool-box" %>
+
+
+<style>
+  .scrollable-submenu {
+    padding: 10px;
+  }
+
+  .scrollable-submenu .button{
+    box-shadow: none;
+  }
+
+  button.toolbox{
+    height: 37px;
+    border-radius: 4%;
+    font-weight: 700;
+  }
+
+    .caret{
+      margin-left: 4px;
+    }
+
+    a{
+      cursor: pointer;
+    }
+
+
+</style>
+
 
 
 <script>
