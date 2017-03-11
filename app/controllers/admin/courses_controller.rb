@@ -147,16 +147,10 @@ module Admin
                 group.uni_modules.each do |uni_module|
                   cloned_group.uni_modules << uni_module
                 end
-
               end
-
             end
-
-
           end
-          
        end
-
        head :no_content
     end
 
@@ -171,7 +165,10 @@ module Admin
 
     def verify_correct_department
       @course = Course.find(params[:id])
-      redirect_to admin_path unless Department.find(current_user.department_id).course_ids.include?(@course.id) || current_user.user_level == "super_admin_access"
+      if (current_user.user_level == "department_admin_access" &&
+          !Department.find(current_user.department_id).course_ids.include?(@course.id))
+        redirect_to admin_path
+      end
     end
   end
 end
