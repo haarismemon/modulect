@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
 
     @comment = @uni_module.comments.create(comment_params)
 
-    @updated_comments = @uni_module.comments.order("created_at DESC").page(params[:page]).per(5)
+    @updated_comments = @uni_module.comments.order("created_at DESC")
 
     respond_to do |format|
       format.js { render 'update_comments.js.erb' }
@@ -18,9 +18,9 @@ class CommentsController < ApplicationController
     sort_by_type = params[:sort_by_type]
 
     if sort_by_type.eql? 'created_at'
-      @updated_comments = @uni_module.comments.order("created_at DESC").page(params[:page]).per(5)
+      @updated_comments = @uni_module.comments.order("created_at DESC")
     elsif sort_by_type.eql? 'rating'
-      @updated_comments = @uni_module.comments.order("rating DESC").page(params[:page]).per(5)
+      @updated_comments = @uni_module.comments.order("rating DESC")
     end
 
     respond_to do |format|
