@@ -17,11 +17,6 @@ module Admin
         @users = User.where("department_id = ? AND (user_level = ? OR user_level = ?)", current_user.department_id, "2", "3")
       end
 
-      respond_to do |format|
-        format.html
-        format.csv {send_data @users.to_csv}
-      end
-
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
       else
@@ -41,6 +36,29 @@ module Admin
       else
         @users = @users.sort_by{|user| user[:first_name].downcase}
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
+      end
+
+
+
+      @users_to_export = @users
+      if params[:export].present?
+        export_user_ids_string = params[:export]
+        export_user_ids = eval(export_user_ids_string)
+
+        if current_user.user_level == "department_admin_access"
+          department_user_ids = Department.find(current_user.department_id).user_ids
+          export_module_ids = export_module_ids & department_user_ids.map(&:to_s)
+        end
+
+        @users_to_export = User.where(id: export_user_ids)
+        @users_to_export = @users_to_export.order('LOWER(first_name) ASC')  
+      else
+        @users_to_export = @users
+      end
+
+      respond_to do |format|
+        format.html
+        format.csv {send_data @users_to_export.to_csv}
       end
 
     end
@@ -184,24 +202,102 @@ module Admin
 
     end
 
-    def bulk_deactivate
+    def bulk_activate
+      user_ids_string = params[:ids]
+      user_ids = eval(user_ids_string)
+
+      user_ids.each do |id|
+        user = User.find(id.to_i)
+        
+          if !user.nil?
+            user.update_attribute("activated", "true")
+          end
+        
+      end
+
+      head :no_content
     end
 
 
     def bulk_deactivate
+      user_ids_string = params[:ids]
+      user_ids = eval(user_ids_string)
+
+      user_ids.each do |id|
+        user = User.find(id.to_i)
+        
+          if !user.nil? && user != current_user
+            user.update_attribute("activated", "false")
+          end
+        
+      end
+
+      head :no_content
     end
 
 
     def bulk_delete
+      user_ids_string = params[:ids]
+      user_ids = eval(user_ids_string)
+
+      user_ids.each do |id|
+        user = User.find(id.to_i)
+        
+          if !user.nil? && user != current_user
+            user.destroy
+          end
+        
+      end
+
+      head :no_content
     end
 
     def make_student_user
+      user_ids_string = params[:ids]
+      user_ids = eval(user_ids_string)
+
+      user_ids.each do |id|
+        user = User.find(id.to_i)
+        
+          if !user.nil? && user != current_user
+            user.update_attribute("user_level", "3")
+          end
+        
+      end
+
+      head :no_content
     end
 
     def make_department_admin
+        user_ids_string = params[:ids]
+      user_ids = eval(user_ids_string)
+
+      user_ids.each do |id|
+        user = User.find(id.to_i)
+        
+          if !user.nil? && user != current_user
+            user.update_attribute("user_level", "2")
+          end
+        
+      end
+
+      head :no_content
     end
 
     def make_super_admin
+      user_ids_string = params[:ids]
+      user_ids = eval(user_ids_string)
+
+      user_ids.each do |id|
+        user = User.find(id.to_i)
+        
+          if !user.nil? && user != current_user
+            user.update_attribute("user_level", "1")
+          end
+        
+      end
+
+      head :no_content
     end
 
 
