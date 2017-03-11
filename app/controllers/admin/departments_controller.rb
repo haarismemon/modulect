@@ -32,10 +32,31 @@ module Admin
          @departments = @departments.order('name ASC').page(params[:page]).per(@per_page)
       end
 
-      respond_to do |format|
-        format.html
-        format.csv {send_data @departments.to_csv}
+      if current_user.user_level == "super_admin_access"
+
+
+
+        @departments_to_export = @departments
+        if params[:export].present?
+          export_departments_ids_string = params[:export]
+          export_departments_ids = eval(export_departments_ids_string)
+
+          @departments_to_export = Department.where(id: export_departments_ids)
+          @departments_to_export = @departments_to_export.order('LOWER(name) ASC')  
+        else
+          @departments_to_export = @departments
+        end
+
+
+         respond_to do |format|
+          format.html
+          format.csv {send_data @departments_to_export.to_csv}
+        end
+
       end
+
+
+     
     end
 
     def new
@@ -90,29 +111,64 @@ module Admin
       redirect_back_or admin_departments_path
     end
 
-    private
 
-    def department_params
-      #!add params that want to be recognized by this application
-      params.require(:department).permit(:faculty_id,:name,:course_ids=>[])
-    end
+    def bulk_delete
+      department_ids_string = params[:ids]
+      department_ids = eval(department_ids_string)
 
-      # checks no uni module is linked to it already
-      def has_no_uni_module_dependacies
-        @department.uni_modules.empty??true:false
+      department_ids.each do |id|
+        department = Department.find(id.to_i)
+        
+          if !department.nil? && department.courses.empty? && department.uni_modules.empty?
+            department.destroy
+          end
+        
       end
 
-
-      # checks no course is linked to it already
-    def has_no_course_dependacies
-      @department.courses.empty??true:false
+      head :no_content
     end
 
-    def verify_super_admin
-       redirect_to admin_path unless current_user.user_level == "super_admin_access"
+    def clone 
+      department_ids_string = params[:ids]
+      department_ids = eval(department_ids_string)
 
+      department_ids.each do |id|
+        department = Department.find(id.to_i)
+        
+          if !department.nil?
+            cloned = department.dup
+            cloned.update_attribute("name", cloned.name + "-CLONE")
+          end
+        
+      end
+
+      head :no_content
     end
 
+    private
+
+      def department_params
+        #!add params that want to be recognized by this application
+        params.require(:department).permit(:faculty_id,:name,:course_ids=>[])
+      end
+
+        # checks no uni module is linked to it already
+        def has_no_uni_module_dependacies
+          @department.uni_modules.empty??true:false
+        end
+
+
+        # checks no course is linked to it already
+      def has_no_course_dependacies
+        @department.courses.empty??true:false
+      end
+
+      def verify_super_admin
+         redirect_to admin_path unless current_user.user_level == "super_admin_access"
+
+      end
+
+      
 
 
   end

@@ -3,6 +3,7 @@ module Admin
 	class Admin::BaseController < ApplicationController
 	before_action :authenticate_admin
 	before_action :admin_has_dept
+	before_action :is_activated
 
 	layout "admin/application"
 
@@ -32,7 +33,13 @@ module Admin
 		end
 	end
 	
-
+	def is_activated
+		if !current_user.activated
+			log_out
+			redirect_to root_path
+			flash[:error] = "You have been logged out."
+		end
+	end
 
 	end
 end
