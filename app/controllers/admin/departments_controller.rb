@@ -32,10 +32,31 @@ module Admin
          @departments = @departments.order('name ASC').page(params[:page]).per(@per_page)
       end
 
-      respond_to do |format|
-        format.html
-        format.csv {send_data @departments.to_csv}
+      if current_user.user_level == "super_admin_access"
+
+
+
+        @departments_to_export = @departments
+        if params[:export].present?
+          export_departments_ids_string = params[:export]
+          export_departments_ids = eval(export_departments_ids_string)
+
+          @departments_to_export = Department.where(id: export_departments_ids)
+          @departments_to_export = @departments_to_export.order('LOWER(name) ASC')  
+        else
+          @departments_to_export = @departments
+        end
+
+
+         respond_to do |format|
+          format.html
+          format.csv {send_data @departments_to_export.to_csv}
+        end
+
       end
+
+
+     
     end
 
     def new
@@ -88,6 +109,15 @@ module Admin
       end
       #redirect to action which displays all departments
       redirect_back_or admin_departments_path
+    end
+
+
+    def bulk_delete
+
+    end
+
+    def clone 
+
     end
 
     private
