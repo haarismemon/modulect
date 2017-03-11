@@ -62,7 +62,7 @@
 
               <h3>Add a Review</h3>
               <% if logged_in? %>
-                <%= form_for([@uni_module, @uni_module.comments.build]) do |f| %>
+                <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
                     <p id="rating-area">
                         <%= f.label :rating %>
                         <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
@@ -95,3 +95,9 @@
   #rating-area input[type=radio] {display:inline-block;}
   #review-area textarea {width: 100%; height: 100%}
 </style>
+
+<script>
+    $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
+        $("#comment_body").val("");
+    })
+</script>
