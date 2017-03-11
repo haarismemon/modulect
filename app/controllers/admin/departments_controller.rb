@@ -113,27 +113,16 @@ module Admin
 
 
     def bulk_delete
-      module_ids_string = params[:ids]
-      module_ids = eval(module_ids_string)
+      department_ids_string = params[:ids]
+      department_ids = eval(department_ids_string)
 
-      module_ids.each do |id|
-        uni_module = UniModule.find(id.to_i)
-        can_delete = true
-        if !uni_module.nil?
-
-          Group.all.each do |group|
-            if group.uni_modules.include?(uni_module)
-              can_delete = false
-              break
-            end
+      department_ids.each do |id|
+        department = Department.find(id.to_i)
+        
+          if !department.nil? && department.courses.empty? && department.uni_modules.empty?
+            department.destroy
           end
-          if can_delete
-           uni_module.destroy
-          end
-
-        end
-        #uni_module.update_attribute("name", id)
-
+        
       end
 
       head :no_content
