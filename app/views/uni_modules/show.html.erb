@@ -105,6 +105,11 @@
 </style>
 
 <script>
+    $("#sort-by-name").change(function() {
+        sort_by_type = $("#sort-by-name").val();
+        alert(sort_by_type);
+    });
+
     $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
         $("#comment_body").val("");
     })
