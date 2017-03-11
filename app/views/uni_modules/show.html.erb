@@ -55,10 +55,28 @@
       <div class="col-md-12 login-card res-card">
          <div class="row">
             <div class="col-md-9 result-card-main">
-               <h2>Discussion forum</h2>
-               <h4>Coming soon</h4>
+              <h2>Module Review</h2>
+
+              <% @uni_module.comments.each do |comment| %>
+
+                <p>
+                  <strong>Commenter:</strong>
+                  <%= comment.commenter %>
+                </p>
+
+                <p>
+                  <strong>Comment:</strong>
+                  <%= comment.body %>
+                </p>
+
+                <br>
+
+              <%end%>
+
             </div>
          </div>
       </div>
    </div>
+</div>
+</div>
 </div>
