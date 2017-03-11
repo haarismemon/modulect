@@ -57,41 +57,50 @@
             <div class="col-md-9 result-card-main">
               <h2>Module Review</h2>
 
-              <% @uni_module.comments.each do |comment| %>
-                <p>
-                  <strong>Commenter:</strong>
-                  <%= comment.commenter %>
-                </p>
-                <p>
-                  <strong>Rating:</strong>
-                  <%= comment.rating %>
-                </p>
-                <p>
-                  <strong>Review:</strong>
-                  <%= comment.body %>
-                </p>
-                <br>
+              <% unless @uni_module.comments.empty? %>
+
+                <% @uni_module.comments.each do |comment| %>
+                  <p>
+                    <strong>Commenter:</strong>
+                    <%= comment.commenter %>
+                  </p>
+                  <p>
+                    <strong>Rating:</strong>
+                    <%= comment.rating %>
+                  </p>
+                  <p>
+                    <strong>Review:</strong>
+                    <%= comment.body %>
+                  </p>
+                  <br>
+                <%end%>
+
+              <% else %>
+
+                <p>Be the first to review this module!</p>
+
               <%end%>
 
-              <h2>Add a Review</h2>
+
+              <h3>Add a Review</h3>
 
               <% if logged_in? %>
 
                 <%= form_for([@uni_module, @uni_module.comments.build]) do |f| %>
                     <div id="rating-area">
                       <%= f.label :rating %>
-                        <%= f.radio_button :rating, 1, :checked => true%><%= f.label :rating_1, '1' %>
+                        <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
                         <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
                         <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
                         <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
-                        <%= f.radio_button :rating, 5 %><%= f.label :rating_5, '5' %>
+                        <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
                     </div>
                     <p>
                       <%= f.label :body %><br>
                       <%= f.text_area :body %>
                     </p>
                     <p>
-                      <%= f.submit %>
+                      <%= f.submit "Add Review", class:"btn"%>
                     </p>
                 <% end %>
 
