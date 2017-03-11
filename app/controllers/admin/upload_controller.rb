@@ -7,6 +7,7 @@ module Admin
     def upload_csv
       # Retrieve csv file that was uploaded
       uploaded_csv = params[:csv_upload]
+
       # Debugging: Write uploaded CSV to app/assets/uploaded
       File.open(Rails.root.join('app', 'assets', 'uploaded.csv'), 'wb') do |file|
         file.write(uploaded_csv.read)
