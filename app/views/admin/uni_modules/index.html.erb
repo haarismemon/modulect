@@ -1,9 +1,3 @@
-<style>
-.modal-backdrop.in{z-index: 100000000;}
-.modal-open .modal{z-index: 1000000000;}
-</style>
-
-
 <% if request.query_parameters["search"].present?%>
 <% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Modules') %>
 <% else %>
@@ -94,6 +88,10 @@
          <%end %>
       </tbody>
    </table>
+
+  <script>
+
+    </script>
    <%= paginate @uni_modules %>
 </div>
 <%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query, dept_filter_id: @dept_filter_id} %>
