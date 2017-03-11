@@ -305,7 +305,7 @@ module Admin
 
     def user_params
       #!add params that want to be recognized by this application
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level, :faculty_id, :department_id, :course_id, :year_of_study, :activated)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study,:user_level, :faculty_id, :department_id, :course_id, :year_of_study, :activated, :is_limited)
     end
 
     def get_num_super_admins
