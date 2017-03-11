@@ -29,6 +29,7 @@
             </button>
             <ul class="dropdown-menu">
                <li> <a id="delete-all" style="cursor:pointer;">Delete selected</a>
+               <li> <a id="csv-export" style="cursor:pointer;">Export to CSV</a>
                </li>
             </ul>
             </div>
@@ -148,6 +149,20 @@ $(document).ready(function() {
             }
         })
     });
+
+    $("#csv-export").click(function(event) {
+        event.preventDefault();
+        var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
+            return $(this).val();
+        }).get(); // <----
+        console.log(checkboxValues);
+        ids = JSON.stringify(checkboxValues);
+        window.location.replace("<%=admin_uni_modules_path%>.csv?export="+ids);
+
+    });
+
+
+
 });
 </script>
 <% elsif request.query_parameters["search"].present?%>

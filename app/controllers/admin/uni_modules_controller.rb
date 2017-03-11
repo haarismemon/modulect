@@ -44,10 +44,26 @@ module Admin
         @uni_modules = @uni_modules.order('LOWER(name) ASC').page(params[:page]).per(@per_page)
       end
 
+
+
+
+      @uni_modules_to_export = @uni_modules
+      if params[:export].present?
+        export_module_ids_string = params[:export]
+        export_module_ids = eval(export_module_ids_string)
+        @uni_modules_to_export = UniModule.where(id: export_module_ids)  
+      else
+        @uni_modules_to_export = @uni_modules
+      end
+
       respond_to do |format|
         format.html
-        format.csv {send_data @uni_modules.to_csv}
+        format.csv {send_data @uni_modules_to_export.to_csv}
       end
+
+
+
+
   	end
 
   	def new
@@ -147,6 +163,7 @@ module Admin
     head :no_content
 
   end
+
 
    private
     def uni_module_params
