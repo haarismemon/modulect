@@ -106,11 +106,11 @@ $(document).ready(function() {
             message: "Are you sure you want delete the selected modules?",
             buttons: {
                 confirm: {
-                    label: 'Proceed',
+                    label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
                     className: 'btn-success'
                 },
                 cancel: {
-                    label: 'Cancel',
+                    label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
                     className: 'red-btn pull-left'
                 }
             },
@@ -135,9 +135,10 @@ $(document).ready(function() {
 
                         success() {
                             bootbox.alert({
+                                title: "Completed bulk deletion",
                                 size: "medium",
                                 closeButton: false,
-                                message: "The bulk action has been applied. Some modules may not have been deleted because they are used in courses.",
+                                message: "The bulk action has been applied. Some modules may not have been deleted because they are linked to courses and courses.",
                                 callback: function() {
                                     location.reload();
                                 }

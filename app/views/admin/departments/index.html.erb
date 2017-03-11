@@ -141,9 +141,10 @@ $(document).ready(function() {
 
                         success() {
                             bootbox.alert({
+                                title: "Completed bulk deletion",
                                 size: "medium",
                                 closeButton: false,
-                                message: "The bulk action has been applied. Some modules may not have been deleted because they are used in courses.",
+                                message: "The bulk action has been applied. Some departments may not have been deleted because they are linked to courses and modules.",
                                 callback: function() {
                                     location.reload();
                                 }
