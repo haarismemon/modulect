@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     get 'upload', to: 'upload#upload'
 
     # BULK ACTIONS
+    post '/courses/bulk_delete', to: 'courses#bulk_delete'
+    post '/courses/clone', to: 'courses#clone'
     post '/departments/bulk_delete', to: 'departments#bulk_delete'
     post '/departments/clone', to: 'departments#clone'
     post '/faculties/bulk_delete', to: 'faculties#bulk_delete'

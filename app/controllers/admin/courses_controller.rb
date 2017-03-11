@@ -22,7 +22,7 @@ module Admin
         @per_page = params[:per_page].to_i
       else
         @per_page = 20
-      end
+      end 
 
 
       if params[:search].present?
@@ -40,9 +40,25 @@ module Admin
          @courses = @courses.order('name ASC').page(params[:page]).per(@per_page)
       end
 
+      @courses_to_export = @courses
+      if params[:export].present?
+        export_course_ids_string = params[:export]
+        export_course_ids = eval(export_course_ids_string)
+
+        if current_user.user_level == "department_admin_access"
+          department_course_ids = Department.find(current_user.department_id).course_ids
+          export_course_ids = export_course_ids & department_course_ids.map(&:to_s)
+        end
+
+        @courses_to_export = Course.where(id: export_course_ids)
+        @courses_to_export = @courses_to_export.order('LOWER(name) ASC')  
+      else
+        @courses_to_export = @courses
+      end
+
       respond_to do |format|
         format.html
-        format.csv {send_data @courses.to_csv}
+        format.csv {send_data @courses_to_export.to_csv}
       end
 
     end
@@ -84,6 +100,17 @@ module Admin
       flash[:notice] =  @course.name + " was deleted successfully."
       redirect_to(admin_courses_path)
     end
+
+
+    def bulk_delete
+
+    end
+
+    def clone
+
+    end
+
+
 
     private
     def course_params
