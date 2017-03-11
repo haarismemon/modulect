@@ -8,4 +8,9 @@ class CommentsController < ApplicationController
     redirect_to uni_module_path(@uni_module)
   end
 
+  private
+    def comment_params
+      params.require(:comment).permit(:commenter, :body)
+    end
+
 end
