@@ -94,7 +94,13 @@
             <td class="cell-data cell-data--string"><%= user.last_name %></td>
             <td class="cell-data cell-data--string"><%= user.email %></td>
             <td class="cell-data cell-data--string"><% if user.activated %><i class="fa fa-check" aria-hidden="true"></i><% else %>-<%end%></td>
-            <td class="cell-data cell-data--string"><%= user.user_level.titleize.chomp('Access') %></td>
+            <td class="cell-data cell-data--string">
+            <% if user.user_level == "user_access" %>
+               Student User
+            <% else %>
+               <%= user.user_level.titleize.chomp('Access') %>
+            <% end %>
+            </td>
             <td class="cell-data cell-data--string">
             <% if user.user_level == "super_admin_access" %>
             n/a
