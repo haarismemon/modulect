@@ -10,6 +10,9 @@ class CommentsController < ApplicationController
 
   private
     def comment_params
+      if logged_in?
+        params[:comment][:commenter] = current_user.full_name
+      end
       params.require(:comment).permit(:commenter, :rating, :body)
     end
 
