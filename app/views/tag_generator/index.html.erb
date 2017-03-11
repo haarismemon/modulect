@@ -1,12 +1,11 @@
 <div id = "response-div">response goes here</div>
-<textarea id = "txtarea_description_input"></textarea>
 <div id="scoped-content">
 	<style type="text/css" media="all" scoped>
 		
 		@import "stylesheets/widgEditor.css";
 	</style>
 	<form>
-		<textarea id="noise" name="noise" class="widgEditor nothing"></textarea>
+		<textarea id="textarea_desc_input"></textarea>
 	</form>
 </div>
 <button id = "btn_generate_tags">generate tags
@@ -18,18 +17,23 @@
 var social_tags = [];
 $(function() {
   $("#btn_generate_tags").on("click", function(event) {
+  	console.log($("#textarea_desc_input").val());
     event.preventDefault();
     $.ajax({
       type: "POST",
       url: "tag_generator/generate_tags",
-      data: {desc: $("#txtarea_description_input").val()},
+      data: {desc: $("#textarea_desc_input").val()},
       success: function(result) {
-        document.getElementById("response-div").innerHTML = result;
+        targetDiv = document.getElementById("response-div");
         console.log(result);
+        targetDiv.innerHTML = "<b>API response(social tags only):</b><br/><ul>"
         for(key in result){
         	// console.log(result[key]);
-        	if(result[key]._typeGroup == "socialTag")
+        	if(result[key]._typeGroup == "socialTag"){
         		console.log(result[key].name);
+        		targetDiv.innerHTML += "<li>" + result[key].name + "</li>"
+        	}
+        	targetDiv.innerHTML += "</ul>";
         }
       },
     });
