@@ -68,7 +68,11 @@
          <%= f.label :activated %>
       </div>
       <div class="field-unit__field checkbox">
-         <%= f.check_box :activated %><label for="user_activated"><span></span></label>
+         <% if @user == current_user %>
+            <%= f.check_box :activated, :disabled => true %><label for="user_activated"><span></span></label>
+         <% else %>
+            <%= f.check_box :activated %><label for="user_activated"><span></span></label>
+         <% end %>
       </div>
    </div>
 </div>
