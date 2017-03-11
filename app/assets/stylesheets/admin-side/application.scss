@@ -1,5 +1,11 @@
 @charset "utf-8";
 
+
+/* ...
+*= require_self
+*= require admin-side/selectize.bootstrap3
+*= require admin-side/_admin-style
+*/
 @import "normalize-rails";
 @import "bourbon";
 
@@ -24,6 +30,7 @@
 @import "admin-style";
 
 @import url('https://fonts.googleapis.com/css?family=Lato|Varela+Round|Open+Sans');
+
 body {
     font-family: "Varela Round";
     color: #555459;

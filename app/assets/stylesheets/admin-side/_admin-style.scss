@@ -250,3 +250,31 @@ opacity: 1;
 .tool-box{
   margin-bottom: 10px;
 }
+
+select.form-control{
+  padding: 0px;
+  padding-left:10px;
+  height: 44px;
+  border: 1px solid #dfe0e1;
+}
+
+
+
+.selectize-control.multi .selectize-input.has-items {
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+.selectize-input{
+  min-height: 40px;
+}
+.selectize-input.focus {
+  border-color: rgba(42, 178, 123, 0.8) !important;
+  box-shadow: 0 0.4px 0.4px rgba(42, 178, 123, 0.075) inset, 0 0 6px rgba(42, 178, 123, 0.6) !important;
+  outline: 0 none !important;
+ }
+
+
+.selectize-control.single .selectize-input,
+.selectize-control.single .selectize-input input{
+  padding-left: 10px;
+}
