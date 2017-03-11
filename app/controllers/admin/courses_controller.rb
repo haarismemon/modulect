@@ -103,11 +103,37 @@ module Admin
 
 
     def bulk_delete
+      course_ids_string = params[:ids]
+      course_ids = eval(course_ids_string)
 
+      course_ids.each do |id|
+        course = Course.find(id.to_i)
+        
+          if !course.nil?
+            course.destroy
+          end
+        
+      end
+
+      head :no_content
     end
 
-    def clone
 
+    def clone
+      course_ids_string = params[:ids]
+      course_ids = eval(course_ids_string)
+
+      course_ids.each do |id|
+         course = Course.find(id.to_i)
+        
+          if !course.nil?
+            cloned = course.dup
+            cloned.update_attribute("name", cloned.name + "-CLONE")
+          end
+          
+       end
+
+       head :no_content
     end
 
 
