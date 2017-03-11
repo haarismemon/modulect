@@ -436,6 +436,10 @@ a.action-edit{margin-right:10px;}
 
 .scrollable-submenu{height: auto;max-height: 300px;overflow-x: hidden;}
 
+
+.modal-backdrop.in{z-index: 100000000;}
+.modal-open .modal{z-index: 1000000000;}
+
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
 	display:none;
