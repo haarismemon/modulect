@@ -1,6 +1,6 @@
-<% updated_comments = updated_comments.page(params[:page]).per(5) %>
+<% updated_comments = updated_comments.paginate(:page => params[:page], :per_page => 5) %>
 
-<%= paginate updated_comments %>
+<%= will_paginate updated_comments %>
 <%= page_entries_info updated_comments %>
 
 <% updated_comments.each do |comment| %>
