@@ -63,7 +63,11 @@
                   <%= comment.commenter %>
                 </p>
                 <p>
-                  <strong>Comment:</strong>
+                  <strong>Rating:</strong>
+                  <%= comment.rating %>
+                </p>
+                <p>
+                  <strong>Review:</strong>
                   <%= comment.body %>
                 </p>
                 <br>
@@ -73,17 +77,31 @@
 
               <%= form_for([@uni_module, @uni_module.comments.build]) do |f| %>
                   <p>
-                    <%= f.label :commenter %><br>
-                    <%= f.text_field :commenter %>
+                    <%= f.label :commenter %>
+                    <%= f.text_field :commenter%>
+                  </p>
+                  <p>
+                    <%= f.label :rating %><br>
+                    <div id="rating-area">
+                      <%= f.radio_button :rating, 1, :checked => true%><%= f.label :rating_1, '1' %>
+                      <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
+                      <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
+                      <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
+                      <%= f.radio_button :rating, 5 %><%= f.label :rating_5, '5' %>
+                    </div>
                   </p>
                   <p>
                     <%= f.label :body %><br>
-                    <%= f.text_field :body %>
+                    <%= f.text_area :body %>
                   </p>
                   <p>
                     <%= f.submit %>
                   </p>
               <% end %>
+
+              <style>
+                #rating-area input[type=radio] {display:inline-block;}
+              </style>
 
             </div>
          </div>
