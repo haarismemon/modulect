@@ -1,3 +1,9 @@
+<style>
+.modal-backdrop.in{z-index: 100000000;}
+.modal-open .modal{z-index: 1000000000;}
+</style>
+
+
 <% if request.query_parameters["search"].present?%>
 <% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Modules') %>
 <% else %>
@@ -91,7 +97,23 @@
 <script>
 $(document).ready(function() {
     $("#delete-all").click(function(event) {
-
+     bootbox.confirm({ 
+  size: "medium",
+  closeButton: false,
+  message: "Are you sure you want delete the selected modules?", 
+   buttons: {
+        confirm: {
+            label: 'Proceed',
+            className: 'btn-success'
+        },
+        cancel: {
+            label: 'Cancel',
+            className: 'red-btn'
+        }
+    },
+  callback: function(result){ /* result is a boolean; true = OK, false = Cancel*/ }
+})
+/**
         var check = confirm("Are you sure you want to apply this bulk action?");
         if (check == true) {
             event.preventDefault();
@@ -102,7 +124,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: "<%= admin_uni_modules_bulk_delete_path %>",
+                url: "<#%= admin_uni_modules_bulk_delete_path %>",
                 context: document.body,
                 data: {
                     ids: JSON.stringify(checkboxValues)
@@ -117,6 +139,7 @@ $(document).ready(function() {
         } else {
             return false;
         }
+        **/
     });
 });
 </script>
