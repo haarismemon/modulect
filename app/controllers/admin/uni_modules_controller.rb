@@ -45,13 +45,25 @@ module Admin
       end
 
 
+     
 
 
       @uni_modules_to_export = @uni_modules
       if params[:export].present?
         export_module_ids_string = params[:export]
         export_module_ids = eval(export_module_ids_string)
-        @uni_modules_to_export = UniModule.where(id: export_module_ids)  
+        
+        if current_user.user_level == "department_admin_access"
+          department_uni_module_ids = Department.find(current_user.department_id).uni_module_ids
+          export_module_ids.each do |id|
+            if !department_uni_module_ids.include?(id)
+              export_module_ids.delete(id)
+            end
+          end
+        end
+
+        @uni_modules_to_export = UniModule.where(id: export_module_ids)
+        @uni_modules_to_export = @uni_modules_to_export.order('LOWER(name) ASC')  
       else
         @uni_modules_to_export = @uni_modules
       end
