@@ -24,7 +24,7 @@
    <%= f.select(:course_id, options_for_select(@all_courses.collect { |course|
       [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
    <% else %>
-   <%= f.select(:course_id, options_for_select(@courses.collect { |course|
+   <%= f.select(:course_id, options_for_select(@all_courses.collect { |course|
       [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
    <% end %>
 </div>

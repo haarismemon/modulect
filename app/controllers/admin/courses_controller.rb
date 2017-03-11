@@ -7,7 +7,12 @@ module Admin
 
     def index
       if current_user.user_level == "super_admin_access"
-        @courses = Course.all
+         if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
+          @dept_filter_id = params[:dept].to_i
+          @courses = Department.find(@dept_filter_id).courses
+        else
+          @courses = Course.all 
+        end
       else
         @courses = Department.find(current_user.department_id).courses
       end
@@ -18,17 +23,27 @@ module Admin
         @per_page = 20
       end
 
+
       if params[:search].present?
         @search_query = params[:search]
-        @courses = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) }.sort_by{|course| course[:name]}.paginate(page: params[:page], :per_page => @per_page)
+        @courses = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) }.sort_by{|course| course[:name]}
 
+        @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(@per_page)
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
         @courses = sort(Course, @courses, @sort_by, @order, @per_page, "name")
+        @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(@per_page)
+
       else
-        @courses = @courses.paginate(page: params[:page], :per_page => @per_page).order('name ASC')
+         @courses = @courses.order('name ASC').page(params[:page]).per(@per_page)
       end
+
+      respond_to do |format|
+        format.html
+        format.csv {send_data @courses.to_csv}
+      end
+
     end
 
     def new

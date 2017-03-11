@@ -4,8 +4,7 @@
 //= require cocoon
 //= require_self
 //= require admin-side/selectize.min
-//= require moment
-//= require datetime_picker
+//= require edit.js.coffee
 //= require_tree
 //= require twitter/typeahead.min
 

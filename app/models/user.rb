@@ -11,7 +11,7 @@ class User < ApplicationRecord
   # A user has many pathways
   has_many :pathways
 
-    # do not remove the , optional: true
+  # do not remove the , optional: true
   belongs_to :faculty, optional: true
   belongs_to :course, optional: true
   belongs_to :department, optional: true
@@ -20,16 +20,16 @@ class User < ApplicationRecord
   validates :last_name, presence: true, length: { maximum: 70 }
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@kcl.ac.uk/i
   validates :email, presence: true,
-                    length: { maximum: 255 },
-                    uniqueness: { case_sensitive: false },
-                    format: { with: VALID_EMAIL_REGEX }
+            length: { maximum: 255 },
+            uniqueness: { case_sensitive: false },
+            format: { with: VALID_EMAIL_REGEX }
   validates :year_of_study, length: { maximum: 1 }
   validates :course_id, length: { maximum: 1 } #not tested
   enum user_level: {user_access: 3, department_admin_access: 2, super_admin_access: 1 }
   has_secure_password
   validates :password, presence: true,
-                       length: {minimum: 6},
-                       if: :should_validate_password?
+            length: {minimum: 6},
+            if: :should_validate_password?
 
   default_value_for :user_level, :user_access
 
@@ -37,7 +37,7 @@ class User < ApplicationRecord
     # Returns the hash digest of a given string.
     def digest(string)
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-                                                    BCrypt::Engine.cost
+          BCrypt::Engine.cost
       BCrypt::Password.create(string, cost: cost)
     end
 
@@ -147,5 +147,33 @@ class User < ApplicationRecord
 
   def should_validate_password?
     updating_password || new_record?
+  end
+
+  def self.to_csv
+    attributes = %w{first_name last_name}
+    csv_headers = ['First Name', 'Last Name', 'Faculty', 'Course', 'Department']
+    CSV.generate(headers:true)do |csv|
+      csv << csv_headers.each{|att|att.titleize}
+      all.each do |user|
+        to_append = user.attributes.values_at(*attributes)
+        if user.faculty.nil?
+          to_append.push 'N/A'
+        else
+          to_append.push user.faculty.name
+        end
+        if user.course.nil?
+          to_append.push 'N/A'
+        else
+          to_append.push user.course.name
+        end
+        if user.department.nil?
+          to_append.push 'N/A'
+        else
+          to_append.push user.department.name
+        end
+
+        csv << to_append
+      end
+    end
   end
 end

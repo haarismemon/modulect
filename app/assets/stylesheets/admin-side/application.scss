@@ -1,7 +1,5 @@
 @charset "utf-8";
-
-
-/* ...
+/*
 *= require_self
 *= require admin-side/selectize.bootstrap3
 *= require admin-side/_admin-style
@@ -9,10 +7,9 @@
 @import "normalize-rails";
 @import "bourbon";
 
-@import "neat";
 
 @import "selectize";
-@import "datetime_picker";
+
 
 @import "library/**/*";
 @import "base/**/*";
@@ -30,7 +27,6 @@
 @import "admin-style";
 
 @import url('https://fonts.googleapis.com/css?family=Lato|Varela+Round|Open+Sans');
-
 body {
     font-family: "Varela Round";
     color: #555459;
@@ -444,6 +440,8 @@ a.action-edit{margin-right:10px;}
 
 
 .highlight, .highlight:hover{background: #e9e9e9;border-left:2px solid #2ab27b;}
+
+.scrollable-submenu{height: auto;max-height: 300px;overflow-x: hidden;}
 
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{

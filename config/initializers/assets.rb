@@ -3,7 +3,7 @@
 # Version of your assets, change this if you want to expire all your assets.
 Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( admin-style.scss )
-Rails.application.config.assets.precompile += ["*administrate/application.js"]
+Rails.application.config.assets.precompile += ["*admin-side/application.js"]
 # Add additional assets to the asset load path
 # Rails.application.config.assets.paths << Emoji.images_path
 

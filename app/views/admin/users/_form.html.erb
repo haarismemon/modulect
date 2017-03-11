@@ -5,7 +5,7 @@
    #super-admin-warning{display: none;}
    <% if @user.user_level == "super_admin_access" %>
    #additional-area{display: none}
-   #super-admin-warning{display: block;margin-bottom:0px;}
+   #super-admin-warning{display: block;margin-bottom:10px;}
    <% elsif @user.user_level =="department_admin_access" %>
    #hide-for-department-admin{display:none;}
    <% end %>
@@ -38,10 +38,17 @@
          <span  class="instruction-label" id="super-admin-warning" >*Warning: Super admin access gives unbound access to modify, create and delete</span>
       </div>
       <div class="form-group field-unit__field user-level-select-field">
+      <% if current_user.user_level == "super_admin_access" %>
          <%= f.select(:user_level,  options_for_select(
             f.object.class.public_send("user_levels")
                 .map { |k, v| [k.humanize, k] },
             f.object.public_send("user_level")), {:include_blank => false}, {:class => 'selectize', :id => "user_level_select", :autocomplete => "off"   }) %>
+      <% else %>
+         <%= f.select(:user_level,  options_for_select(
+            f.object.class.public_send("user_levels").select { |user_level| user_level == "user_access" || user_level == "department_admin_access"}
+                .map { |k, v| [k.humanize, k] },
+            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'selectize', :id => "user_level_select", :autocomplete => "off"   }) %>
+      <% end %>
       </div>
    </div>
 </div>
@@ -61,7 +68,11 @@
          <%= f.label :activated %>
       </div>
       <div class="field-unit__field checkbox">
-         <%= f.check_box :activated %><label for="user_activated"><span></span></label>
+         <% if @user == current_user %>
+            <%= f.check_box :activated, :disabled => true %><label for="user_activated"><span></span></label>
+         <% else %>
+            <%= f.check_box :activated %><label for="user_activated"><span></span></label>
+         <% end %>
       </div>
    </div>
 </div>
@@ -98,8 +109,15 @@
             <%= f.label :faculty %>
          </div>
          <div class="field-unit__field default-select-field">
-            <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
-               [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  }) %>
+
+         <% if current_user.user_level == "super_admin_access" %>
+         <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
+                        [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  }) %>
+         <% else %>
+         <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
+                        [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => false}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off", :readonly => true, :disabled => true  }) %>
+
+            <% end %>
          </div>
       </div>
    </div>
@@ -109,8 +127,14 @@
             <%= f.label :department %>
          </div>
          <div class="field-unit__field default-select-field">
+
+         <% if current_user.user_level == "super_admin_access" %>
             <%= f.select(:department_id, options_for_select(@departments.collect { |department|
                [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"  }) %>
+            <% else %>
+              <%= f.select(:department_id, options_for_select(Faculty.find(current_user.faculty_id).departments.collect { |department|
+               [department.name.titleize, department.id] }, @user.department_id), {:include_blank => false}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off", :readonly => true, :disabled => true  }) %>
+            <% end %>
          </div>
       </div>
    </div>
@@ -121,8 +145,13 @@
                <%= f.label :course%>
             </div>
             <div class="field-unit__field default-select-field">
-               <%= f.select(:course_id, options_for_select(@courses.collect { |course|
+            <% if current_user.user_level == "super_admin_access" %>
+              <%= f.select(:course_id, options_for_select(@courses.collect { |course|
                   [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"   }) %>
+            <% else %>
+               <%= f.select(:course_id, options_for_select(Department.find(current_user.department_id).courses.collect { |course|
+                                 [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"   }) %>
+            <% end %>
             </div>
          </div>
       </div>
@@ -138,9 +167,14 @@
       </div>
    </div>
 </span>
+<% if current_user.user_level == "department_admin_access" %>
+   <%= f.hidden_field :faculty_id, :value => current_user.faculty_id %>
+   <%= f.hidden_field :department_id, :value => current_user.department_id %>
+<% end %>
+
 <div class="form-actions"><button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>New<% end %> user" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
    <%if parent=="edit"  %>Update<% else %>New<% end %> user</button>
-   <% if parent == "edit" && @user.user_level != "super_admin_access" %>
+   <% if parent == "edit" && current_user.id != @user.id %>
    &nbsp;&nbsp;&nbsp;<%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete user".html_safe, admin_user_path(@user), method: :delete,
       data: { confirm: "Are you sure you want to delete this user?" } , class: "table__action--destroy" %>
    <% end %>
@@ -169,5 +203,8 @@
           $(".password-hidden").slideToggle("slow");
           $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
       };
+      
+      
+      
       
 </script>

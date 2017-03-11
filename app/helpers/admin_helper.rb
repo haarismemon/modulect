@@ -16,13 +16,17 @@ module AdminHelper
     def sort(table_name, list, sort_by, order, per_page, default)
 
       if table_name.has_attribute?(sort_by) && (order == "asc" || order == "desc")
-        list.paginate(page: params[:page], :per_page => per_page).order(sort_by + ' ' + order.upcase)
+       list = list.sort_by{|item| item[sort_by].downcase}
+        if order == "desc"
+          list = list.reverse
+        end
+        list 
       else
         # default case
-        list.paginate(page: params[:page], :per_page => per_page).order(default +' ASC')
+        list.sort_by{|item| item[default].downcase}
       end
 
-    end
+    end 
 
     def get_num_courses_for_department(valid_department)
       valid_department.courses.size
@@ -52,6 +56,14 @@ module AdminHelper
         count.to_s + " Department"
       else 
         count.to_s + "Departments"
+      end
+    end
+
+    def has_linked_tags(valid_module)
+      if valid_module.tags.size > 0
+        true
+      else
+        false
       end
     end
 
