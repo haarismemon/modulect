@@ -129,7 +129,20 @@ module Admin
     end
 
     def clone 
+      department_ids_string = params[:ids]
+      department_ids = eval(department_ids_string)
 
+      department_ids.each do |id|
+        department = Department.find(id.to_i)
+        
+          if !department.nil?
+            cloned = department.dup
+            cloned.update_attribute("name", cloned.name + "-CLONE")
+          end
+        
+      end
+
+      head :no_content
     end
 
     private

@@ -29,6 +29,7 @@
             <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
+               <li> <a id="clone-all" style="cursor:pointer;"><i class='fa fa-clone' aria-hidden='true'></i>&nbsp;&nbsp;Clone selected</a>
                <li> <a id="delete-all" style="cursor:pointer;"><i class='fa fa-trash' aria-hidden='true'></i>&nbsp;&nbsp;Delete selected</a>
                <li> <a id="csv-export" style="cursor:pointer;"><i class='fa fa-download' aria-hidden='true'></i>&nbsp;&nbsp;Export to CSV</a>
                </li>
@@ -168,6 +169,63 @@ $(document).ready(function() {
         ids = JSON.stringify(checkboxValues);
         window.location.replace("<%=admin_departments_path%>.csv?export="+ids);
 
+    });
+
+
+
+    $("#clone-all").click(function(event) {
+        bootbox.confirm({
+            title: "Clone selected confirmation",
+            size: "medium",
+            closeButton: false,
+            message: "Are you sure you want clone the selected departments?",
+            buttons: {
+                confirm: {
+                    label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                    className: 'red-btn pull-left'
+                }
+            },
+            callback: function(result) {
+
+
+
+                if (result == true) {
+                    event.preventDefault();
+                    var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
+                        return $(this).val();
+                    }).get(); // <----
+                    //console.log(checkboxValues);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<%= admin_departments_clone_path %>",
+                        context: document.body,
+                        data: {
+                            ids: JSON.stringify(checkboxValues)
+                        },
+
+                        success() {
+                            bootbox.alert({
+                                title: "Completed bulk clone",
+                                size: "medium",
+                                closeButton: false,
+                                message: "The bulk action has been applied. The cloned departments will show after the page reloads.",
+                                callback: function() {
+                                    location.reload();
+                                }
+                            })
+                        }
+                    })
+
+                } 
+
+
+            }
+        })
     });
 
 
