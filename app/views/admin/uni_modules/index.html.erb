@@ -68,7 +68,7 @@
       </thead>
       <tbody id="data-area">
          <%@uni_modules.each do |uni_module| %>
-         <tr class="table__row" data-url="<%= edit_admin_uni_module_path(uni_module) %>" role="link" tabindex="0">
+         <tr class="table__row" data-url="<%= edit_admin_uni_module_path(uni_module) %>" role="link" tabindex="0" id="row-<%= uni_module.id %>">
             <td class="no-link checkboxes">
                <div class="checkbox" style="margin:0px;display:inline-block;">
                   <input type="checkbox" name="check_action[]" id="check_individual" value="<%= uni_module.id %>" class="toggle-bulk" /><label for="check_individual"><span></span></label>
@@ -97,49 +97,59 @@
 <script>
 $(document).ready(function() {
     $("#delete-all").click(function(event) {
-     bootbox.confirm({ 
-  size: "medium",
-  closeButton: false,
-  message: "Are you sure you want delete the selected modules?", 
-   buttons: {
-        confirm: {
-            label: 'Proceed',
-            className: 'btn-success'
-        },
-        cancel: {
-            label: 'Cancel',
-            className: 'red-btn'
-        }
-    },
-  callback: function(result){ /* result is a boolean; true = OK, false = Cancel*/ }
-})
-/**
-        var check = confirm("Are you sure you want to apply this bulk action?");
-        if (check == true) {
-            event.preventDefault();
-            var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
-                return $(this).val();
-            }).get(); // <----
-            console.log(checkboxValues);
-
-            $.ajax({
-                type: "POST",
-                url: "<#%= admin_uni_modules_bulk_delete_path %>",
-                context: document.body,
-                data: {
-                    ids: JSON.stringify(checkboxValues)
+        bootbox.confirm({
+            size: "medium",
+            closeButton: false,
+            message: "Are you sure you want delete the selected modules?",
+            buttons: {
+                confirm: {
+                    label: 'Proceed',
+                    className: 'btn-success'
                 },
-                success()
-                 {
-                  alert("Bulk action has been applied");
-                  location.reload();
-                 }
-            })
-            
-        } else {
-            return false;
-        }
-        **/
+                cancel: {
+                    label: 'Cancel',
+                    className: 'red-btn'
+                }
+            },
+            callback: function(result) {
+
+
+
+                if (result == true) {
+                    event.preventDefault();
+                    var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
+                        return $(this).val();
+                    }).get(); // <----
+                    console.log(checkboxValues);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<%= admin_uni_modules_bulk_delete_path %>",
+                        context: document.body,
+                        data: {
+                            ids: JSON.stringify(checkboxValues)
+                        },
+                        success() {
+                            bootbox.alert({
+                                size: "medium",
+                                closeButton: false,
+                                message: "The bulk action has been applied",
+                                callback: function() {
+                                    location.reload();
+                                }
+                            })
+                        }
+                    })
+
+                } else {
+                    return false;
+                }
+
+
+
+
+            }
+        })
     });
 });
 </script>
