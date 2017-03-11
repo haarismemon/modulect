@@ -1,6 +1,6 @@
 module Admin
   class UniModulesController < Admin::BaseController
-    before_action :verify_correct_department, only: [:update, :edit]
+    before_action :verify_correct_department, only: [:update, :edit, :destroy]
 
 
   	def index

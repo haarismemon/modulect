@@ -1,5 +1,6 @@
 module Admin
   class CoursesController < Admin::BaseController
+    before_action :verify_correct_department, only: [:update, :edit, :destroy]
 
     def show
       redirect_to edit_admin_course_path(params[:id])
@@ -89,6 +90,11 @@ module Admin
       params.require(:course).permit(:name, :description,
                   :duration_in_years, :year, department_ids: [],
                   year_structures_attributes: [:id, :year_of_study, :_destroy])
+    end
+
+    def verify_correct_department
+      @course = Course.find(params[:id])
+      redirect_to admin_path unless Department.find(current_user.department_id).course_ids.include?(@course.id) || current_user.user_level == "super_admin_access"
     end
   end
 end
