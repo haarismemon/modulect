@@ -25,6 +25,33 @@ module Admin
          @faculties = @faculties.order('name ASC').page(params[:page]).per(@per_page)
         end
 
+       
+        if current_user.user_level == "super_admin_access"
+
+          @faculties_to_export = @faculties
+          if params[:export].present?
+            export_faculties_ids_string = params[:export]
+            export_faculties_ids = eval(export_faculties_ids_string)
+
+            @faculties_to_export = Faculty.where(id: export_faculties_ids)
+            @faculties_to_export = @faculties_to_export.order('LOWER(name) ASC')  
+          else
+            @faculties_to_export = @faculties
+          end
+
+
+            respond_to do |format|
+              format.html
+              format.csv {send_data @faculties_to_export.to_csv}
+            end
+
+        end
+
+     
+
+
+
+
       end
 
       def new
@@ -101,6 +128,38 @@ module Admin
         render json: data
       end
 
+      def bulk_delete
+        faculties_ids_string = params[:ids]
+        faculty_ids = eval(faculties_ids_string)
+
+        faculty_ids.each do |id|
+          faculty = Faculty.find(id.to_i)
+                
+           if !faculty.nil? && faculty.departments.empty?
+             faculty.destroy
+           end
+                
+         end
+
+         head :no_content
+      end
+
+      def clone
+       faculties_ids_string = params[:ids]
+        faculty_ids = eval(faculties_ids_string)
+
+        faculty_ids.each do |id|
+          faculty = Faculty.find(id.to_i)
+          
+            if !faculty.nil?
+              cloned = faculty.dup
+              cloned.update_attribute("name", cloned.name + "-CLONE")
+            end
+          
+        end
+
+        head :no_content
+      end
 
 
     private
