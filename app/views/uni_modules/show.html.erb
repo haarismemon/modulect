@@ -59,7 +59,9 @@
 
               <% unless @uni_module.comments.empty? %>
 
-                  <% @uni_module.comments.each do |comment| %>
+                  <%= paginate @comments %>
+
+                  <% @comments.each do |comment| %>
                       <% stars = "" %>
                       <% for i in 1..comment.rating %>
                           <% stars += "*" %>
