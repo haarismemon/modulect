@@ -11,9 +11,10 @@
    <% end %>Users</h1>
    <div class="header__actions">
       <div class="col-md-12">
+         <% if @users.size > 0 %>
          <% if current_user.user_level == "super_admin_access" %>
          <div class="btn-group">
-            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department filter  <span class="caret"></span>
+            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu scrollable-submenu">
                <li> <%= link_to ("View All"), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0  ), method: :get %></li>
@@ -23,12 +24,29 @@
             </ul>
             </div>
             <% end %>
-         <% if @users.size > 0 %>
          <div class="btn-group">
-            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bulk Actions  <span class="caret"></span>
+            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-               <li> <a id="delete-all">(None available)</a>
+
+
+               <li> <a id="activate-all" style="cursor:pointer;"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Activate selected</a>
+
+               <li> <a id="deactivate-all" style="cursor:pointer;"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;Deactivate selected</a>
+
+               <li> <a id="delete-all" style="cursor:pointer;"><i class='fa fa-trash' aria-hidden='true'></i>&nbsp;&nbsp;Delete selected</a>
+
+               <li> <a id="csv-export" style="cursor:pointer;"><i class='fa fa-download' aria-hidden='true'></i>&nbsp;&nbsp;Export to CSV</a>
+
+
+               <li> <a id="csv-export" style="cursor:pointer;"><i class="fa fa-level-down" aria-hidden="true"></i>&nbsp;&nbsp;Make Student User</a>
+
+               <li> <a id="csv-export" style="cursor:pointer;"><i class="fa fa-level-up" aria-hidden="true"></i>&nbsp;&nbsp;Make Department Admin</a>
+
+               <%if current_user.user_level == "super_admin_access" %>
+               <li> <a id="csv-export" style="cursor:pointer;"><i class="fa fa-shield" aria-hidden="true"></i>&nbsp;&nbsp;Make Super/System Admin</a>
+               <% end %>
+
                </li>
             </ul>
             </div>

@@ -184,8 +184,25 @@ module Admin
 
     end
 
+    def bulk_deactivate
+    end
 
 
+    def bulk_deactivate
+    end
+
+
+    def bulk_delete
+    end
+
+    def make_student_user
+    end
+
+    def make_department_admin
+    end
+
+    def make_super_admin
+    end
 
 
     private
