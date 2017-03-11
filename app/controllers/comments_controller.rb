@@ -8,8 +8,25 @@ class CommentsController < ApplicationController
     @updated_comments = @uni_module.comments.order("created_at DESC").page(params[:page]).per(5)
 
     respond_to do |format|
-      format.js
+      format.js { render 'update_comments.js.erb' }
     end
+  end
+
+  def sort
+    @uni_module = UniModule.find(params[:uni_module_id])
+
+    sort_by_type = params[:sort_by_type]
+
+    if sort_by_type.eql? 'created_at'
+      @updated_comments = @uni_module.comments.order("created_at DESC").page(params[:page]).per(5)
+    elsif sort_by_type.eql? 'rating'
+      @updated_comments = @uni_module.comments.order("rating DESC").page(params[:page]).per(5)
+    end
+
+    respond_to do |format|
+      format.js { render 'update_comments.js.erb' }
+    end
+
   end
 
   private
