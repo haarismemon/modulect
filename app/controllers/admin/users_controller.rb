@@ -300,6 +300,23 @@ module Admin
       head :no_content
     end
 
+    def bulk_limit
+      user_ids_string = params[:ids]
+      user_ids = eval(user_ids_string)
+
+      user_ids.each do |id|
+        user = User.find(id.to_i)
+        
+          if !user.nil? && user.user_level == "user_access"
+            user.update_attribute("is_limited", "true")
+          end
+        
+      end
+
+      head :no_content
+    end
+
+
 
     private
 
