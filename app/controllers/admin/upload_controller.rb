@@ -19,6 +19,9 @@ module Admin
       csv = CSV.parse(csv_text, :headers => true)
       csv.each do |row|
         logger.debug("Found another row :D")
+        if @resource_name = "courses"
+          logger.debug("YES IT WORKED M8")
+        end
       end
 
       # Return nothing
@@ -27,13 +30,13 @@ module Admin
 
     def download
       # Retrieve the resource requested to upload e.g Users
-      resource_name = params[:resource_choice]
+      @resource_name = params[:resource_choice]
       # Will store verified resource
       resource = nil
 
       # Verify that the resource with the corresponding name exists
       Administrate::Namespace.new(namespace).resources.each do |administrate_resource|
-        if administrate_resource.to_s == resource_name
+        if administrate_resource.to_s == @resource_name
           resource = administrate_resource
         end
       end
