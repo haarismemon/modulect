@@ -1,0 +1,20 @@
+<%= paginate updated_comments %>
+
+<% updated_comments.each do |comment| %>
+    <% stars = "" %>
+    <% for i in 1..comment.rating %>
+        <% stars += "*" %>
+    <% end %>
+    <p>
+      <strong><%= stars %> <%= comment.rating==1 ? "Star" : "Stars" %></strong>
+    </p>
+
+    <p>
+      <%= comment.body %>
+    </p>
+
+    <p>
+      <strong><%= comment.commenter %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
+    </p>
+    <hr>
+<%end%>
