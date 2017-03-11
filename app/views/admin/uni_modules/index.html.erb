@@ -11,6 +11,7 @@
    Modules</h1>
    <div class="header__actions">
       <div class="col-md-12">
+         <% if @uni_modules.size > 0 %>
          <% if current_user.user_level == "super_admin_access" %>
          <div class="btn-group">
             <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter  <span class="caret"></span>
@@ -23,7 +24,6 @@
             </ul>
             </div>
             <% end %>
-         <% if @uni_modules.size > 0 %>
          <div class="btn-group">
             <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
             </button>
@@ -123,7 +123,7 @@ $(document).ready(function() {
                     var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
                         return $(this).val();
                     }).get(); // <----
-                    console.log(checkboxValues);
+                    //console.log(checkboxValues);
 
                     $.ajax({
                         type: "POST",
@@ -157,7 +157,7 @@ $(document).ready(function() {
         var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
             return $(this).val();
         }).get(); // <----
-        console.log(checkboxValues);
+        //console.log(checkboxValues);
         ids = JSON.stringify(checkboxValues);
         window.location.replace("<%=admin_uni_modules_path%>.csv?export="+ids);
 
