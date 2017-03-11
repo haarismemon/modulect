@@ -80,10 +80,10 @@
 
         $("#upload-1-next").on("click", function () {
             $("#upload-step-2").show();
+            $("#upload-step-3").show();
         });
 
         $("#upload-2-next").on("click", function () {
-            $("#upload-step-3").show();
 
             var resource_name = $("select#upload-resource").val();
             $("form.button_to").attr("action", "/admin/download?resource_choice=" + resource_name)
