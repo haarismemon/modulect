@@ -53,6 +53,14 @@
 
               <h2>Module Review</h2>
               <% unless @uni_module.comments.empty? %>
+                  <div id="sort-comments">
+                    <label>Sort by: </label>
+                    <select id="sort-by-name" name="sort-by-name">
+                      <option>Created at</option>
+                      <option>Rating</option>
+                    </select>
+                  </div>
+
                   <div id="comments-partial">
                     <%= render "display_comments", updated_comments: @comments %>
                   </div>
