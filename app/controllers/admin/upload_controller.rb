@@ -12,7 +12,7 @@ module Admin
         file.write(uploaded_csv.read)
       end
 
-      # Reads
+      # Reads each row of the uploaded csv file
       require 'csv'
       csv_text = File.read("app/assets/uploaded.csv")
       csv = CSV.parse(csv_text, :headers => true)
