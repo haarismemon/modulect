@@ -52,14 +52,10 @@ module Admin
       if params[:export].present?
         export_module_ids_string = params[:export]
         export_module_ids = eval(export_module_ids_string)
-        
+
         if current_user.user_level == "department_admin_access"
           department_uni_module_ids = Department.find(current_user.department_id).uni_module_ids
-          export_module_ids.each do |id|
-            if !department_uni_module_ids.include?(id)
-              export_module_ids.delete(id)
-            end
-          end
+          export_module_ids = export_module_ids & department_uni_module_ids.map(&:to_s)
         end
 
         @uni_modules_to_export = UniModule.where(id: export_module_ids)
