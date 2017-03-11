@@ -68,7 +68,7 @@
                   <input type="checkbox" name="check_all" id="check_all" value="true" class="toggle-bulk" /><label for="check_all"><span></span></label>
                </div>
             </td>
-            <% sorting_columns = {"first_name" => "First Name", "last_name" => "Last Name", "email" => "Email", "activated" => "Activated", "user_level" => "User level"} %>
+            <% sorting_columns = {"first_name" => "First Name", "last_name" => "Last Name", "email" => "Email", "activated" => "Activated", "is_limited" => "Limited", "user_level" => "User level"} %>
             <% if request.query_parameters["search"].present?%>
             <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: true, per_page: @per_page, dept_filter_id: @dept_filter_id} %>
             <% else %>
@@ -93,7 +93,8 @@
             <td class="cell-data cell-data--string"><%= user.first_name %></td>
             <td class="cell-data cell-data--string"><%= user.last_name %></td>
             <td class="cell-data cell-data--string"><%= user.email %></td>
-            <td class="cell-data cell-data--string"><% if user.activated %><i class="fa fa-check" aria-hidden="true"></i><% else %>-<%end%></td>
+            <td class="cell-data cell-data--string"><% if user.activated %><i class="fa fa-check" aria-hidden="true" style="color:#2ab27b"></i><% else %>-<%end%></td>
+            <td class="cell-data cell-data--string"><% if user.is_limited %><i class="fa fa-check" aria-hidden="true" style="color:#c55252"></i><% else %>-<%end%></td>
             <td class="cell-data cell-data--string">
             <% if user.user_level == "user_access" %>
                Student User
