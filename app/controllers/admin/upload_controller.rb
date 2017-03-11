@@ -11,6 +11,16 @@ module Admin
       File.open(Rails.root.join('app', 'assets', 'uploaded.csv'), 'wb') do |file|
         file.write(uploaded_csv.read)
       end
+
+      # Reads
+      require 'csv'
+      csv_text = File.read("app/assets/uploaded.csv")
+      csv = CSV.parse(csv_text, :headers => true)
+      csv.each do |row|
+        logger.debug("Found another row :D")
+      end
+
+      # Return nothing
       head :no_content
     end
 
