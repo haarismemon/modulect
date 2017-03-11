@@ -58,20 +58,32 @@
               <h2>Module Review</h2>
 
               <% @uni_module.comments.each do |comment| %>
-
                 <p>
                   <strong>Commenter:</strong>
                   <%= comment.commenter %>
                 </p>
-
                 <p>
                   <strong>Comment:</strong>
                   <%= comment.body %>
                 </p>
-
                 <br>
-
               <%end%>
+
+              <h2>Add a Review</h2>
+
+              <%= form_for([@uni_module, @uni_module.comments.build]) do |f| %>
+                  <p>
+                    <%= f.label :commenter %><br>
+                    <%= f.text_field :commenter %>
+                  </p>
+                  <p>
+                    <%= f.label :body %><br>
+                    <%= f.text_field :body %>
+                  </p>
+                  <p>
+                    <%= f.submit %>
+                  </p>
+              <% end %>
 
             </div>
          </div>
