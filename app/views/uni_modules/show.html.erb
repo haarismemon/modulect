@@ -35,13 +35,7 @@
                        url: "<%=application_save_module_path(module_par: @uni_module) %>",
                        context: document.body
                    })
-               
-               
-               
-               
                });
-               
-               
             </script>
             <% else %>
             <form action="/login" method="get">
@@ -52,46 +46,22 @@
          </div>
       </div>
       <%= render partial: 'layouts/uni_module', locals: {uni_module: @uni_module, tags_matched: "", tags_searched_for: "", type: "show"}  %>
+
       <div class="col-md-12 login-card res-card">
          <div class="row">
             <div class="col-md-9 result-card-main">
+
               <h2>Module Review</h2>
-
               <% unless @uni_module.comments.empty? %>
-
-                  <%= paginate @comments %>
-
-                  <% @comments.each do |comment| %>
-                      <% stars = "" %>
-                      <% for i in 1..comment.rating %>
-                          <% stars += "*" %>
-                      <% end %>
-                      <p>
-                        <strong><%= stars %> <%= comment.rating==1 ? "Star" : "Stars" %></strong>
-                      </p>
-
-                      <p>
-                        <%= comment.body %>
-                      </p>
-
-                      <p>
-                        <strong><%= comment.commenter %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
-                      </p>
-
-                      <br>
-                  <%end%>
-
+                  <div id="comments-partial">
+                    <%= render "display_comments", updated_comments: @comments %>
+                  </div>
               <% else %>
-
                   <p>Be the first to review this module!</p>
-
               <%end%>
 
-
               <h3>Add a Review</h3>
-
               <% if logged_in? %>
-
                 <%= form_for([@uni_module, @uni_module.comments.build]) do |f| %>
                     <p id="rating-area">
                         <%= f.label :rating %>
@@ -109,12 +79,6 @@
                         <%= f.submit 'Add Review', class:'btn' %>
                     </p>
                 <% end %>
-
-                <style>
-                    #rating-area input[type=radio] {display:inline-block;}
-                    #review-area textarea {width: 100%; height: 100%}
-                </style>
-
               <% else %>
                   <p>You must be logged in to add a review.</p>
               <%end%>
@@ -126,3 +90,8 @@
 </div>
 </div>
 </div>
+
+<style>
+  #rating-area input[type=radio] {display:inline-block;}
+  #review-area textarea {width: 100%; height: 100%}
+</style>
