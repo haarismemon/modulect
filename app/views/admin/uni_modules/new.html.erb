@@ -1,6 +1,7 @@
 <% provide(:title, "New Module") %>
 <header class="header index-header-area">
   <h1 id="page-title">New Module </h1>
+  <%= link_to "<i class='fa fa-times' aria-hidden='true' style='padding: 1px'></i>&nbsp;&nbsp;Quit".html_safe, :back, class: "button tool-box" %>
 </header>
 <div id="moduleForm" class="col-md-12">
   <%= form_for @uni_module, :url => { :action => "create",:method => "put" }, html: {class: "form" } do |f|%>
