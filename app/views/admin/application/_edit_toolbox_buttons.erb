@@ -4,11 +4,11 @@
   <button style="height: 37px; outline: none; padding-bottom:4px"
           class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin toolbox"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Toolbox
+    <i class="fa fa-wrench" aria-hidden="true"></i>&nbsp;&nbsp;Toolbox
     <span class="caret"></span>
   </button>
   <!--list options for drop down where each is a link-->
-  <ul class="dropdown-menu scrollable-submenu">
+  <ul class="dropdown-menu scrollable-submenu" style="padding: 0px;">
     <!--link to print form-->
     <li><a onclick="openPrintForm('<%= blacklist_attributes%>','<%=entity_attributes%>')"
     ><span class="glyphicon glyphicon-print" style=" margin-right: 2px"></span> Print data</a>
