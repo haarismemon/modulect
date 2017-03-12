@@ -92,6 +92,7 @@ module Admin
       if params[:id].present?
         @uni_module = UniModule.find(params[:id])
 
+        # Get the pre-existing values (if-any)
         @departments = @uni_module.departments.pluck(:name)
         @careerTags = @uni_module.career_tags.pluck(:name)
         @interestTags = @uni_module.interest_tags.pluck(:name)
@@ -99,9 +100,41 @@ module Admin
   	end
 
   	def update
-      @uni_module = UniModule.find(params[:id])
+      if params[:career_tags].present? && !params[:career_tags].empty? && params[:interest_tags].present? && !params[:interest_tags].empty?
+        @uni_module = UniModule.find(params[:id])
 
-      #Update the module with the new attributes
+        career_tags = params[:career_tags]
+        career_tags.each do |tag|
+          chosen_tag = Tags.find_by_name(tag)
+          # Add the career tag association
+          if(chosen_tag.present?)
+            @uni_module.tags << chosen_tag
+          else
+            # If tag does not already exist then create a new tag
+            new_tag = Tag.new(name: tag, type: "CareerTag")
+            @uni_module.tags << new_tag
+          end
+        end
+
+        interest_tags = params[:interest_tags]
+        interest_tags.each do |tag|
+          chosen_tag = Tags.find_by_name(tag)
+           # Add the interest tag association
+          if(chosen_tag.present?)
+            @uni_module.tags << chosen_tag
+          else
+            # If tag does not already exist then create a new tag
+            new_tag = Tag.new(name: tag, type: "InterestTag")
+            @uni_module.tags << new_tag
+          end
+        end
+      else 
+        # Failed to update
+        # If save fails, redisplay the form so user can fix problems
+        render(:edit)
+      end
+
+      # Update the module with the new attributes
       if @uni_module.update_attributes(uni_module_params)
         # Successfully updated
         flash[:success] = "Successfully updated #{@uni_module.name}"
@@ -169,7 +202,7 @@ module Admin
 
    private
     def uni_module_params
-      params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
+      params.require(:uni_module,:name, :code).permit(:description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
     end
 
     def verify_correct_department
