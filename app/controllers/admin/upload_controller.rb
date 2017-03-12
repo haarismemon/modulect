@@ -18,8 +18,12 @@ module Admin
       csv_text = File.read('app/assets/uploaded.csv')
       parsed_csv = CSV.parse(csv_text, headers: true)
       parsed_csv.each do |row|
-        if session[:resource_name] == 'courses'
-          Course.create!(row.to_hash)
+        # Creates records for corresponding resource
+        case session[:resource_name]
+          when 'courses'
+            Course.create!(row.to_hash)
+          when 'departments'
+            Department.create!(row.to_hash)
         end
       end
 
