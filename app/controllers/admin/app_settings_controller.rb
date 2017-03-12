@@ -11,10 +11,10 @@ module Admin
         if @app_setting.update_attributes(app_setting_params)
           # If save succeeds, redirect to the index action
           flash[:success] = "Successfully updated "
-          redirect_to(edit_admin_app_setting_path) and return
+          redirect_to(admin_settings_path) and return
         else
           # If save fails, redisplay the form so user can fix problems
-          render('admin/app_settings/edit')
+          render('admin/settings')
         end
       end
 

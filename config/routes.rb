@@ -14,9 +14,13 @@ Rails.application.routes.draw do
     resources :year_structures, except: [:show]
     resources :career_tags, except: [:show]
     resources :interest_tags, except: [:show]
-    resources :app_settings, except: [:show, :index, :new, :destroy]
     get 'upload', to: 'upload#upload'
 
+
+    put '/app_settings' => 'app_settings#update'
+    patch '/app_settings' => 'app_settings#update'
+    match 'settings' => 'app_settings#edit', :defaults => {:id => 1}, via: [:get]
+   
     # BULK ACTIONS
     post '/courses/bulk_delete', to: 'courses#bulk_delete'
     post '/courses/clone', to: 'courses#clone'
