@@ -11,16 +11,16 @@
   <ul class="dropdown-menu scrollable-submenu" style="padding: 0px;">
     <!--link to print form-->
     <li><a onclick="openPrintForm('<%= blacklist_attributes%>','<%=entity_attributes%>')"
-    ><span class="glyphicon glyphicon-print" style=" margin-right: 2px"></span> Print data</a>
+    ><i class="fa fa-print" aria-hidden="true" style='margin-right: 2px'></i> Print data</a>
     </li>
     <!--link to export to html-->
     <li>
-      <a onclick="exportToHTML('<%= blacklist_attributes%>','<%=entity_attributes%>')"><span class="glyphicon glyphicon-cloud-upload" style=" margin-right: 2px"></span>
+      <a onclick="exportToHTML('<%= blacklist_attributes%>','<%=entity_attributes%>')"><i class='fa fa-download' aria-hidden='true' style='margin-right:2px'></i></span>
         Export as simple data</a>
     </li>
     <!--link to generate pdf from form's data-->
     <li>
-      <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')"><span class="glyphicon glyphicon-file" style=" margin-right: 2px"></span>
+      <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')"><i class="fa fa-file-pdf-o" aria-hidden="true" style="margin-right: 2px;"></i>
         Download As PDF</a>
     </li>
   </ul>
