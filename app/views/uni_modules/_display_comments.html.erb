@@ -5,26 +5,48 @@
   <%= paginate updated_comments %>
   <%= page_entries_info updated_comments %>
 
-  <hr>
   <% updated_comments.each do |comment| %>
-      <% stars = "" %>
-      <% for i in 1..comment.rating %>
-          <% stars += "*" %>
-      <% end %>
-      <p>
-        <strong><%= stars %> <%= comment.rating==1 ? "Star" : "Stars" %></strong>
-      </p>
+      <table width="100%" border="0">
+        <colgroup>
+          <td>
+            <% stars = "" %>
+            <% for i in 1..comment.rating %>
+                <% stars += "*" %>
+            <% end %>
+            <p>
+              <strong><%= stars %> <%= comment.rating==1 ? "Star" : "Stars" %></strong>
+            </p>
 
-      <p>
-        <%= comment.body %>
-      </p>
+            <p>
+              <%= comment.body %>
+            </p>
 
-      <p>
-        <strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
-      </p>
-      <hr>
+            <p>
+              <strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
+            </p>
+          </td>
+          <td id="helpful-td" align="center">
+            <label><%= comment.liked_users.length %></label><br>
+            <button class="btn" id="helpful-btn">Helpful?</button>
+          </td>
+          <hr>
+        </colgroup>
+      </table>
   <%end%>
 <% else %>
     <p>Be the first to review this module!</p>
 <%end%>
-<br>
+<hr>
+
+<style>
+    #helpful-td {
+        width: 10%;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    #helpful-btn {
+      text-transform: none;
+    }
+
+</style>
