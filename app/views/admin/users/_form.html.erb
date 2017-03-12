@@ -42,7 +42,7 @@
          <%= f.select(:user_level,  options_for_select(
             f.object.class.public_send("user_levels")
                 .map { |k, v| [k.humanize, k] },
-            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'form-control user-level-margin', :id => "user_level_select", :autocomplete => "off"   }) %>
+            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'selectize', :id => "user_level_select", :autocomplete => "off"   }) %>
       <% else %>
          <%= f.select(:user_level,  options_for_select(
             f.object.class.public_send("user_levels").select { |user_level| user_level == "user_access" || user_level == "department_admin_access"}
@@ -201,26 +201,33 @@
    <% end %>
 </div>
 <script>
-   document.getElementById('user_level_select').addEventListener('change', function () {
-       var style = this.value == "super_admin_access" ? 'none' : 'block';
-       document.getElementById('additional-area').style.display = style;
-   
-       var style2 = this.value == "super_admin_access" ? 'block' : 'none';
-       document.getElementById('super-admin-warning').style.display = style2;
+    $('.selectize').selectize({
+        plugins: ['remove_button'],
+        delimiter: ',',
+        persist: false,
+        create: false,
+        onChange: function(value) {
+            var style = value == "super_admin_access" ? 'none' : 'block';
+            document.getElementById('additional-area').style.display = style;
 
-       if (this.value == "user_access"){
-         document.getElementById("user_is_limited").disabled= false;
-      }
-      else {
-         document.getElementById("user_is_limited").disabled= true;   
-         document.getElementById("user_is_limited").checked= false;  
-      }
+            var style2 = value == "super_admin_access" ? 'block' : 'none';
+            document.getElementById('super-admin-warning').style.display = style2;
 
-  
-       var style = this.value == "department_admin_access" ? 'none' : 'block';
-       document.getElementById('hide-for-department-admin').style.display = style;
-   });
-   
+            if (value == "user_access"){
+                document.getElementById("user_is_limited").disabled= false;
+            }
+            else {
+                document.getElementById("user_is_limited").disabled= true;
+                document.getElementById("user_is_limited").checked= false;
+            }
+
+
+            var style3 = value == "department_admin_access" ? 'none' : 'block';
+            document.getElementById('hide-for-department-admin').style.display = style3;
+        }
+    });
+
+
       //toggles the password field to appear and disappear
       var openPasswordFields = function () {
           $(".password-hidden").slideToggle("slow");
