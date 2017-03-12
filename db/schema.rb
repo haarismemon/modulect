@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312111421) do
+ActiveRecord::Schema.define(version: 20170312161606) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -21,6 +21,12 @@ ActiveRecord::Schema.define(version: 20170312111421) do
     t.integer  "user_id"
     t.index ["uni_module_id"], name: "index_comments_on_uni_module_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "comments_users", id: false, force: :cascade do |t|
+    t.integer "comment_id"
+    t.integer "user_id"
+    t.index ["comment_id", "user_id"], name: "index_comments_users_on_comment_id_and_user_id"
   end
 
   create_table "courses", force: :cascade do |t|
