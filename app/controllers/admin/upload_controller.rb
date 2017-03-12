@@ -24,6 +24,8 @@ module Admin
             Course.create!(row.to_hash)
           when 'departments'
             Department.create!(row.to_hash)
+          when 'faculties'
+            Faculty.create!(row.to_hash)
         end
       end
 
