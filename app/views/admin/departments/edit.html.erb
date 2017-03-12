@@ -4,7 +4,12 @@
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
-    <%= render(:partial => 'admin/application/edit_toolbox_buttons', :locals => {:object => Department.find(params[:id]),:name_of_file=>Department.find(params[:id]).name.tr(' ','').underscore,:blacklist_attributes=>"",:entity_attributes=>""})%>
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons',
+               :locals => {:object => Department.find(params[:id]),
+                           :name_of_file=>Department.find(params[:id]).name.tr(' ','').underscore,
+                           :blacklist_attributes=>"",
+                           :entity_attributes=>"Faculty",
+                           :has_many_attributes => ["courses"]})%>
 
   </div>
 </header>

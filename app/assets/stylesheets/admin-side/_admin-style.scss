@@ -263,6 +263,7 @@ select.form-control{
 }
 .selectize-input{
   min-height: 40px;
+  border: 1px solid #e3e3e3;
 }
 .selectize-input.focus {
   border-color: rgba(42, 178, 123, 0.8) !important;
@@ -275,5 +276,6 @@ select.form-control{
 .selectize-control.single .selectize-input input{
   padding-left: 10px;
 }
+
 
 
