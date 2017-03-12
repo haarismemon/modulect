@@ -27,6 +27,10 @@
   <label for="lecturers">Lecturers <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify all the names of the lecturers of this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
   <%= f.text_field :lecturers, class: 'form-control'%>
 </div>
+<div class="form-group">
+  <label for="prerequisites">Prerequisite Modules <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the modules which are required for a student to be eligible to take this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+  <%= f.text_field :required, :value => @required.join(","), class: 'form-control', :placeholder => 'Search for modules', data: {:role => "tagsinput"}, :id => "required" %>
+</div>
 <h3>Tags</h3>
 <div class="form-group">
   <label for="career_tags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
@@ -85,6 +89,23 @@ $('input#departments').tagsinput({
   typeaheadjs: {
     name: 'departmentsBloodhound',
     source: departmentsBloodhound.ttAdapter()
+  },
+  freeInput: false
+});
+
+var uniMods = <%= raw UniModule.all.pluck(:name) %>
+var uniModBloodhound = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.whitespace,
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    local: uniMods
+  });
+
+uniModBloodhound.initialize();
+
+$('input#required').tagsinput({
+  typeaheadjs: {
+    name: 'uniModBloodhound',
+    source: uniModBloodhound.ttAdapter()
   },
   freeInput: false
 });

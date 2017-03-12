@@ -73,6 +73,7 @@ module Admin
       @departments = []
       @careerTags = []
       @interestTags = []
+      @required = []
   	end
 
   	def create
@@ -96,6 +97,7 @@ module Admin
         @departments = @uni_module.departments.pluck(:name)
         @careerTags = @uni_module.career_tags.pluck(:name)
         @interestTags = @uni_module.interest_tags.pluck(:name)
+        @required = @uni_module.uni_modules.pluck(:name)
       end
   	end
 
@@ -107,6 +109,13 @@ module Admin
         departments.each do |dept|
           chosen_dept = Department.find_by_name(dept)
           @uni_module.departments << chosen_dept
+        end
+
+        @uni_module.uni_modules.clear()
+        required = params[:uni_module][:required].split(',')
+        required.each do |mod|
+          chosen_mod = UniModule.find_by_name(mod)
+          @uni_module.uni_modules << chosen_mod
         end
 
         @uni_module.tags.clear()
@@ -147,6 +156,7 @@ module Admin
         @departments = @uni_module.departments.pluck(:name)
         @careerTags = @uni_module.career_tags.pluck(:name)
         @interestTags = @uni_module.interest_tags.pluck(:name)
+        @required = @uni_module.uni_modules.pluck(:name)
         render(:edit)
       end
 
@@ -207,7 +217,7 @@ module Admin
 
    private
     def uni_module_params
-      params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :assessment_dates, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link, :department_ids=>[], :tag_ids=>[])
+      params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :assessment_dates, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
     end
 
     def verify_correct_department
