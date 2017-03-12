@@ -64,7 +64,9 @@ module Admin
       require 'csv'
       file_name = "app/assets/#{resource.to_s}_upload.csv"
       CSV.open(file_name, "wb") do |csv|
-        # Add the attribute names as the header/first row
+        # Add resource to upload as first row
+        csv << [resource.to_s]
+        # Add the attribute names as the header/second row
         csv << resource_header
       end
 
