@@ -28,7 +28,11 @@
           <% if logged_in? %>
               <td id="helpful-td" align="center">
                 <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label><br>
-                <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
+                <% if comment.liked_users.include?(current_user) %>
+                  <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>">Helpful</button>
+                <% else %>
+                  <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
+                <% end %>
               </td>
           <% end %>
           <hr>
@@ -64,14 +68,14 @@
     }
 
     .helpful {
-      background: deepskyblue;
-      box-shadow: 0px 3px 0px 0px lightskyblue;
+      background: dodgerblue;
+      box-shadow: 0px 3px 0px 0px deepskyblue;
       width: 81px;
     }
 
     .helpful:focus {
-      background: deepskyblue;
-      box-shadow: 0px 3px 0px 0px lightskyblue;
+      background: dodgerblue;
+      box-shadow: 0px 3px 0px 0px deepskyblue;
       width: 81px;
     }
 </style>
@@ -83,21 +87,6 @@
       button = $("#helpful-btn-" + comment_id);
       label = $("#helpful-label-" + comment_id);
 
-//      helpful = false;
-
-//      if (button.hasClass("not-helpful")) {
-//          button.html("Helpful")
-//          button.removeClass("not-helpful")
-//          button.addClass("helpful")
-////          helpful = true;
-//      }
-//      else if (button.hasClass("helpful")) {
-//          button.html("Helpful?")
-//          button.removeClass("helpful")
-//          button.addClass("not-helpful")
-////          helpful = false;
-//      }
-
       $.ajax({
           type: "POST",
           url: "<%= comments_like_path %>",
@@ -105,7 +94,6 @@
           context: document.body,
           success: function (data) {
               label.html(data.like_count);
-//              alert(jQuery.type(data.helpful));
               if (data.helpful == true) {
                   button.html("Helpful")
                   button.removeClass("not-helpful")
@@ -117,8 +105,6 @@
                   button.addClass("not-helpful")
               }
           }
-      })
-
-//      alert(comment_id)
+      });
   })
 </script>
