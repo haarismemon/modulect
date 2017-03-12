@@ -9,11 +9,10 @@ module Admin
         # Find a  object using id parameters
         @app_setting = app_settings
         if @app_setting.update_attributes(app_setting_params)
-          # If save succeeds, redirect to the index action
-          flash[:success] = "Successfully updated "
+          flash[:success] = "Successfully updated settings"
           redirect_to(admin_settings_path) and return
         else
-          # If save fails, redisplay the form so user can fix problems
+          flash[:error] = "Something went wrong"
           render('admin/settings')
         end
       end
