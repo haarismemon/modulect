@@ -26,8 +26,8 @@
             </p>
           </td>
           <td id="helpful-td" align="center">
-            <label><%= comment.liked_users.length %></label><br>
-            <button class="btn" id="helpful-btn">Helpful?</button>
+            <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label><br>
+            <button class="btn helpful-btn" id="helpful-btn-<%= comment.id %>">Helpful?</button>
           </td>
           <hr>
         </colgroup>
@@ -45,8 +45,9 @@
         padding-right: 0px;
     }
 
-    #helpful-btn {
+    [id^=helpful-btn] {
       text-transform: none;
     }
 
 </style>
+
