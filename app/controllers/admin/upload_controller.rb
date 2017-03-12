@@ -30,16 +30,19 @@ module Admin
 
     def download
       # Retrieve the resource requested to upload e.g Users
-      @resource_name = params[:resource_choice]
+      resource_name = params[:resource_choice]
       # Will store verified resource
       resource = nil
 
       # Verify that the resource with the corresponding name exists
       Administrate::Namespace.new(namespace).resources.each do |administrate_resource|
-        if administrate_resource.to_s == @resource_name
+        if administrate_resource.to_s == resource_name
           resource = administrate_resource
         end
       end
+
+      # Store the resource as a session variable
+      session[:resource_name] = resource.to_s
 
       # Will store the attribute names of the resource
       resource_header = []
