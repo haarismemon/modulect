@@ -1,5 +1,6 @@
 module Admin
   class UploadController < Admin::ApplicationController
+    require 'csv'
 
     def upload
     end
@@ -8,16 +9,15 @@ module Admin
       # Retrieve csv file that was uploaded
       uploaded_csv = params[:csv_upload]
 
-      # Debugging: Write uploaded CSV to app/assets/uploaded
+      # Store/Write uploaded csv file to app/assets directory
       File.open(Rails.root.join('app', 'assets', 'uploaded.csv'), 'wb') do |file|
         file.write(uploaded_csv.read)
       end
 
       # Reads each row of the uploaded csv file
-      require 'csv'
       csv_text = File.read('app/assets/uploaded.csv')
-      csv = CSV.parse(csv_text, headers: true)
-      csv.each do |row|
+      parsed_csv = CSV.parse(csv_text, headers: true)
+      parsed_csv.each do |row|
         if session[:resource_name] == 'courses'
           Course.create!(row.to_hash)
         end
@@ -63,7 +63,6 @@ module Admin
       end
 
       # Create a CSV file in the specified path
-      require 'csv'
       file_name = "app/assets/#{resource.to_s}_upload.csv"
       CSV.open(file_name, 'wb') do |csv|
         # Add the attribute names as the header/first row
