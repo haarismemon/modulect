@@ -51,9 +51,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # if offline and not on an error page nor admin, redirect to offline page
   def modulect_is_online
-    if app_settings.is_offline
-      flash[:error] = "modulect is offline"
+    if app_settings.is_offline && controller_name != "errors" && (request.path  =~ /.*\/admin(\/.*)?/) == nil
+      #flash[:error] = "modulect is offline "
+      redirect_to offline_path
     end
   end
 
