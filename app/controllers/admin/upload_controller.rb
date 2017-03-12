@@ -30,6 +30,8 @@ module Admin
             UniModule.create!(row.to_hash)
           when 'users'
             User.create!(row.to_hash)
+          when 'year_structures'
+            YearStructure.create!(row.to_hash)
         end
       end
 
