@@ -5,7 +5,7 @@
    #super-admin-warning{display: none;}
    <% if @user.user_level == "super_admin_access" %>
    #additional-area{display: none}
-   #super-admin-warning{display: block;margin-bottom:10px;}
+   #super-admin-warning{display: block;margin-bottom:0px;}
    <% elsif @user.user_level =="department_admin_access" %>
    #hide-for-department-admin{display:none;}
    <% end %>
