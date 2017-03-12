@@ -55,24 +55,8 @@ module Admin
       # Store the resource as a session variable
       session[:resource_name] = resource.to_s
 
-      # Will store the attribute names of the resource
-      resource_header = []
-
       # Retrieves the attribute names depending on resource
-      case resource.to_s
-        when 'courses'
-          resource_header = Course.attribute_names
-        when 'departments'
-          resource_header = Department.attribute_names
-        when 'faculties'
-          resource_header = Faculty.attribute_names
-        when 'uni_modules'
-          resource_header = UniModule.attribute_names
-        when 'users'
-          resource_header = User.attribute_names
-        when 'year_structures'
-          resource_header = YearStructure.attribute_names
-      end
+      resource_header = resource.to_s.classify.constantize.attribute_names
 
       # Remove attributes that shouldn't appear on CSV
       to_remove = ['id', 'created_at', 'updated_at']
