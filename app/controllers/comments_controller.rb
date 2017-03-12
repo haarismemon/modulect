@@ -29,6 +29,23 @@ class CommentsController < ApplicationController
 
   end
 
+  def like
+    @comment = Comment.find(params[:comment_id])
+    @user = User.find(current_user.id)
+
+    if @comment.liked_users.include? @user
+      @comment.liked_users.delete @user
+      helpful = false
+    else
+      @comment.liked_users << @user
+      helpful = true
+    end
+
+    data = {like_count: @comment.liked_users.length, helpful: helpful}
+    render json: data
+
+  end
+
   private
     def comment_params
       if logged_in?

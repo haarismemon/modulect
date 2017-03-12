@@ -112,6 +112,7 @@ Rails.application.routes.draw do
   post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
+  post 'comments/like'
 
 
   # ERROR PAGES
