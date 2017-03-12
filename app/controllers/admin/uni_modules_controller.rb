@@ -92,7 +92,7 @@ module Admin
       if params[:id].present?
         @uni_module = UniModule.find(params[:id])
 
-        @departments = @uni_module.department_ids.pluck(:name)
+        @departments = @uni_module.departments.pluck(:name)
         @careerTags = @uni_module.career_tags.pluck(:name)
         @interestTags = @uni_module.interest_tags.pluck(:name)
       end
@@ -109,7 +109,7 @@ module Admin
       else
         # Failed to update
         # If save fails, redisplay the form so user can fix problems
-        render(edit_admin_uni_module_path(uni_module))
+        render(:edit)
       end
 
   	end

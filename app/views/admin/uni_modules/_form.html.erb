@@ -73,12 +73,6 @@
 
 <script>
 
-$("moduleForm").on("keypress", function (e) {
-    if (e.keyCode == 13) {
-        return false;
-    }
-});
-
 $("div.bootstrap-tagsinput").remove();
 
 var depts = <%= raw Department.all.pluck(:name) %>
@@ -130,6 +124,12 @@ interestBloodhound.initialize();
     source: interestBloodhound.ttAdapter()
   },
   freeInput: true
+});
+
+$('input').on('keypress', function(e){
+  if (e.keyCode == 13){
+    e.preventDefault();
+  };
 });
 
 </script>
