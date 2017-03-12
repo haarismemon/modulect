@@ -204,6 +204,14 @@ module ApplicationHelper
 		"-"
 	end
 
+	def find_name_of_association(object,attribute)
+		begin
+			object.send(attribute).name
+		rescue
+			""
+		end
+end
+
 
 
   private

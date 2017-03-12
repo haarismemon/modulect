@@ -1,8 +1,15 @@
 @charset "utf-8";
+/*
+*= require_self
+*= require admin-side/selectize.bootstrap3
+*= require admin-side/_admin-style
+*/
 
 @import "bourbon";
 
+
 @import "selectize";
+
 
 @import "library/**/*";
 @import "base/**/*";
@@ -447,6 +454,7 @@ a.action-edit{margin-right:10px;}
 .dropdown-menu > li > a:hover{
     color: #2ab27b;
 }
+
 
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
