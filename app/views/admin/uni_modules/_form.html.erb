@@ -40,8 +40,12 @@
   </div>
 <% end %>
 <div class="form-group">
-  <label for="assessment">Assessment Methods <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the assessment method(s) which are used in this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+  <label for="assessment_methods">Assessment Methods <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the assessment method(s) which are used in this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
   <%= f.text_field :assessment_methods, class: 'form-control'%>
+</div>
+<div class="form-group">
+  <label for="assessment_dates">Assessment Dates <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the approximate time which exam/coursework will take place.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+  <%= f.text_field :assessment_dates, class: 'form-control'%>
 </div>
 <div class="form-group">
   <label for="exam_percentage">Exam percentage <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the percentage of marks which are from exams for this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
