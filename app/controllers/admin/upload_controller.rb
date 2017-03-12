@@ -26,6 +26,8 @@ module Admin
             Department.create!(row.to_hash)
           when 'faculties'
             Faculty.create!(row.to_hash)
+          when 'uni_modules'
+            UniModule.create!(row.to_hash)
         end
       end
 
