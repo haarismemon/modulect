@@ -57,8 +57,11 @@ end
 
 group :production do
   # Use postrgres in production
+  # Use postrgres in production
   gem 'pg', '0.18.4'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'will_paginate', '~> 3.1.1'

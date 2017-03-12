@@ -99,7 +99,9 @@ Rails.application.routes.draw do
 
   # UNI MODULES
   # Uni Modules
-  resources :uni_modules, only: [:show]
+  resources :uni_modules, only: [:show] do
+    resources :comments
+  end
 
 
   # AJAX
@@ -109,6 +111,7 @@ Rails.application.routes.draw do
   post 'application/delete_pathway'
   post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
+  post 'comments/sort'
 
 
   # ERROR PAGES
