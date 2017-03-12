@@ -7,6 +7,8 @@
 //= require edit.js.coffee
 //= require_tree
 //= require twitter/typeahead.min
+//= require tinymce
+
 
 function intializeSelectize() {
 
