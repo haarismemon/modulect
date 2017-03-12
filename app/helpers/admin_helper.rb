@@ -66,5 +66,4 @@ module AdminHelper
         false
       end
     end
-
 end

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :year_structures, except: [:show]
     resources :career_tags, except: [:show]
     resources :interest_tags, except: [:show]
+    resources :app_settings, except: [:show, :index, :new, :destroy]
     get 'upload', to: 'upload#upload'
 
     # BULK ACTIONS

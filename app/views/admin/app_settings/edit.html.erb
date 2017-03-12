@@ -1,0 +1,19 @@
+
+
+
+
+<%= form_for(@app_setting, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>
+<%= error_messages_for(f.object) %>	
+
+<%= f.label :is_offline %>
+      <%= f.check_box :is_offline, class: 'form-control' %>
+
+      <%= f.label :offline_message %>
+      <%= f.text_field :offline_message, class: 'form-control' %>
+
+      <%= f.label :allow_new_registration %>
+      <%= f.check_box :allow_new_registration, class: 'form-control' %>
+
+      <%= f.submit %>
+
+<% end %>
