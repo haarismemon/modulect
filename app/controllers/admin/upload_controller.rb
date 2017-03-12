@@ -19,20 +19,7 @@ module Admin
       parsed_csv = CSV.parse(csv_text, headers: true)
       parsed_csv.each do |row|
         # Creates records for corresponding resource
-        case session[:resource_name]
-          when 'courses'
-            Course.create!(row.to_hash)
-          when 'departments'
-            Department.create!(row.to_hash)
-          when 'faculties'
-            Faculty.create!(row.to_hash)
-          when 'uni_modules'
-            UniModule.create!(row.to_hash)
-          when 'users'
-            User.create!(row.to_hash)
-          when 'year_structures'
-            YearStructure.create!(row.to_hash)
-        end
+        session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
       end
 
       # Return nothing
