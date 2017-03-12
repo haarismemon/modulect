@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :admin_has_dept
+  before_action :modulect_is_online
 
+  include ApplicationHelper
   include SessionsHelper
   before_action :store_location
 
@@ -46,6 +48,12 @@ class ApplicationController < ActionController::Base
       log_out
       redirect_to root_path
           flash[:error] = "You have not been assigned a department. Contact the System Administrator."
+    end
+  end
+
+  def modulect_is_online
+    if app_settings.is_offline
+      flash[:error] = "modulect is offline"
     end
   end
 
