@@ -28,6 +28,8 @@ module Admin
             Faculty.create!(row.to_hash)
           when 'uni_modules'
             UniModule.create!(row.to_hash)
+          when 'users'
+            User.create!(row.to_hash)
         end
       end
 
