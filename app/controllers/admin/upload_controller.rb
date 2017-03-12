@@ -46,7 +46,7 @@ module Admin
       resource_header = resource.to_s.classify.constantize.attribute_names
 
       # Remove attributes that shouldn't appear on CSV
-      to_remove = ['id', 'created_at', 'updated_at']
+      to_remove = %w(id created_at updated_at)
       resource_header = resource_header - to_remove
 
       # Create a CSV file in the specified path
