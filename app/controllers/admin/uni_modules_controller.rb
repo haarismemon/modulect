@@ -202,7 +202,7 @@ module Admin
 
    private
     def uni_module_params
-      params.require(:uni_module,:name, :code).permit(:description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
+      params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
     end
 
     def verify_correct_department

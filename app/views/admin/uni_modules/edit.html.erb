@@ -14,7 +14,7 @@
   </div>
 </header>
 <div id="moduleForm" class="col-md-12">
-  <%= form_for @uni_module, :url => { :action => "update",:method => "put" }, html: {class: "form" } do |f|%>
+  <%= form_for @uni_module, :url => { :action => "update",:method => "put" }, html: {:id => "module_form", class: "form" } do |f|%>
     <%= error_messages_for(f.object) %>
     <%= render "form", f: f,parent: "edit"%>
   <% end %>
