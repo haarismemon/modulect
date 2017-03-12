@@ -70,9 +70,9 @@ module Admin
   	def new
       @uni_module = UniModule.new
 
-        @departments = []
-        @careerTags = []
-        @interestTags = []
+      @departments = []
+      @careerTags = []
+      @interestTags = []
   	end
 
   	def create
@@ -100,12 +100,20 @@ module Admin
   	end
 
   	def update
-      if params[:career_tags].present? && !params[:career_tags].empty? && params[:interest_tags].present? && !params[:interest_tags].empty?
-        @uni_module = UniModule.find(params[:id])
+      @uni_module = UniModule.find(params[:id])
+      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty?
+        @uni_module.departments.clear()
+        departments = params[:uni_module][:department_ids].split(',')
+        departments.each do |dept|
+          chosen_dept = Department.find_by_name(dept)
+          @uni_module.departments << chosen_dept
+        end
 
-        career_tags = params[:career_tags]
+        @uni_module.tags.clear()
+
+        career_tags = params[:uni_module][:career_tags].split(',')
         career_tags.each do |tag|
-          chosen_tag = Tags.find_by_name(tag)
+          chosen_tag = Tag.find_by_name(tag)
           # Add the career tag association
           if(chosen_tag.present?)
             @uni_module.tags << chosen_tag
@@ -116,9 +124,9 @@ module Admin
           end
         end
 
-        interest_tags = params[:interest_tags]
+        interest_tags = params[:uni_module][:interest_tags].split(',')
         interest_tags.each do |tag|
-          chosen_tag = Tags.find_by_name(tag)
+          chosen_tag = Tag.find_by_name(tag)
            # Add the interest tag association
           if(chosen_tag.present?)
             @uni_module.tags << chosen_tag
@@ -128,20 +136,17 @@ module Admin
             @uni_module.tags << new_tag
           end
         end
-      else 
-        # Failed to update
-        # If save fails, redisplay the form so user can fix problems
-        render(:edit)
-      end
 
-      # Update the module with the new attributes
-      if @uni_module.update_attributes(uni_module_params)
         # Successfully updated
         flash[:success] = "Successfully updated #{@uni_module.name}"
         redirect_to(edit_admin_uni_module_path(@uni_module)) and return
-      else
+
+      else 
         # Failed to update
         # If save fails, redisplay the form so user can fix problems
+        @departments = @uni_module.departments.pluck(:name)
+        @careerTags = @uni_module.career_tags.pluck(:name)
+        @interestTags = @uni_module.interest_tags.pluck(:name)
         render(:edit)
       end
 
@@ -202,7 +207,7 @@ module Admin
 
    private
     def uni_module_params
-      params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
+      params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :assessment_dates, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link, :department_ids=>[], :tag_ids=>[])
     end
 
     def verify_correct_department
