@@ -1,4 +1,8 @@
 class ErrorsController < ApplicationController
+  
+  include ApplicationHelper
+
+
   def not_found
     render(:status => 404)
   end
@@ -9,7 +13,10 @@ class ErrorsController < ApplicationController
 
 
   def offline
-    render(:status => 500)
+  	if !app_settings.is_offline
+  		redirect_to root_path
+  	end
+    
   end
 
 end
