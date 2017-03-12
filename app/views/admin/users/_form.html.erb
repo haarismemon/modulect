@@ -5,7 +5,7 @@
    #super-admin-warning{display: none;}
    <% if @user.user_level == "super_admin_access" %>
    #additional-area{display: none}
-   #super-admin-warning{display: block;margin-bottom:0px;}
+   #super-admin-warning{display: block;margin-bottom:10px;}
    <% elsif @user.user_level =="department_admin_access" %>
    #hide-for-department-admin{display:none;}
    <% end %>
@@ -42,12 +42,12 @@
          <%= f.select(:user_level,  options_for_select(
             f.object.class.public_send("user_levels")
                 .map { |k, v| [k.humanize, k] },
-            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'selectize', :id => "user_level_select", :autocomplete => "off"   }) %>
+            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'form-control user-level-margin', :id => "user_level_select", :autocomplete => "off"   }) %>
       <% else %>
          <%= f.select(:user_level,  options_for_select(
             f.object.class.public_send("user_levels").select { |user_level| user_level == "user_access" || user_level == "department_admin_access"}
                 .map { |k, v| [k.humanize, k] },
-            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'selectize', :id => "user_level_select", :autocomplete => "off"   }) %>
+            f.object.public_send("user_level")), {:include_blank => false}, {:class => 'form-control user-level-margin', :id => "user_level_select", :autocomplete => "off"   }) %>
       <% end %>
       </div>
    </div>
@@ -62,6 +62,8 @@
       </div>
    </div>
 </div>
+<div class="row">
+<div class="col-md-3">
 <div class="row field-unit field-unit--checkbox activated" >
    <div class="col-xs-12">
       <div class="field-unit__label">
@@ -75,6 +77,25 @@
          <% end %>
       </div>
    </div>
+</div>
+</div>
+<div class="col-md-3">
+<div class="row field-unit field-unit--checkbox is-limited" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+        <label for="user_is_limited">Has limited access <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="This limits access to adding module reviews">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      </div>
+      <div class="field-unit__field checkbox">
+
+         <% if @user.user_level == "user_access" %>
+            <%= f.check_box :is_limited %><label for="user_is_limited"><span></span></label>
+         <% else %>
+            <%= f.check_box :is_limited, :disabled => true, :readonly => true %><label for="user_is_limited"><span></span></label>
+         <% end %>
+      </div>
+   </div>
+</div>
+</div>
 </div>
 <%if parent=="edit"  %>
 <div style="margin-bottom:20px;"><a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a></div>
@@ -109,7 +130,7 @@
             <%= f.label :faculty %>
          </div>
          <div class="field-unit__field default-select-field">
-
+            
          <% if current_user.user_level == "super_admin_access" %>
          <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
                         [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  }) %>
@@ -117,7 +138,7 @@
          <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
                         [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => false}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off", :readonly => true, :disabled => true  }) %>
 
-            <% end %>
+            <% end %>   
          </div>
       </div>
    </div>
@@ -180,24 +201,26 @@
    <% end %>
 </div>
 <script>
+   document.getElementById('user_level_select').addEventListener('change', function () {
+       var style = this.value == "super_admin_access" ? 'none' : 'block';
+       document.getElementById('additional-area').style.display = style;
+   
+       var style2 = this.value == "super_admin_access" ? 'block' : 'none';
+       document.getElementById('super-admin-warning').style.display = style2;
 
-    $('.selectize').selectize({
-        plugins: ['remove_button'],
-        delimiter: ',',
-        persist: false,
-        create: false,
-        onChange: function(value) {
-            var style = value == "super_admin_access" ? 'none' : 'block';
-            document.getElementById('additional-area').style.display = style;
+       if (this.value == "user_access"){
+         document.getElementById("user_is_limited").disabled= false;
+      }
+      else {
+         document.getElementById("user_is_limited").disabled= true;   
+         document.getElementById("user_is_limited").checked= false;  
+      }
 
-            var style2 = value == "super_admin_access" ? 'block' : 'none';
-            document.getElementById('super-admin-warning').style.display = style2;
-
-            var style3 = value == "department_admin_access" ? 'none' : 'block';
-            document.getElementById('hide-for-department-admin').style.display = style3;
-        }
-    });
-
+  
+       var style = this.value == "department_admin_access" ? 'none' : 'block';
+       document.getElementById('hide-for-department-admin').style.display = style;
+   });
+   
       //toggles the password field to appear and disappear
       var openPasswordFields = function () {
           $(".password-hidden").slideToggle("slow");

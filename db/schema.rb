@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170308151326) do
+ActiveRecord::Schema.define(version: 20170311182837) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20170308151326) do
     t.datetime "reset_sent_at"
     t.integer  "department_id"
     t.integer  "faculty_id"
+    t.boolean  "is_limited",        default: false
   end
 
   create_table "year_structures", force: :cascade do |t|

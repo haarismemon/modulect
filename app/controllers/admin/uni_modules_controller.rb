@@ -1,6 +1,6 @@
 module Admin
   class UniModulesController < Admin::BaseController
-#  require 'will_paginate/array'
+    before_action :verify_correct_department, only: [:update, :edit, :destroy]
 
 
   	def index
@@ -41,13 +41,30 @@ module Admin
 
 
       else
-        @uni_modules = @uni_modules.order('name ASC').page(params[:page]).per(@per_page)
+        @uni_modules = @uni_modules.order('LOWER(name) ASC').page(params[:page]).per(@per_page)
+      end
+     
+      @uni_modules_to_export = @uni_modules
+      if params[:export].present?
+        export_module_ids_string = params[:export]
+        export_module_ids = eval(export_module_ids_string)
+
+        if current_user.user_level == "department_admin_access"
+          department_uni_module_ids = Department.find(current_user.department_id).uni_module_ids
+          export_module_ids = export_module_ids & department_uni_module_ids.map(&:to_s)
+        end
+
+        @uni_modules_to_export = UniModule.where(id: export_module_ids)
+        @uni_modules_to_export = @uni_modules_to_export.order('LOWER(name) ASC')  
+      else
+        @uni_modules_to_export = @uni_modules
       end
 
       respond_to do |format|
         format.html
-        format.csv {send_data @uni_modules.to_csv}
+        format.csv {send_data @uni_modules_to_export.to_csv}
       end
+
   	end
 
   	def new
@@ -126,31 +143,41 @@ module Admin
 
     module_ids.each do |id|
       uni_module = UniModule.find(id.to_i)
-
+      can_delete = true
       if !uni_module.nil?
 
-      Group.all.each do |group|
-        if group.uni_modules.include?(uni_module)
-          can_delete = false
-          break
+        Group.all.each do |group|
+          if group.uni_modules.include?(uni_module)
+            can_delete = false
+            break
+          end
         end
-      end
-
-      if can_delete
-        uni_module.destroy
-      end
-
+        if can_delete
+         uni_module.destroy
+        end
 
       end
+      #uni_module.update_attribute("name", id)
+
     end
 
     head :no_content
 
   end
 
+
+
    private
     def uni_module_params
       params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
+    end
+
+    def verify_correct_department
+      @uni_module = UniModule.find(params[:id])
+
+      if current_user.user_level == "department_admin_access" && !Department.find(current_user.department_id).uni_module_ids.include?(@uni_module.id)
+        redirect_to admin_path
+      end
     end
 
 end
