@@ -65,32 +65,33 @@
                 <%= render "display_comments", updated_comments: @comments %>
               </div>
 
-              <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
-              <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
-                <h3>Add a Review</h3>
-                <% if logged_in? %>
-                  <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
-                      <p id="rating-area">
-                          <%= f.label :rating %>
-                          <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
-                          <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
-                          <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
-                          <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
-                          <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
-                      </p>
-                      <p id="review-area">
-                          <%= f.label :body %><br>
-                          <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
-                      </p>
-                      <p>
-                          <%= f.submit 'Add Review', class:'btn' %>
-                      </p>
-                  <% end %>
-                <% else %>
-                    <p>You must be logged in to add a review.</p>
-                <%end%>
-              </div>
-
+              <% if !logged_in? || (logged_in?&& !current_user.is_limited) %>
+                <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
+                <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
+                  <h3>Add a Review</h3>
+                  <% if logged_in? %>
+                    <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
+                        <p id="rating-area">
+                            <%= f.label :rating %>
+                            <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
+                            <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
+                            <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
+                            <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
+                            <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
+                        </p>
+                        <p id="review-area">
+                            <%= f.label :body %><br>
+                            <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
+                        </p>
+                        <p>
+                            <%= f.submit 'Add Review', class:'btn' %>
+                        </p>
+                    <% end %>
+                  <% else %>
+                      <p>You must be logged in to add a review.</p>
+                  <%end%>
+                </div>
+              <% end %>
             </div>
          </div>
       </div>
