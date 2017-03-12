@@ -1,36 +1,56 @@
 Rails.application.routes.draw do
 
-  get 'career_search/choose'
-
-  get 'career_search/view'
-
-  get 'errors/not_found'
-
-  get 'errors/internal_server_error'
-
+  # ADMIN
   namespace :admin do
-    resources :courses
-    resources :departments
-    resources :faculties
-    resources :groups
-    resources :tags
-    resources :uni_modules
-    resources :users
-    resources :year_structures
-    resources :career_tags
-    resources :interest_tags
+    resources :courses do
+      resources :year_structures, only: :edit
+    end
+    resources :departments, except: [:show]
+    resources :faculties, except: [:show]
+    resources :groups, except: [:show]
+    resources :tags, except: [:show]
+    resources :uni_modules, except: [:show]
+    resources :users, except: [:show]
+    resources :year_structures, except: [:show]
+    resources :career_tags, except: [:show]
+    resources :interest_tags, except: [:show]
+    get 'upload', to: 'upload#upload'
 
-    root to: "courses#index"
+    # BULK ACTIONS
+    post '/courses/bulk_delete', to: 'courses#bulk_delete'
+    post '/courses/clone', to: 'courses#clone'
+    post '/departments/bulk_delete', to: 'departments#bulk_delete'
+    post '/departments/clone', to: 'departments#clone'
+    post '/faculties/bulk_delete', to: 'faculties#bulk_delete'
+    post '/faculties/clone', to: 'faculties#clone'
+    post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
+    post '/users/bulk_activate', to: 'users#bulk_activate'
+    post '/users/bulk_deactivate', to: 'users#bulk_deactivate'
+    post '/users/bulk_delete', to: 'users#bulk_delete'
+    post '/users/bulk_limit', to: 'users#bulk_limit'
+    post '/users/bulk_unlimit', to: 'users#bulk_unlimit'
+    post '/users/make_student_user', to: 'users#make_student_user'
+    post '/users/make_department_admin', to: 'users#make_department_admin'
+    post '/users/make_super_admin', to: 'users#make_super_admin'
+
+    root to: "dashboard#index"
   end
 
-  # General
+
+  # GENERAL
   root 'search#home'
   get '/about', to: 'static_pages#about'
   get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
+  get '/admin', to: 'admin#dashboard'
+  get 'career_search/choose'
+  get 'career_search/view'
+  get 'errors/not_found'
+  get 'errors/internal_server_error'
 
 
+  # USERS & AUTHENTICATION
   # Authentication
   get     '/login',   to: 'sessions#new'
   get     '/admin/login',   to: 'sessions#new'
@@ -40,31 +60,6 @@ Rails.application.routes.draw do
   # Signup
   get '/signup', to: 'users#new', as: 'signup'
   post 'signup', to: 'users#create'
-
-  # Uni Modules
-  resources :uni_modules, only: [:show]
-
-  # Search
-  get 'search/pathway_search'
-  get 'search/view_results'
-
-  # Pathway search
-  get '/pathway-search', to: 'pathway_search#begin'
-  get 'pathway-search/begin'
-  get 'pathway-search/choose'
-  get 'pathway-search/view_results'
-
-
-  # Career search
-  get '/career-search', to: 'career_search#begin'
-  get 'career-search/begin'
-  get 'career-search/choose'
-  get 'career-search/view_results'
-
-  # Save pathways and modules used in ajax
-  post 'application/save_module'
-  post 'application/save_pathway'
-  post 'application/delete_pathway'
 
   # Profile
   get '/*all/update_departments', to: 'users#update_departments', defaults: { format: 'js' }
@@ -82,6 +77,8 @@ Rails.application.routes.draw do
   # Account activations
   resources :account_activations, only: [:edit]
 
+
+  # SEARCH
   # Search
   get 'search/pathway_search'
   get 'search/view_results'
@@ -93,7 +90,28 @@ Rails.application.routes.draw do
   get 'pathway-search/view_results'
   get 'pathway-search/view_results_test'
 
-  # Error pages
+
+  # Career search
+  get '/career-search', to: 'career_search#begin'
+  get 'career-search/begin'
+  get 'career-search/choose'
+  get 'career-search/view_results'
+
+  # UNI MODULES
+  # Uni Modules
+  resources :uni_modules, only: [:show]
+
+
+  # AJAX
+  # Save pathways and modules, and create tags used in ajax
+  post 'application/save_module'
+  post 'application/save_pathway'
+  post 'application/delete_pathway'
+  post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
+  post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
+
+
+  # ERROR PAGES
   match "/404", :to => "errors#not_found", :via => :all
   match "/500", :to => "errors#internal_server_error", :via => :all
 

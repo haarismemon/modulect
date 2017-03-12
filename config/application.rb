@@ -1,5 +1,6 @@
 require_relative 'boot'
 
+require 'csv'
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -15,9 +16,5 @@ module ProjectRun
     # Load all subclasses of the Tag model
     config.autoload_paths += %W(#{config.root}/app/models/tags)
     config.exceptions_app = self.routes
-
-    config.to_prepare do
-          Administrate::ApplicationController.helper ProjectRun::Application.helpers
-        end
   end
 end

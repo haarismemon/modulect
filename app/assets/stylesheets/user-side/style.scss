@@ -48,8 +48,9 @@ footer {
 
 .modulect-container {
     background: #f9f9f9;
-    padding-top:90px;
+    padding-top:76px;
 }
+
 
 .login-card {
     background-color: #fff;
@@ -71,6 +72,14 @@ label {
     font-size: 18px;
     padding: 25px 15px;
 }
+
+@-moz-document url-prefix() {
+    .form-control {
+        height: auto;
+        padding: 15px;
+    }
+}
+
 textarea:focus,
 input:focus,
 select:focus,
@@ -176,7 +185,7 @@ select.form-control{
 }
 
 #flash-container{
-    margin-bottom:35px;
+    margin-top:15px;
 }
 
 #saved-page .nav-tabs, #choose-page .nav-tabs {
@@ -489,6 +498,11 @@ select.form-control{
     border-radius: .25rem;
     border-left-color: #2ab27b;
 }
+.result-card-blue {
+    border-left-width: 5px;
+    border-radius: .25rem;
+    border-left-color: #00BFFF;
+}
 .result-card-orange {
     border-left-width: 5px;
     border-radius: .25rem;
@@ -563,7 +577,8 @@ th, td {
 }
 .res-btn:active,
 .res-btn:hover,
-.res-btn:focus {
+.res-btn:focus,
+.res-btn:disabled {
     background-color: #E9E9E9;
 }
 .btnQuick {

@@ -1,32 +1,16 @@
-<%#
-# Edit
+<% content_for(:title) { "Edit #{@faculty.name} " } %>
 
-This view is the template for the edit page.
-
-It displays a header, and renders the `_form` partial to do the heavy lifting.
-
-## Local variables:
-
-- `page`:
-  An instance of [Administrate::Page::Form][1].
-  Contains helper methods to help display a form,
-  and knows which attributes should be displayed in the resource's form.
-
-[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
-%>
-<% content_for(:title) { "Edit #{Faculty.find(params[:id]).name}" } %>
 
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
     <%= link_to(
-      "Show #{page.page_title}",
-      [namespace, page.resource],
-      class: "button",
-    ) %>
+            "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe,
+        admin_faculties_path,
+            class: "button",
+        ) %>
   </div>
-
 </header>
-
-
-<%= render "form", page: page %>
+<%= form_for(@faculty, :url => { :action => "update",:method => "put" }, html: {class: "form" })do |f| %>
+  <%= render "form", f: f,parent: "edit"%>
+<% end %>

@@ -1,19 +1,25 @@
 module Admin
-  class TagsController < Admin::ApplicationController
-    # To customize the behavior of this controller,
-    # simply overwrite any of the RESTful actions. For example:
-    #
-    # def index
-    #   super
-    #   @resources = Tag.all.paginate(10, params[:page])
-    # end
+  class TagsController < Admin::BaseController
+   
+    
+  	def index
+  	end
 
-    # Define a custom finder by overriding the `find_resource` method:
-    # def find_resource(param)
-    #   Tag.find_by!(slug: param)
-    # end
+  	def new
+  	end
 
-    # See https://administrate-docs.herokuapp.com/customizing_controller_actions
-    # for more information
+  	def create
+  	end
+
+
+  	def edit
+  	end
+
+  	def update
+  	end
+
+  	def destroy
+  	end
+
   end
 end

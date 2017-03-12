@@ -52,13 +52,12 @@ FactoryGirl.define do
   factory :user do
     first_name              "Allison"
     last_name               "Wonderland"
-    email                   "allison_wonderland@eemail.com"
+    email                   "allison_wonderland@kcl.ac.uk"
     password                "password"
     password_confirmation   "password"
     activated               true
     activated_at            Time.zone.now
-    user_level              3
-    entered_before          false
+    user_level              :user_access
   end
 
   factory :pathway do

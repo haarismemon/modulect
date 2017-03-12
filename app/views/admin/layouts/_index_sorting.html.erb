@@ -1,0 +1,63 @@
+<% sorting_columns.each_with_index do |column, i| %>
+  <% if searching == true %>
+     <th class="cell-label cell-label--string cell-label--false" scope="col">
+        <% if i == 0 %>
+                   <%= column.first %> <i class='fa fa-arrow-up' aria-hidden='true'></i>
+                  <% else %>
+                      <%= column.second %>
+               
+        <% end %>
+  <% else %>
+            <th class="cell-label cell-label--string cell-label--false" scope="col">
+               <% if request.query_parameters["sortby"].present? && request.query_parameters["order"].present? %>
+                  <% if request.query_parameters["sortby"] == column.first %>
+                     <% if request.query_parameters["order"] == "asc" %>
+
+                      <% if controller_name == "users" || controller_name == "courses" || controller_name == "uni_modules" %>
+                        <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page, :dept => dept_filter_id ), method: :get %>
+                      <% elsif  controller_name == "departments" %>
+                        <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page, :faculty => faculty_filter_id ), method: :get %>
+                      <% else %>
+                        <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page ), method: :get %>
+                      <% end %>
+                     <% else %>		
+
+                      <% if controller_name == "users" || controller_name == "courses" || controller_name == "uni_modules" %>
+                        <%= link_to (column.second + " <i class='fa fa-arrow-down' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "asc", :per_page => per_page, :dept => dept_filter_id  ), method: :get %>
+                      <% elsif  controller_name == "departments"%>
+                        <%= link_to (column.second + " <i class='fa fa-arrow-down' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "asc", :per_page => per_page, :faculty => faculty_filter_id  ), method: :get %>
+                        <% else %>
+                        <%= link_to (column.second + " <i class='fa fa-arrow-down' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "asc", :per_page => per_page  ), method: :get %>
+                        <% end %>
+                     <% end %>
+                     <% else %>
+                      <% if controller_name == "users"|| controller_name == "courses" || controller_name == "uni_modules" %>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc", :per_page => per_page, :dept => dept_filter_id  ), method: :get %>
+                      <% elsif  controller_name == "departments"%>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc", :per_page => per_page, :faculty => faculty_filter_id  ), method: :get %>
+                      <% else %>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc", :per_page => per_page  ), method: :get %>
+                      <% end %>
+                  <% end %>
+               <% elsif i == 0 %>
+                  <% if controller_name == "users" || controller_name == "courses" || controller_name == "uni_modules" %>
+                    <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page, :dept => dept_filter_id  ), method: :get %>
+                    <% elsif  controller_name == "departments"%>
+                    <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page, :faculty => faculty_filter_id  ), method: :get %>
+                    <% else %>
+                    <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page  ), method: :get %>
+                    <% end %>
+                  <% else %>
+
+                  <% if controller_name == "users" || controller_name == "courses" || controller_name == "uni_modules" %>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc", :per_page => per_page, :dept => dept_filter_id  ), method: :get %>
+                  <% elsif  controller_name == "departments"%>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc", :per_page => per_page, :faculty => faculty_filter_id  ), method: :get %>
+                  <% else %>
+                        <%= link_to column.second, url_for( :sortby => column.first, :order => "asc", :per_page => per_page  ), method: :get %>
+
+                  <% end %>
+               <% end %>
+            </th>
+            <% end %>
+        <% end %>

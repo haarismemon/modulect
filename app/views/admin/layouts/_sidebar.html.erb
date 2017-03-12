@@ -1,0 +1,53 @@
+<div id="sidebar-wrapper">
+         <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+               <a href="/admin" id="sidebar-title">
+               Admin Dashboard
+               </a>
+            </li>
+            <% if current_user.user_level == "department_admin_access" %>
+            <li class="sidebar-brand" style="margin-top:-10px;font-size:13px;line-height:normal; color:#fff;text-indent:0px;    padding-left: 20px;height:inherit;padding-bottom: 25px;
+               border-bottom: 1px solid #888888; padding-right: 10px;">
+               Department: <%= Department.find(current_user.department_id).name %>
+            </li>
+            <% else %>                     
+               <li class="sidebar-brand" style="margin-top:-10px;font-size:13px;line-height:normal; color:#fff;text-indent:0px;    padding-left: 20px;height:inherit;padding-bottom: 25px;
+                  border-bottom: 1px solid #888888;">System Administrator
+               </li>
+            <% end %>
+            <li class="menu-item"><%= link_to '<i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Home'.html_safe, admin_path %></li>
+            
+            <% if current_user.user_level == "department_admin_access" %>
+            <li class="menu-item">
+               <a href="<%= admin_courses_path %>"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Courses</a>
+            </li>
+            <li class="menu-item">
+               <a href="<%= admin_uni_modules_path %>"><i class="fa fa-pencil-square" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Modules</a>
+            </li>
+            <li class="menu-item">
+               <a href="<%= admin_users_path %>"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Users</a>
+            </li>
+            <% else %>
+            <li class="menu-item">
+               <a href="<%= admin_courses_path %>"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Courses</a>
+            </li>
+            <li class="menu-item">
+               <a href="<%= admin_departments_path %>"><i class="fa fa-building" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Departments</a>
+            </li>
+            <li class="menu-item">
+               <a href="<%= admin_faculties_path %>"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Faculties</a>
+            </li>
+            <li class="menu-item">
+               <a href="<%= admin_uni_modules_path %>"><i class="fa fa-pencil-square" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Modules</a>
+            </li>
+            <li class="menu-item">
+               <a href="<%= admin_users_path %>"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Users</a>
+            </li>
+            <% end %>
+
+
+            
+            <li class="menu-item"><%= link_to "<i class='fa fa-upload' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload data".html_safe, admin_upload_path %></li>
+            <li class="menu-item no-desktop"><%= link_to "<i class='fa fa-sign-out' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;&nbsp;Log out".html_safe, logout_path, method: "delete" %></li>
+         </ul>
+      </div>

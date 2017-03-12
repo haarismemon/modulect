@@ -12,7 +12,7 @@
 </script>
 <% saved_modules = current_user.uni_modules %>
 <% saved_pathways = current_user.pathways %>
-<div class="banner" style="margin-top: -30px;padding-top:40px;">
+<div class="banner" style="padding-top:40px;">
    <div class="container">
       <h1>Saved Modules & Pathways</h1>
    </div>
@@ -135,15 +135,49 @@
                                        </button>
                                        <script>
                                           $("button#pathwaydeletebutton-<%= pathway.id %>").on("click", function() {
-                                          if (confirm("Are you sure you want to delete this? ")) {
-                                          $.ajax({
-                                          type: "POST",
-                                          url: "<%=application_delete_pathway_path(pathway_par: pathway) %>",
-                                          context: document.body
-                                          })
-                                          $(this).closest("#pathwaycard-<%= pathway.id %>").remove();
+                                          
+                                          bootbox.confirm({
+                                          title: "Deletion confirmation",
+                                          size: "medium",
+                                          closeButton: false,
+                                          message: "Are you sure you want to delete this saved pathway?",
+                                          buttons: {
+                                          confirm: {
+                                              label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                                              className: 'btn-success'
+                                          },
+                                          cancel: {
+                                              label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                                              className: 'red-btn pull-left'
+                                          }
+                                          },
+                                          callback: function(result) {
+                                          
+                                          if (result == true) {
+                                          
+                                          
+                                              $.ajax({
+                                                  type: "POST",
+                                                  url: "<%=application_delete_pathway_path(pathway_par: pathway) %>",
+                                                  context: document.body,
+                                                  success() {
+                                          
+                                                  }
+                                              })
+                                          
+                                          
+                                          
+                                          
+                                              $("#pathwaycard-<%= pathway.id %>").remove();
+                                          
                                           
                                           }
+                                          
+                                          
+                                          }
+                                          })
+                                          
+                                          
                                           
                                           
                                           });

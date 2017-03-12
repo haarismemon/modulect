@@ -1,80 +1,116 @@
-<%#
-# Application Layout
-
-This view template is used as the layout
-for every page that Administrate generates.
-
-By default, it renders:
-- Sidebar for navigation
-- Content for a search bar
-  (if provided by a `content_for` block in a nested page)
-- Flashes
-- Links to stylesheets and Javascripts
-%>
-
 <!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
-<head>
-  <meta charset="utf-8" />
-  <meta name="ROBOTS" content="NOODP" />
-  <meta name="viewport" content="initial-scale=1" />
-  <title><%= content_for(:title) %> | <%= Rails.application.class.parent_name.titlecase %></title>
-  <%= stylesheet_link_tag 'administrate/application' %>
-  <%= javascript_include_tag 'administrate/application' %>
-  <%= csrf_meta_tags %>
-</head>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <meta name="ROBOTS" content="NOODP" />
+      <meta name="viewport" content="initial-scale=1" />
+      <title><%= full_title_admin( yield(:title) ) %></title>
+      <%= stylesheet_link_tag 'admin-side/application' %>
+      <%= javascript_include_tag 'admin-side/application' %>
+      <script src="https://use.fontawesome.com/bbc851b668.js"></script>
+      <%= favicon_link_tag 'favicon.ico' %>
+      <%= csrf_meta_tags %>
+      <script>
+         var $=jQuery.noConflict();
+         
+         $(document).ready(function(){
+          setTimeout(fade_out, 5000);
+             function fade_out() {
+               $("#flash-container").fadeOut().empty();
+               $("#flash-container").css("margin-bottom", "0px");
+             }
+         });
 
-<div id="wrapper">
-
-  <!-- Sidebar -->
-  <div id="sidebar-wrapper">
-    <ul class="sidebar-nav">
-      <li class="sidebar-brand">
-        <a href="#" id="sidebar-title">
-          Admin Dashboard
-        </a>
-      </li>
-      <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
-          <li>
-            <% if [:uni_modules, :courses, :departments, :users, :year_structures,:faculties].include? resource%>
-                <%= link_to(
-                        display_resource_name(resource),
-                        [namespace, resource]
-                    ) %>
-            <% end%>
-          </li>
-      <% end %>
-    </ul>
-  </div>
-  <!-- /#sidebar-wrapper -->
-
-  <!-- Page Content -->
-  <div id="page-content-wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-          <main role="main">
-            <%= content_for(:search) %>
-            <%= render "flashes" -%>
-            <%= yield %>
-          </main>
-        </div>
+      </script>
+   </head>
+                     <%= render "admin/layouts/header" %>
+   <div id="wrapper">
+      <!-- Sidebar -->
+                     <%= render "admin/layouts/sidebar" %>
+      <!-- /#sidebar-wrapper -->
+      <!-- Page Content -->
+      <div id="page-content-wrapper" style="padding-top:7px;">
+         <div class="container-fluid">
+            <div class="row main-admin-row">
+               <div class="col-lg-12">
+                  <main role="main">
+                     <%= render "admin/layouts/flashes" %>
+                     <div class="no-desktop-search">
+                     <%= render "admin/layouts/search" %>
+                     </div>
+                     <%= yield %>
+                     <div class="text-center" style="font-size:12px;margin-top:20px;">Modulect for KCL by Recursive Husky</div>
+                  </main>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-  </div>
-  <!-- /#page-content-wrapper -->
+      <!-- /#page-content-wrapper -->
+   </div>
+   <!-- /#wrapper -->
+   <!-- Menu Toggle Script -->
+   <script>
+      $("#menu-toggle").click(function(e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("toggled");
+      }); 
+        $(document).ready(function(){
+             jQuery('[data-toggle="tooltip"]').tooltip();
 
-</div>
-<!-- /#wrapper -->
+       });
+        
+var ready;
 
-<!-- Menu Toggle Script -->
-<script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
+ready = function() {
+  window.myCustomConfirmBox = function(message, callback) {
+    return bootbox.dialog({
+      title: "Confirmation",
+      message: message,
+      closeButton: false,
+      buttons: {
+        success: {
+          label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+          className: "btn-success",
+          callback: function() {
+            return callback();
+          }
+        },
+        cancel: {
+          label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+          className: "red-btn pull-left"
+        }
+      }
     });
-</script>
+  };
+  return $.rails.allowAction = function(element) {
+    var answer, callback, message;
+    message = element.data("confirm");
+    if (!message) {
+      return true;
+    }
+    answer = false;
+    callback = void 0;
+    if ($.rails.fire(element, "confirm")) {
+      myCustomConfirmBox(message, function() {
+        var oldAllowAction;
+        callback = $.rails.fire(element, "confirm:complete", [answer]);
+        if (callback) {
+          oldAllowAction = $.rails.allowAction;
+          $.rails.allowAction = function() {
+            return true;
+          };
+          element.trigger("click");
+          return $.rails.allowAction = oldAllowAction;
+        }
+      });
+    }
+    return false;
+  };
+};
 
-</body>
+$(document).ready(ready);
+
+$(document).on('page:load', ready);
+   </script>
+   </body>
 </html>

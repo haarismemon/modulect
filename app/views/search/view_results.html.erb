@@ -1,109 +1,152 @@
 <% provide(:title, 'Search Results') %>
 <% sortby = request.query_parameters["sort_by"] %>
 <% module_results = sort_by(@results, sortby) %>
+<% @found_results = [] %>
+<% if logged_in? && !current_user.course_id.nil?  && current_user.course_id != ""  && @search_course %>
+  <% @found_results = module_results.select{ |uni_module| modules_in_course(get_course_of_user(current_user)).include? uni_module[0].id } %>
+<% else %>
+  <% @found_results = module_results %>
+<% end %>
+
 <style>
-   @media print {
-   .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
-   .collapse{display:block;}
-   }
+ @media print {
+  .navbar,.banner, footer, .sort-area, .save-button, .more-info-link, .here-what{display:none;}
+  .collapse{display:block;}
+}
 </style>
-<div class="banner" style="margin-top: -30px;padding-top:40px;">
-   <div class="container">
-      <h1>Your Search:</h1>
-      <div class="row" style="margin-top: 15px">
-         <div id="quick-search">
-            <form action="<%= search_view_results_path %>", method="get">
-               <div class="col-md-8">
-                  <%= text_field_tag(:chosen_tags, @temp_array.join(','), :placeholder => '', data: {:role => "tagsinput"}, :required => true) %>
-                  <script>
-                     var tags = <%=  raw @tag_names + @module_names + @module_code %>;
-                     // Remove the previously rendered search bar
-                     $("div.bootstrap-tagsinput").remove();
-                     var tags = new Bloodhound({
-                        datumTokenizer: Bloodhound.tokenizers.whitespace,
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                        local: tags
-                     });
-                     
-                     tags.initialize();
-                     
-                     $('input#chosen_tags').tagsinput({
-                        typeaheadjs: {
-                           name: 'tags',
-                           source: tags.ttAdapter()
-                        },
-                        freeInput: false
-                     });
-                     
-                     $('input#chosen_tags').focus();
-                  </script>
-               </div>
-               <div class="col-md-4">
-                  <div class="form-group">
-                     <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
-                     </button>
-                  </div>
-               </div>
-               <input type="hidden" name="sort_by" value="<%= sortby %>">
-            </form>
-         </div>
+<div class="banner" style="padding-top:40px;">
+  <div class="container">
+    <h1>Your Search:</h1>
+    <div class="row" style="margin-top: 15px">
+      <div id="quick-search">
+        <form action="<%= search_view_results_path %>", method="get">
+          <div class="col-md-8">
+          <%= text_field_tag(:chosen_tags, @temp_array.join(','), :placeholder => 'Search anything (like modules, careers, interests, etc.)', data: {:role => "tagsinput"}, :required => true) %>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <button id='quickButton' class="btnQuick btn btn-lg btn-block" type="submit">Quick Search&nbsp;&nbsp;<i class="fa fa-search" aria-hidden="true"></i>
+              </button>
+            </div>
+            <% if logged_in? && !current_user.course_id.nil?  && current_user.course_id != "" %>
+            <div class="form-group">
+              <% if @search_course %>
+              <div class="checkbox">
+                <%= check_box_tag :search_course, checked=true, true %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+              </div>
+              <% else %>
+              <div class="checkbox">
+                <%= check_box_tag :search_course, checked=true, false %><label for="search_course"><span><%= get_course_of_user(current_user).name %> tags and modules only</span></label>
+              </div>
+              <% end %>
+            </div>
+            <% end %>
+          </div>
+        </form>
+        <script>
+          var tags = [];
+          function updateTags() {
+            <% if logged_in? && !current_user.course_id.nil? && current_user.course_id != ""  %>
+              if( document.getElementById('search_course').checked) {
+                tags = <%= raw every_tag_for_course(get_course_of_user(current_user)) %>;
+              } else {
+                tags = <%=  raw @tag_names + @module_names + @module_code %>;
+              }
+            <% else %>
+              tags = <%=  raw @tag_names + @module_names + @module_code %>;
+            <% end %>
+          }
+
+          updateTags();
+
+          // Remove the previously rendered search bar
+          $("div.bootstrap-tagsinput").remove();
+          var tagsBloodhound = new Bloodhound({
+              datumTokenizer: Bloodhound.tokenizers.whitespace,
+              queryTokenizer: Bloodhound.tokenizers.whitespace,
+              local: tags
+            });
+           
+          tagsBloodhound.initialize();
+           
+          $('input#chosen_tags').tagsinput({
+            typeaheadjs: {
+              name: 'tagsBloodhound',
+              source: tagsBloodhound.ttAdapter()
+            },
+            freeInput: false
+          });
+
+          $('#search_course').change(function() {
+            updateTags();
+            tagsBloodhound.clear();
+            tagsBloodhound.local = tags;
+            tagsBloodhound.initialize(true);
+          });
+
+          $('input#chosen_tags').focus();
+        </script>
       </div>
-   </div>
+    </div>
+  </div>
 </div>
 <div id="page" style="padding-top:30px;">
-<div class="container">
-<% if module_results.length == 0 %>
-<div class="row" style="margin-bottom:20px;">
-   <div class="col-md-10 col-md-offset-1 text-center">
-      <h1>No modules found :(</h1>
-   </div>
-</div>
-<% else %>
-<div class="row here-what" style="margin-bottom:20px;">
-   <div class="col-md-6 col-md-offset-1">
-      <h1>Here's what we found:</h1>
-      <h5>Showing <%= module_results.length %> modules</h5>
-   </div>
-   <div class="col-md-4 text-right" style="padding-top:30px;">
-      <div class="sort-area">
-         <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
-         Sort by: &nbsp;&nbsp;
-         <form action="<%= search_view_results_path %>" style="display:inline-block;" method="GET">
-            <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
-               <% sorting_options.each do |option| %>
-               <option value="<%= option.first %>"
-                  <% if sortby == option.first %>
-                  selected
-                  <% end %>
-                  >
-                  <%= option.second %>
-               </option>
-               <% end %>
-            </select>
-            <input type="hidden" name="chosen_tags" value="<%= @temp_array.join(",")%>">
-         </form>
+  <div class="container">
+    <% if @found_results.length == 0 %>
+    <div class="row" style="margin-bottom:20px;">
+      <div class="col-md-10 col-md-offset-1 text-center">
+        <h1>No modules found :(</h1>
       </div>
-   </div>
-</div>
-<div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
-   <div class="col-md-10 col-md-offset-1 text-right">
-      <ul class="results-page-options">
-         <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
-         <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
-            <%= request.original_url  %>
+    </div>
+    <% else %>
+    <div class="row here-what" style="margin-bottom:20px;">
+      <div class="col-md-6 col-md-offset-1">
+        <h1>Here's what we found:</h1>
+        <h5>Showing <%= @found_results.length %> modules</h5>
+      </div>
+       <div class="col-md-4 text-right" style="padding-top:30px;">
+      <div class="sort-area">
+      <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
+      Sort by: &nbsp;&nbsp;
+      <form action="<%= search_view_results_path %>" style="display:inline-block;" method="GET">
+        <select class="selectpicker" name="sort_by" onchange="this.form.submit()">
+          <% sorting_options.each do |option| %>
+            <option value="<%= option.first %>"
+            <% if sortby == option.first %>
+              selected
+            <% end %>
+              >
+            <%= option.second %>
+            </option>
+          <% end %>
+        </select>
+        <input type="hidden" name="chosen_tags" value="<%= @temp_array.join(",") %>">
+        <input type="hidden" name="search_course" value="<%= @search_course %>">
+      </form>
+      </div>
+      </div>
+    </div>
+    <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
+      <div class="col-md-10 col-md-offset-1 text-right">
+        <ul class="results-page-options">
+          <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
+          <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
+            <%= request.original_url.gsub("&", "%26")%>
             %0A%0A
             Regards,%0A
             {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
-      </ul>
-   </div>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <% @found_results.each do |r| %>
+        <%= render partial: 'layouts/uni_module', locals: {uni_module: r.first, tags_matched: r.second, tags_searched_for: @temp_array, type: "search"}  %>
+        <% unimodule = r.first %>
+        <% tagsmatched = r.second %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+  </div>
 </div>
-<div class="row">
-   <div class="col-md-10 col-md-offset-1">
-      <% module_results.each do |r| %>
-      <%= render partial: 'layouts/uni_module', locals: {uni_module: r.first, tags_matched: r.second, tags_searched_for: @temp_array, type: "search"}  %>
-      <% unimodule = r.first %>
-      <% tagsmatched = r.second %>
-      <% end %>
-   </div>
-</div>
-<% end %>

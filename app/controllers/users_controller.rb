@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     # Save the object
     if @user.save
       # If save succeeds, redirect to the index action
-      flash[:success] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
+      flash[:success] = "You have successfully created user: #{@user.full_name} and their privileges have been granted"
       redirect_to(users_path)
     else
       # If save fails, redisplay the form so user can fix problems
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
     if @user.save
       UserMailer.account_activation(@user).deliver_now
       redirect_to "/"
-      flash[:success] = "Please check your email to activate your account."
+      flash[:success] = "Please check your email to activate your account or contact an administrator."
     else
       render 'new'
     end
@@ -56,6 +56,10 @@ class UsersController < ApplicationController
   def edit
     #! allows for template's form to be ready populated with the associated users data ready for modification by admin
     @user = User.find(params[:id])
+
+    # for debugging the reset
+    #@user.update_attributes("year_of_study" => 0, "faculty_id" =>1,  "department_id" => 1,  "course_id" => 1)
+
     # Get arrays to use for profiles
     @faculties = Faculty.all
     #Initialise departments and courses to be empty unless previously selected
@@ -69,6 +73,9 @@ class UsersController < ApplicationController
     else
       @courses = {}
     end
+    if(@user.department_id.present?)
+        @all_courses = Department.find_by_id(@user.department_id).courses
+     end
   end
 
   # Change the value of @departments if faculty changes
@@ -83,38 +90,36 @@ class UsersController < ApplicationController
   def update_courses
     d = Department.find(params[:department_id])
     @courses = d.courses.where("department_id = ?", params[:department_id])
-                    respond_to do |format|
-                      format.js
-                    end
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update
     @user = User.find(params[:id])
     @user.updating_password = false
-    if @user.update_attributes(update_params)
-      # If save succeeds, redirect to the index action
-      flash[:success] = "Successfully updated your account"
-      if params.has_key?(:dest) && !params[:dest].empty?
-        redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s
-      else
-        redirect_to(edit_user_path)
-      end
+    @task = params[:task]
+
+    if @task == "reset"
+       @user.reset
+       flash[:success] = "You have successfully reset your account."
+       redirect_to(edit_user_path)
     else
-      # If save fails, restart form and notify user
-      flash[:error] = "Please check that you have entered your details correctly and try again."
-      render 'edit'
+      if @user.update_attributes(update_params)
+        flash[:success] = "Successfully updated your account."
+        if params.has_key?(:dest) && !params[:dest].empty?
+          redirect_to params[:dest] + "?year=" + @user.year_of_study.to_s  + "&course=" + @user.course_id.to_s
+        else
+          redirect_to(edit_user_path)
+        end
+      else
+        flash[:error] = "Please check that you have entered your details correctly and try again."
+        render 'edit'
+      end
     end
   end
 
-  def destroy
-    #find by id
-    @user = User.find(params[:id])
-    #delete tuple object from db
-    @user.destroy
-    flash[:success] = @user.full_name+" has been deleted successfully."
-    #redirect to action which displays all users
-    redirect_back_or users_path
-  end
 
   private
     def user_params

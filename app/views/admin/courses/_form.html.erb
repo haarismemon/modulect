@@ -1,32 +1,24 @@
-<%#
-# Form Partial
+<%= form_for [:admin, @course] do |f| %>
 
-This partial is rendered on a resource's `new` and `edit` pages,
-and renders all form fields for a resource's editable attributes.
+  <%= render 'shared/error_messages', object: f.object %>
 
-## Local variables:
+  <%= f.label :owner_departments %>
+  <div id="select-departments">
+    <%= f.select :department_ids, Department.all.collect {|x| [x.name, x.id]}, {},
+    :multiple => true, class: 'selectize' %>
+  </div>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form-control' %>
 
-- `page`:
-  An instance of [Administrate::Page::Form][1].
-  Contains helper methods to display a form,
-  and knows which attributes should be displayed in the resource's form.
+  <%= f.label :start_year %>
+  <%= f.number_field :year, default: Date.current.year %>
 
-[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
-%>
+  <%= f.label :description %>
+  <%= f.text_area :description, class: 'form-control' %>
 
-<%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
+  <%= f.label :duration_in_years %>
+  <%= f.number_field :duration_in_years, class: 'form-control' %>
 
-    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
-    <%= error_messages_for(page.resource) %>
+  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
 
-    <% page.attributes.each_with_index do |attribute, index| -%>
-            <div class="field-unit field-unit--<%= attribute.html_class %>">
-              <%= render_field attribute, f: f %>
-            </div>
-
-    <% end -%>
-
-    <div class="form-actions">
-      <%= f.submit %>
-    </div>
 <% end %>

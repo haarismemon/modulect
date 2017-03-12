@@ -1,47 +1,35 @@
-<%#
-# Form Partial
+<%= form_for @year_structure, url: admin_year_structure_path(@year_structure) do |f| %>
 
-This partial is rendered on a resource's `new` and `edit` pages,
-and renders all form fields for a resource's editable attributes.
+  <%= render 'shared/error_messages', object: f.object %>
+  <!-- Edit existing groups -->
 
-## Local variables:
+   <style>
+      @media (min-width: 990px) {
+      #landing .row {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display:         flex;
+      flex-wrap: wrap;
+      width:100%;
+      text-align: center;
+      }
+      #landing .row > [class*='col-'] {
+      display: flex;
+      flex-direction: column;
+      }
+      .login-card{    height: 100%;
+      text-align: center;}
+      }
+   </style>
 
-- `page`:
-  An instance of [Administrate::Page::Form][1].
-  Contains helper methods to display a form,
-  and knows which attributes should be displayed in the resource's form.
+  <% f.fields_for :groups do |group| %>
+    <%= render 'group_fields', :f => group %>
+  <% end %>
 
-[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
-%>
+  <div class='links'>
+    <%= link_to_add_association "Add Module Group", f, :groups%>
+  </div>
+  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
 
-<%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
-    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
-    <%= error_messages_for(page.resource) %>
-
-    <% page.attributes.each do |attribute| -%>
-        <!--checks if render request came from faculty form-->
-
-        <% current_field_name = attribute.attribute.to_s %>
-        <!--print info message on top of courses field-->
-        <% class_to_add = (current_field_name=="course"|| current_field_name=="year_of_study") ?
-            "faculty-field" : ""%>
-
-        <div class="field-unit field-unit--<%= attribute.html_class %> <%= class_to_add%>">
-          <%= render_field attribute, f: f %>
-        </div>
-    <% end -%>
-
-    <div class="form-actions">
-      <%= f.submit %>
-    </div>
 <% end %>
-
-
-<script>
-  $( document ).ready(function() {
-    $('.faculty-field select').prepend( '<option value="dsad"></option>' );
-    var $select = $('.faculty-field select').selectize();
-
-  });
-
-</script>

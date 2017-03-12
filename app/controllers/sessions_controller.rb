@@ -36,14 +36,15 @@ class SessionsController < ApplicationController
 
   def destroy
     log_out if logged_in?
-    # redirect_back_or root_url
     redirect_to "/"
   end
 
+  private
   def already_logged_in
     if logged_in?
       flash[:warning] = "You're already logged in"
       redirect_to root_url
     end
   end
+
 end

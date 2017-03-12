@@ -1,0 +1,30 @@
+<%#
+## Locals variables:
+
+ - `f` :
+   Form object for a @user, passed down from layouts/search_beginning/user_fields
+
+%>
+
+<div class="form-group">
+   <label for="faculty">Faculty <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the faculty to which your course's department belongs">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+   <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
+      [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  , :required => true, :disabled => true  }) %>
+</div>
+
+<div class="form-group">
+   <label for="department">Department <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the department to which you belong">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+   <%= f.select(:department_id, options_for_select(@departments.collect { |department|
+      [department.name.titleize, department.id] }, @user.department_id), {:include_blank => true}, {:class => 'form-control', :id => "departments_select", :autocomplete => "off"  , :required => true, :disabled => true }) %>
+</div>
+
+<div class="form-group" id="course-group">
+   <label for="course">Course/Programme <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the course/degree you are taking. The year indicates the year the course was started">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+   <% if @user.course_id.nil? && (type == "pathway_search" || type == "career_search") %>
+   <%= f.select(:course_id, options_for_select(@all_courses.collect { |course|
+      [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
+   <% else %>
+   <%= f.select(:course_id, options_for_select(@all_courses.collect { |course|
+      [course.name + " (from " + course.year.to_s+")", course.id] }, @user.course_id), {:include_blank => true}, {:class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
+   <% end %>
+</div>

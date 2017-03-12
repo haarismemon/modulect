@@ -109,4 +109,112 @@ module ApplicationHelper
 	def error_messages_for(object)
 		render(:partial => 'admin/application/admin_form_error', :locals => {:object => object})
 	end
+
+	# returns true if the user is a department or system admin
+	# by Aqib
+	def is_admin
+		# I know that the quicker way to write this
+		# is to check if a user is a student and return false if they are
+		# and true if not (so an admin) accordingly. 
+		# But the enum "user_access" is a bit confusing
+		# so I took the longer route
+		if current_user.user_level == "super_admin_access" || current_user.user_level == "department_admin_access"
+			true
+		else 
+			false
+		end
+	end
+
+	def admin_type
+		if current_user.user_level == "super_admin_access"
+			"System"
+		else 
+			"Department"
+		end
+	end
+
+  # checks if the form is being rendered by the edit page instead of the new page for a model associated in admin
+  def is_edit_form(param_input)
+    if param_input.has_key?(:action)&&param_input[:action]=="edit"
+      true
+    else
+      false
+    end
+  end
+
+  # returns user level match. return true if matches with input
+  def check_user_level(id,user_level_to_check)
+    user = User.find(id)
+    (user_level_to_check == User.user_levels[user.user_level]) # Returns the integer value
+  end
+
+  # Specifies the allowed attributes to show on the user's show page
+  def filter_for_user_show(attribute)
+    user_level = User.user_levels[User.find(params[:id]).user_level]
+    # super admin's attributes not to show
+    super_admin_filter = user_level == 1 && attribute != "course" &&
+        attribute != "year_of_study" && attribute != "faculty" && attribute != "departments"
+    # department admin's attributes not to show
+    department_admin_filter = user_level == 2 && attribute != "course" &&
+        attribute != "year_of_study"
+    # user's attributes not to show
+    user_filter = user_level == 3
+    super_admin_filter || department_admin_filter || user_filter
+	end
+
+
+  # Creates redirect back button for department form only
+  def back_redirect_for_department(page)
+     if !form_valid?(page)
+      # redirects back to faculty form if initially came from there
+      determine_redirect_link_from_previous_state
+     else
+      #or just go back to last page like normal-->
+      link_to 'Back', :back, class: "button"
+     end
+  end
+
+  # specifies whether current admin form has any errors
+  def form_valid?(page)
+     (page.resource && page.resource.errors.size == 0)
+  end
+
+  def make_semester_nice(semester_number)
+	if semester_number == "No data available"
+	  "No data available"
+	elsif semester_number == "0"
+	  "1 or 2"
+	elsif semester_number == "1"
+	  "1"
+	elsif semester_number == "2"
+	  "2"
+	else
+	  "1 & 2"
+	end
+	end
+
+	#attribute object must have name as an attrbute
+	#check if obect has a link with the another
+	#if it does create a link to edit page of that object on click
+	def generate_linked_attribute(path,object,attribute)
+		collection = object.send(attribute)
+		if collection.present?
+			return link_to object.send(attribute).name.to_s,path
+		end
+		"-"
+	end
+
+
+
+  private
+  # determines what the link needs to be to redirect back to faculty form
+  def determine_redirect_link_from_previous_state
+    # redirect back to edit form of faculty
+    if(session[:data_save]["faculty"].present?&&session[:data_save]["isEdit"])
+      link_to 'Back', edit_admin_faculty_path(id: session[:data_save]["faculty"]["id"]), class: "button"
+    else
+      #redirect back to new form
+      link_to 'Back', new_admin_faculty_path, class: "button"
+    end
+  end
 end

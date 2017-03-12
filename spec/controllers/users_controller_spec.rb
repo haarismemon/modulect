@@ -29,19 +29,6 @@ RSpec.describe UsersController, type: :controller do
       expect(assigns[:user].first_name).to eq 'Amin'
     end
 
-
-  end
-
-  describe "DELETE destroy"  do
-
-    let (:user) { create(:user) }
-
-    it "retrieves param id and uses it to looks for correct user and then deletes it" do
-      delete :destroy,:id => user.id
-      expect( assigns[:user].destroyed?).to eq(true)
-      expect(flash).not_to be_empty
-      expect(User.all.empty?).to eq true
-    end
   end
 
   describe 'PUT update' do

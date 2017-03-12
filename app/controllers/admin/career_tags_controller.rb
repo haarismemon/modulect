@@ -1,19 +1,28 @@
 module Admin
-  class CareerTagsController < Admin::ApplicationController
-    # To customize the behavior of this controller,
-    # simply overwrite any of the RESTful actions. For example:
-    #
-    # def index
-    #   super
-    #   @resources = CareerTag.all.paginate(10, params[:page])
-    # end
+  class CareerTagsController < Admin::BaseController
+    
+  	def index
+  	end
 
-    # Define a custom finder by overriding the `find_resource` method:
-    # def find_resource(param)
-    #   CareerTag.find_by!(slug: param)
-    # end
+  	def new
+  	end
 
-    # See https://administrate-docs.herokuapp.com/customizing_controller_actions
-    # for more information
+  	def create
+  	end
+
+  	def show
+  	end
+
+  	def edit
+  	end
+
+  	def update
+  	end
+
+  	def destroy
+  	end
+
+
+
   end
 end

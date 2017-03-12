@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  before_action :admin_has_dept
 
   include SessionsHelper
   before_action :store_location
@@ -38,5 +39,15 @@ class ApplicationController < ActionController::Base
     pathway = Pathway.find(params[:pathway_par])
     current_user.pathways.delete(pathway)
   end
+
+  private
+  def admin_has_dept
+    if logged_in? && admin_user && current_user.user_level == "department_admin_access" && !current_user.department_id.present?
+      log_out
+      redirect_to root_path
+          flash[:error] = "You have not been assigned a department. Contact the System Administrator."
+    end
+  end
+
 
 end

@@ -21,6 +21,47 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#department" do
+    context "when user is a department admin" do
+      before do
+        user.department = build(:department)
+      end
+
+      it "returns the department" do
+        expect(user.department).not_to be_nil
+      end
+    end
+
+    context "when user is not a department admin" do
+      it "returns nil" do
+        expect(user.department).to be_nil
+      end
+    end
+  end
+
+  describe "#department_admin?" do
+    context "when user is a department admin" do
+      before do
+        user.user_level = :department_admin_access
+        user.department = build(:department)
+      end
+
+      it "returns true" do
+        expect(user.department_admin?).to eq true
+      end
+    end
+
+    context "when user is not a department admin" do
+      before do
+        user.user_level = :user_access
+      end
+
+      it "returns false" do
+        expect(user.department_admin?).to eq false
+      end
+    end
+  end
+
   describe "before save" do
     context "when email contains capital letters" do
       before do
@@ -165,26 +206,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context "when user_level is one digit long" do
-      context "but not 1|2|3" do
-        before do
-          user.user_level = 4
-        end
-        it "evaluates to false" do
-          expect(user.valid?).to eq false
-        end
-      end
-    end
-
-    context "when user_level is longer than one digit" do
-      before do
-        user.user_level = 11
-      end
-      it "evaluates to false" do
-        expect(user.valid?).to eq false
-      end
-    end
-
     context "when year_of_study is one digit long" do
       before do
         user.year_of_study = 1
@@ -200,6 +221,77 @@ RSpec.describe User, type: :model do
       end
       it "evaluates to false" do
         expect(user.valid?).to eq false
+      end
+    end
+  end
+
+  describe "assigning user privileges" do
+    context "when giving super admin access" do
+      before do
+        user.super_admin_access!
+      end
+      it "gives the user admin access" do
+        expect(user.super_admin_access?).to eq true
+      end
+    end
+
+    context "when giving department admin access" do
+      before do
+        user.department_admin_access!
+      end
+      it "gives the user admin access to the department" do
+        expect(user.department_admin_access?).to eq true
+      end
+    end
+
+    context "when giving regular user access" do
+      before do
+        user.user_access!
+      end
+      it "gives the user regular access" do
+        expect(user.user_access?).to eq true
+      end
+    end
+  end
+
+  describe "#reset" do
+
+    context "when resetting single value attributes" do
+
+      before do
+        user.reset
+      end
+
+      it "changes the year of study to nil" do
+        expect(user.year_of_study).to be_nil
+      end
+
+      it "changes the faculty to nil" do
+        expect(user.faculty).to be_nil
+      end
+
+      it "changes the department to nil" do
+        expect(user.department).to be_nil
+      end
+
+      it "changes the course id to nil" do
+        expect(user.course).to be_nil
+      end
+    end
+
+    context "when resetting has_many attributes" do
+      before do
+        user.pathways << build(:pathway)
+        user.uni_modules << build(:uni_module)
+        user.reset
+      end
+
+      it "changes the selected modules to blank" do
+        expect(user.uni_modules).to be_blank
+      end
+
+      it "changes the pathways to blank" do
+        expect(user.pathways).to be_blank
       end
     end
   end

@@ -19,6 +19,10 @@ class PathwaySearchController < ApplicationController
 		    else
 		      @courses = {}
 		    end
+
+		     if(@user.department_id.present?)
+		      @all_courses = Department.find_by_id(@user.department_id).courses
+		     end
 		end
 	end
 
@@ -28,8 +32,9 @@ class PathwaySearchController < ApplicationController
 		# the variables are only used if the user is not logged in
 		# because in that case I read it directly
 		# from the user model
-	    @module_names = UniModule.pluck(:name)
-	    @module_code = UniModule.pluck(:code) 
+    @module_names = UniModule.pluck(:name)
+    @module_code = UniModule.pluck(:code) 
+    
 		if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
 	      @year_of_study = params[:year]
 	      @course = params[:course]
@@ -44,7 +49,7 @@ class PathwaySearchController < ApplicationController
 		if (params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? && params.has_key?(:chosen_tags) && !params[:chosen_tags].empty?) || (params.has_key?(:chosen_tags_c))
 
 			@year_of_study = params[:year]
-	    	@course = params[:course]
+      @course = params[:course]
 			@structure = YearStructure.where("course_id = ? AND year_of_study = ?", @course, @year_of_study)
 			@groups = Group.where("year_structure_id = ?", @structure.ids)
 			@course_obj = Course.find_by_id(@course)
