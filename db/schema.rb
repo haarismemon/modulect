@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312111421) do
+ActiveRecord::Schema.define(version: 20170312163104) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 20170312111421) do
     t.integer  "exam_percentage"
     t.integer  "coursework_percentage"
     t.string   "more_info_link"
+    t.string   "assessment_dates"
   end
 
   create_table "uni_modules_users", id: false, force: :cascade do |t|
