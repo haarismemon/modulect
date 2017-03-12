@@ -19,8 +19,8 @@ module Admin
       csv = CSV.parse(csv_text, :headers => true)
       csv.each do |row|
         logger.debug("Found another row :D")
-        if @resource_name = "courses"
-          logger.debug("YES IT WORKED M8")
+        if session[:resource_name] = "courses"
+          Course.create!(row.to_hash)
         end
       end
 
@@ -67,9 +67,7 @@ module Admin
       require 'csv'
       file_name = "app/assets/#{resource.to_s}_upload.csv"
       CSV.open(file_name, "wb") do |csv|
-        # Add resource to upload as first row
-        csv << [resource.to_s]
-        # Add the attribute names as the header/second row
+        # Add the attribute names as the header/first row
         csv << resource_header
       end
 
