@@ -19,7 +19,7 @@ module Admin
       csv = CSV.parse(csv_text, :headers => true)
       csv.each do |row|
         logger.debug("Found another row :D")
-        if session[:resource_name] = "courses"
+        if session[:resource_name] == "courses"
           Course.create!(row.to_hash)
         end
       end
