@@ -19,6 +19,7 @@
 
 require 'factory_girl_rails'
 require 'capybara/rspec'
+require_relative 'support/wait_for_ajax.rb'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
