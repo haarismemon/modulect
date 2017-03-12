@@ -15,11 +15,10 @@ module Admin
 
       # Reads each row of the uploaded csv file
       require 'csv'
-      csv_text = File.read("app/assets/uploaded.csv")
-      csv = CSV.parse(csv_text, :headers => true)
+      csv_text = File.read('app/assets/uploaded.csv')
+      csv = CSV.parse(csv_text, headers: true)
       csv.each do |row|
-        logger.debug("Found another row :D")
-        if session[:resource_name] == "courses"
+        if session[:resource_name] == 'courses'
           Course.create!(row.to_hash)
         end
       end
@@ -49,30 +48,30 @@ module Admin
 
       # Retrieves the attribute names depending on resource
       case resource.to_s
-        when "courses"
+        when 'courses'
           resource_header = Course.attribute_names
-        when "departments"
+        when 'departments'
           resource_header = Department.attribute_names
-        when "faculties"
+        when 'faculties'
           resource_header = Faculty.attribute_names
-        when "uni_modules"
+        when 'uni_modules'
           resource_header = UniModule.attribute_names
-        when "users"
+        when 'users'
           resource_header = User.attribute_names
-        when "year_structures"
+        when 'year_structures'
           resource_header = YearStructure.attribute_names
       end
 
       # Create a CSV file in the specified path
       require 'csv'
       file_name = "app/assets/#{resource.to_s}_upload.csv"
-      CSV.open(file_name, "wb") do |csv|
+      CSV.open(file_name, 'wb') do |csv|
         # Add the attribute names as the header/first row
         csv << resource_header
       end
 
       # Send the file for download
-      send_file file_name, :type=>"text/csv", :x_sendfile=>true
+      send_file file_name, type: 'text/csv', x_sendfile: true
     end
 
   end
