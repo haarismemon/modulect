@@ -16,7 +16,7 @@ module AdminHelper
     def sort(table_name, list, sort_by, order, per_page, default)
 
       if table_name.has_attribute?(sort_by) && (order == "asc" || order == "desc")
-       list = list.sort_by{|item| item[sort_by].downcase}
+       list = list.sort_by{|item| item[sort_by].to_s.downcase}
         if order == "desc"
           list = list.reverse
         end

@@ -1,0 +1,185 @@
+<div class="btn-group">
+
+  <!--button for drop down-->
+  <button style="height: 37px; outline: none; padding-bottom:4px"
+          class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin toolbox"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-wrench" aria-hidden="true"></i>&nbsp;&nbsp;Toolbox
+    <span class="caret"></span>
+  </button>
+  <!--list options for drop down where each is a link-->
+  <ul class="dropdown-menu scrollable-submenu" style="padding: 0px;">
+    <!--link to print form-->
+    <li><a onclick="openPrintForm('<%= blacklist_attributes%>','<%=entity_attributes%>')"
+    ><span class="glyphicon glyphicon-print" style=" margin-right: 2px"></span> Print data</a>
+    </li>
+    <!--link to export to html-->
+    <li>
+      <a onclick="exportToHTML('<%= blacklist_attributes%>','<%=entity_attributes%>')"><span class="glyphicon glyphicon-cloud-upload" style=" margin-right: 2px"></span>
+        Export as simple data</a>
+    </li>
+    <!--link to generate pdf from form's data-->
+    <li>
+      <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')"><span class="glyphicon glyphicon-file" style=" margin-right: 2px"></span>
+        Download As PDF</a>
+    </li>
+  </ul>
+</div>
+<!--back button-->
+<%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+            :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
+
+<!--styling of toolbox dropdown-->
+<style>
+  .scrollable-submenu {
+    padding: 10px;
+  }
+
+  .scrollable-submenu .button {
+    box-shadow: none;
+  }
+
+  button.toolbox {
+    height: 37px;
+    border-radius: 4%;
+    font-weight: 700;
+  }
+
+  .caret {
+    margin-left: 4px;
+  }
+
+  .btn-group a {
+    cursor: pointer;
+  }
+
+</style>
+
+
+
+<script>
+    //simple method which checks if string is in a array. returns true if it's not, and false if it is
+    function isNotPresent(arr, obj) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == obj) return false;
+        }
+        return true;
+    }
+
+    //adds the html code in string format to the body of html code specified
+    function appendTo(html, markup) {
+        return html += markup;
+    }
+
+    //generates html element object of data from form
+    //blacklist fields are fields to avoid adding to the render
+    //relationshipFields are attributes that either has-one or belongs to
+    //limitOfItemInRow is explicitly use by has-many fields
+    var generateFormFromStore = function (blackListFields, relationshipFields, limitOfItemsInRow) {
+        //split blacklist attributes into array
+        var blacklist = blackListFields.split(',');
+        //split relationship attributes into array
+        var relationships = relationshipFields.split(',');
+        //title of document
+        var html = "<div id='to-print'><table class='collection-data table' ' cellpadding='10'  border='1' style='border-collapse: collapse; font-family: Arial'>"
+        html = appendTo(html, "<tr> <td><%= "Modulect Data Entry"%></td> </tr>");
+        //iterate through each attribute of the object
+        <% object.attributes.each do |attr| %>
+        //the name of the attribute
+        var name = "<%=attr[0].to_s.titleize %>"
+        //the current value of the attribute
+        var value = "<%= attr[1].to_s.titleize %>" == "" ? " - " : "<%= attr[1].to_s.titleize %>"
+        //check if current attribute is not in black list. if so skip the rendering of it into html string object.
+        if (isNotPresent(blacklist, name)) {
+            //check if its a belongs-to relationship attribute wft current object. If so uses id to find attribute value's name
+            if (!isNotPresent(relationships, name)) {
+                if ("<%= attr[1] %>" != "") {
+                    value = "<%= find_name_of_association(object,attr[0].to_s.titleize.downcase)%>";
+                }
+            }
+            //add name and value to a single row in table the forms html string
+            html = appendTo(html, "<tr> <td>" + name + " : " + value + "</td> </tr>");
+
+        }
+        <%end%>
+        //deal with has-many fields and return html output
+        return generateHasManyInfo(html, limitOfItemsInRow);
+    };
+
+    //takes has-many attributes and prints them one by one in a particular format in a string
+    //linebreak is the amount of items that can exist in a line before a new row starts.
+    function generateHasManyInfo(html, lineBreak) {
+        //iterates through attributes of has-many
+        <% has_many_attributes.each do |has_many_attr| %>
+        //stores the amount of items in the has_many relationship
+        <% store = object.send(has_many_attr) %>
+        //initial add header
+        html = appendTo(html, "<tr> <td> <%= has_many_attr.pluralize.titleize+" :" %> ");
+        //check if store empty. If so print - to symbolize empty. If not continue
+        if (<%=store.empty?%>) {
+            html = appendTo(html, "-</tr> </td>");
+        }
+        //iterate through store with an index to indicate when to start a new line
+        <% store.each_with_index do |item,index| %>
+        //first checks if not first iteration and then checks if moduler of current index with line break value
+        //equals zero. If so start a new line by creating a new table row and add current item's name.
+        // If not just add the item's name
+        if (0 <<%=index%> && <%=index%>% lineBreak == 0) {
+            html = appendTo(html, "</td> </tr><tr> <td> <%= item.name %>")
+        }
+        else if (<%=index==0%>) {
+            html = appendTo(html, "<%= item.name %>");
+        } else {
+            html = appendTo(html, ", <%= item.name %>");
+        }
+        <%end%>
+        //end the table row
+        html = appendTo(html, "</td> </tr>");
+        <%end%>
+        //end the table
+        appendTo(html, "</table>");
+        //return the unparsed html element
+        return html;
+    }
+
+
+    //print option
+    function openPrintForm(blackListFields, relationshipFields) {
+        //produces html table containing data stored within it.
+        var html = generateFormFromStore(blackListFields, relationshipFields, 5);
+        w = window.open();
+        //the table is rendered in a new window
+        w.document.write(html);
+        //print request made to web browser
+        w.print();
+        w.close();
+    }
+
+    //generates pdf on client side from the form data generated
+    function genPDF(name, blackListFields, relationshipFields) {
+        //generates form data into html code
+        var html = generateFormFromStore(blackListFields, relationshipFields, 10);
+        //pdf plugin to produce pdfs
+        var doc = new jsPDF();
+        $("form").after($.parseHTML(html));
+        $("#to-print").css("display", "none");
+        doc.fromHTML($("#to-print").get(0), 20, 20, {
+            'width': 500
+        });
+        //specify name of pdf file
+        doc.save("Modulect_" + name + '.pdf');
+        $("#to-print").remove();
+
+    }
+
+    //export to html option
+    function exportToHTML(blackListFields, relationshipFields) {
+        //produces html table containing data stored within it.
+        var html = generateFormFromStore(blackListFields, relationshipFields, 5);
+        w = window.open();
+        //the table is rendered in a new window
+        w.document.write(html);
+    }
+
+
+</script>

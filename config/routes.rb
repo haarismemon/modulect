@@ -17,7 +17,21 @@ Rails.application.routes.draw do
     get 'upload', to: 'upload#upload'
 
     # BULK ACTIONS
+    post '/courses/bulk_delete', to: 'courses#bulk_delete'
+    post '/courses/clone', to: 'courses#clone'
+    post '/departments/bulk_delete', to: 'departments#bulk_delete'
+    post '/departments/clone', to: 'departments#clone'
+    post '/faculties/bulk_delete', to: 'faculties#bulk_delete'
+    post '/faculties/clone', to: 'faculties#clone'
     post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
+    post '/users/bulk_activate', to: 'users#bulk_activate'
+    post '/users/bulk_deactivate', to: 'users#bulk_deactivate'
+    post '/users/bulk_delete', to: 'users#bulk_delete'
+    post '/users/bulk_limit', to: 'users#bulk_limit'
+    post '/users/bulk_unlimit', to: 'users#bulk_unlimit'
+    post '/users/make_student_user', to: 'users#make_student_user'
+    post '/users/make_department_admin', to: 'users#make_department_admin'
+    post '/users/make_super_admin', to: 'users#make_super_admin'
 
     root to: "dashboard#index"
   end

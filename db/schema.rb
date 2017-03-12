@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 20170312111421) do
     t.datetime "reset_sent_at"
     t.integer  "department_id"
     t.integer  "faculty_id"
+    t.boolean  "is_limited",        default: false
   end
 
   create_table "year_structures", force: :cascade do |t|
