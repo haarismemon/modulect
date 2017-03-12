@@ -23,7 +23,13 @@
               <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
               <div>
                 <h3><%= year_structure.year_of_study.titleize %></h3>
-                <h5 style="margin-top: 20px">Module groups: <%= year_structure.groups.count %></h5>
+                <h5 style="margin-top: 20px">
+                 <% if !year_structure.groups_existent? %>
+                   <%= render partial: "admin/layouts/index_warning", locals: {message: "No modules have been given for this year", 
+                                                                               destination: edit_admin_year_structure_path(year_structure) } %>
+                <% end %>
+                  Module groups: <%= year_structure.groups.count %>
+                </h5>
               </div>
               <div>
                 <div style="margin-top: 30px;padding-left:0px">
