@@ -52,21 +52,18 @@
             <div class="col-md-9 result-card-main">
 
               <h2>Module Review</h2>
-              <% unless @uni_module.comments.empty? %>
-                  <div id="sort-comments">
-                    <label>Sort by: </label>
-                    <select id="sort-by-name" name="sort-by-name">
-                      <option value="created_at">Created at</option>
-                      <option value="rating">Rating</option>
-                    </select>
-                  </div><br>
 
-                  <div id="comments-partial">
-                    <%= render "display_comments", updated_comments: @comments %>
-                  </div>
-              <% else %>
-                  <p>Be the first to review this module!</p>
-              <%end%>
+              <div id="sort-comments">
+                <label>Sort by: </label>
+                <select id="sort-by-name" name="sort-by-name">
+                  <option value="created_at">Created at</option>
+                  <option value="rating">Rating</option>
+                </select>
+              </div><br>
+
+              <div id="comments-partial">
+                <%= render "display_comments", updated_comments: @comments %>
+              </div>
 
               <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
               <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
