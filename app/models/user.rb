@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_and_belongs_to_many :uni_modules
   # A user has many pathways
   has_many :pathways
+  # A user has many comments
+  has_many :comments
 
   # do not remove the , optional: true
   belongs_to :faculty, optional: true
