@@ -62,7 +62,7 @@
   <%= f.text_field :more_info_link, class: 'form-control'%>
 </div>
 <div class="form-group">
-  <button class="btn btn-lg" id="submit_form" type="button" onclick="submitForm();"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;<%if parent=="edit" %>Update<% else %>New<% end %> Module
+  <button class="btn btn-lg" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;<%if parent=="edit" %>Update<% else %>New<% end %> Module
   </button>
   <% if parent == "edit" %>
     &nbsp;&nbsp;&nbsp;<%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete module".html_safe, admin_uni_module_path(@uni_module), method: :delete,data: { confirm: "Are you sure you want to delete this module?" } , class: "table__action--destroy" %>
@@ -124,9 +124,10 @@ interestBloodhound.initialize();
   freeInput: true
 });
 
-function submitForm() {
-  document.getElementById("module_form").submit();
-}
-
+$('input').on('keypress', function(e){
+  if (e.keyCode == 13){
+    e.preventDefault();
+  };
+});
 
 </script>
