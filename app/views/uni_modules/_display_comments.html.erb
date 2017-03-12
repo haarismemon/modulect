@@ -1,8 +1,8 @@
-<% updated_comments = updated_comments.paginate(:page => params[:page], :per_page => 5) %>
+<% updated_comments = Kaminari.paginate_array(updated_comments).page(params[:page]).per(5) %>
 
 <% unless @uni_module.comments.empty? %>
 
-  <%= will_paginate updated_comments %>
+  <%= paginate updated_comments %>
   <%= page_entries_info updated_comments %>
 
   <hr>
