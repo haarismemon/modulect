@@ -25,10 +25,12 @@
               <strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
             </p>
           </td>
-          <td id="helpful-td" align="center">
-            <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label><br>
-            <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
-          </td>
+          <% if logged_in? %>
+              <td id="helpful-td" align="center">
+                <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label><br>
+                <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
+              </td>
+          <% end %>
           <hr>
         </colgroup>
       </table>

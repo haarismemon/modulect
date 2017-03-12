@@ -65,7 +65,7 @@
                 <%= render "display_comments", updated_comments: @comments %>
               </div>
 
-              <% if !logged_in? || (logged_in?&& !current_user.is_limited) %>
+              <% if !logged_in? || (logged_in? && !current_user.is_limited) %>
                 <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
                 <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
                   <h3>Add a Review</h3>
