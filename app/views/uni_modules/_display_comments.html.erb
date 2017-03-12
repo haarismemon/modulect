@@ -25,16 +25,18 @@
               <strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
             </p>
           </td>
-          <% if logged_in? %>
               <td id="helpful-td" align="center">
                 <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label><br>
-                <% if comment.liked_users.include?(current_user) %>
-                  <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>">Helpful</button>
+                <% if logged_in? %>
+                  <% if comment.liked_users.include?(current_user) %>
+                    <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>">Helpful</button>
+                  <% else %>
+                    <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
+                  <% end %>
                 <% else %>
-                  <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
+                    <button class="btn btn-disabled" data-toggle="tooltip"  data-placement="right" title="To like a comment, you must be logged in.">Helpful</button>
                 <% end %>
               </td>
-          <% end %>
           <hr>
         </colgroup>
       </table>
