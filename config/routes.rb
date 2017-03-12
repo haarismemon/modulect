@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   get 'career_search/view'
   get 'errors/not_found'
   get 'errors/internal_server_error'
+  get '/offline', to: 'errors#offline'
 
 
   # USERS & AUTHENTICATION
