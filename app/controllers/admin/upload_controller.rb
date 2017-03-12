@@ -74,6 +74,10 @@ module Admin
           resource_header = YearStructure.attribute_names
       end
 
+      # Remove attributes that shouldn't appear on CSV
+      to_remove = ['id', 'created_at', 'updated_at']
+      resource_header = resource_header - to_remove
+
       # Create a CSV file in the specified path
       file_name = "app/assets/#{resource.to_s}_upload.csv"
       CSV.open(file_name, 'wb') do |csv|
