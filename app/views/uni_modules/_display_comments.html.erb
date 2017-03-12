@@ -3,6 +3,8 @@
 <%= will_paginate updated_comments %>
 <%= page_entries_info updated_comments %>
 
+<hr>
+
 <% updated_comments.each do |comment| %>
     <% stars = "" %>
     <% for i in 1..comment.rating %>
@@ -17,7 +19,7 @@
     </p>
 
     <p>
-      <strong><%= comment.commenter %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
+      <strong>*#*<%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
     </p>
     <hr>
 <%end%>
