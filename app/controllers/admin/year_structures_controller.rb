@@ -11,7 +11,7 @@ module Admin
   	def update
       @year_structure = YearStructure.find(params[:id])
       if @year_structure.update_attributes year_structure_params
-        flash[:notice] = "#{@year_structure.course.name} successfully updated."
+        flash[:success] = "#{@year_structure.course.name} successfully updated."
         redirect_to admin_course_path(@year_structure.course)
       else
         render 'edit'
