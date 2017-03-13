@@ -45,6 +45,7 @@ GEM
       execjs
     bcrypt (3.1.11)
     bcrypt (3.1.11-x64-mingw32)
+    bcrypt (3.1.11-x86-mingw32)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -242,6 +243,8 @@ GEM
     thor (0.19.4)
     thread_safe (0.3.6)
     tilt (2.0.6)
+    tinymce-rails (4.5.5)
+      railties (>= 3.1.1)
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
     turbolinks-source (5.0.0)
@@ -253,7 +256,7 @@ GEM
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.1)
       tzinfo (>= 1.0.0)
-    uglifier (3.1.6)
+    uglifier (3.1.7)
       execjs (>= 0.3.0, < 3)
     wdm (0.1.1)
     web-console (3.4.0)
@@ -302,6 +305,7 @@ DEPENDENCIES
   spring (= 1.7.2)
   spring-watcher-listen (~> 2.0.0)
   sqlite3
+  tinymce-rails (~> 4.3)
   turbolinks (~> 5)
   twitter-typeahead-rails
   tzinfo-data
