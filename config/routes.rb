@@ -118,6 +118,7 @@ Rails.application.routes.draw do
   match "/500", :to => "errors#internal_server_error", :via => :all
 
   # OPEN CALAIS
-  post '/uni_modules/generate_tags', to: 'uni_modules#generate_tags'
+  get 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
+  post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
 
 end
