@@ -1,5 +1,5 @@
 module AdminHelper
-  
+  include SessionsHelper
 
   # A simple helper method which sets the page title on admin
   def full_title_admin(page_title = '')
@@ -65,5 +65,27 @@ module AdminHelper
       else
         false
       end
+    end
+
+    # As a department admin, a group can be made out of modules
+    # that only belong to that admin's managed departments.
+    # Super admins can add any module.
+    def possible_uni_modules_for_new_group
+      if (current_user.department_admin?)
+        current_user.department.uni_modules
+      else
+        UniModule.all
+      end
+    end
+      
+    def possible_uni_modules_for_existing_group(group)
+      to_return = []
+
+      group.year_structure.course.departments.each do |department|
+        department.uni_modules.each do |uni_module|
+          to_return << uni_module if !to_return.include?(uni_module)
+        end
+      end
+      to_return
     end
 end

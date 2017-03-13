@@ -8,7 +8,7 @@
 
     <%= f.label :uni_modules %>
     <div id="select-modules">
-      <%= f.select :uni_module_ids, UniModule.all.collect {|x| [x.code, x.id]}, {},
+      <%= f.select :uni_module_ids, possible_uni_modules_for_new_group.collect {|x| [x.to_s, x.id]}, {},
       :multiple => true, class: 'selectize' %>
     </div>
 

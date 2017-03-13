@@ -83,6 +83,10 @@ ActiveRecord::Schema.define(version: 20170313104922) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.boolean  "compulsory"
+    t.integer  "min_modules"
+    t.integer  "max_modules"
+    t.integer  "min_credits"
+    t.integer  "max_credits"
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
   end
 
@@ -135,6 +139,7 @@ ActiveRecord::Schema.define(version: 20170313104922) do
     t.integer  "exam_percentage"
     t.integer  "coursework_percentage"
     t.string   "more_info_link"
+    t.string   "assessment_dates"
   end
 
   create_table "uni_modules_users", id: false, force: :cascade do |t|

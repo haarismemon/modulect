@@ -48,19 +48,6 @@
     </div>
 
 
-    <div class="row field-unit field-unit--select  courses" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label "Courses associated" %>
-        </div>
-        <div class="field-unit__field default-select-field">
-          <%= f.collection_select :course_ids, Course.order(:name), :id, :name, {}, {multiple: true, :class=>"selectize"}%>
-
-        </div>
-      </div>
-    </div>
-
-
     <div class="form-actions"><%= f.submit%></div>
 
     <script>
