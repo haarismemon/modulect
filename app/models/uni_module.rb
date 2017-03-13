@@ -164,13 +164,24 @@ class UniModule < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w{name code description lecturers pass_rate semester credits}
+    attributes = %w{name code description lecturers pass_rate assessment_methods semester credits exam_percentage coursework_percentage more_info_link interest_tags career_tags}
     caps = []
     attributes.each{|att| caps.push att.titleize.capitalize}
+    %w(career_tags interest_tags).each{|att| caps.push att.titleize.capitalize}
     CSV.generate(headers:true)do |csv|
       csv << caps
-      all.each do |course|
-        csv << course.attributes.values_at(*attributes)
+      all.each do |uni_module|
+        career_tag_names = ' '
+        interest_tag_names = ' '
+        uni_module.career_tags.pluck(:name).each{|tag| career_tag_names += tag + ', ' }
+        uni_module.interest_tags.pluck(:name).each{|tag| interest_tag_names += tag + ', ' }
+        # uni_module.career_tags.where(:name => uni_module.name).each { |tag| tagNames += tag.name + ', '}
+        career_tag_names.chop!.chop!
+        interest_tag_names.chop!.chop!
+        career_tag_names[0] = ''
+        interest_tag_names[0] = ''
+        to_add = uni_module.attributes.values_at(*attributes) + [*career_tag_names] + [*interest_tag_names]
+        csv << to_add
       end
     end
   end
