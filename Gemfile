@@ -25,6 +25,7 @@ gem 'bourbon',                '4.3.2'
 gem 'cocoon'
 gem 'selectize-rails'
 gem 'kaminari'
+gem 'tinymce-rails',          '~> 4.3'
 
 group :development, :test do
   gem 'sqlite3'
