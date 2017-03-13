@@ -103,7 +103,7 @@ module Admin
 
   	def update
       @uni_module = UniModule.find(params[:id])
-      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty?
+      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.update_attributes(uni_module_params)
         @uni_module.departments.clear()
         departments = params[:uni_module][:department_ids].split(',')
         departments.each do |dept|
