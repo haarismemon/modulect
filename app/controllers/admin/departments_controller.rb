@@ -69,7 +69,7 @@ module Admin
       # Save the object
       if @department.save
         # If save succeeds, redirect to the index action
-        flash[:notice] = "You have successfully created #{@department.name}"
+        flash[:success] = "You have successfully created #{@department.name}"
         redirect_to(admin_departments_path)
       else
         # If save fails, redisplay the form so user can fix problems

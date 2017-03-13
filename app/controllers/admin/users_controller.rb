@@ -1,11 +1,6 @@
 module Admin
   class UsersController < Admin::BaseController
     before_action :verify_correct_department, only: [:destroy, :update, :edit]
-
-    def show
-      redirect_to edit_admin_user_path(params[:id])
-    end
-
     def index
 
       if current_user.user_level == "super_admin_access"
@@ -100,7 +95,7 @@ module Admin
       # Save the object
       if @user.save
         # If save succeeds, redirect to the index action
-        flash[:notice] = "You have successfully created #{@user.full_name} and their privileges have been granted"
+        flash[:success] = "You have successfully created #{@user.full_name} and their privileges have been granted"
         redirect_to(admin_users_path)
       else
         # If save fails, redisplay the form so user can fix problems

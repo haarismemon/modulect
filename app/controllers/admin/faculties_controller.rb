@@ -66,7 +66,7 @@ module Admin
       @faculty = Faculty.new(faculty_params)
       if @faculty.save
         # If save succeeds, redirect to the index action
-        flash[:notice] = "Succesfully created faculty"
+        flash[:success] = "Succesfully created faculty"
         redirect_to(admin_faculties_path)
       else
         # If save fails, redisplay the form so user can fix problems

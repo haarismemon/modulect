@@ -15,7 +15,7 @@ module Admin
   	def update
       @group = Group.find(params[:id])
       if @group.update_attributes group_params
-        flash[:notice] = "#{@group.name} successfully updated."
+        flash[:success] = "#{@group.name} successfully updated."
         redirect_to edit_admin_year_structure_path(@group.year_structure)
       else
         render 'edit'
