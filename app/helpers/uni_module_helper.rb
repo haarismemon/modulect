@@ -1,5 +1,5 @@
 module UniModuleHelper
-
+	include ApplicationHelper
 
   	# returns "No data" string if input is empty since no data was provided in model
 	# written by Aqib
@@ -51,7 +51,7 @@ module UniModuleHelper
 	# written by Aqib
 	def colour_code_card(module_code, module_matched_list, tags_matched_list)
 		if direct_search_check(module_code, module_matched_list, tags_matched_list) ||
-			percentage(module_matched_list.length, tags_matched_list.length) >= 60.0
+			percentage(module_matched_list.length, tags_matched_list.length) >= app_settings.tag_percentage_match
 			"green"
 		else
 			"orange"

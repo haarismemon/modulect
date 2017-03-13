@@ -20,7 +20,7 @@ module Admin
 
       private 
       def app_setting_params
-        params.require(:app_setting).permit(:is_offline, :offline_message, :allow_new_registration)
+        params.require(:app_setting).permit(:is_offline, :offline_message, :allow_new_registration, :tag_percentage_match)
       end
 
        
