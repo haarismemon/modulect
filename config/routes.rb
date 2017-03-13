@@ -19,7 +19,6 @@ Rails.application.routes.draw do
     resources :year_structures
     resources :career_tags
     resources :interest_tags
-    get 'upload', to: 'upload#upload'
     root to: "application#homepage"
   end
 
@@ -98,6 +97,7 @@ Rails.application.routes.draw do
   match "/500", :to => "errors#internal_server_error", :via => :all
 
   # CSV Upload
+  get 'admin/upload', to: 'admin/upload#upload'
   post 'admin/download',   to: 'admin/upload#download'
   post 'admin/upload/upload_csv', to: 'admin/upload#upload_csv'
 end
