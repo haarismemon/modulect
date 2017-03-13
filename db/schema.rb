@@ -10,7 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170311182837) do
+ActiveRecord::Schema.define(version: 20170313104922) do
+
+  create_table "app_settings", force: :cascade do |t|
+    t.integer  "singleton_guard"
+    t.boolean  "is_offline",             default: false
+    t.text     "offline_message"
+    t.boolean  "allow_new_registration", default: true
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.decimal  "tag_percentage_match",   default: "60.0"
+    t.index ["singleton_guard"], name: "index_app_settings_on_singleton_guard", unique: true
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text     "body"
+    t.integer  "uni_module_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "rating"
+    t.integer  "user_id"
+    t.index ["uni_module_id"], name: "index_comments_on_uni_module_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "comments_users", id: false, force: :cascade do |t|
+    t.integer "comment_id"
+    t.integer "user_id"
+    t.index ["comment_id", "user_id"], name: "index_comments_users_on_comment_id_and_user_id"
+  end
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -55,6 +83,10 @@ ActiveRecord::Schema.define(version: 20170311182837) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.boolean  "compulsory"
+    t.integer  "min_modules"
+    t.integer  "max_modules"
+    t.integer  "min_credits"
+    t.integer  "max_credits"
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
   end
 
@@ -107,6 +139,7 @@ ActiveRecord::Schema.define(version: 20170311182837) do
     t.integer  "exam_percentage"
     t.integer  "coursework_percentage"
     t.string   "more_info_link"
+    t.string   "assessment_dates"
   end
 
   create_table "uni_modules_users", id: false, force: :cascade do |t|

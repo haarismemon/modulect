@@ -24,9 +24,7 @@
         <div class="field-unit__field default-select-field">
           <%= f.select(:faculty_id, options_for_select(Faculty.all.collect { |faculty|
 
-            [faculty.name.titleize, faculty.id] }, @department.faculty_id), {:include_blank => true}, { }) %>
-
-            <!--link that redirects to new of faculty-->
+            [faculty.name.titleize, faculty.id] }, @department.faculty_id), {:include_blank => true}, {class: "selectize"}) %>
             <a onclick="openFacultyCreation()" class="faculty-creation-link" style="cursor: pointer">Create a new faculty</a>
 
           <div class="alert alert-success fade in alert-dismissable" id="faculty-creation-box" >
@@ -36,7 +34,7 @@
                 <div class="field-unit__label">
                   <%= f.label "Name of new faculty" %>
                 </div>
-                <span  class="instruction-label form-actions" >*Faculty will not be added unless it's selected for this department</span>
+                <span  class="instruction-label form-actions" >*Faculty will be linked automatically to this department</span>
                 <div class="field-unit__field">
                   <input id="new-faculty-name" name="names" type="text">
                 </div>
@@ -45,13 +43,30 @@
             </div>
 
           </div>
-
-
         </div>
       </div>
     </div>
 
+
+    <div class="form-actions"><%= f.submit%></div>
+
     <script>
+      var openFacultyCreation = function(){
+          $("#faculty-creation-box").slideToggle("slow");
+          $(".faculty-creation-link").text($(".faculty-creation-link").text()==open_faculty_creation?"Close box":open_faculty_creation);;
+      }
+
+      var open_faculty_creation;
+      $(document).ready(function () {
+          open_faculty_creation = $(".faculty-creation-link").text()
+          $('.selectize').selectize({
+              plugins: ['remove_button'],
+              delimiter: ',',
+              persist: false,
+              create: false
+          });
+      });
+
       $("#new-faculty-btn").on("click", function(){
           var faculty_name = $("input#new-faculty-name").val()
 
@@ -78,33 +93,7 @@
           })
 
       })
-    </script>
 
 
-    <div class="row field-unit field-unit--select  courses" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label "Courses associated" %>
-        </div>
-        <div class="field-unit__field default-select-field">
-          <%= f.collection_select :course_ids, Course.order(:name), :id, :name, {}, {multiple: true} %>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="form-actions"><%= f.submit%></div>
-
-    <script>
-      var openFacultyCreation = function(){
-          $("#faculty-creation-box").slideToggle("slow");
-          $(".faculty-creation-link").text($(".faculty-creation-link").text()==open_faculty_creation?"Close box":open_faculty_creation);;
-      }
-
-      var open_faculty_creation;
-      $(document).ready(function () {
-          open_faculty_creation = $(".faculty-creation-link").text()
-          $(".default-select-field select").selectize();
-      });
 
     </script>

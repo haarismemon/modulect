@@ -4,6 +4,10 @@ class UsersController < ApplicationController
   skip_before_action :store_location,
                       only: [:new, :edit]
   protect_from_forgery except: [:update_departments, :update_courses]
+  before_action :registration_allowed, only: [:new, :create]
+
+  include ApplicationHelper
+
 
   def index
     #returns all users by order of last_name
@@ -140,4 +144,12 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
     end
+
+    def registration_allowed
+      if !app_settings.allow_new_registration
+        flash[:error] = "Registration is currently offline, please check back later."
+         redirect_to(root_url)
+      end
+    end
+
 end
