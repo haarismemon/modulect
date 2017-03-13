@@ -41,6 +41,15 @@ class Course < ApplicationRecord
     end
   end
 
+  def all_year_structures_defined?
+    self.year_structures.each do |year_structure|
+      if !year_structure.groups_existent?
+        return false
+      end
+    end
+    true
+  end
+
   # Registers a department as belonging to this course.
   def add_department(valid_department)
     departments << valid_department

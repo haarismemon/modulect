@@ -1,0 +1,114 @@
+<% updated_comments = Kaminari.paginate_array(updated_comments).page(params[:page]).per(5) %>
+
+<% unless @uni_module.comments.empty? %>
+
+  <%= paginate updated_comments %>
+  <%= page_entries_info updated_comments %>
+
+  <% updated_comments.each do |comment| %>
+      <table width="100%" border="0">
+        <colgroup>
+          <td>
+            <% stars = "" %>
+            <% for i in 1..comment.rating %>
+                <% stars += "*" %>
+            <% end %>
+            <p>
+              <strong><%= stars %> <%= comment.rating==1 ? "Star" : "Stars" %></strong>
+            </p>
+
+            <p>
+              <%= comment.body %>
+            </p>
+
+            <p>
+              <strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
+            </p>
+          </td>
+              <td id="helpful-td" align="center">
+                <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
+                <% if logged_in? %>
+                  <% if comment.liked_users.include?(current_user) %>
+                    <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>">Helpful</button>
+                  <% else %>
+                    <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
+                  <% end %>
+                <% else %>
+                    <button class="btn btn-disabled" id="helpful-btn-disabled" data-toggle="tooltip" data-placement="right" title="To like a comment, you must be logged in.">Helpful?</button>
+                <% end %>
+              </td>
+          <hr>
+        </colgroup>
+      </table>
+  <%end%>
+<% else %>
+    <p>Be the first to review this module!</p>
+<%end%>
+<hr>
+
+<style>
+    #helpful-td {
+        width: 10%;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    [id^=helpful-btn] {
+      text-transform: none;
+      margin-left: 10px;
+    }
+
+    .not-helpful {
+      background: #2ab27b;
+      box-shadow: 0px 3px 0px 0px #228e62;
+      width: 81px;
+    }
+
+    .not-helpful:focus {
+      background: #2ab27b;
+      box-shadow: 0px 3px 0px 0px #228e62;
+      width: 81px;
+    }
+
+    .helpful {
+      background: dodgerblue;
+      box-shadow: 0px 3px 0px 0px deepskyblue;
+      width: 81px;
+    }
+
+    .helpful:focus {
+      background: dodgerblue;
+      box-shadow: 0px 3px 0px 0px deepskyblue;
+      width: 81px;
+    }
+    
+</style>
+
+<script>
+  $(".helpful-btn").on("click", function (event) {
+      button_id = event.target.id
+      comment_id = parseInt(button_id.replace("helpful-btn-", ""));
+      button = $("#helpful-btn-" + comment_id);
+      label = $("#helpful-label-" + comment_id);
+
+      $.ajax({
+          type: "POST",
+          url: "<%= comments_like_path %>",
+          data: { comment_id: comment_id },
+          context: document.body,
+          success: function (data) {
+              label.html(data.like_count);
+              if (data.helpful == true) {
+                  button.html("Helpful")
+                  button.removeClass("not-helpful")
+                  button.addClass("helpful")
+              }
+              else if (data.helpful == false) {
+                  button.html("Helpful?")
+                  button.removeClass("helpful")
+                  button.addClass("not-helpful")
+              }
+          }
+      });
+  })
+</script>

@@ -2,7 +2,15 @@
 <header class="header index-header-area">
   <h1 id="page-title">Edit <%= @uni_module.name %> </h1>
   <div class="header__actions">
-  <%= link_to "<i class='fa fa-eye' aria-hidden='true'></i>&nbsp;&nbsp;View Module".html_safe, @uni_module, method: :get, class: "button" %>
+  <%= link_to "<i class='fa fa-external-link' aria-hidden='true' style='padding: 1px'></i>&nbsp;&nbsp;Show Module".html_safe, @uni_module, target: :blank, method: :get, class: "button tool-box" %>
+    <%= render(:partial =>
+                   'admin/application/edit_toolbox_buttons',
+               :locals => {:object => UniModule.find(params[:id]),
+                           :name_of_file=>UniModule.find(params[:id]).name.tr(' ','').underscore,
+                           :blacklist_attributes=>"More Info Link",
+                           :entity_attributes=>"Course",
+                           :has_many_attributes=>[]})%>
+
   </div>
 </header>
 <div id="moduleForm" class="col-md-12">

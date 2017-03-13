@@ -16,7 +16,8 @@
          $(document).ready(function(){
           setTimeout(fade_out, 5000);
              function fade_out() {
-               $("#flash-container").fadeOut().empty();
+               $("#flash-container").fadeOut( "slow", function() {
+                });
                $("#flash-container").css("margin-bottom", "0px");
              }
          });
