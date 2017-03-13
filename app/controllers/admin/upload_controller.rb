@@ -19,6 +19,9 @@ module Admin
       parsed_csv = CSV.parse(csv_text, headers: true)
       parsed_csv.each do |row|
         # Creates records for corresponding resource
+        # TO-DO: find faculty from read faculty ID and replace in row Faculty.find(dept.name).id
+        # TO-DO: When uploading faculty csv, add department header, and for every department name add the department ID see: faculties.rb
+        # TO-DO: Unimodules upload add interest tags, career tags, create tag - in unimodule controller
         session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
       end
 
