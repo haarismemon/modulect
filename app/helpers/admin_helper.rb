@@ -49,13 +49,14 @@ module AdminHelper
     Department.all.each do |department|
       if department.courses.include?(valid_course)
         count+= 1
-      if count == 1 
-        count.to_s + " Department"
-      else 
-        count.to_s + " Departments"
       end
     end
 
+    if count == 1 
+      count.to_s + " Department"
+    else 
+      count.to_s + " Departments"
+    end
   end
 
   def has_linked_tags(valid_module)
