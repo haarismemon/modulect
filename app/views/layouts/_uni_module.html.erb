@@ -88,7 +88,7 @@
       <% end %>
       <div class="col-md-12" style="margin-bottom:15px;">
          <h5>Description</h5>
-         <p><%= size_check uni_module.description %></p>
+         <p><%= size_check uni_module.description.html_safe %></p>
       </div>
       <div class="row" style="margin-left:0px;">
          <div class="col-md-4" style="margin-bottom:15px;">
@@ -104,7 +104,9 @@
                <% if uni_module_requirements.size == 0 %>
                None given
                <% else %>
-               <%= uni_module_requirements.join(", ") %>
+                  <% uni_module_requirements.each do |req_mod| %>
+                     <%= UniModule.find(req_mod).name %>
+                  <% end %>
                <% end %>
             </p>
          </div>
