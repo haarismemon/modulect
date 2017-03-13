@@ -174,4 +174,8 @@ class UniModule < ApplicationRecord
       end
     end
   end
+
+  def to_s
+    "#{self.code} #{self.name}"
+  end
 end
