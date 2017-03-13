@@ -126,7 +126,7 @@
                            <div class="row">
                               <div class="col-md-12 result-card-main">
                                  <h2><%= size_check check_pathway_name pathway.name %></h2>
-                                 <h4>Saved on <%= pathway.created_at %></h4>
+                                 <h4>Saved on <%= pathway.created_at.strftime("%d %B %Y at %H:%M %p") %></h4>
                                  <div style="margin-top:30px">
                                     <a href="/pathway-search/view_results?year=<%=pathway.year%>&course=<%=pathway.course_id%>&selected=<%=pathway.data%>" class="btn btn-lg btn-small"><span>Open ></span>
                                     </a>
@@ -135,15 +135,49 @@
                                        </button>
                                        <script>
                                           $("button#pathwaydeletebutton-<%= pathway.id %>").on("click", function() {
-                                          if (confirm("Are you sure you want to delete this? ")) {
-                                          $.ajax({
-                                          type: "POST",
-                                          url: "<%=application_delete_pathway_path(pathway_par: pathway) %>",
-                                          context: document.body
-                                          })
-                                          $(this).closest("#pathwaycard-<%= pathway.id %>").remove();
+                                          
+                                          bootbox.confirm({
+                                          title: "Deletion confirmation",
+                                          size: "medium",
+                                          closeButton: false,
+                                          message: "Are you sure you want to delete this saved pathway?",
+                                          buttons: {
+                                          confirm: {
+                                              label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                                              className: 'btn-success'
+                                          },
+                                          cancel: {
+                                              label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                                              className: 'red-btn pull-left'
+                                          }
+                                          },
+                                          callback: function(result) {
+                                          
+                                          if (result == true) {
+                                          
+                                          
+                                              $.ajax({
+                                                  type: "POST",
+                                                  url: "<%=application_delete_pathway_path(pathway_par: pathway) %>",
+                                                  context: document.body,
+                                                  success() {
+                                          
+                                                  }
+                                              })
+                                          
+                                          
+                                          
+                                          
+                                              $("#pathwaycard-<%= pathway.id %>").remove();
+                                          
                                           
                                           }
+                                          
+                                          
+                                          }
+                                          })
+                                          
+                                          
                                           
                                           
                                           });

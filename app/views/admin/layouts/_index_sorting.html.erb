@@ -43,7 +43,7 @@
                   <% if controller_name == "users" || controller_name == "courses" || controller_name == "uni_modules" %>
                     <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page, :dept => dept_filter_id  ), method: :get %>
                     <% elsif  controller_name == "departments"%>
-                    <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page, :fac => faculty_filter_id  ), method: :get %>
+                    <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page, :faculty => faculty_filter_id  ), method: :get %>
                     <% else %>
                     <%= link_to (column.second + " <i class='fa fa-arrow-up' aria-hidden='true'></i>").html_safe, url_for( :sortby => column.first, :order => "desc", :per_page => per_page  ), method: :get %>
                     <% end %>

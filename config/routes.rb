@@ -16,8 +16,27 @@ Rails.application.routes.draw do
     resources :interest_tags, except: [:show]
     get 'upload', to: 'upload#upload'
 
+
+    put '/app_settings' => 'app_settings#update'
+    patch '/app_settings' => 'app_settings#update'
+    match 'settings' => 'app_settings#edit', :defaults => {:id => 1}, via: [:get]
+   
     # BULK ACTIONS
+    post '/courses/bulk_delete', to: 'courses#bulk_delete'
+    post '/courses/clone', to: 'courses#clone'
+    post '/departments/bulk_delete', to: 'departments#bulk_delete'
+    post '/departments/clone', to: 'departments#clone'
+    post '/faculties/bulk_delete', to: 'faculties#bulk_delete'
+    post '/faculties/clone', to: 'faculties#clone'
     post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
+    post '/users/bulk_activate', to: 'users#bulk_activate'
+    post '/users/bulk_deactivate', to: 'users#bulk_deactivate'
+    post '/users/bulk_delete', to: 'users#bulk_delete'
+    post '/users/bulk_limit', to: 'users#bulk_limit'
+    post '/users/bulk_unlimit', to: 'users#bulk_unlimit'
+    post '/users/make_student_user', to: 'users#make_student_user'
+    post '/users/make_department_admin', to: 'users#make_department_admin'
+    post '/users/make_super_admin', to: 'users#make_super_admin'
 
     root to: "dashboard#index"
   end
@@ -34,6 +53,7 @@ Rails.application.routes.draw do
   get 'career_search/view'
   get 'errors/not_found'
   get 'errors/internal_server_error'
+  get '/offline', to: 'errors#offline'
 
 
   # USERS & AUTHENTICATION
@@ -85,7 +105,9 @@ Rails.application.routes.draw do
 
   # UNI MODULES
   # Uni Modules
-  resources :uni_modules, only: [:show]
+  resources :uni_modules, only: [:show] do
+    resources :comments
+  end
 
 
   # AJAX
@@ -93,12 +115,17 @@ Rails.application.routes.draw do
   post 'application/save_module'
   post 'application/save_pathway'
   post 'application/delete_pathway'
-  post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
+  post 'comments/sort'
+  post 'comments/like'
 
 
   # ERROR PAGES
   match "/404", :to => "errors#not_found", :via => :all
   match "/500", :to => "errors#internal_server_error", :via => :all
+
+  # OPEN CALAIS
+  get 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
+  post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
 
 end

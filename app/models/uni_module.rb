@@ -12,10 +12,13 @@ class UniModule < ApplicationRecord
   has_and_belongs_to_many :tags
 
   #A UniModule has many required modules and can be a requirement of many modules
-  has_and_belongs_to_many(:uni_module,
+  has_and_belongs_to_many(:uni_modules,
     :join_table => "uni_module_requirements",
     :foreign_key => "uni_module_id",
     :association_foreign_key => "required_uni_module_id")
+
+  # A UniModule has many comments (reviews)
+  has_many :comments
 
   scope :search, lambda {|tag|
     joins(:tags).where(["tags.name = ?", tag])

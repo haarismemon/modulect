@@ -210,8 +210,29 @@ module ApplicationHelper
 		rescue
 			""
 		end
-end
+  end
 
+  # finds the average star rating of a module from its reviews and rounds the value
+  # input is a uni_module object, and output is average rating
+  # written by Haaris
+  def module_average_rating(uni_module)
+    total = 0.0
+    average = 0.0
+    comments = uni_module.comments
+
+    comments.each do |comment|
+      total += comment.rating
+    end
+
+    average = total / comments.length
+    average.round
+  end
+
+
+  # return app_settings object
+  def app_settings
+    AppSetting.instance
+  end
 
 
   private

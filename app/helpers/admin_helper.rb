@@ -16,7 +16,7 @@ module AdminHelper
     def sort(table_name, list, sort_by, order, per_page, default)
 
       if table_name.has_attribute?(sort_by) && (order == "asc" || order == "desc")
-       list = list.sort_by{|item| item[sort_by].downcase}
+       list = list.sort_by{|item| item[sort_by].to_s.downcase}
         if order == "desc"
           list = list.reverse
         end
@@ -55,7 +55,7 @@ module AdminHelper
       if count == 1 
         count.to_s + " Department"
       else 
-        count.to_s + "Departments"
+        count.to_s + " Departments"
       end
     end
 
@@ -66,5 +66,4 @@ module AdminHelper
         false
       end
     end
-
 end
