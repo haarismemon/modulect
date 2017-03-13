@@ -19,7 +19,7 @@
             <% end %>
             <li class="menu-item"><%= link_to '<i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Home'.html_safe, admin_path %></li>
             <li class="menu-item">
-               <a href="<%= admin_path %>"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Analytics</a>
+               <a href="<%= admin_analytics_path %>"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Analytics</a>
             </li>
             <% if current_user.user_level == "department_admin_access" %>
             <li class="menu-item">
