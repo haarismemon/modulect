@@ -1,4 +1,5 @@
 module LoginHelper
+  # Must be called after visiting a login page.
   def login_user(user, password)
     within("#login-area") do
       fill_in "session_email",    with: user.email
