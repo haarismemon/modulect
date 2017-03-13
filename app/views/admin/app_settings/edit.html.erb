@@ -1,11 +1,15 @@
 <% provide(:title, 'Settings') %>
 <header class="header">
    <h1 class="header__heading">Settings</h1>
+
+<%= form_for(@app_setting, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>
    <div class="header__actions">
+
+   <button type="submit" class="button" name="commit" data-disable-with="Save settings" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
+Save settings</button>
       <a class="button" href="<%= admin_path %>"><i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit</a>
    </div>
 </header>
-<%= form_for(@app_setting, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>
 <%= error_messages_for(f.object) %>	
 <div class="col-md-12">
    <h4>
@@ -54,6 +58,27 @@
             <div class="radio" style="display:inline-block;margin-left:20px;">
                <%= f.radio_button :allow_new_registration, false %><label for="app_setting_allow_new_registration_false">Yes<span></span></label>
             </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+<div class="col-md-12">
+   <h4>
+     Quick search and pathway search setings
+   </h4>
+</div>
+
+<div class="col-md-12">
+   <div class="row field-unit field-unit--checkbox is_offline" >
+      <div class="col-xs-12">
+         <div class="field-unit__label">
+            <label for="user_is_limited">Set the threshold for tag percentage match <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="This will be the percentage after which cards turn green.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+         </div>
+         <div class="field-unit__field" style="width:20%;">
+            <%= f.text_field :tag_percentage_match, :required => true %>
          </div>
       </div>
    </div>

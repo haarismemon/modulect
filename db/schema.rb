@@ -10,15 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313000502) do
+ActiveRecord::Schema.define(version: 20170313104922) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
     t.boolean  "is_offline",             default: false
     t.text     "offline_message"
     t.boolean  "allow_new_registration", default: true
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.decimal  "tag_percentage_match",   default: "60.0"
     t.index ["singleton_guard"], name: "index_app_settings_on_singleton_guard", unique: true
   end
 
