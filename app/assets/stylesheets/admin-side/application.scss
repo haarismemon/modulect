@@ -456,6 +456,16 @@ a.action-edit{margin-right:10px;}
 }
 
 
+.tooltip {
+    text-align: left;
+    font-family: "Open Sans";
+}
+.tooltip-inner {
+    padding: 8px 12px;
+    text-align: left;
+    width:200px;
+}
+
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
 	display:none;
