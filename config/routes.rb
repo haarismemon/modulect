@@ -109,7 +109,6 @@ Rails.application.routes.draw do
   post 'application/save_module'
   post 'application/save_pathway'
   post 'application/delete_pathway'
-  post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
 
@@ -118,10 +117,7 @@ Rails.application.routes.draw do
   match "/404", :to => "errors#not_found", :via => :all
   match "/500", :to => "errors#internal_server_error", :via => :all
 
-  # OPEN CALAIS sample page
-  get '/tag_generator/', to: 'tag_generator#index'
-
-  post 'tag_generator/generate_tags', to: 'tag_generator#generate_tags'
-
+  # OPEN CALAIS
+  post '/uni_modules/generate_tags', to: 'uni_modules#generate_tags'
 
 end
