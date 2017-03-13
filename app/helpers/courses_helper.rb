@@ -6,7 +6,7 @@ module CoursesHelper
        course = Course.find(id.to_i)
       
         if !course.nil?
-          cloned = clone_course
+          cloned = clone_course(course)
 
           Department.all.each do |department|
             if department.courses.include?(course)
@@ -34,7 +34,8 @@ module CoursesHelper
   private
   def clone_course(course)
     cloned_course = course.dup
-    cloned.update_attribute("name", cloned.name + "-CLONE")
+    cloned_course.update_attribute("name", course.name + "-CLONE")
+    cloned_course.save
 
     cloned_course
   end

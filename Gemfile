@@ -30,7 +30,7 @@ group :development, :test do
   gem 'sqlite3'
   gem 'factory_girl_rails'
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '3.3.0'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug',      '9.0.0', platform: :mri
   gem 'rspec-rails', '~> 3.5'

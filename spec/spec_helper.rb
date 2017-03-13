@@ -19,7 +19,6 @@
 
 require 'factory_girl_rails'
 require 'capybara/rspec'
-require_relative 'support/wait_for_ajax.rb'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
@@ -35,21 +34,6 @@ RSpec.configure do |config|
     # ...rather than:
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
-  end
-
-  # Ensures that records that are already in the database
-  # are not considered when running tests.
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
   end
 
   # rspec-mocks config goes here. You can use an alternate test double

@@ -52,7 +52,7 @@ FactoryGirl.define do
   factory :user do
     first_name              "Allison"
     last_name               "Wonderland"
-    email                   "allison_wonderland@kcl.ac.uk"
+    email                   "allison.wonderland@kcl.ac.uk"
     password                "password"
     password_confirmation   "password"
     activated               true

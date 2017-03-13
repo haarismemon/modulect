@@ -38,6 +38,18 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
+  config.before(:each, js: true) do
+    self.use_transactional_fixtures = false
+    ActiveRecord::Base.establish_connection
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+  end
+
+  config.after(:each, js: true) do
+    DatabaseCleaner.clean
+    ActiveRecord::Base.establish_connection
+    self.use_transactional_fixtures = true
+  end
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.

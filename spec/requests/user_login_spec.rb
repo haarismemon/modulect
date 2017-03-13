@@ -4,7 +4,7 @@ require 'support/login_helper'
 feature "Logging in" do
   include LoginHelper
 
-  given(:user) { create(:user) }
+  given! (:user) { create(:user) }
 
   scenario "as an activated user" do
     visit login_path
@@ -13,8 +13,8 @@ feature "Logging in" do
   end
 
   scenario "as a user that has not been activated" do
-    user.update_columns(activated: false, activated_at: nil)
     visit login_path
+    user.update_columns(activated: false, activated_at: nil)
     login_user(user, "password")
     expect(page).to have_current_path(root_path)
   end
