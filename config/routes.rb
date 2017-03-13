@@ -2,18 +2,13 @@ Rails.application.routes.draw do
 
   # ADMIN
   namespace :admin do
-    resources :courses do
-      resources :year_structures, only: :edit
-    end
-    resources :departments, except: [:show]
-    resources :faculties, except: [:show]
-    resources :groups, except: [:show]
-    resources :tags, except: [:show]
-    resources :uni_modules, except: [:show]
-    resources :users, except: [:show]
-    resources :year_structures, except: [:show]
-    resources :career_tags, except: [:show]
-    resources :interest_tags, except: [:show]
+    resources :courses
+    resources :departments
+    resources :faculties
+    resources :groups
+    resources :uni_modules
+    resources :users
+    resources :year_structures
     get 'upload', to: 'upload#upload'
 
 

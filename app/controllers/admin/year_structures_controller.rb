@@ -1,6 +1,9 @@
 module Admin
   class YearStructuresController < Admin::BaseController
-
+    def show
+      redirect_to edit_admin_year_structure_path(params[:id])
+    end
+    
   	def edit
       @year_structure = YearStructure.find(params[:id])
   	end
