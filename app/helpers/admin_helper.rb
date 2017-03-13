@@ -55,7 +55,7 @@ module AdminHelper
       if count == 1 
         count.to_s + " Department"
       else 
-        count.to_s + "Departments"
+        count.to_s + " Departments"
       end
     end
 
@@ -66,5 +66,4 @@ module AdminHelper
         false
       end
     end
-
 end

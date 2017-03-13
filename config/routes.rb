@@ -16,6 +16,11 @@ Rails.application.routes.draw do
     resources :interest_tags, except: [:show]
     get 'upload', to: 'upload#upload'
 
+
+    put '/app_settings' => 'app_settings#update'
+    patch '/app_settings' => 'app_settings#update'
+    match 'settings' => 'app_settings#edit', :defaults => {:id => 1}, via: [:get]
+   
     # BULK ACTIONS
     post '/courses/bulk_delete', to: 'courses#bulk_delete'
     post '/courses/clone', to: 'courses#clone'
@@ -48,6 +53,7 @@ Rails.application.routes.draw do
   get 'career_search/view'
   get 'errors/not_found'
   get 'errors/internal_server_error'
+  get '/offline', to: 'errors#offline'
 
 
   # USERS & AUTHENTICATION
@@ -111,6 +117,7 @@ Rails.application.routes.draw do
   post 'application/delete_pathway'
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
+  post 'comments/like'
 
 
   # ERROR PAGES

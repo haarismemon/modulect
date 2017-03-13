@@ -228,6 +228,13 @@ module ApplicationHelper
     average.round
   end
 
+
+  # return app_settings object
+  def app_settings
+    AppSetting.instance
+  end
+
+
   private
   # determines what the link needs to be to redirect back to faculty form
   def determine_redirect_link_from_previous_state
