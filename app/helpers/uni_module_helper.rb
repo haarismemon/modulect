@@ -7,7 +7,7 @@ module UniModuleHelper
 		if input.nil? || input.length == 0
 			"No data available"
 	 	else
-	 		input
+	 		input.html_safe
 	 	end
 
 	end
