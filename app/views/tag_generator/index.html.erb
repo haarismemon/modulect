@@ -1,0 +1,43 @@
+<div id = "response-div">response goes here</div>
+<div id="scoped-content">
+	<style type="text/css" media="all" scoped>
+		
+		@import "stylesheets/widgEditor.css";
+	</style>
+	<form>
+		<textarea id="textarea_desc_input"></textarea>
+	</form>
+</div>
+<button id = "btn_generate_tags">generate tags
+</button>
+
+
+
+<script type="text/javascript">
+var social_tags = [];
+$(function() {
+  $("#btn_generate_tags").on("click", function(event) {
+  	console.log($("#textarea_desc_input").val());
+    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "tag_generator/generate_tags",
+      data: {desc: $("#textarea_desc_input").val()},
+      success: function(result) {
+        targetDiv = document.getElementById("response-div");
+        console.log(result);
+        targetDiv.innerHTML = "<b>API response(social tags only):</b><br/><ul>"
+        for(key in result){
+        	// console.log(result[key]);
+        	if(result[key]._typeGroup == "socialTag"){
+        		console.log(result[key].name);
+        		targetDiv.innerHTML += "<li>" + result[key].name + "</li>"
+        	}
+        	targetDiv.innerHTML += "</ul>";
+        }
+      },
+    });
+  });
+});
+
+</script>
