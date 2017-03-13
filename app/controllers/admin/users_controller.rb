@@ -2,6 +2,9 @@ module Admin
   class UsersController < Admin::BaseController
     before_action :verify_correct_department, only: [:destroy, :update, :edit]
 
+    def show
+      redirect_to edit_admin_user_path(params[:id])
+    end
 
     def index
 
