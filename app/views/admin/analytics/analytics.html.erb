@@ -10,6 +10,8 @@
    #analytics-page .red{color:#c77067;}
    #analytics-page .header-card{padding-left: 0px;padding-right: 0px;padding-bottom: 0px;}
    #analytics-page .header-item .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
+
+
    @media(max-width:991px) {
    #analytics-page .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;text-align: center;}
    #analytics-page .header-item.last{border-bottom:0px;}
@@ -77,7 +79,49 @@
          </div>
          <div class="row">
             <div class="col-md-12 login-card">
-               GRAPH AREA
+       <canvas id="myChart" width="400" height="150"></canvas>
+<script>
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [{
+            label: '# of Votes',
+            data: [1550, 1569, 1800, 2000, 2085, 3900],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+
+
             </div>
             <div class="row">
                <div class="col-md-4" >
