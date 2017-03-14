@@ -100,20 +100,6 @@
 </div>
 
 <script type="text/javascript">
-  /*
-  
-  TODO:
-  1) add valitation to select and deselect functions
-  2) add notifications
-  3) colour-code groups
-  4) right now when the year divs are updated, all the slide-down divs are getting hidden again
-    this should not be an issue since rather than having a slide-down div, we're more likely to have
-    a pop-up selection div
-
-
-  ISSUES:
-  1) What happens when the order of modules in optional groups is changed?
-  */
 
   // get JSON object from rails
   var data = '<%=raw @course_obj.to_json(
@@ -125,10 +111,10 @@
   var js_course = jQuery.parseJSON(data);
 
   // globals to keep track of selected modules
-  var selected_modules_per_year = <%= @selected %>;
+  //var selected_modules_per_year = <%= @selected %>;
   var required_modules_per_year = [];
   var optional_modules_per_year = [];
-  var selected_ids = [];
+  var selected_ids = <%= @selected %>;
 
   var btns = [];
   var divs = [];
@@ -365,8 +351,8 @@
       selected_modules_buttons_first_semester = [];
       selected_modules_buttons_second_semester = [];
       selected_modules_buttons_year_long = [];
-      for(g=0; g<optional_modules_per_year[year].length; g++){
-        for(index=0; index<selected_ids[year][g].length; index++){
+      for(group = 0; group < optional_modules_per_year[year].length; ++group) {
+        for(index = 0; index < selected_ids[year][g].length; ++index){
           var findWithId = selected_ids[year][g][index];
           var semester = -1;
           var sel_module = [];
