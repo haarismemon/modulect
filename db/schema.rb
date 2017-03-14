@@ -70,6 +70,11 @@ ActiveRecord::Schema.define(version: 20170313104922) do
     t.index ["uni_module_id", "department_id"], name: "index_uni_module_department"
   end
 
+  create_table "departments_users", force: :cascade do |t|
+    t.integer "department_id"
+    t.integer "user_id"
+  end
+
   create_table "faculties", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false

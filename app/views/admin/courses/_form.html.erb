@@ -1,24 +1,84 @@
 <%= form_for [:admin, @course] do |f| %>
 
-  <%= render 'shared/error_messages', object: f.object %>
+  <!-- <%= render 'shared/error_messages', object: f.object %> -->
 
-  <%= f.label :owner_departments %>
-  <div id="select-departments">
-    <%= f.select :department_ids, Department.all.collect {|x| [x.name, x.id]}, {},
-    :multiple => true, class: 'selectize' %>
-  </div>
-  <%= f.label :name %>
-  <%= f.text_field :name, class: 'form-control' %>
+      <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+      <%= error_messages_for(f.object) %>
 
-  <%= f.label :start_year %>
-  <%= f.number_field :year, default: Date.current.year %>
 
-  <%= f.label :description %>
-  <%= f.text_area :description, class: 'form-control' %>
+          <!--renders attributes-->
+          <div class="row field-unit field-unit--string name" >
+            <div class="col-xs-12">
+              <div class="field-unit__label">
+                <%= f.label :name %>
+              </div>
+              <div class="field-unit__field">
+                <%= f.text_field :name %>
+              </div>
+            </div>
+          </div>
 
-  <%= f.label :duration_in_years %>
-  <%= f.number_field :duration_in_years, class: 'form-control' %>
+          <div class="row field-unit field-unit--string department" >
+            <div class="col-xs-12">
+              <div class="field-unit__label">
+                <%= f.label  :departments_of_course%>
+              </div>
+              <div class="field-unit__field select-departments">
+                  <%= f.select :department_ids, Department.all.collect {|x| [x.name, x.id]}, {},
+                  :multiple => true, class: 'selectize' %>
+              </div>
+            </div>
+          </div>
+
+            <div class="col-xs-12">
+              <div class="row field-unit start_year" >
+              <div class="field-unit__label">
+                <%= f.label  :start_year  %>
+              </div>
+              <div class="field-unit__field">
+                <%= f.number_field :year, default: Date.current.year %>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-xs-12">
+            <div class="row field-unit description" >
+              <div class="field-unit__label">
+                <label for="description">Description <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
+                  title="Introduction explaining what this course is, and why students might be intrested in taking it.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+              </div>
+              <div class="field-unit__field">
+                <%= f.text_area :description, :class => "tinymce" %>
+                <%= tinymce %>
+              </div>
+            </div>
+          </div>
+
+
+                    <div class="col-xs-12">
+                      <div class="row field-unit duration_in_years" >
+                      <div class="field-unit__label">
+                        <label for="duration_in_years">Duration in years <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
+                          title="The total amount of year's this course will last for. The duration determines how many year structures (year-slots consisting of modules) is given to this course, defined below. ">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                      </div>
+                      <div class="field-unit__field">
+                      <%= f.select(:duration_in_years, options_for_select(1..9, @course.duration_in_years), {:include_blank => true}, {:class => 'selectize' } )%>
+                      </div>
+                    </div>
+                  </div>
+
+
+
 
   <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
 
 <% end %>
+
+
+<script>
+$(function(){
+  intializeSelectize()
+});
+</script>
