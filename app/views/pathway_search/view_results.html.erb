@@ -103,13 +103,12 @@
 
   // get JSON object from rails
   var data = '<%=raw @course_obj.to_json(
-    :include => [
-      {:year_structures
-        {:include
-          {:groups
-            {:include => :uni_modules}}}},
-      {:uni_module_requirements}]
-      ).sub("'", "\\\\'") %>';
+    include:
+      {year_structures:
+        {include:
+          {groups:
+            {include:
+              {:uni_modules => :uni_module_requirements}}}}).sub("'", "\\\\'") %>';
   var js_course = jQuery.parseJSON(data);
 
   // globals to keep track of selected modules
@@ -347,7 +346,7 @@
 
 
   function updateUI(){
-    for(year=0; year<js_course.year_structures.length; year++) {
+    for(year = 0; year < js_course.year_structures.length; year++) {
       // Go through all the modules which have been selected and categories them by their semester
       selected_modules_any_semester = [];
       selected_modules_first_semester = [];
@@ -656,6 +655,48 @@
     }
 
     // 3. Check this module has its requirements satisified
+    requirementsSatisfied = true;
+    if(this_module.uni_module_requirements.length > 0) {
+      for(module = 0; module < this_module.uni_module_requirements.length; module++) {
+        requiredMod = this_module.uni_module_requirements[module];
+        moduleTaken = false;
+        // Check if this required module is already in the compulsory modules (for all years)
+        moduleSearch1:
+        for(year = 0; year < js_course.year_structures.length; year++) {
+          for(group = 0; group < required_modules_per_year[year].length; ++group) {
+            for(item = 0; item < required_modules_per_year[year][group]; ++item) {
+              currentMod = required_modules_per_year[year][group].uni_modules[item];
+              if(requiredMod.id == currentMod.id) {
+                moduleTaken = true;
+                break moduleSearch1;
+              }
+            }
+          }
+        }
+        if(moduleTaken) {
+          continue; // If we have found the module at this point go to the next required module
+        } else {
+          // Check if this required module is in the selected modules (for all years)
+          moduleSearch2:
+          for(year = 0; year < js_course.year_structures.length; year++) {
+            for(group = 0; group < optional_modules_per_year[year].length.length) {
+              for(item = 0; item < selected_ids[year][group].length]) {
+                if(requiredMod.id == selected_ids[year][group][item].id) {
+                  moduleTaken = true;
+                  break moduleSearch2;
+                }
+              }
+            }
+          }
+          if(!moduleTaken) { // Module has not been found to be taken at this point
+            requirementsSatisfied = false;
+            break;
+          }
+        }
+      }
+    }
+
+
     console.log("credits used this year: " + credits_this_year);      
     console.log("----------------------------------------");
     if(credits_used >= max_credits) {
