@@ -12,7 +12,7 @@
 
     <div id="comments-section">
         <% for i in 1..num_pages %>
-              <div id="page-<%= i %>">
+              <div id="page-div-<%= i %>">
                 <% page_comments_group = grouped_comments[i - 1] %>
                 <% page_comments_group.each do |comment|
                       unless comment.nil? %>
@@ -96,38 +96,47 @@
       width: 81px;
     }
 
-
     #comments-section div { display:none; }
     #comments-section > div:first-child { display:block; }
+
+    .selected_page {
+      font-weight: bold;
+      color: green;
+      font-size: 16px;
+    }
+
+    .unselected_page {
+      font-weight: normal;
+      font-size: 14px;
+    }
     
 </style>
 
 <script>
+    $(".helpful-btn").on("click", function (event) {
+        button_id = event.target.id
+        comment_id = parseInt(button_id.replace("helpful-btn-", ""));
+        button = $("#helpful-btn-" + comment_id);
+        label = $("#helpful-label-" + comment_id);
 
-  $(".helpful-btn").on("click", function (event) {
-      button_id = event.target.id
-      comment_id = parseInt(button_id.replace("helpful-btn-", ""));
-      button = $("#helpful-btn-" + comment_id);
-      label = $("#helpful-label-" + comment_id);
-
-      $.ajax({
-          type: "POST",
-          url: "<%= comments_like_path %>",
-          data: { comment_id: comment_id },
-          context: document.body,
-          success: function (data) {
-              label.html(data.like_count);
-              if (data.helpful == true) {
-                  button.html("Helpful")
-                  button.removeClass("not-helpful")
-                  button.addClass("helpful")
-              }
-              else if (data.helpful == false) {
-                  button.html("Helpful?")
-                  button.removeClass("helpful")
-                  button.addClass("not-helpful")
-              }
-          }
-      });
-  })
+        $.ajax({
+            type: "POST",
+            url: "<%= comments_like_path %>",
+            data: { comment_id: comment_id },
+            context: document.body,
+            success: function (data) {
+                label.html(data.like_count);
+                if (data.helpful == true) {
+                    button.html("Helpful")
+                    button.removeClass("not-helpful")
+                    button.addClass("helpful")
+                }
+                else if (data.helpful == false) {
+                    button.html("Helpful?")
+                    button.removeClass("helpful")
+                    button.addClass("not-helpful")
+                }
+            }
+        });
+    });
 </script>
