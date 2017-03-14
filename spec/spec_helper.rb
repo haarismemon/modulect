@@ -19,7 +19,6 @@
 
 require 'factory_girl_rails'
 require 'capybara/rspec'
-require 'rack_session_access/capybara'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods

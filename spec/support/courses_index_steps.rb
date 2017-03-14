@@ -4,6 +4,12 @@ module CoursesIndexSteps
   def select_first_course
     find("#check_individual[value='1']").set(true)
   end
+
+  # waits for the text to show up in autocomplete and then selects it
+  def selectize_select(text)
+   find(".selectize-input input").native.send_keys(text) #fill the input text
+   find(:xpath, "//div[@data-selectable and contains(., '#{text}')]").click #wait for the input and then click on it
+  end
   
   def select_clone_action
     find("#bulk-actions").click

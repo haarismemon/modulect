@@ -3,13 +3,13 @@ require 'rails_helper'
 require 'support/login_helper'
 require 'support/courses_index_steps'
 
-feature "Index page of courses: admin ", :js => true do
+feature "Index page of courses: admin", :js => true do
   include LoginHelper
   include CoursesIndexSteps
 
   given! (:admin) { create(:user, user_level: "super_admin_access") }
   given! (:course) { create(:course) }
-  given (:department) { create(:department) }
+  given! (:department) { create(:department) }
 
   before do
     visit admin_courses_path
@@ -35,6 +35,11 @@ feature "Index page of courses: admin ", :js => true do
   scenario "can create a new course" do
     select_new_course_action
     i_should_be_on_the_create_a_new_course_page
-    #select department.name, from: 'departments-dropdown'
+    selectize_select(department.name)
+    fill_in "course_name", with: 'New Course'
+    fill_in "course_year", with: '2015'
+    fill_in "course_description", with: "A course that is worth its money"
+    click_button "Create"
+    assert_text "New Course"
   end
 end
