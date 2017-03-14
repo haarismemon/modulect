@@ -14,7 +14,10 @@
    #analytics-page .subox-card{padding-left: 20px;padding-right: 20px;}
    #analytics-page .subox-card .small-header {margin-bottom: 20px;}
     #analytics-page .subox-card .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
+    #analytics-page .expand-link a{color:#337ab7;font-family: "Open Sans";font-size: 12px;}
 
+ #analytics-page .trending-list{margin-left:15px;}
+ #analytics-page .trending-list li{ list-style: decimal;margin-bottom: 5px;font-size:16px;font-family: "Open Sans"}
 
 .side-right{float:right;width:130px;}
 
@@ -22,9 +25,9 @@
 .side-right .dropdown-toggle:hover,
 .side-right .dropdown-toggle:focus,
 .side-right .dropdown-toggle:active {
-    background: #dfe2e1;
+    background: whitesmoke;
     color: #333;
-    box-shadow: 0px 3px 0px 0px #999;
+    box-shadow: 0px 3px 0px 0px #dfe2e1;
     outline: none;
     width:130px;
     font-size:13px;
@@ -137,8 +140,6 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-this area is for the multiple lines chart<br />
-            There should be a dropdown to toggle chart type anywhere we do charts (line, bar, area) because <span style="font-style:italic;">nothing's impossible</span>
 
             </div>
             <div class="row">
@@ -156,13 +157,7 @@ this area is for the multiple lines chart<br />
       </select>
                      </div>
                      <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Trending tags</a></h4>
-                     
-
-<style>
-.trending-list{margin-left:15px;}
-.trending-list li{ list-style: decimal;margin-bottom: 5px;font-size:16px;font-family: "Open Sans"}
-</style>
-
+     
 <ol class="trending-list">
 <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
 <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
@@ -171,9 +166,12 @@ this area is for the multiple lines chart<br />
 <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
 </ol>
 
+<div class="expand-link">
+<a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+</div>
 
 
-                     department admin vs system admin
+
 
 
 
@@ -186,16 +184,56 @@ this area is for the multiple lines chart<br />
                </div>
                <div class="col-md-4">
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Trending modules</h4>
-                     department admin vs system admin
+                    <ol class="trending-list">
+<li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+</ol>
+
+<div class="expand-link">
+<a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+</div>
                   </div>
                </div>
 
                <div class="col-md-4">
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Most saved modules</h4>
 
-                     department admin vs system admin
+                     <ol class="trending-list">
+<li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+</ol>
+
+<div class="expand-link">
+<a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+</div>
                   </div>
                </div>
             </div>
@@ -203,22 +241,134 @@ this area is for the multiple lines chart<br />
             <div class="row">
                <div class="col-md-4" >
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Device usage</h4>
-                     department admin vs system admin
+                     
+
+       <canvas id="myPieChart" width="50" height="30"></canvas>
+<script>
+var ctxa = document.getElementById("myPieChart");
+// For a pie chart
+var myPieChart = new Chart(ctxa,{
+    type: 'pie',
+    data: {
+    labels: [
+        "iPhone",
+        "Android device",
+        "Windows 10"
+    ],
+    datasets: [
+        {
+            data: [300, 50, 100],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ]
+        }]
+},
+    options: {
+        animation:{
+            animateScale:true
+        }
+    }
+});
+</script>
+
+
+
                   </div>
                </div>
 
                <div class="col-md-4">
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Top x reviewed modules</h4>
-                     department admin vs system admin
+                     <ol class="trending-list">
+<li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+</ol>
+
+<div class="expand-link">
+<a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+</div>
                   </div>
                </div>
 
                <div class="col-md-4">
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Top x highly rated modules</h4>   
-                     department admin vs system admin
+                     <canvas id="myLineChart" width="50" height="30"></canvas>
+<script>
+var ctxa = document.getElementById("myLineChart");
+// For a pie chart
+var myPieChart = new Chart(ctxa,{
+    type: 'bar',
+    data: {
+    labels: [
+        "Red",
+        "Blue",
+        "Yellow"
+    ],
+    datasets: [
+        {
+            data: [300, 50, 100],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ]
+        }]
+},
+    options: {
+        animation:{
+            animateScale:true
+        }
+    }
+});
+</script>
+
                   </div>
                </div>
             </div>
@@ -226,21 +376,125 @@ this area is for the multiple lines chart<br />
  <div class="row">
                <div class="col-md-4" >
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Most active student users</h4>
-                     by reviews, searches, saves (using a dropdown to filter)
-                     department admin vs system admin
+                   <ol class="trending-list">
+<li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+</ol>
+
+<div class="expand-link">
+<a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+</div>
                   </div>
                </div>
                <div class="col-md-4">
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Logged in vs logged out visitors</h4>
-                     a pie chart, department admin vs system admin
+                      <canvas id="myPieChart3" width="50" height="30"></canvas>
+<script>
+var ctxa = document.getElementById("myPieChart3");
+// For a pie chart
+var myPieChart = new Chart(ctxa,{
+    type: 'pie',
+    data: {
+    labels: [
+        "Logged in %",
+        "Logged out %"
+    ],
+    datasets: [
+        {
+            data: [75, 25],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB"
+            ]
+        }]
+},
+    options: {
+        animation:{
+            animateScale:true
+        }
+    }
+});
+</script>
+
+
                   </div>
                </div>
                <div class="col-md-4">
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Most active courses</h4>
-                     department admin vs system admin
+                     <canvas id="myHBarChart" width="50" height="30"></canvas>
+<script>
+var ctxa = document.getElementById("myHBarChart");
+// For a pie chart
+var myPieChart = new Chart(ctxa,{
+    type: 'horizontalBar',
+    data: {
+    labels: [
+        "Red",
+        "Blue",
+        "Yellow"
+    ],
+    datasets: [
+        {
+            data: [300, 50, 100],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ]
+        }]
+},
+    options: {
+        animation:{
+            animateScale:true
+        }
+    }
+});
+</script>
                   </div>
                </div>
             </div>
@@ -249,8 +503,28 @@ this area is for the multiple lines chart<br />
  <div class="row">
                <div class="col-md-4" >
                   <div class="col-md-12 login-card subox-card">
+                  <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
                      <h4>Most active departments</h4>
-                     system admin, can see who uses admin the most
+                     <ol class="trending-list">
+<li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+</ol>
+
+<div class="expand-link">
+<a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+</div>
                   </div>
                </div>
 
@@ -278,3 +552,19 @@ this area is for the multiple lines chart<br />
    </div>
 </div>
 </div>
+
+<Br />
+<Br />
+<Br />
+<Br />
+<h1>NOTES</h1>
+<Br />
+<Br />
+<Br />
+<Br />
+                     Most active student users:
+                     by reviews, searches, saves (using a dropdown to filter)<br />
+
+                     some areas for one and not the other and some for others < br />department admin vs system admin<br />
+main area is for the multiple lines chart<br />
+            There should be a dropdown to toggle chart type anywhere we do charts (line, bar, area) because <span style="font-style:italic;">nothing's impossible</span>
