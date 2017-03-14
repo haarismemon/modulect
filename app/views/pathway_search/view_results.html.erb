@@ -392,14 +392,9 @@
         s2++;
       }
 
-      /*for(i = s1; i < 4; ++i) { // Create blank cells !! THIS MIGHT NEED TO BE CHANGED, LOCKED AT 4!!
+      for(i = s1; i < 4; ++i) { // Create blank cells !! THIS MIGHT NEED TO BE CHANGED, LOCKED AT 4!!
         myTable +="<tr><td>" + create_blank_cell(year + 1) + "</td><td>" + create_blank_cell(year + 1) + "</td></tr>";
       }
-      myTable += "</table>";      
-      targetDiv.innerHTML = myTable;
-
-      // find the table we've just created
-      myTableOnPage = document.getElementById('results_table_'+year); */
 
       // Fill in modules in 1st semester. Note: required modules are in index 1 of required_modules_per_year
       for(i = 0; i < required_modules_per_year[year][1].length; ++i) {
@@ -430,24 +425,27 @@
           myTable.rows[s2+1].cells[1].innerHTML = create_module_card(selected_modules_any_semester[i][0], true, selected_modules_any_semester[i][1], selected_modules_any_semester[i][2], selected_modules_any_semester[i][3]);
           s2++;
         } else {
-          myTableOnPage.rows[s1+1].cells[0].innerHTML = create_module_card(selected_modules_any_semester[i][0], true, selected_modules_any_semester[i][1], selected_modules_any_semester[i][2], selected_modules_any_semester[i][3]);
+          myTable.rows[s1+1].cells[0].innerHTML = create_module_card(selected_modules_any_semester[i][0], true, selected_modules_any_semester[i][1], selected_modules_any_semester[i][2], selected_modules_any_semester[i][3]);
           s1++;
         }
       }
+
+      myTable += "</table>";      
+      targetDiv.innerHTML = myTable;
 
       // generate optional modules buttons
       modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
       modalTarget.innerHTML = "";
       nav = "<div id=\"pathway-tabs\"><ul class=\"nav nav-tabs\">";
-      for(i=0; i<optional_modules_per_year[year].length; i++){  
+      for(i = 0; i < optional_modules_per_year[year].length; ++i) {  
         out = "<li><a role=\"tab\" data-toggle=\"tab\" id = \"btn_opt_year_"+year+"_group_"+i+"\">" + optional_modules_per_year[year][i].name + "</a></li>";
           nav += out;
       }
       nav += "</ul></div><div class=\"tab-pane fade in active col-md-12\" id = \"div_opt_year_" + year + "\" style=\"padding-top: 20px\"></div>";
       modalTarget.innerHTML += nav;
 
-
-      for(i=0; i<optional_modules_per_year[year].length; i++){
+      // For each button add a event listener which shows a modal sorted by tags by default
+      for(i = 0; i < optional_modules_per_year[year].length; ++i) {
         (function(_year, _i){
           button = document.getElementById("btn_opt_year_" + _year + "_group_" + _i);
           button.addEventListener("click", function(){
@@ -459,7 +457,9 @@
     }
   }
 
-  function optional_button_pressed(_year, _i, useTags, sortby){
+  // Shows the modal with the optional modules which the user selected from
+  function optional_button_pressed(_year, _i, useTags, sortby) {
+    // Show the sorting options
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
     target.innerHTML += "<div class=\"row\"><span style=\"margin-bottom: 20px; display:inline-block;\" class=\"sort-area\">" +
@@ -486,7 +486,7 @@
       if(result.length > 0 && useTags) {
         var tagsmatched = result[0][1];
         moduleCard = "<div class =\"row\">" +
-                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
+                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                     console.log("fond");
@@ -523,7 +523,6 @@
       var result = [];
       var hasTags = [];
       if(foundAlready.length == 0) {
-        console.log("Got here 1");
         if(!useTags) {
           var hasTags = module_results.filter(function(mod) {
             if(mod[0].id == uni_mod.id) {
@@ -532,10 +531,9 @@
           });
         }
         if(hasTags.length > 0) {
-          console.log("GOt here");
           var tagsmatched = hasTags[0][1];
           moduleCard = "<div class =\"row\">" +
-                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
+                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
@@ -558,7 +556,7 @@
                             "</div>"; 
         } else {
           moduleCard = "<div class =\"row\">" +
-                              "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_year_"+_year+"_group_"+_i+"_index_"+i+"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"No tags matched.\"";
+                              "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"No tags matched.\"";
                                 if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
@@ -586,14 +584,16 @@
     var selecter = document.getElementById("sort_by");
     selecter.value = sortby;
 
-    for(i=0; i<optional_modules_per_year[_year][_i].uni_modules.length; i++){
-      if(!selected_modules_per_year[_year][_i][i]){
+    // Add an event listener to each module button which triggers a select on the module, also starts the check on the module.
+    for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
+      currentModId = optional_modules_per_year[_year][_i].uni_modules[i].id;
+      if(!(selected_ids[_year][_i].indexOf(currentModId) > -1)) {
         (function(_year_, _i_, i_){
-          button = document.getElementById("btn_opt_select_year_" + _year_ + "_group_" + _i_+"_index_"+i_);
+          button = document.getElementById("btn_opt_select_" + currentModId);
           button.addEventListener("click", function(){
             console.log("hit");
             $("#optionsModalYear" + (_year + 1)).modal('hide');
-            selectModule(_year_,_i_,i_);
+            selectModule(_year_,_i_,currentModId);
           });
         })(_year, _i, i);
       }
