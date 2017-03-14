@@ -103,11 +103,13 @@
 
   // get JSON object from rails
   var data = '<%=raw @course_obj.to_json(
-    include:
-      {year_structures:
-        {include:
-          {groups:
-            {:include => :uni_modules}}}}).sub("'", "\\\\'") %>';
+    :include => [
+      {:year_structures
+        {:include
+          {:groups
+            {:include => :uni_modules}}}},
+      {:uni_module_requirements}]
+      ).sub("'", "\\\\'") %>';
   var js_course = jQuery.parseJSON(data);
 
   // globals to keep track of selected modules
@@ -626,6 +628,7 @@
     console.log("credits already used: " + credits_used);
     console.log("credits already selected: " + modules_selected_from_group);
     console.log("----------------------------------------");
+
     // 2. Don't select more than the max number of credits worth modules per year
     credits_this_year = 0;
     // Add credits from required modules
@@ -650,7 +653,9 @@
           }
         }
       }
-    } 
+    }
+
+    // 3. Check this module has its requirements satisified
     console.log("credits used this year: " + credits_this_year);      
     console.log("----------------------------------------");
     if(credits_used >= max_credits) {
