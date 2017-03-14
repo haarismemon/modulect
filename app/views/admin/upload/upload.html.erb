@@ -64,7 +64,7 @@
     <h3>Step 3: Upload data</h3>
     <div class="form-entry text-center" style="margin-top: 20px;">
       <%= form_tag("/admin/upload/upload_csv", method: "post", multipart: true) do %>
-          <%= file_field_tag :csv_upload, id: 'csv_upload', onchange: 'validate_file_extension(this.value);' %>
+          <%= file_field_tag :csv_upload, id: 'csv-upload', onchange: 'validate_file_extension(this.value);' %>
           <%= submit_tag 'Upload', id: 'upload-3-next', class: 'btn btn-md' %>
       <% end %>
     </div>
@@ -79,13 +79,17 @@
         var file_extension = fileName.split(".").pop();
 
         if (file_extension == allowed_extension) {
+            // Show the upload button if file ext. is correct
             $("#upload-3-next").show();
             return true;
         }
 
+        // Hide the show button if file ext. is incorrect
+        $("#upload-3-next").hide();
+        // Delete currently selected file
+        $("#csv-upload").val(null);
         alert("File must be a CSV (.csv). Ensure the uploaded file meets " +
             "this requirement before continuing.");
-        $("#upload-3-next").hide();
         return false;
     }
 
