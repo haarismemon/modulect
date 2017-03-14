@@ -124,7 +124,7 @@
 
     $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
         $("#comment_body").val("");
-        $("#comment-creation-box").slideToggle("slow");
+        openCommentCreation();
         $("input[name='comment[rating]']").val([5]);
     });
 
