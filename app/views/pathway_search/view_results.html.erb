@@ -268,7 +268,7 @@
   }
 
   function colour_code_card_group(module_matches, search_tags) {
-    if((module_matches.length / search_tags.length) > <%= app_settings.tag_percentage_match %>) {
+    if((module_matches.length / search_tags.length) > <%= app_settings.tag_percentage_match / 100 %>) {
       return "green"
     } else {
       return "orange"
