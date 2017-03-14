@@ -100,6 +100,13 @@ module Admin
         user.update_attribute("course_id", nil)
       end
 
+      @course.year_structures.each do |year_strcuture|
+        year_structure.each do |group|
+          group.destroy
+        end
+        year_structure.destroy
+      end
+
       @course.destroy
       flash[:success] =  @course.name + " was deleted successfully."
       redirect_to(admin_courses_path)
