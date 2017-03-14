@@ -120,6 +120,17 @@
         first_page.addClass("selected_page");
     }
 
+    $("a[id^=page-link]").on("click", function (event) {
+        page_link_id = event.target.id;
+        page_number = parseInt(page_link_id.replace("page-link-", ""));
+        page_div = $("#page-div-" + page_number);
+
+        $('#comments-section').children('div').each(function () {
+            $(this).css("display", "none");
+        });
+        page_div.css("display", "block");
+    });
+
     $(".helpful-btn").on("click", function (event) {
         button_id = event.target.id
         comment_id = parseInt(button_id.replace("helpful-btn-", ""));
