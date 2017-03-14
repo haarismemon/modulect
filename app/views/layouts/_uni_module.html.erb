@@ -41,7 +41,7 @@
          </button>
          <% end %>
 
-         <button class="btn btn-lg btn-small" id="review-module" style="width: 170px"><i class="fa fa-comments" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</button>
+         <button class="btn btn-lg btn-small" id="review-module" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</button>
 
          <script>
             $("button#save-<%= uni_module.code%>").on("click", function(){
@@ -50,10 +50,11 @@
                     url: "<%=application_save_module_path(module_par: uni_module) %>",
                     context: document.body
                 })
-            
-            
-            
-            
+            });
+
+            $("button#review-module").click(function () {
+                var new_path = "<%= uni_module_path(uni_module.id) %>";
+                window.location = new_path + "#module_review";
             });
             
             
