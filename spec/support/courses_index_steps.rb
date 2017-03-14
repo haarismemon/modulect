@@ -5,6 +5,13 @@ module CoursesIndexSteps
     find("#check_individual[value='1']").set(true)
   end
 
+  def fill_in_course_form
+    selectize_select(department.name)
+    fill_in "course_name", with: 'New Course'
+    fill_in "course_year", with: '2015'
+    fill_in "course_description", with: "A course that is worth its money"
+  end
+
   # waits for the text to show up in autocomplete and then selects it
   def selectize_select(text)
    find(".selectize-input input").native.send_keys(text) #fill the input text

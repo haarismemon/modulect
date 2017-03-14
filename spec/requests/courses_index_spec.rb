@@ -32,13 +32,18 @@ feature "Index page of courses: admin", :js => true do
     i_should_not_see(course)
   end
 
+  scenario "can edit a course" do
+    find(".action-edit").click
+    fill_in_course_form
+    click_button "Update"
+    assert_text "New Course"
+    expect(page).to have_current_path(edit_admin_course_path(course))
+  end
+
   scenario "can create a new course" do
     select_new_course_action
     i_should_be_on_the_create_a_new_course_page
-    selectize_select(department.name)
-    fill_in "course_name", with: 'New Course'
-    fill_in "course_year", with: '2015'
-    fill_in "course_description", with: "A course that is worth its money"
+    fill_in_course_form
     click_button "Create"
     assert_text "New Course"
   end
