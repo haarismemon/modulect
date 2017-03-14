@@ -3,6 +3,7 @@ module SessionsHelper
 	# Logs in the given user.
 	def log_in(user)
 		session[:user_id] = user.id
+		session[:last_login_time] = user.last_login_time
 		user.update_attribute(:last_login_time, Time.now)
 	end
 
@@ -34,6 +35,10 @@ module SessionsHelper
 				@current_user = user
 			end
 		end
+	end
+
+	def current_user_last_login_time
+		session[:last_login_time] 
 	end
 
 	def admin_user
