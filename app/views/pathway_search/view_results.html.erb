@@ -608,12 +608,8 @@
     // 1. Make sure we don't go over max modules or credits per group
     max_credits = optional_modules_per_year[year][group].max_credits;
     min_credits = optional_modules_per_year[year][group].min_credits;
-    max_modules = optional_modules_per_year[year][group].max_modules;
-    min_modules = optional_modules_per_year[year][group].min_modules;
     console.log("max credits in this group: " + max_credits);
     console.log("min credits in this group: " + min_credits);
-    console.log("max modules in this group: " + max_modules);
-    console.log("min modules in this group: " + min_modules);
     credits_used = 0;
     modules_selected_from_group = selected_ids[year][group].length;
     for(i = 0; i < selected_ids[year][group].length; ++i) {
@@ -625,6 +621,7 @@
     console.log("----------------------------------------");
     // 2. Don't select more than the max number of credits worth modules per year
     credits_this_year = 0;
+    // Add credits from required modules
     for(group = 0; group < required_modules_per_year[year].length; ++group) {
       for(item = 0; item < required_modules_per_year[year][group].length; ++item) {
         credits_this_year += required_modules_per_year[year][group][item].credits;
@@ -632,6 +629,7 @@
             " (" + required_modules_per_year[year][group][item].credits + ")");
       }
     }
+    // Add credits from selected modules
     for(group = 0; group < selected_ids[year].length; ++group){
       for(item = 0; item < selected_ids[year][group].length; i++){
         console.log("checking selected [y=" + year + ", group=" + group + ", item=" + item + "]");
