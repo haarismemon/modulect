@@ -5,18 +5,18 @@
     <% grouped_comments = updated_comments.in_groups_of(num_comments_per_page) %>
     <% num_pages = grouped_comments.length %>
 
-    <a id="first-page"><< First &nbsp</a>
-    <a id="prev-page">< Prev &nbsp&nbsp</a>
-    <% for i in 1..num_pages %>
-        <a id="page-link-<%= i %>"><%= i %></a>
+    <% if num_pages > 1 %>
+        <a id="first-page"><< First &nbsp</a>
+        <a id="prev-page">< Prev &nbsp&nbsp</a>
+        <% for i in 1..num_pages %>
+            <a id="page-link-<%= i %>"><%= i %></a>
+        <% end %>
+        <a id="next-page">&nbsp&nbsp Next ></a>
+        <a id="last-page">&nbsp Last >></a>
+        <br>
     <% end %>
-    <a id="next-page">&nbsp&nbsp Next ></a>
-    <a id="last-page">&nbsp Last >></a>
-    <br>
 
     <label id="display-comments-number">Displaying comments</label>
-
-    <br>
 
     <div id="comments-section">
         <% for i in 1..num_pages %>
@@ -132,6 +132,10 @@
     }
     $("#first-page").hide();
     $("#prev-page").hide();
+//    if(num_pages == 1) {
+//        $("#next-page").hide();
+//        $("#last-page").hide();
+//    }
     $('#comments-section').children('div').each(function () {
         $(this).css("display", "none");
     });
