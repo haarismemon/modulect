@@ -1,6 +1,8 @@
 <% provide(:title, 'Analytics') %>
 <header class="header">
    <h1 class="page-title">Analytics</h1>
+   <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+            :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
 </header>
 <div id="analytics-page">
    <script type="text/javascript">
@@ -13,7 +15,7 @@
       });
       
    </script>
-   <ul class="nav nav-tabs">
+   <ul class="nav nav-tabs" style="margin-top:-10px;">
       <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
       <li><a data-toggle="tab" href="#quick-search">Quick Search</a></li>
       <li><a data-toggle="tab" href="#pathway-search">Pathway Search</a></li>
