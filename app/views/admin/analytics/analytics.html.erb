@@ -2,16 +2,36 @@
 <style>
    #analytics-page .header-item{border-right:1px solid #dfe2e1;}
    #analytics-page .header-item.last{border-right:0px;}
-   #analytics-page .tab-pane{padding-left:15px;padding-right: 15px;}
+   #analytics-page .tab-pane{padding-left:20px;padding-right: 20px;}
    #analytics-page .small-header{font-weight:300;margin-bottom:5px;}
    #analytics-page .main-figure{font-size:42px;margin-bottom:5px;}
    #analytics-page .percentage-change{}
    #analytics-page .green{color: #2ab27b;}
    #analytics-page .red{color:#c77067;}
    #analytics-page .header-card{padding-left: 0px;padding-right: 0px;padding-bottom: 0px;}
-   #analytics-page .header-item .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
+   #analytics-page .header-item .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;font-family: "Open Sans"}
 
-   #analytics-page .subox-card{padding-left: 15px;padding-right: 15px;}
+   #analytics-page .subox-card{padding-left: 20px;padding-right: 20px;}
+   #analytics-page .subox-card .small-header {margin-bottom: 20px;}
+    #analytics-page .subox-card .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
+
+
+.side-right{float:right;width:130px;}
+
+.side-right .dropdown-toggle,
+.side-right .dropdown-toggle:hover,
+.side-right .dropdown-toggle:focus,
+.side-right .dropdown-toggle:active {
+    background: #dfe2e1;
+    color: #333;
+    box-shadow: 0px 3px 0px 0px #999;
+    outline: none;
+    width:130px;
+    font-size:13px;
+   padding-bottom: 0px;
+}
+
+#pagination-bottom .bootstrap-select{width:100px}
 
    @media(max-width:991px) {
    #analytics-page .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;text-align: center;}
@@ -49,29 +69,26 @@
          <div class="row" >
             <div class="col-md-12  login-card header-card" style="">
                <div class="col-md-3 header-item">
-                  <div class="small-header">
-                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Total Users (this month)</a>
+                  <div class="small-header"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (this month)</a>
                   </div>
                   <div class="main-figure">3470</div>
                   <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 4% from last month</div>
                </div>
                <div class="col-md-3 header-item">
-                  <div class="small-header">
-                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Quick Searches</a>
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches</a>
                   </div>
                   <div class="main-figure">10255</div>
                   <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 7% from last month</div>
                </div>
                <div class="col-md-3 header-item">
-                  <div class="small-header">
-                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Pathway Searches</a>
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches</a>
                   </div>
                   <div class="main-figure">218</div>
                   <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 1% from last month</div>
                </div>
                <div class="col-md-3 header-item last">
-                  <div class="small-header">
-                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Career Searches</a>
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period">Career Searches</a>
                   </div>
                   <div class="main-figure">4894</div>
                   <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 12% from last month</div>
@@ -120,13 +137,42 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-
+this area is for the multiple lines chart<br />
+            There should be a dropdown to toggle chart type anywhere we do charts (line, bar, area) because <span style="font-style:italic;">nothing's impossible</span>
 
             </div>
             <div class="row">
                <div class="col-md-4" >
                   <div class="col-md-12 login-card subox-card">
-                     <h4>Trending tags</h4>
+
+                     <div class="side-right">
+                         <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+
+         <option value="500" >Area chart</option>
+         <option value="500" >Bar chart</option>
+         <option value="50" >Line chart</option>
+         <option value="250" >Pie chart</option>
+         <option value="10" selected="selected">Table</option>
+      </select>
+                     </div>
+                     <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Trending tags</a></h4>
+                     
+
+<style>
+.trending-list{margin-left:15px;}
+.trending-list li{ list-style: decimal;margin-bottom: 5px;font-size:16px;font-family: "Open Sans"}
+</style>
+
+<ol class="trending-list">
+<li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+<li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+<li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+</ol>
+
+
+
                      department admin vs system admin
 
 
