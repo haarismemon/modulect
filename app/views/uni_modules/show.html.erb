@@ -28,6 +28,7 @@
             <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
             </button>
             <% end %>
+            <a href="#module_review" class="btn btn-lg btn-small" id="review-module" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</a>
             <script>
                $("button#save-<%= @uni_module.code%>").on("click", function(){
                    $.ajax({
