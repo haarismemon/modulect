@@ -104,6 +104,9 @@ module Admin
       end
       
       if can_delete
+        @faculty.users.each do |user|
+          user.update_attribute("faculty_id", nil)
+        end
         @faculty.destroy
         flash[:success] = "Faculty successfully deleted"
         redirect_to admin_faculties_path
