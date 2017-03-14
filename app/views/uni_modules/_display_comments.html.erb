@@ -129,6 +129,11 @@
             $(this).css("display", "none");
         });
         page_div.css("display", "block");
+
+        $("a[id^=page-link]").addClass("unselected_page");
+        $("a[id^=page-link]").removeClass("selected_page");
+        $(this).removeClass("unselected_page");
+        $(this).addClass("selected_page");
     });
 
     $(".helpful-btn").on("click", function (event) {
