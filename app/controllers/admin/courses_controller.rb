@@ -100,8 +100,8 @@ module Admin
         user.update_attribute("course_id", nil)
       end
 
-      @course.year_structures.each do |year_strcuture|
-        year_structure.each do |group|
+      @course.year_structures.each do |year_structure|
+        year_structure.groups.each do |group|
           group.destroy
         end
         year_structure.destroy
