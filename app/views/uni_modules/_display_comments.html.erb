@@ -140,7 +140,11 @@
     update_display_comments_number = function () {
         current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
         first_comment = ((current_page - 1) * num_comments_per_page) + 1;
-        last_comment = current_page * num_comments_per_page;
+        if(current_page == num_pages) {
+            last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1)
+        } else {
+            last_comment = current_page * num_comments_per_page;
+        }
 
 //        alert(current_page)
 
