@@ -1,0 +1,86 @@
+<% provide(:title, 'Analytics') %>
+<header class="header">
+   <h1 class="page-title">Analytics</h1>
+   <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+            :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
+</header>
+<div id="analytics-page">
+   <script type="text/javascript">
+      $(function () {
+          var hashTab = window.location.hash;
+          if (hashTab != '') {
+              $('.nav-tabs a[href="' + hashTab + '"]').tab('show');
+              $(hashTab).addClass('active');
+          }
+      });
+      
+   </script>
+   <ul class="nav nav-tabs" style="margin-top:-10px;">
+      <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
+      <li><a data-toggle="tab" href="#quick-search">Quick Search</a></li>
+      <li><a data-toggle="tab" href="#pathway-search">Pathway Search</a></li>
+      <li><a data-toggle="tab" href="#career-search">Career Search</a></li>
+   </ul>
+   <div class="tab-content" style="margin-top:30px;">
+      <div id="overview" class="tab-pane fade in active">
+         <div class="row" >
+            <div class="col-md-12  login-card">
+               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item hello world test test test testes tetst </div>
+               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item</div>
+               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item</div>
+               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item</div>
+               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item</div>
+               <div class="col-md-2">Item</div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-12 login-card">
+               GRAPH AREA
+            </div>
+            <div class="row">
+               <div class="col-md-4" >
+                  <div class="col-md-12 login-card">
+                     Subgraph
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card">
+                     Subgraph
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card">
+                     Subgraph
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-4" >
+                  <div class="col-md-12 login-card">
+                     Subgraph
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card">
+                     Subgraph
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card">
+                     Subgraph
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div id="quick-search" class="tab-pane fade">
+         Quick search
+      </div>
+      <div id="pathway-search" class="tab-pane fade">
+         Pathway search
+      </div>
+      <div id="career-search" class="tab-pane fade">
+         Caree search
+      </div>
+   </div>
+</div>

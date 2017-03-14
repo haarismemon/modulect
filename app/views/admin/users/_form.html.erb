@@ -96,6 +96,25 @@
    </div>
 </div>
 </div>
+
+<div class="col-md-3">
+<div class="row field-unit field-unit--checkbox last-login-time" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+        <label for="user_is_limited">Last login time</label>
+      </div>
+      <div class="field-unit__field">
+         <% if !@user.last_login_time.present? %>
+            Never
+         <% else %>
+            <%= @user.last_login_time.strftime("%d %B %Y at %H:%M %p") %>
+         <% end %>
+      </div>
+   </div>
+</div>
+</div>
+
+
 </div>
 <%if parent=="edit"  %>
 <div style="margin-bottom:20px;"><a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a></div>
