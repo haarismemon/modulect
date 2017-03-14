@@ -362,6 +362,7 @@
               semester = currentItem.semester;
               // Create an array which stores the module, year, group
               sel_module = [currentItem, year, group];
+              break;
             }
           }
           if(semester == 0) selected_modules_any_semester.push(sel_module);
@@ -639,6 +640,7 @@
             var currentMod = optional_modules_per_year[year][group].uni_modules[i];
             if(currentMod.id == findWithId) {
               credits_this_year += currentMod.credits;
+              break;
             }
           }
         }
