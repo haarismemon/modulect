@@ -30,21 +30,25 @@
             </div>
           </div>
 
-            <div class="col-xs-12">
-              <div class="row field-unit start_year" >
+
+
+          <div class="col-xs-12">
+            <div class="row field-unit description"  >
               <div class="field-unit__label">
-                <%= f.label  :start_year  %>
-              </div>
+                <label for="year">Beginning year <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
+                  title="The beginning year of the university teaching the course. If the course ready existed prior, then a rough estimate is sufficent.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
               <div class="field-unit__field">
-                <%= f.number_field :year, default: Date.current.year %>
+                  <%= f.number_field :year, default: Date.current.year %>
               </div>
             </div>
+
           </div>
+        </div>
 
 
 
           <div class="col-xs-12">
-            <div class="row field-unit description" >
+            <div class="row field-unit description"  >
               <div class="field-unit__label">
                 <label for="description">Description <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
                   title="Introduction explaining what this course is, and why students might be intrested in taking it.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
