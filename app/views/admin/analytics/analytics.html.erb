@@ -11,6 +11,7 @@
    #analytics-page .header-card{padding-left: 0px;padding-right: 0px;padding-bottom: 0px;}
    #analytics-page .header-item .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
 
+   #analytics-page .subox-card{padding-left: 15px;padding-right: 15px;}
 
    @media(max-width:991px) {
    #analytics-page .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;text-align: center;}
@@ -21,7 +22,7 @@
 <header class="header">
    <h1 class="page-title"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Analytics</h1>
    <div class="header__actions">
-      Dropdown here 
+      Department dropdown | Time Dropdown here  | 
       <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
          :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
    </div>
@@ -49,7 +50,7 @@
             <div class="col-md-12  login-card header-card" style="">
                <div class="col-md-3 header-item">
                   <div class="small-header">
-                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Total Users</a>
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Total Users (this month)</a>
                   </div>
                   <div class="main-figure">3470</div>
                   <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 4% from last month</div>
@@ -79,7 +80,7 @@
          </div>
          <div class="row">
             <div class="col-md-12 login-card">
-       <canvas id="myChart" width="400" height="150"></canvas>
+       <canvas id="myChart" width="400" height="120"></canvas>
 <script>
 var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
@@ -87,7 +88,7 @@ var myChart = new Chart(ctx, {
     data: {
         labels: ["January", "February", "March", "April", "May", "June"],
         datasets: [{
-            label: '# of Votes',
+            label: '# of quick searches',
             data: [1550, 1569, 1800, 2000, 2085, 3900],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -121,42 +122,102 @@ var myChart = new Chart(ctx, {
 </script>
 
 
+            </div>
+            <div class="row">
+               <div class="col-md-4" >
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Trending tags</h4>
+                     department admin vs system admin
 
+
+
+
+
+
+
+
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Trending modules</h4>
+                     department admin vs system admin
+                  </div>
+               </div>
+
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Most saved modules</h4>
+
+                     department admin vs system admin
+                  </div>
+               </div>
             </div>
+
             <div class="row">
                <div class="col-md-4" >
-                  <div class="col-md-12 login-card">
-                     Subgraph
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Device usage</h4>
+                     department admin vs system admin
                   </div>
                </div>
+
                <div class="col-md-4">
-                  <div class="col-md-12 login-card">
-                     Subgraph
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Top x reviewed modules</h4>
+                     department admin vs system admin
                   </div>
                </div>
+
                <div class="col-md-4">
-                  <div class="col-md-12 login-card">
-                     Subgraph
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Top x highly rated modules</h4>   
+                     department admin vs system admin
                   </div>
                </div>
             </div>
-            <div class="row">
+
+ <div class="row">
                <div class="col-md-4" >
-                  <div class="col-md-12 login-card">
-                     Subgraph
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Most active student users</h4>
+                     by reviews, searches, saves (using a dropdown to filter)
+                     department admin vs system admin
                   </div>
                </div>
                <div class="col-md-4">
-                  <div class="col-md-12 login-card">
-                     Subgraph
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Logged in vs logged out visitors</h4>
+                     a pie chart, department admin vs system admin
                   </div>
                </div>
                <div class="col-md-4">
-                  <div class="col-md-12 login-card">
-                     Subgraph
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Most active courses</h4>
+                     department admin vs system admin
                   </div>
                </div>
             </div>
+
+
+ <div class="row">
+               <div class="col-md-4" >
+                  <div class="col-md-12 login-card subox-card">
+                     <h4>Most active departments</h4>
+                     system admin, can see who uses admin the most
+                  </div>
+               </div>
+
+
+               </div>
+
+
+
+
+
+
+
+
          </div>
       </div>
       <div id="quick-search" class="tab-pane fade">
@@ -169,4 +230,5 @@ var myChart = new Chart(ctx, {
          Career search
       </div>
    </div>
+</div>
 </div>
