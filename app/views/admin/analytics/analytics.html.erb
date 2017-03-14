@@ -1,10 +1,9 @@
 <% provide(:title, 'Analytics') %>
 <style>
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
-#analytics-page .login-card{padding-left: 15px;}
 .header-item{border-right:1px solid #dfe2e1;}
 .header-item.last{border-right:0px;}
-
+.tab-pane{padding-left:15px;padding-right: 15px;}
 @media(max-width:991px) {
    .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;}
    .header-item.last{border-right:0px;}
@@ -12,7 +11,7 @@
 }
 </style>
 <header class="header">
-   <h1 class="page-title">Analytics</h1>
+   <h1 class="page-title"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Analytics</h1>
    <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
             :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
 </header>
@@ -92,7 +91,7 @@
          Pathway search
       </div>
       <div id="career-search" class="tab-pane fade">
-         Caree search
+         Career search
       </div>
    </div>
 </div>
