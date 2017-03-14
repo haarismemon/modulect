@@ -124,69 +124,78 @@
     num_pages = <%= num_pages %>
     num_comments_per_page = <%= num_comments_per_page %>
 
-    $("a[id^=page-link]").addClass("unselected_page");
-    var first_page = $("a#page-link-1");
-    if (first_page) {
-        first_page.removeClass("unselected_page")
-        first_page.addClass("selected_page");
-    }
-    $("#first-page").hide();
-    $("#prev-page").hide();
-//    if(num_pages == 1) {
-//        $("#next-page").hide();
-//        $("#last-page").hide();
-//    }
-    $('#comments-section').children('div').each(function () {
-        $(this).css("display", "none");
-    });
-    $("#page-div-1").css("display", "block");
+    <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
+    move_to_page = function (page_number) {
+        //hide all pages
+        $('#comments-section').children('div').each(function () {
+            $(this).css("display", "none");
+        });
+        //show only the corresponding page
+        $("#page-div-" + page_number).css("display", "block");
+
+        //give all page links only unselected css class
+        $("a[id^=page-link]").addClass("unselected_page");
+        $("a[id^=page-link]").removeClass("selected_page");
+        //give the corresponding page link clicked a selected css class
+        $("#page-link-" + page_number).removeClass("unselected_page");
+        $("#page-link-" + page_number).addClass("selected_page");
+    };
+
+    move_to_first_page = function () {
+        move_to_page(1);
+
+        $("#first-page").hide();
+        $("#prev-page").hide();
+        $("#next-page").show();
+        $("#last-page").show();
+    };
+
+    move_to_last_page = function () {
+        move_to_page(num_pages);
+
+        $("#first-page").show();
+        $("#prev-page").show();
+        $("#next-page").hide();
+        $("#last-page").hide();
+    };
 
     update_display_comments_number = function () {
-        current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
-        first_comment = ((current_page - 1) * num_comments_per_page) + 1;
-        if(current_page == num_pages) {
-            last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1)
-        } else {
-            last_comment = current_page * num_comments_per_page;
-        }
+        if ($("#comments-section div").length > 0) {
+            current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
+            first_comment = ((current_page - 1) * num_comments_per_page) + 1;
+            if (current_page == num_pages) {
+                last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1);
+            } else {
+                last_comment = current_page * num_comments_per_page;
+            }
 
-//        alert(current_page)
-
-        display_text = "Display comments " + first_comment + " - " +  last_comment + " of " + <%= updated_comments.length %>
-
+            display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= updated_comments.length %>;
             $("label#display-comments-number").html(display_text);
-
+        }
     };
+
+    move_to_first_page();
     update_display_comments_number();
 
     $("#first-page").on("click", function () {
-        first_page_action();
+        move_to_first_page();
         update_display_comments_number();
     });
 
     $("#last-page").on("click", function () {
-        last_page_action();
+        move_to_last_page();
         update_display_comments_number();
     });
 
     $("#next-page").on("click", function () {
         current_page_div_id = $("#comments-section div:visible").first().attr('id');
         next_page = parseInt(current_page_div_id.replace("page-div-", "")) + 1;
+
         if(next_page == num_pages) {
-            last_page_action();
+            move_to_last_page();
         }
         else {
-            page_div = $("#page-div-" + next_page);
-
-            $('#comments-section').children('div').each(function () {
-                $(this).css("display", "none");
-            });
-            page_div.css("display", "block");
-
-            $("a[id^=page-link]").addClass("unselected_page");
-            $("a[id^=page-link]").removeClass("selected_page");
-            $("#page-link-" + next_page).removeClass("unselected_page");
-            $("#page-link-" + next_page).addClass("selected_page");
+            move_to_page(next_page)
         }
 
         update_display_comments_number();
@@ -195,25 +204,16 @@
     $("#prev-page").on("click", function () {
         current_page_div_id = $("#comments-section div:visible").first().attr('id');
         prev_page = parseInt(current_page_div_id.replace("page-div-", "")) - 1;
+
         if(prev_page == 1) {
-            first_page_action();
+            move_to_first_page();
         }
         else {
-            page_div = $("#page-div-" + prev_page);
-
-            $('#comments-section').children('div').each(function () {
-                $(this).css("display", "none");
-            });
-            page_div.css("display", "block");
-
-            $("a[id^=page-link]").addClass("unselected_page");
-            $("a[id^=page-link]").removeClass("selected_page");
-            $("#page-link-" + prev_page).removeClass("unselected_page");
-            $("#page-link-" + prev_page).addClass("selected_page");
+            move_to_page(prev_page)
         }
 
         update_display_comments_number();
-    })
+    });
 
     $("a[id^=page-link]").on("click", function (event) {
 
@@ -224,7 +224,6 @@
 
         page_link_id = event.target.id;
         page_number = parseInt(page_link_id.replace("page-link-", ""));
-        page_div = $("#page-div-" + page_number);
 
         if(page_number == 1) {
             $("#first-page").hide();
@@ -235,60 +234,13 @@
             $("#last-page").hide();
         }
 
-
-        $('#comments-section').children('div').each(function () {
-            $(this).css("display", "none");
-        });
-        page_div.css("display", "block");
-
-        $("a[id^=page-link]").addClass("unselected_page");
-        $("a[id^=page-link]").removeClass("selected_page");
-        $(this).removeClass("unselected_page");
-        $(this).addClass("selected_page");
-
+        move_to_page(page_number);
         update_display_comments_number();
     });
 
-    first_page_action = function () {
-        page_div = $("#page-div-1");
-
-        $('#comments-section').children('div').each(function () {
-            $(this).css("display", "none");
-        });
-        page_div.css("display", "block");
-
-        $("a[id^=page-link]").addClass("unselected_page");
-        $("a[id^=page-link]").removeClass("selected_page");2
-        $("#page-link-1").removeClass("unselected_page");
-        $("#page-link-1").addClass("selected_page");
-
-        $("#first-page").hide();
-        $("#prev-page").hide();
-        $("#next-page").show();
-        $("#last-page").show();
-    };
-
-    last_page_action = function () {
-        page_div = $("#page-div-" + num_pages);
-
-        $('#comments-section').children('div').each(function () {
-            $(this).css("display", "none");
-        });
-        page_div.css("display", "block");
-
-        $("a[id^=page-link]").addClass("unselected_page");
-        $("a[id^=page-link]").removeClass("selected_page");
-        $("#page-link-" + num_pages).removeClass("unselected_page");
-        $("#page-link-" + num_pages).addClass("selected_page");
-
-        $("#first-page").show();
-        $("#prev-page").show();
-        $("#next-page").hide();
-        $("#last-page").hide();
-    };
-
+    //on click method for the helpful button, makes a ajax post request
     $(".helpful-btn").on("click", function (event) {
-        button_id = event.target.id
+        button_id = event.target.id;
         comment_id = parseInt(button_id.replace("helpful-btn-", ""));
         button = $("#helpful-btn-" + comment_id);
         label = $("#helpful-label-" + comment_id);
@@ -301,13 +253,13 @@
             success: function (data) {
                 label.html(data.like_count);
                 if (data.helpful == true) {
-                    button.html("Helpful")
-                    button.removeClass("not-helpful")
+                    button.html("Helpful");
+                    button.removeClass("not-helpful");
                     button.addClass("helpful")
                 }
                 else if (data.helpful == false) {
-                    button.html("Helpful?")
-                    button.removeClass("helpful")
+                    button.html("Helpful?");
+                    button.removeClass("helpful");
                     button.addClass("not-helpful")
                 }
             }
