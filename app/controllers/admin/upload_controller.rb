@@ -20,6 +20,10 @@ module Admin
       parsed_csv.each do |row|
         # Creates records for corresponding resource
         # TO-DO: find faculty from read faculty ID and replace in row Faculty.find(dept.name).id
+        if session[:resource_name] == 'faculties'
+          facultyRow = row.to_hash
+          logger.debug("***************#{facultyRow['name']}")
+        end
         # TO-DO: When uploading faculty csv, add department header, and for every department name add the department ID see: faculties.rb
         # TO-DO: Unimodules upload add interest tags, career tags, create tag - in unimodule controller
         session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
@@ -51,6 +55,13 @@ module Admin
       # Remove attributes that shouldn't appear on CSV
       to_remove = %w(id created_at updated_at)
       resource_header = resource_header - to_remove
+
+      # Add specific association attributes
+      # Add additional header for the departments of the faculty
+      if resource.to_s == 'faculties'
+        resource_header << "departments"
+        logger.debug("8888888888888888888 #{resource_header}")
+      end
 
       # Create a CSV file in the specified path
       file_name = "app/assets/#{resource.to_s}_upload.csv"
