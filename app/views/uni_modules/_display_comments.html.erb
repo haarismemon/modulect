@@ -5,18 +5,20 @@
     <% grouped_comments = updated_comments.in_groups_of(num_comments_per_page) %>
     <% num_pages = grouped_comments.length %>
 
-    <% if num_pages > 1 %>
-        <a id="first-page" class="unselected_page"><< First </a>
-        <a id="prev-page" class="unselected_page">< Prev</a>
-        <% for i in 1..num_pages %>
-            <a id="page-link-<%= i %>"><%= i %></a>
+    <div id="page-links">
+        <% if num_pages > 1 %>
+            <a id="first-page" class="unselected_page"><< First </a>
+            <a id="prev-page" class="unselected_page">< Prev</a>
+            <% for i in 1..num_pages %>
+                <a id="page-link-<%= i %>"><%= i %></a>
+            <% end %>
+            <a id="next-page" class="unselected_page"> Next ></a>
+            <a id="last-page" class="unselected_page"> Last >></a>
+            <br>
         <% end %>
-        <a id="next-page" class="unselected_page"> Next ></a>
-        <a id="last-page" class="unselected_page"> Last >></a>
-        <br>
-    <% end %>
 
-    <label id="display-comments-number">Displaying comments</label>
+        <label id="display-comments-number">Displaying comments</label>
+    </div>
 
     <div id="comments-section">
         <% for i in 1..num_pages %>
@@ -121,6 +123,10 @@
     .unselected_page:hover {
       text-decoration: underline;
       cursor: pointer ;
+    }
+
+    #page-links {
+      margin-left: 20px;
     }
 
 </style>
