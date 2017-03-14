@@ -101,11 +101,9 @@ module Admin
       end
 
       @course.year_structures.each do |year_structure|
-        year_structure.groups.each do |group|
-          group.destroy
-        end
-        year_structure.destroy
+       Group.where(year_structure_id: year_structure.id).destroy_all
       end
+      YearStructure.where(course_id: @course.id).destroy_all
 
       @course.destroy
       flash[:success] =  @course.name + " was deleted successfully."
@@ -121,6 +119,10 @@ module Admin
         course = Course.find(id.to_i)
         
           if !course.nil?
+            course.year_structures.each do |year_structure|
+              Group.where(year_structure_id: year_structure.id).destroy_all
+            end
+            YearStructure.where(course_id: @course.id).destroy_all
             course.destroy
           end
         

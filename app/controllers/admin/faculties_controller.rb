@@ -5,7 +5,7 @@ module Admin
     def show
       redirect_to edit_admin_department_path(params[:id])
     end
-
+ 
     def index      
       @faculties = Faculty.all 
 
@@ -143,6 +143,9 @@ module Admin
         faculty = Faculty.find(id.to_i)
               
          if !faculty.nil? && faculty.departments.empty?
+            faculty.users.each do |user|
+              user.update_attribute("faculty_id", nil)
+            end
            faculty.destroy
          end
               

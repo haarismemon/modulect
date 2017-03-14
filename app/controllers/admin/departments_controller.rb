@@ -123,6 +123,9 @@ module Admin
         department = Department.find(id.to_i)
         
           if !department.nil? && department.courses.empty? && department.uni_modules.empty?
+             department.users.each do |user|
+                user.update_attribute("department_id", nil)
+            end
             department.destroy
           end
         
