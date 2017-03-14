@@ -501,7 +501,7 @@
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
-                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   }
                                 moduleCard += "</div>" +
                                 "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -546,7 +546,7 @@
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
-                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   }
                                 moduleCard += "</div>" +
                                 "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -568,7 +568,7 @@
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a href=\"/uni_modules/" + uni_mod.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
-                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + i + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   } 
                                  moduleCard += "</div>" +
                                 "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -721,12 +721,10 @@
     <% end %>
   }
 
-  function deselectModule(year, group, module){
-    // TODO: validate
-    selected_modules_per_year[year][group][module] = false;
-    var id = selected_modules_per_year[year][group].uni_modules[module].id;
-    var index = selected_ids[year][group].indexOf(id);
-    if(index > -1) {
+  // Remove a module from the selected array
+  function deselectModule(year, group, moduleId) {
+    indexToDelete = selected_ids[year][group].indexOf(moduleId);
+    if(indexToDelete > -1) {
       selected_ids.splice(index, 1);
     }
     updateUI();
