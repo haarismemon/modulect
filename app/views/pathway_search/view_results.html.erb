@@ -772,20 +772,9 @@
       required_modules_this_year.push(modules_year_long); // Index 3: Both Semesters
 
       optional_modules_this_year = [];
-      for(grp=1; grp<js_course.year_structures[year].groups.length; grp++){
-        optional_modules_this_year.push(js_course.year_structures[year].groups[grp]);
-      }
-
-      if(initSelected) {
-        selected_modules_this_year = [];
-        for(grp=1; grp<js_course.year_structures[year].groups.length; grp++){
-          selected_modules_in_this_group = [];
-          for(mod=0; mod<js_course.year_structures[year].groups[grp].uni_modules.length; mod++){
-            selected_modules_in_this_group.push(false);
-          }
-          selected_modules_this_year.push(selected_modules_in_this_group);
-        }
-        selected_modules_per_year.push(selected_modules_this_year);
+      // Find the optional modules for this year structure
+      for(group = 1; group < js_course.year_structures[year].groups.length; ++group) {
+        optional_modules_this_year.push(js_course.year_structures[year].groups[group]);
       }
 
       optional_modules_per_year.push(optional_modules_this_year);
