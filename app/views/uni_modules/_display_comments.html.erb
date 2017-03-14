@@ -5,9 +5,13 @@
     <% grouped_comments = updated_comments.in_groups_of(num_comments) %>
     <% num_pages = grouped_comments.length %>
 
+    <a id="first-page"><< First &nbsp</a>
+    <a id="prev-page">< Prev &nbsp&nbsp</a>
     <% for i in 1..num_pages %>
         <a id="page-link-<%= i %>"><%= i %></a>
     <% end %>
+    <a id="next-page">&nbsp&nbsp Next ></a>
+    <a id="last-page">&nbsp Last >></a>
     <br>
 
     <div id="comments-section">
@@ -120,10 +124,40 @@
         first_page.addClass("selected_page");
     }
 
+    $("#first-page").on("click", function () {
+        page_div = $("#page-div-1");
+
+        $('#comments-section').children('div').each(function () {
+            $(this).css("display", "none");
+        });
+        page_div.css("display", "block");
+
+        $("a[id^=page-link]").addClass("unselected_page");
+        $("a[id^=page-link]").removeClass("selected_page");
+        $("#page-link-1").removeClass("unselected_page");
+        $("#page-link-1").addClass("selected_page");
+
+        $("#first-page").hide();
+        $("#prev-page").hide();
+        $("#next-page").show();
+        $("#last-page").show();
+    });
+
     $("a[id^=page-link]").on("click", function (event) {
+        $("#first-page").show();
+        $("#prev-page").show();
+        $("#next-page").show();
+        $("#last-page").show();
+
         page_link_id = event.target.id;
         page_number = parseInt(page_link_id.replace("page-link-", ""));
         page_div = $("#page-div-" + page_number);
+
+        if(page_number == 1) {
+            $("#first-page").hide();
+            $("#prev-page").hide();
+        }
+
 
         $('#comments-section').children('div').each(function () {
             $(this).css("display", "none");
