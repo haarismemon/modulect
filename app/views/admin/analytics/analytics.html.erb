@@ -1,31 +1,28 @@
 <% provide(:title, 'Analytics') %>
 <style>
-#analytics-page .header-item{border-right:1px solid #dfe2e1;}
-#analytics-page .header-item.last{border-right:0px;}
-#analytics-page .tab-pane{padding-left:15px;padding-right: 15px;}
-
-#analytics-page .small-header{font-weight:300;margin-bottom:5px;}
-#analytics-page .main-figure{font-size:42px;margin-bottom:5px;}
-#analytics-page .percentage-change{}
-#analytics-page .green{color: #2ab27b;}
-#analytics-page .red{color:#c77067;}
-
-#analytics-page .header-card{padding-left: 0px;padding-right: 0px;padding-bottom: 0px;}
-#analytics-page .header-item .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
-
-@media(max-width:991px) {
-   .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;}
-   .header-item.last{border-right:0px;}
+   #analytics-page .header-item{border-right:1px solid #dfe2e1;}
+   #analytics-page .header-item.last{border-right:0px;}
+   #analytics-page .tab-pane{padding-left:15px;padding-right: 15px;}
+   #analytics-page .small-header{font-weight:300;margin-bottom:5px;}
+   #analytics-page .main-figure{font-size:42px;margin-bottom:5px;}
+   #analytics-page .percentage-change{}
+   #analytics-page .green{color: #2ab27b;}
+   #analytics-page .red{color:#c77067;}
+   #analytics-page .header-card{padding-left: 0px;padding-right: 0px;padding-bottom: 0px;}
+   #analytics-page .header-item .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
+   @media(max-width:991px) {
+   #analytics-page .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;text-align: center;}
+   #analytics-page .header-item.last{border-bottom:0px;}
    #analytics-tabs li{display: block;float:none;}
-}
+   }
 </style>
 <header class="header">
    <h1 class="page-title"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Analytics</h1>
-  <div class="header__actions">
-  Dropdown here 
-   <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-            :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
-            </div>
+   <div class="header__actions">
+      Dropdown here 
+      <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+         :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
+   </div>
 </header>
 <div id="analytics-page">
    <script type="text/javascript">
@@ -49,49 +46,33 @@
          <div class="row" >
             <div class="col-md-12  login-card header-card" style="">
                <div class="col-md-3 header-item">
-               <div class="small-header">
-<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Total Users</a>
-               </div>
-               <div class="main-figure">3470</div>
-               <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 4% from last month</div>
-
-
-
+                  <div class="small-header">
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Total Users</a>
+                  </div>
+                  <div class="main-figure">3470</div>
+                  <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 4% from last month</div>
                </div>
                <div class="col-md-3 header-item">
-               <div class="small-header">
-<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Quick Searches</a>
-               </div>
-
-
-
-               <div class="main-figure">10255</div>
-               <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 7% from last month</div>
-
-
-
+                  <div class="small-header">
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Quick Searches</a>
+                  </div>
+                  <div class="main-figure">10255</div>
+                  <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 7% from last month</div>
                </div>
                <div class="col-md-3 header-item">
-               <div class="small-header">
-<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Pathway Searches</a></div>
-               <div class="main-figure">218</div>
-               <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 1% from last month</div>
-
-
-
-
+                  <div class="small-header">
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Pathway Searches</a>
+                  </div>
+                  <div class="main-figure">218</div>
+                  <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 1% from last month</div>
                </div>
-               <div class="col-md-3 header-item">
-                  
-               <div class="small-header">
-<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Career Searches</a></div>
-               <div class="main-figure">4894</div>
-               <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 12% from last month</div>
-
-
-
+               <div class="col-md-3 header-item last">
+                  <div class="small-header">
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Career Searches</a>
+                  </div>
+                  <div class="main-figure">4894</div>
+                  <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 12% from last month</div>
                </div>
-              
             </div>
          </div>
          <div class="row">

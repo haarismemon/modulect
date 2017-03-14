@@ -492,7 +492,7 @@ a.action-edit{margin-right:10px;}
 
 .page-title,#page-title{margin-top:0px;}
 
-.header__actions{margin-top:-10px;}
+.header__actions{margin-top:-10px;margin-right: -10px;}
 
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
@@ -516,6 +516,12 @@ a.action-edit{margin-right:10px;}
         border: 1px solid #dfe2e1;
     }
     .admin-top-button{    margin-top: -26px;}
+    .header{display: block;}
+    .header__actions{
+        margin-top: 20px;
+        margin-left: 0px;
+    }
+
 }
 @media(max-width:768px) {
     .no-mobile {
