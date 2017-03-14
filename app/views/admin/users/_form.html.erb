@@ -130,7 +130,7 @@
             <%= f.label :faculty %>
          </div>
          <div class="field-unit__field default-select-field">
-            
+
          <% if current_user.user_level == "super_admin_access" %>
          <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
                         [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  }) %>
@@ -138,7 +138,7 @@
          <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
                         [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => false}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off", :readonly => true, :disabled => true  }) %>
 
-            <% end %>   
+            <% end %>
          </div>
       </div>
    </div>
@@ -233,8 +233,8 @@
           $(".password-hidden").slideToggle("slow");
           $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
       };
-      
-      
-      
-      
+
+
+
+
 </script>

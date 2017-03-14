@@ -54,14 +54,14 @@
                 <%= tinymce %>
               </div>
             </div>
-          </div>
 
+          </div>
 
                     <div class="col-xs-12">
                       <div class="row field-unit duration_in_years" >
                       <div class="field-unit__label">
                         <label for="duration_in_years">Duration in years <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
-                          title="The total amount of year's this course will last for. The duration determines how many year structures (year-slots consisting of modules) is given to this course, defined below. ">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+                          title="The total amount of years this course will last for. The duration determines how many year structures (year-slots consisting of modules) is given to this course.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
                       </div>
                       <div class="field-unit__field">
                       <%= f.select(:duration_in_years, options_for_select(1..9, @course.duration_in_years), {:include_blank => true}, {:class => 'selectize' } )%>
@@ -69,10 +69,10 @@
                     </div>
                   </div>
 
+                  <div class="form-actions"><button type="submit" name="commit" ><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> user</button></div>
 
 
 
-  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
 
 <% end %>
 

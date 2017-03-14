@@ -13,37 +13,48 @@
   </div>
 </header>
 
-<div id="landing" style="margin-left:10px;">
-  <div class="row" style="margin-top:20px;">
-    <% @course.year_structures.each_with_index do |year_structure, index| %>
-      <% if index < @course.duration_in_years %>
-        <div class="col-md-4 text-center">
-          <div class="col-md-12 login-card">
-            <div class="col-md-12">
-              <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
-              <div>
-                <h3><%= year_structure.year_of_study.titleize %></h3>
-                <h5 style="margin-top: 20px">
-                 <% if !year_structure.groups_existent? %>
-                   <%= render partial: "admin/layouts/index_warning", locals: {message: "No modules have been given for this year", 
-                                                                               destination: edit_admin_year_structure_path(year_structure) } %>
-                <% end %>
-                  Module groups: <%= year_structure.groups.count %>
-                </h5>
-              </div>
-              <div>
-                <div style="margin-top: 30px;padding-left:0px">
-                  <div class="form-group">
-                    <a href="<%= edit_admin_year_structure_path(year_structure) %>" class="btn btn-lg"><span>Modify ></span></a>
+<div class="row field-unit field-unit--select year_of_study user-field" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <label style="font-size: 19px"> Year structure belonging to this course  <a class="help-tooltip" style="font-size:14px" data-toggle="tooltip"  data-placement="right"
+           title="Each year structure contains groups of modules i.e first term is a group. The student will pick modules from the set of groups that belong to each year structure for this course. ">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+      </div>
+      <div class="field-unit__field default-select-field">
+        <div id="landing" style="margin-left:10px;">
+          <div class="row" style="margin-top:20px;">
+            <% @course.year_structures.each_with_index do |year_structure, index| %>
+              <% if index < @course.duration_in_years %>
+                <div class="col-md-4 text-center">
+                  <div class="col-md-12 login-card">
+                    <div class="col-md-12">
+                      <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
+                      <div>
+                        <h3><%= year_structure.year_of_study.titleize %></h3>
+                        <h5 style="margin-top: 20px">
+                         <% if !year_structure.groups_existent? %>
+                           <%= render partial: "admin/layouts/index_warning", locals: {message: "No modules have been given for this year",
+                                                                                       destination: edit_admin_year_structure_path(year_structure) } %>
+                        <% end %>
+                          Module groups: <%= year_structure.groups.count %>
+                        </h5>
+                      </div>
+                      <div>
+                        <div style="margin-top: 30px;padding-left:0px">
+                          <div class="form-group">
+                            <a href="<%= edit_admin_year_structure_path(year_structure) %>" class="btn btn-lg" style="box-shadow:none; font-size:15px"><span>Modify ></span></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              <% end %>
+            <% end %>
           </div>
         </div>
-      <% end %>
-    <% end %>
-  </div>
+
+      </div>
+   </div>
 </div>
 
-<%= render 'form' %>
+<%= render 'form',:action =>"Update" %>
