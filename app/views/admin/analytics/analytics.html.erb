@@ -1,4 +1,16 @@
 <% provide(:title, 'Analytics') %>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+#analytics-page .login-card{padding-left: 15px;}
+.header-item{border-right:1px solid #dfe2e1;}
+.header-item.last{border-right:0px;}
+
+@media(max-width:991px) {
+   .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;}
+   .header-item.last{border-right:0px;}
+   #analytics-tabs li{display: block;float:none;}
+}
+</style>
 <header class="header">
    <h1 class="page-title">Analytics</h1>
    <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
@@ -15,7 +27,7 @@
       });
       
    </script>
-   <ul class="nav nav-tabs" style="margin-top:-10px;">
+   <ul id="analytics-tabs" class="nav nav-tabs" style="margin-top:-10px;">
       <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
       <li><a data-toggle="tab" href="#quick-search">Quick Search</a></li>
       <li><a data-toggle="tab" href="#pathway-search">Pathway Search</a></li>
@@ -24,13 +36,13 @@
    <div class="tab-content" style="margin-top:30px;">
       <div id="overview" class="tab-pane fade in active">
          <div class="row" >
-            <div class="col-md-12  login-card">
-               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item hello world test test test testes tetst </div>
-               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item</div>
-               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item</div>
-               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item</div>
-               <div class="col-md-2" style="border-right:1px solid #dfe2e1;">Item</div>
-               <div class="col-md-2">Item</div>
+            <div class="col-md-12  login-card" style="padding-left: 0px;padding-right: 0px;">
+               <div class="col-md-2 header-item">Num visitors </div>
+               <div class="col-md-2 header-item">Num quick searches</div>
+               <div class="col-md-2 header-item">Num pathway searches</div>
+               <div class="col-md-2 header-item">Num career searches</div>
+               <div class="col-md-2 header-item">Item</div>
+               <div class="col-md-2 header-item last">Item</div>
             </div>
          </div>
          <div class="row">
