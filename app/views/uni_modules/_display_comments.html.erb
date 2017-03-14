@@ -1,8 +1,8 @@
 
 <% unless updated_comments.empty? %>
 
-    <% num_comments = 5.0 %>
-    <% grouped_comments = updated_comments.in_groups_of(num_comments) %>
+    <% num_comments_per_page = 5.0 %>
+    <% grouped_comments = updated_comments.in_groups_of(num_comments_per_page) %>
     <% num_pages = grouped_comments.length %>
 
     <a id="first-page"><< First &nbsp</a>
@@ -12,6 +12,10 @@
     <% end %>
     <a id="next-page">&nbsp&nbsp Next ></a>
     <a id="last-page">&nbsp Last >></a>
+    <br>
+
+    <label id="display-comments-number">Displaying comments</label>
+
     <br>
 
     <div id="comments-section">
@@ -113,11 +117,12 @@
       font-weight: normal;
       font-size: 14px;
     }
-    
+
 </style>
 
 <script>
     num_pages = <%= num_pages %>
+    num_comments_per_page = <%= num_comments_per_page %>
 
     $("a[id^=page-link]").addClass("unselected_page");
     var first_page = $("a#page-link-1");
@@ -127,13 +132,33 @@
     }
     $("#first-page").hide();
     $("#prev-page").hide();
+    $('#comments-section').children('div').each(function () {
+        $(this).css("display", "none");
+    });
+    $("#page-div-1").css("display", "block");
+
+    update_display_comments_number = function () {
+        current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
+        first_comment = ((current_page - 1) * num_comments_per_page) + 1;
+        last_comment = current_page * num_comments_per_page;
+
+//        alert(current_page)
+
+        display_text = "Display comments " + first_comment + " - " +  last_comment + " of " + <%= updated_comments.length %>
+
+            $("label#display-comments-number").html(display_text);
+
+    };
+    update_display_comments_number();
 
     $("#first-page").on("click", function () {
         first_page_action();
+        update_display_comments_number();
     });
 
     $("#last-page").on("click", function () {
         last_page_action();
+        update_display_comments_number();
     });
 
     $("#next-page").on("click", function () {
@@ -156,6 +181,7 @@
             $("#page-link-" + next_page).addClass("selected_page");
         }
 
+        update_display_comments_number();
     });
 
     $("#prev-page").on("click", function () {
@@ -178,6 +204,7 @@
             $("#page-link-" + prev_page).addClass("selected_page");
         }
 
+        update_display_comments_number();
     })
 
     $("a[id^=page-link]").on("click", function (event) {
@@ -210,6 +237,8 @@
         $("a[id^=page-link]").removeClass("selected_page");
         $(this).removeClass("unselected_page");
         $(this).addClass("selected_page");
+
+        update_display_comments_number();
     });
 
     first_page_action = function () {
