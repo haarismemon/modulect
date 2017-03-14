@@ -345,38 +345,38 @@
 
 
   function updateUI(){
-    for(year=0; year<js_course.year_structures.length; year++){
-      // get all optional modules
+    for(year=0; year<js_course.year_structures.length; year++) {
+      // Go through all the modules which have been selected and categories them by their semester
       selected_modules_buttons_any_semester = [];
       selected_modules_buttons_first_semester = [];
       selected_modules_buttons_second_semester = [];
       selected_modules_buttons_year_long = [];
       for(group = 0; group < optional_modules_per_year[year].length; ++group) {
-        for(index = 0; index < selected_ids[year][g].length; ++index){
+        for(index = 0; index < selected_ids[year][group].length; ++index) {
           var findWithId = selected_ids[year][g][index];
           var semester = -1;
           var sel_module = [];
-          for(item = 0; item < selected_modules_per_year[year][g].length; ++item) {
-            if(optional_modules_per_year[year][g].uni_modules[item].id == findWithId) {
+          for(item = 0; item < selected_modules_per_year[year][group].length; ++item) {
+            if(optional_modules_per_year[year][group].uni_modules[item].id == findWithId) {
               semester = optional_modules_per_year[year][g].uni_modules[item].semester;
               sel_module = [optional_modules_per_year[year][g].uni_modules[item], year, g, item];
             }
           }
           if(semester == 0) selected_modules_buttons_any_semester.push(sel_module);
-          if(semester == 1) selected_modules_buttons_first_semester.push(sel_module);
-          if(semester == 2) selected_modules_buttons_second_semester.push(sel_module);
-          if(semester == 3) selected_modules_buttons_year_long.push(sel_module);
-          if(semester == -1) console.log("ERROR");
+          else if(semester == 1) selected_modules_buttons_first_semester.push(sel_module);
+          else if(semester == 2) selected_modules_buttons_second_semester.push(sel_module);
+          else if(semester == 3) selected_modules_buttons_year_long.push(sel_module);
+          else if(semester == -1) console.log("ERROR");
         }
       }
 
-
+      // Create table with columns for Semester 1 and 2
       targetDiv = document.getElementById("div_year_" + (year+1));
       myTable = "<table id =\"results_table_" + year + "\" style=\"width: 100%\"><tr><th>Semester 1</th><th>Semester 2</th></tr>";
       s1 = 0; // keeping track of column positions
       s2 = 0;
 
-      // create the table and fill in year long modules first
+      // Fill in year long modules first
       for(i=0; i<required_modules_per_year[year][0].length; i++){
         myTable += "<tr><td colspan=2>" + create_module_card(required_modules_per_year[year][0][i], false, 0, 0, 0) + "</td></tr>";
         s1++;
@@ -742,31 +742,34 @@
   }
 
   function updateData(){
-    // go through each year
-    //if this was from a save
-    var initSelected = false;
-    if(selected_modules_per_year.length == 0) {
-      initSelected = true;
-    }
-    for(year=0; year<js_course.year_structures.length; year++){
-
-      // sort required modules for this year
-      required_group = js_course.year_structures[year].groups[0].uni_modules;
+    // Go through each year structure
+    for(year = 0; year < js_course.year_structures.length; ++year) {
+      requiredGroupModules = [];
+      // Find the required groups for this year structure
+      for(group= 0; group < js_course.year_structures[year].groups.length; ++group) {
+        // If a group is marked as compulsory add its module to the required group modules array.
+        currentGroup = js_course.year_structures[year].groups[group];
+        if(currentGroup.compulsory) {
+          requiredGroupModules = requiredGroupModules.concat(currentGroup.uni_modules);
+        }
+      }
+      // Sort required modules for this year based on their semester
       modules_year_long = [];
       modules_first_semester = [];
       modules_second_semester = [];
       modules_any_semester = [];
       required_modules_this_year = [];
-      for(module=0; module<required_group.length; module++){
-        if     (required_group[module].semester == 3) modules_year_long.push(required_group[module]);
-        else if(required_group[module].semester == 2) modules_second_semester.push(required_group[module]);
-        else if(required_group[module].semester == 1) modules_first_semester.push(required_group[module]);
-        else                        modules_any_semester.push(required_group[module]);
+      for(module = 0; module < requiredGroupModules.length; ++module){
+        if (requiredGroupModules[module].semester == 3) modules_year_long.push(requiredGroupModules[module]);
+        else if(requiredGroupModules[module].semester == 2) modules_second_semester.push(requiredGroupModules[module]);
+        else if(requiredGroupModules[module].semester == 1) modules_first_semester.push(requiredGroupModules[module]);
+        else modules_any_semester.push(requiredGroupModules[module]);
       }
-      required_modules_this_year.push(modules_any_semester);
-      required_modules_this_year.push(modules_first_semester);
-      required_modules_this_year.push(modules_second_semester);
-      required_modules_this_year.push(modules_year_long);
+      // Add the sorted array into array.
+      required_modules_this_year.push(modules_any_semester); // Index 0: Any Semester
+      required_modules_this_year.push(modules_first_semester); // Index 1: First Semester
+      required_modules_this_year.push(modules_second_semester); // Index 2: Second Semester
+      required_modules_this_year.push(modules_year_long); // Index 3: Both Semesters
 
       optional_modules_this_year = [];
       for(grp=1; grp<js_course.year_structures[year].groups.length; grp++){
