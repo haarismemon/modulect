@@ -96,6 +96,10 @@ module Admin
 
     def destroy
       @course = Course.find(params[:id])
+      @course.users.each do |user|
+        user.update_attribute("course_id", nil)
+      end
+
       @course.destroy
       flash[:success] =  @course.name + " was deleted successfully."
       redirect_to(admin_courses_path)
