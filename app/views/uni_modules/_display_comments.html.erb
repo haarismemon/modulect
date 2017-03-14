@@ -113,6 +113,13 @@
 </style>
 
 <script>
+    $("a[id^=page-link]").addClass("unselected_page");
+    var first_page = $("a#page-link-1");
+    if (first_page) {
+        first_page.removeClass("unselected_page")
+        first_page.addClass("selected_page");
+    }
+
     $(".helpful-btn").on("click", function (event) {
         button_id = event.target.id
         comment_id = parseInt(button_id.replace("helpful-btn-", ""));
