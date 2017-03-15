@@ -29,6 +29,10 @@ class CommentsController < ApplicationController
 
   end
 
+  def edit
+
+  end
+
   def like
     @comment = Comment.find(params[:comment_id])
     @user = User.find(current_user.id)
