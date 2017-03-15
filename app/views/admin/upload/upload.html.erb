@@ -64,7 +64,7 @@
     <h3>Step 3: Upload data</h3>
     <div class="form-entry text-center" style="margin-top: 20px;">
       <%= form_tag("/admin/upload/upload_csv", method: "post", multipart: true) do %>
-          <%= file_field_tag :csv_upload, id: 'csv-upload', onchange: 'validate_file_extension(this.value);', :required => true %>
+          <%= file_field_tag :csv_upload, id: 'csv-upload', onchange: 'validate_file_extension(this.value);', required: true, accept: 'text/csv' %>
           <%= submit_tag 'Upload', id: 'upload-3-next', class: 'btn btn-md' %>
       <% end %>
     </div>
