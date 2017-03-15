@@ -1,10 +1,10 @@
 <div class="nested-fields">
   <div class="field">
     <%= f.label :name, placeholder: 'i.e: Semester 1' %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, class: "nested-field-name" %>
 
     <%= f.label :total_credits %>
-    <%= f.number_field :total_credits %>
+    <%= f.number_field :total_credits, class: "nested-field-total-credits" %>
 
     <%= f.label :uni_modules %>
     <div id="select-modules">
@@ -13,7 +13,7 @@
     </div>
 
     <p>
-      <%= f.check_box :compulsory %>
+      <%= f.check_box :compulsory, class: "nested-field-checkbox" %>
       <%= f.label "All Modules Compulsory" %>
     </p>
   </div>

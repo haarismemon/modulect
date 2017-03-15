@@ -5,8 +5,8 @@
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
     <%= render(:partial => 'admin/application/edit_toolbox_buttons',
-               :locals => {:object => YearStructure.find(params[:id]),
-                           :name_of_file=>YearStructure.find(params[:id]).course.name+"_year"+YearStructure.find(params[:id]).year_of_study,
+               :locals => {:object => @year_structure,
+                           :name_of_file=> @year_structure.course.name + "_year" + @year_structure.year_of_study,
                            :blacklist_attributes=>"",
                            :entity_attributes=>"Course",
                            :has_many_attributes=>["groups"]})%>

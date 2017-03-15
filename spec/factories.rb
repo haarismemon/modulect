@@ -6,6 +6,7 @@ FactoryGirl.define do
     offline_message "MyString"
     allow_new_registration false
   end
+
   factory :group do
     name "Semester 1"
     total_credits 120
