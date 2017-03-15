@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313104922) do
+ActiveRecord::Schema.define(version: 20170314155826) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(version: 20170313104922) do
     t.integer  "department_id"
     t.integer  "faculty_id"
     t.boolean  "is_limited",        default: false
+    t.datetime "last_login_time"
   end
 
   create_table "year_structures", force: :cascade do |t|
