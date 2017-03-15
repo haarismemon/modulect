@@ -17,12 +17,15 @@ module Admin
       # Process CSV for reading
       csv_text = File.read('app/assets/uploaded.csv')
       parsed_csv = CSV.parse(csv_text, headers: true)
-
-      # Validate uploaded file headers
       uploaded_header = parsed_csv.headers
-      if uploaded_header != session[:resource_header]
-        flash[:error] = "Upload Failed: Please ensure the CSV header matches the template file."
-        redirect_to :back
+
+      if parsed_csv.length == 0
+        # Validate if uploaded CSV is empty
+        flash[:error] = "Upload Failed: No records found. CSV is empty"
+
+        # Validate uploaded file headers
+      elsif uploaded_header != session[:resource_header]
+        flash[:error] = "Upload Failed: Please ensure the CSV header matches the template file"
 
       else # Validation checks passed, continue with upload
         # Reads each row of the uploaded csv file
@@ -36,9 +39,9 @@ module Admin
         end
 
         flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
-        redirect_to :back
       end
 
+      redirect_to :back
     end
 
     def download
