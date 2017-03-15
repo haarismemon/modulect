@@ -1,19 +1,34 @@
 module Admin
-  class GroupsController < Admin::ApplicationController
-    # To customize the behavior of this controller,
-    # simply overwrite any of the RESTful actions. For example:
-    #
-    # def index
-    #   super
-    #   @resources = Group.all.paginate(10, params[:page])
-    # end
+  class GroupsController < Admin::BaseController
 
-    # Define a custom finder by overriding the `find_resource` method:
-    # def find_resource(param)
-    #   Group.find_by!(slug: param)
-    # end
+    def show
+      redirect_to edit_admin_group_path(params[:id])
+    end
 
-    # See https://administrate-docs.herokuapp.com/customizing_controller_actions
-    # for more information
+  	def index
+  	end
+
+  	def edit
+      @group = Group.find(params[:id])
+  	end
+
+  	def update
+      @group = Group.find(params[:id])
+      if @group.update_attributes group_params
+        flash[:success] = "#{@group.name} successfully updated."
+        redirect_to edit_admin_year_structure_path(@group.year_structure)
+      else
+        render 'edit'
+      end
+  	end
+
+  	def destroy
+  	end
+
+    private
+    def group_params
+      params.require(:group).permit(:name, :total_credits, :compulsory, uni_module_ids: [])
+    end
+
   end
 end

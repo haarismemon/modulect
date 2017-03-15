@@ -4,6 +4,10 @@ class UsersController < ApplicationController
   skip_before_action :store_location,
                       only: [:new, :edit]
   protect_from_forgery except: [:update_departments, :update_courses]
+  before_action :registration_allowed, only: [:new, :create]
+
+  include ApplicationHelper
+
 
   def index
     #returns all users by order of last_name
@@ -30,7 +34,7 @@ class UsersController < ApplicationController
     # Save the object
     if @user.save
       # If save succeeds, redirect to the index action
-      flash[:success] = "You have successfully created #{@user.full_name} and it's privileges have been granted"
+      flash[:success] = "You have successfully created user: #{@user.full_name} and their privileges have been granted"
       redirect_to(users_path)
     else
       # If save fails, redisplay the form so user can fix problems
@@ -47,7 +51,7 @@ class UsersController < ApplicationController
     if @user.save
       UserMailer.account_activation(@user).deliver_now
       redirect_to "/"
-      flash[:success] = "Please check your email to activate your account."
+      flash[:success] = "Please check your email to activate your account or contact an administrator."
     else
       render 'new'
     end
@@ -73,6 +77,9 @@ class UsersController < ApplicationController
     else
       @courses = {}
     end
+    if(@user.department_id.present?)
+        @all_courses = Department.find_by_id(@user.department_id).courses
+     end
   end
 
   # Change the value of @departments if faculty changes
@@ -137,4 +144,12 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
     end
+
+    def registration_allowed
+      if !app_settings.allow_new_registration
+        flash[:error] = "Registration is currently offline, please check back later."
+         redirect_to(root_url)
+      end
+    end
+
 end

@@ -179,6 +179,62 @@ module ApplicationHelper
      (page.resource && page.resource.errors.size == 0)
   end
 
+  def make_semester_nice(semester_number)
+	if semester_number == "No data available"
+	  "No data available"
+	elsif semester_number == "0"
+	  "1 or 2"
+	elsif semester_number == "1"
+	  "1"
+	elsif semester_number == "2"
+	  "2"
+	else
+	  "1 & 2"
+	end
+	end
+
+	#attribute object must have name as an attrbute
+	#check if obect has a link with the another
+	#if it does create a link to edit page of that object on click
+	def generate_linked_attribute(path,object,attribute)
+		collection = object.send(attribute)
+		if collection.present?
+			return link_to object.send(attribute).name.to_s,path
+		end
+		"-"
+	end
+
+	def find_name_of_association(object,attribute)
+		begin
+			object.send(attribute).name
+		rescue
+			""
+		end
+  end
+
+  # finds the average star rating of a module from its reviews and rounds the value
+  # input is a uni_module object, and output is average rating
+  # written by Haaris
+  def module_average_rating(uni_module)
+    total = 0.0
+    average = 0.0
+    comments = uni_module.comments
+
+    comments.each do |comment|
+      total += comment.rating
+    end
+
+    average = total / comments.length
+    average.round
+  end
+
+
+  # return app_settings object
+  def app_settings
+    AppSetting.instance
+  end
+
+
   private
   # determines what the link needs to be to redirect back to faculty form
   def determine_redirect_link_from_previous_state

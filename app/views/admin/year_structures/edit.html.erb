@@ -1,31 +1,46 @@
-<%#
-# Edit
-
-This view is the template for the edit page.
-
-It displays a header, and renders the `_form` partial to do the heavy lifting.
-
-## Local variables:
-
-- `page`:
-  An instance of [Administrate::Page::Form][1].
-  Contains helper methods to help display a form,
-  and knows which attributes should be displayed in the resource's form.
-
-[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
-%>
-
-<% content_for(:title) { "Edit #{page.page_title}" } %>
+<% provide :title, 'Edit Year Structure' %>
+<% provide :submit_button_text, 'Update' %>
 
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
-    <%= link_to(
-      "Show Year Structure",
-      [namespace, page.resource],
-      class: "button",
-    ) %>
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons',
+               :locals => {:object => YearStructure.find(params[:id]),
+                           :name_of_file=>YearStructure.find(params[:id]).course.name+"_year"+YearStructure.find(params[:id]).year_of_study,
+                           :blacklist_attributes=>"",
+                           :entity_attributes=>"Course",
+                           :has_many_attributes=>["groups"]})%>
   </div>
 </header>
 
-<%= render "form", page: page %>
+<h1>
+  Edit <%= @year_structure.to_s %> of <a href="<%= admin_course_path(@year_structure.course) %>">
+    <%= @year_structure.course.name %></a> <%= @year_structure.course.year %>
+</h1>
+
+<div id="landing" style="margin-left:10px;">
+  <div class="row" style="margin-top:20px;">
+    <% @year_structure.groups.each do |group| %>
+    <div class="col-md-4 text-center">
+      <div class="col-md-12 login-card">
+        <div class="col-md-12">
+          <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
+          <div>
+            <h3><%= group.name %></h3>
+            <h5 style="margin-top: 20px">Total credits: <%= group.total_credits %></h5>
+          </div>
+          <div>
+            <div style="margin-top: 30px;padding-left:0px">
+              <div class="form-group">
+                <a href="<%= edit_admin_group_path(group)%>" class="btn btn-lg"><span>Modify ></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<%= render 'form' %>

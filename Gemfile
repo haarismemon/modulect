@@ -8,7 +8,6 @@ end
 ruby '2.3.3'
 gem 'bcrypt',                 '~> 3.1.7'
 gem 'bootstrap-sass'
-gem 'bootstrap-tagsinput-rails'
 gem 'twitter-typeahead-rails'
 gem 'sass-rails',             '~> 5.0'
 gem 'rails',                  '~> 5.0.1'
@@ -23,7 +22,10 @@ gem 'coffee-script-source',   '1.8.0'
 gem 'wdm',                    '>= 0.1.0' if Gem.win_platform?
 gem 'default_value_for',      '~> 3.0', '>= 3.0.2'
 gem 'bourbon',                '4.3.2'
-gem "administrate",           '~> 0.3.0'
+gem 'cocoon'
+gem 'selectize-rails'
+gem 'kaminari'
+gem 'tinymce-rails',          '~> 4.3'
 
 group :development, :test do
   gem 'sqlite3'
@@ -55,6 +57,7 @@ group :test do
 end
 
 group :production do
+  # Use postrgres in production
   # Use postrgres in production
   gem 'pg', '0.18.4'
 end

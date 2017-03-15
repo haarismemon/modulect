@@ -1,0 +1,335 @@
+<% provide(:title, 'Dashboard') %>
+<div class="row">
+   <div class="col-md-12" style="padding-left:25px;">
+      <h1>Welcome <%= current_user.first_name %>, what would you like to do?</h1>
+   </div>
+   <style>
+      @media (min-width: 990px) {
+      #landing .row {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display:         flex;
+      flex-wrap: wrap;
+      width:100%;
+      text-align: center;
+      }
+      #landing .row > [class*='col-'] {
+      display: flex;
+      flex-direction: column;
+      }
+      .login-card{    height: 100%;
+      text-align: center;}
+      }
+
+      @media (max-width: 990px) {
+         .main-admin-row {
+            margin-right: -5px;
+         }
+      }
+   </style>
+</div>
+<div id="landing" style="margin-left:10px;">
+   <% if current_user.user_level == "super_admin_access" %>
+   <div class="row" style="margin-top:20px;">
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Manage Courses</h3>
+                  <h5 style="margin-top: 20px">Add, edit & delete courses</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_courses_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-building" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Manage Departments</h3>
+                  <h5 style="margin-top: 20px">Add, edit & delete departments</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_departments_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-building" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Manage Faculties</h3>
+                  <h5 style="margin-top: 20px">Add, edit & delete faculties</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_faculties_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-pencil-square" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Manage Modules</h3>
+                  <h5 style="margin-top: 20px">Add, edit & delete modules</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_uni_modules_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-users" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Manage Users</h3>
+                  <h5 style="margin-top: 20px">Add, edit & delete users</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_users_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-upload" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Upload data</h3>
+                  <h5 style="margin-top: 20px">Upload data for Modulect</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_upload_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+   <div class="col-md-4 text-center">
+               <div class="col-md-12 login-card">
+                  <div class="col-md-12">
+                     <div class="icon-row"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
+                     <div>
+                        <h3>View Analytics</h3>
+                        <h5 style="margin-top: 20px">Browse user-generated analytics</h5>
+                     </div>
+                     <div>
+                        <div style="margin-top: 30px;padding-left:0px">
+                           <div class="form-group">
+                              <a href="<%= admin_path %>" target="_blank" class="btn btn-lg"><span>Start ></span></a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+      </div>
+      <div class="col-md-4 text-center">
+               <div class="col-md-12 login-card">
+                  <div class="col-md-12">
+                     <div class="icon-row"><i class="fa fa-comments" aria-hidden="true"></i></div>
+                     <div>
+                        <h3>Module Reviews</h3>
+                        <h5 style="margin-top: 20px">View and manage module reviews</h5>
+                     </div>
+                     <div>
+                        <div style="margin-top: 30px;padding-left:0px">
+                           <div class="form-group">
+                              <a href="<%= admin_path %>" target="_blank" class="btn btn-lg"><span>Start ></span></a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+      </div>
+      <div class="col-md-4 text-center">
+               <div class="col-md-12 login-card">
+                  <div class="col-md-12">
+                     <div class="icon-row"><i class="fa fa-external-link" aria-hidden="true"></i></div>
+                     <div>
+                        <h3>View Modulect</h3>
+                        <h5 style="margin-top: 20px">Experience Modulect as a student</h5>
+                     </div>
+                     <div>
+                        <div style="margin-top: 30px;padding-left:0px">
+                           <div class="form-group">
+                              <a href="<%= root_path %>" target="_blank" class="btn btn-lg"><span>Start ></span></a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+      </div>
+
+   </div>
+   <% else %>
+   <div class="row" style="margin-top:20px;">
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Manage Courses</h3>
+                  <h5 style="margin-top: 20px">Add, edit & delete courses</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_courses_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-pencil-square" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Manage Modules</h3>
+                  <h5 style="margin-top: 20px">Add, edit & delete modules</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_uni_modules_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-users" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Manage Users</h3>
+                  <h5 style="margin-top: 20px">Add, edit & delete users</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_users_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4 text-center">
+         <div class="col-md-12 login-card">
+            <div class="col-md-12">
+               <div class="icon-row"><i class="fa fa-upload" aria-hidden="true"></i></div>
+               <div>
+                  <h3>Upload data</h3>
+                  <h5 style="margin-top: 20px">Upload data for Modulect</h5>
+               </div>
+               <div>
+                  <div style="margin-top: 30px;padding-left:0px">
+                     <div class="form-group">
+                        <a href="<%= admin_upload_path %>" class="btn btn-lg"><span>Start ></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4 text-center">
+               <div class="col-md-12 login-card">
+                  <div class="col-md-12">
+                     <div class="icon-row"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
+                     <div>
+                        <h3>View Analytics</h3>
+                        <h5 style="margin-top: 20px">Browse user-generated analytics</h5>
+                     </div>
+                     <div>
+                        <div style="margin-top: 30px;padding-left:0px">
+                           <div class="form-group">
+                              <a href="<%= admin_path %>" target="_blank" class="btn btn-lg"><span>Start ></span></a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+      </div>
+      <div class="col-md-4 text-center">
+               <div class="col-md-12 login-card">
+                  <div class="col-md-12">
+                     <div class="icon-row"><i class="fa fa-comments" aria-hidden="true"></i></div>
+                     <div>
+                        <h3>Module Reviews</h3>
+                        <h5 style="margin-top: 20px">View and manage module reviews</h5>
+                     </div>
+                     <div>
+                        <div style="margin-top: 30px;padding-left:0px">
+                           <div class="form-group">
+                              <a href="<%= admin_path %>" target="_blank" class="btn btn-lg"><span>Start ></span></a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col-md-4 text-center">
+               <div class="col-md-12 login-card">
+                  <div class="col-md-12">
+                     <div class="icon-row"><i class="fa fa-external-link" aria-hidden="true"></i></div>
+                     <div>
+                        <h3>View Modulect</h3>
+                        <h5 style="margin-top: 20px">Experience Modulect as a student</h5>
+                     </div>
+                     <div>
+                        <div style="margin-top: 30px;padding-left:0px">
+                           <div class="form-group">
+                              <a href="<%= root_path %>" target="_blank" class="btn btn-lg"><span>Start ></span></a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+      </div>
+   </div>
+   <% end %>
+</div>

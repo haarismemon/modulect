@@ -12,10 +12,13 @@ class UniModule < ApplicationRecord
   has_and_belongs_to_many :tags
 
   #A UniModule has many required modules and can be a requirement of many modules
-  has_and_belongs_to_many(:uni_module,
+  has_and_belongs_to_many(:uni_modules,
     :join_table => "uni_module_requirements",
     :foreign_key => "uni_module_id",
     :association_foreign_key => "required_uni_module_id")
+
+  # A UniModule has many comments (reviews)
+  has_many :comments
 
   scope :search, lambda {|tag|
     joins(:tags).where(["tags.name = ?", tag])
@@ -160,4 +163,30 @@ class UniModule < ApplicationRecord
     return pathway_results
   end
 
+  def self.to_csv
+    attributes = %w{name code description lecturers pass_rate assessment_methods semester credits exam_percentage coursework_percentage more_info_link interest_tags career_tags}
+    caps = []
+    attributes.each{|att| caps.push att.titleize.capitalize}
+    %w(career_tags interest_tags).each{|att| caps.push att.titleize.capitalize}
+    CSV.generate(headers:true)do |csv|
+      csv << caps
+      all.each do |uni_module|
+        career_tag_names = ' '
+        interest_tag_names = ' '
+        uni_module.career_tags.pluck(:name).each{|tag| career_tag_names += tag + ', ' }
+        uni_module.interest_tags.pluck(:name).each{|tag| interest_tag_names += tag + ', ' }
+        # uni_module.career_tags.where(:name => uni_module.name).each { |tag| tagNames += tag.name + ', '}
+        career_tag_names.chop!.chop!
+        interest_tag_names.chop!.chop!
+        career_tag_names[0] = ''
+        interest_tag_names[0] = ''
+        to_add = uni_module.attributes.values_at(*attributes) + [*career_tag_names] + [*interest_tag_names]
+        csv << to_add
+      end
+    end
+  end
+
+  def to_s
+    "#{self.code} #{self.name}"
+  end
 end

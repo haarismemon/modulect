@@ -1,140 +1,38 @@
-<%#
-# Form Partial
+<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+<%= error_messages_for(f.object) %>
+<!--renders attributes-->
+<div class="row field-unit field-unit--string name" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <%= f.label :name %>
+      </div>
+      <div class="field-unit__field">
+         <%= f.text_field :name %>
+      </div>
+   </div>
+</div>
+<style>
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){width:100%}
+.departments .bootstrap-select button{box-shadow:0 0 0 0 #fff;text-shadow:none;font-family:"Varela Round";font-size:16px;background:#fff;padding:10px 15px;color:#555459;border:1px solid #dfe0e1;text-transform: none;}
+</style>
+<div class="row field-unit field-unit--string departments" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+         <label for="faculty_department_ids">Departments</label>
+      </div>
+      <div class="field-unit__field">
+         <%= f.collection_select :department_ids, Department.order(:name), :id, :name, {}, {multiple: true, "data-actions-box"=>"true", :class=>"selectize"}%>
+      </div>
+   </div>
+</div>
 
-This partial is rendered on a resource's `new` and `edit` pages,
-and renders all form fields for a resource's editable attributes.
+<div class="form-actions">
+<button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>New<% end %> faculty" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
+<%if parent=="edit"  %>Update<% else %>New<% end %> faculty</button>
+<% if parent == "edit" %>
+&nbsp;&nbsp;&nbsp;<%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete faculty".html_safe, admin_faculty_path(@faculty), method: :delete,
+   data: { confirm: "Are you sure you want to delete this faculty?" } , class: "table__action--destroy" %>
+   <% end %>
+</div>
 
-## Local variables:
-
-- `page`:
-  An instance of [Administrate::Page::Form][1].
-  Contains helper methods to display a form,
-  and knows which attributes should be displayed in the resource's form.
-
-[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
-%>
-
-
-<%= form_for([namespace, page.resource], html: {class: "form"}) do |f| %>
-
-
-    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
-    <%= error_messages_for(page.resource) %>
-
-
-    <% page.attributes.each_with_index do |attribute, index| -%>
-        <!--current field name-->
-        <% current_field_name = attribute.attribute.to_s %>
-        <!--assigns class related to intializing select drop down plugin-->
-        <% class_to_add = (current_field_name == "departments")? "select-field":"" %>
-
-
-            <!--renders a field with a button and instruction label -->
-            <div class="row field-unit field-unit--<%= attribute.html_class %> <%= class_to_add%> <%= attribute.attribute.to_s%>">
-              <div class="col-xs-12">
-                <%= render_field attribute, f: f %>
-              </div>
-              <!--A button only for the departments field which allows for more departments to be added-->
-              <% if (current_field_name == "departments")%>
-              <div class="col-xs-12">
-                  <!--link that redirects to new of department-->
-                  <%= link_to(
-                        "Create new department",
-                        [:new, namespace, "department"],
-                        {class: "add-depart", :onclick => "cache()"},
-                    ) %>
-                </div>
-              <%end%>
-            </div>
-
-    <%end%>
-
-
-
-    <div class="form-actions">
-      <%= f.submit %>
-    </div>
-<% end %>
-
-
-<!--low level caching of fields implemented from scratch
-Two-tier caching. creates a initial cache of data when create department is clicked
-and then passes that cached data to another cache data object in the department form.
-When its redirected back to faculty form, it looks for this cached data object.
-If none found, load default values to fields{came from a different page}.-->
-<script data-turbolinks="false">
-    //loads a select field with the cached data
-    var loadASelectWithCachedData = function (attribute_name,cache_object) {
-        //retrieves select object
-        var select = $("."+attribute_name+" select").selectize();
-        //load cache to select one by one
-        for(var i = 0 ; i<cache_object.length;++i) {
-            var selectize = select[0].selectize;
-            selectize.addItem(cache_object[i].value);
-        }
-    };
-
-
-      //checks if there is cached data that is waiting to be loaded on page load
-    var checkForCachedData = function(){
-        var data_to_be_loaded = localStorage['data_store_accept'];
-        data_to_be_loaded = data_to_be_loaded ? JSON.parse(data_to_be_loaded) : null;
-        //if data_store exists and it can be parsed(not a empty store)
-        if (!localStorage['data_store'] || !JSON.parse(localStorage['data_store']) && data_to_be_loaded) {
-            //iterate through attributes and load each piece of data one by one
-            <% page.attributes.each_with_index do |attribute,index| -%>
-              var object_load = data_to_be_loaded[<%= index %>] || '';
-              var attribute_name = "<%=attribute.attribute.to_s %>"
-              if ("<%= attribute.html_class %>" == "has-many") {
-                  loadASelectWithCachedData(attribute_name, object_load)
-             }else {
-                $("." + attribute_name + " input[type=text]").val(object_load)
-             }
-            <%end%>
-        }
-        //set to null to indicate data cache is no longer in use
-        localStorage['data_store'] = null;
-        localStorage['data_store_accept'] = null;
-    }
-
-
-    var cacheSelectField = function(attribute_name,data_store){
-        select = $("."+attribute_name+" select").selectize();
-        var selectize = select[0].selectize;
-        var selected_objects = $.map(selectize.items, function(value) {
-            return selectize.options[value];
-        });
-        data_store.push(selected_objects);
-    }
-
-    //caches all data of fields and is triggered before redirect button is clicked
-    var cache = function () {
-        var dataStore = [];
-        //iterates through attributes
-        <% page.attributes.each_with_index do |attribute,index| -%>
-          //store attribute name
-          var attribute_name = "<%=attribute.attribute.to_s %>"
-          if ("<%= attribute.html_class %>" == "has-many") {
-              cacheSelectField(attribute_name, dataStore)
-          }else {
-              //get jquery object field related to that attribute and push to stash
-              dataStore.push($("." + attribute_name + " input[type=text]").val());
-        }
-        <%end%>
-        //convert to json and store in cache
-        localStorage['data_store'] = JSON.stringify(dataStore)
-    }
-
-    //on page load
-    $(document).ready(function () {
-        $('.select-field select').selectize();
-        createInstruction("department","*Warning: selecting a department which currently belongs to another facultywill cause for that department to be instead exclusivly linked to this faculty");
-        //checks for cached data of form after redirect
-        checkForCachedData();
-    });
-
-
-
-
-
-</script>
+<%= javascript_tag "intializeSelectize()" %>

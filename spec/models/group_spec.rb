@@ -33,8 +33,8 @@ RSpec.describe Group, type: :model do
       before do
         group.year_structure = nil
       end
-      it "evaluates to true" do
-        expect(group.valid?).to eq true
+      it "evaluates to false" do
+        expect(group.valid?).to eq false
       end
     end
   end
