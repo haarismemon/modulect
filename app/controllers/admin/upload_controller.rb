@@ -20,23 +20,24 @@ module Admin
 
       # Validate uploaded file headers
       uploaded_header = parsed_csv.headers
-      logger.debug("**************#{uploaded_header}")
+      if uploaded_header != session[:resource_header]
+        flash[:error] = "Upload Failed: Please ensure the CSV header matches the template file."
+        redirect_to :back
 
-      # Reads each row of the uploaded csv file
-      parsed_csv.each do |row|
-        # Creates records for corresponding resource
-        # TO-DO: When uploading faculty csv, add department header, and for every department name add the department ID see: faculties.rb
-        if session[:resource_name] == 'faculties'
-          facultyRow = row.to_hash
-          # logger.debug("***************#{facultyRow['name']}")
+      else # Validation checks passed, continue with upload
+        # Reads each row of the uploaded csv file
+        parsed_csv.each do |row|
+          # if session[:resource_name] == 'faculties'
+          #   facultyRow = row.to_hash
+          #   logger.debug("***************#{facultyRow['name']}")
+          # end
+          # Creates records for corresponding resource
+          session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
         end
-        # TO-DO: find faculty from read faculty ID and replace in row Faculty.find(dept.name).id
-        # TO-DO: Unimodules upload add interest tags, career tags, create tag - in unimodule controller
-        session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
-      end
 
-      flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
-      redirect_to :back
+        flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
+        redirect_to :back
+      end
 
     end
 
