@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   include SessionsHelper
   before_action :store_location
+  before_action :log_visit
 
   # Confirms a logged in user.
   def logged_in_user
@@ -61,5 +62,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def log_visit
+    session_id = request.session_options[:id]
+    client = DeviceDetector.new(request.env["HTTP_USER_AGENT"])
+    client_os = client.os_name 
+    if !VisitorLog.find_by_session_id(session_id)
+      VisitorLog.create(:session_id => session_id, :logged_in => false, :device_type => client_os)
+    end
+
+    if VisitorLog.find_by_session_id(session_id)
+      log = VisitorLog.find_by_session_id(session_id)
+      if !log.logged_in && logged_in?
+        log.update_attribute("logged_in", true)
+        log.save
+      end
+    end
+
+  end
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315210112) do
+ActiveRecord::Schema.define(version: 20170315222111) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -175,6 +175,14 @@ ActiveRecord::Schema.define(version: 20170315210112) do
     t.integer  "faculty_id"
     t.boolean  "is_limited",        default: false
     t.datetime "last_login_time"
+  end
+
+  create_table "visitor_logs", force: :cascade do |t|
+    t.string   "session_id"
+    t.boolean  "logged_in"
+    t.string   "device_type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "year_structures", force: :cascade do |t|
