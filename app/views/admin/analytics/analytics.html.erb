@@ -72,7 +72,11 @@
 
 
 
-<%= foo %>
+<% get_review_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
+  <%= uni_module.name  + " " + count.to_s %><br />
+<% end %>
+<br />
+<br />
 
 
 
