@@ -29,8 +29,9 @@ module Admin
         session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
       end
 
-      # Return nothing
-      head :no_content
+      flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
+      redirect_to :back
+
     end
 
     def download
