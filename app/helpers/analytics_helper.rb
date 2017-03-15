@@ -136,13 +136,15 @@ module AnalyticsHelper
 		users = get_users(department_id)
 
 		users.each do |user|
-			course = Course.find(user.course_id)
-			if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
-				if courses_data.key?(course)
-					courses_data[course] += 1
-				else
-					courses_data[course] = 1
-				end	
+			if user.course_id.present?
+				course = Course.find(user.course_id)
+				if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+					if courses_data.key?(course)
+						courses_data[course] += 1
+					else
+						courses_data[course] = 1
+					end	
+				end
 			end
 		end
 
@@ -155,13 +157,15 @@ module AnalyticsHelper
 		users = get_users("any")
 
 		users.each do |user|
-			department = Department.find(user.department_id)
-			if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
-				if departments_data.key?(department)
-					departments_data[department] += 1
-				else
-					departments_data[department] = 1
-				end	
+			if user.department_id.present?
+				department = Department.find(user.department_id)
+				if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+					if departments_data.key?(department)
+						departments_data[department] += 1
+					else
+						departments_data[department] = 1
+					end	
+				end
 			end
 		end
 
