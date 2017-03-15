@@ -580,6 +580,12 @@ most active departments  (num users in time period)<br />
 <br />
 
 
+most active admin departments  (num admin users in time period)<br />
+<% get_active_departments_admin_wise("month","most", 10).each do |department, count| %>
+  <%= department.name  + " " + count.to_s %><br />
+<% end %>
+<br />
+<br />
 
 
 

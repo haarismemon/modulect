@@ -137,7 +137,7 @@ module AnalyticsHelper
 
 		users.each do |user|
 			course = Course.find(user.course_id)
-			if is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+			if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
 				if courses_data.key?(course)
 					courses_data[course] += 1
 				else
@@ -157,7 +157,28 @@ module AnalyticsHelper
 
 		users.each do |user|
 			department = Department.find(user.department_id)
-			if is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+			if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+				if departments_data.key?(department)
+					departments_data[department] += 1
+				else
+					departments_data[department] = 1
+				end	
+			end
+		end
+
+
+		format_ouput_data(departments_data, sort_by, number_to_show)
+
+	end
+
+	# most/least active department (admin-wise)
+	def get_active_departments_admin_wise(time_period, sort_by, number_to_show)
+		departments_data = Hash.new
+		users =  User.all.select{ |user| user.user_level == "department_admin_access"}
+
+		users.each do |user|
+			department = Department.find(user.department_id)
+			if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
 				if departments_data.key?(department)
 					departments_data[department] += 1
 				else
@@ -172,8 +193,14 @@ module AnalyticsHelper
 	end
 
 	# most/least users by saves
-	def get_most_active_user_by_saves(department_id, course_id, time_period, sort_by, number_to_show)
+	def get_active_user_by_saves(department_id, course_id, time_period, sort_by, number_to_show)
 	end
+
+	# most/least users by comments
+	def get_active_user_by_comments
+	end
+
+
 
 
 end
