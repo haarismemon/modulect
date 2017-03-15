@@ -189,7 +189,7 @@ module AnalyticsHelper
 
 	end
 
-	# most/least users by saves
+	# most/least active users by number of saves
 	def get_active_user_by_saves(department_id, time_period, sort_by, number_to_show)
 		users_data = Hash.new
 		users = get_users(department_id)
@@ -200,17 +200,66 @@ module AnalyticsHelper
 
 	end
 
-	# most/least users by comments
+	# most/least active users by number of searches
 	def get_active_user_by_comments(department_id, time_period, sort_by, number_to_show)
 		users_data = Hash.new
 		users = get_users(department_id)
-		
+
 		users.each do |user|
 			users_data[user] = user.comments.size
 		end
 
 	end
 
+	# most/least active users by number of comments
+	def get_active_user_by_searches
+		# TO DO
+	end
+
+	# most/least saved modules
+	def get_saved_modules
+		# TO DO
+	end
+
+	# most/least clicked tags
+	def get_visited_modules
+		# TO DO
+	end
+
+	# most/least clicked (trending) tags
+	def get_most_clicked_tags
+		# TO DO
+	end
+
+	# get number of visitors (both logged in and non-logged in)
+	def get_number_visitors
+		# TO DO
+	end
+
+	# get number of logged in users
+	def get_number_logged_in_users
+		# TO DO
+	end
+
+	# get device usage
+	def get_device_usage
+		# TO DO
+	end
+
+	# get number quick searches
+	def get_number_quick_searches
+		# TO DO
+	end
+
+	# get number pathway searches
+	def get_number_pathway_searches
+		# TO DO
+	end
+
+	# get number career searches
+	def get_number_career_searches
+		# TO DO
+	end
 
 
 
