@@ -69,7 +69,7 @@ module Admin
       # Save the object
       if @department.save
         # If save succeeds, redirect to the index action
-        flash[:notice] = "You have successfully created #{@department.name}"
+        flash[:success] = "You have successfully created #{@department.name}"
         redirect_to(admin_departments_path)
       else
         # If save fails, redisplay the form so user can fix problems
@@ -102,6 +102,9 @@ module Admin
       # check for constraints
       if has_no_course_dependacies && has_no_uni_module_dependacies
         #delete tuple object from db
+        @department.users.each do |user|
+          user.update_attribute("department_id", nil)
+        end
         @department.destroy
         flash[:success] = @department.name+" has been deleted successfully."
       else
@@ -120,6 +123,9 @@ module Admin
         department = Department.find(id.to_i)
         
           if !department.nil? && department.courses.empty? && department.uni_modules.empty?
+             department.users.each do |user|
+                user.update_attribute("department_id", nil)
+            end
             department.destroy
           end
         

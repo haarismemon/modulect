@@ -1,6 +1,6 @@
 <% provide(:title, 'Settings') %>
 <header class="header">
-   <h1 class="header__heading">Settings</h1>
+  <h1 class="page-title">Settings</h1>
 
 <%= form_for(@app_setting, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>
    <div class="header__actions">

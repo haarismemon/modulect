@@ -7,9 +7,10 @@ Rails.application.routes.draw do
     resources :faculties
     resources :groups
     resources :uni_modules
-    resources :users
+    resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
     get 'upload', to: 'upload#upload'
+    get 'analytics', to: 'analytics#analytics'
 
 
     put '/app_settings' => 'app_settings#update'

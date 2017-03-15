@@ -73,7 +73,7 @@ module Admin
       @course = Course.new(course_params)
       if @course.save
         @course.create_year_structures
-        flash[:notice] = @course.name+ " was created successfully. "
+        flash[:success] = @course.name+ " was created successfully. "
         redirect_to(edit_admin_course_path @course)
       else
         render('new')
@@ -89,7 +89,7 @@ module Admin
       duration_in_years_pre_update = @course.duration_in_years
       if @course.update_attributes course_params
         @course.update_year_structures(duration_in_years_pre_update)
-        flash[:notice] = "#{@course.name} successfully updated."
+        flash[:success] = "#{@course.name} successfully updated."
         redirect_to edit_admin_course_path(@course)
       else
         render 'edit'
@@ -98,8 +98,17 @@ module Admin
 
     def destroy
       @course = Course.find(params[:id])
+      @course.users.each do |user|
+        user.update_attribute("course_id", nil)
+      end
+
+      @course.year_structures.each do |year_structure|
+       Group.where(year_structure_id: year_structure.id).destroy_all
+      end
+      YearStructure.where(course_id: @course.id).destroy_all
+
       @course.destroy
-      flash[:notice] =  @course.name + " was deleted successfully."
+      flash[:success] =  @course.name + " was deleted successfully."
       redirect_to(admin_courses_path)
     end
 
@@ -112,6 +121,10 @@ module Admin
         course = Course.find(id.to_i)
         
           if !course.nil?
+            course.year_structures.each do |year_structure|
+              Group.where(year_structure_id: year_structure.id).destroy_all
+            end
+            YearStructure.where(course_id: @course.id).destroy_all
             course.destroy
           end
         
