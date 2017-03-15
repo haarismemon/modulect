@@ -35,6 +35,7 @@
           <h4> We've added compulsory modules for you. Just click pick a module and go through the different groups of modules available. </h4>
           <h5> Don't forget that we've given you a tag match percentage to show you how much a module matches your interests and aspirations. </h5>
         </div>
+        <% if @course_obj.year_structures.length != 0 %>
         <div class="row">
         <%  @course_obj.year_structures.each do |y| %> 
           <button id=<%= "btn_year_#{y.read_attribute_before_type_cast('year_of_study')}" %> class="btn btn-lg btn-block" type="button" style="margin-top: 5px">
@@ -92,6 +93,14 @@
             </ul>
           </div>
         </div>
+        <% else %>
+        <div class="row" style="margin-top: 20px">
+          <div class="col-md-12" style="text-align: center;">
+            <h3> Sorry, there was a problem loading this course.</h2>
+            <h3> Please try again later. </h2>
+          </div>
+        </div>
+        <% end %> 
       <div class="form-group" style="margin-top: 30px">
         <a href="javascript:void()" onclick="javascript:history.back()" >< Back to previous page</a>
       </div>
