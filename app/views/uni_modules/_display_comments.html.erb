@@ -29,21 +29,14 @@
                         <table width="100%" border="0">
                       <colgroup>
                         <td>
-                          <% stars = "" %>
                           <% for i in 1..comment.rating %>
-                              <% stars += "*" %>
+                              <i class="fa fa-star star-rating" aria-hidden="true"></i>
                           <% end %>
-                          <p>
-                            <strong><%= stars %> <%= comment.rating==1 ? "Star" : "Stars" %></strong>
-                          </p>
-
-                          <p>
-                            <%= comment.body %>
-                          </p>
-
-                          <p>
-                            <strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong>
-                          </p>
+                          <% for j in 1..(5 - comment.rating) %>
+                              <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+                          <% end %><p></p>
+                          <p><%= comment.body %></p>
+                          <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
                         </td>
                         <td id="helpful-td" align="center">
                           <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
@@ -127,6 +120,10 @@
 
     #page-links {
       margin-left: 20px;
+    }
+
+    .star-rating {
+      color: #2ab27b;
     }
 
 </style>
