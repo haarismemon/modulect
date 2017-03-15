@@ -554,26 +554,26 @@ var myPieChart = new Chart(ctxa,{
 
 
 most reviewed <br />
-<% get_review_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
+<% get_review_modules_analytics("any","any","month",Time.now,"most", 10).each do |uni_module, count| %>
   <%= uni_module.name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
 most highly rated <br />
-<% get_rating_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
+<% get_rating_modules_analytics("any","any","month",Time.now,"most", 10).each do |uni_module, count| %>
   <%= uni_module.name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
 most active courses (num users in time period)<br />
-<% get_active_courses("any","month","most", 10).each do |course, count| %>
+<% get_active_courses("any","month",Time.now,"most", 10).each do |course, count| %>
   <%= course.name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
 
 most active departments  (num users in time period)<br />
-<% get_active_departments("month","most", 10).each do |department, count| %>
+<% get_active_departments("month",Time.now,"most", 10).each do |department, count| %>
   <%= department.name  + " " + count.to_s %><br />
 <% end %>
 <br />
@@ -581,7 +581,7 @@ most active departments  (num users in time period)<br />
 
 
 most active admin departments  (num admin users in time period)<br />
-<% get_active_departments_admin_wise("month","most", 10).each do |department, count| %>
+<% get_active_departments_admin_wise("month",Time.now,"most", 10).each do |department, count| %>
   <%= department.name  + " " + count.to_s %><br />
 <% end %>
 <br />
@@ -590,7 +590,7 @@ most active admin departments  (num admin users in time period)<br />
 
 
 most active users by saving<br />
-<% get_active_user_by_saves("any","month","most", 10).each do |user, count| %>
+<% get_active_user_by_saves("any","month",Time.now,"most", 10).each do |user, count| %>
   <%= user.first_name  + " " + count.to_s %><br />
 <% end %>
 <br />
@@ -598,14 +598,17 @@ most active users by saving<br />
 
 
 most active users by comments<br />
-<% get_active_user_by_comments("any","month","most", 10).each do |user, count| %>
+<% get_active_user_by_comments("any","month",Time.now,"most", 10).each do |user, count| %>
   <%= user.first_name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
 
-<%= request.session_options[:id] %>
-<%= get_device_usage %>
+number of visitors UNFINISHED<br />
+<%= get_number_visitors %>
+<br />
+<br />
+
 
 
 

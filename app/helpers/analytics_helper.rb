@@ -79,16 +79,17 @@ module AnalyticsHelper
 	# time period: day, week, month, year, all_time
 	# sort by: most, least
 	# number to show: how many records to retrieve
+	# end date: for example, having month with end date of 31st january, should show the month of january
 
 	# most/least reviewed modules
-	def get_review_modules_analytics(department_id, course_id, time_period, sort_by, number_to_show)
+	def get_review_modules_analytics(department_id, course_id, time_period, end_date, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
 
 		uni_modules.each do |uni_module|
 			uni_module.comments.each do |comment|
-				if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
+				if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && is_within_timeframe?(get_day_difference(end_date, comment.created_at), time_period)
 					uni_module = comment.uni_module
 					if uni_modules.include?(uni_module)
 						if uni_modules_data.key?(uni_module)
@@ -105,14 +106,14 @@ module AnalyticsHelper
 	end
 
 	# most/least highly rated modules
-	def get_rating_modules_analytics(department_id, course_id, time_period, sort_by, number_to_show)
+	def get_rating_modules_analytics(department_id, course_id, time_period, end_date, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
 					
 		uni_modules.each do |uni_module|
 			uni_module.comments.each do |comment|
-			if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
+			if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && is_within_timeframe?(get_day_difference(end_date, comment.created_at), time_period)
 				uni_module = comment.uni_module
 				if uni_modules.include?(uni_module)
 					if uni_modules_data.key?(uni_module)
@@ -135,14 +136,14 @@ module AnalyticsHelper
 	end
 
 	# most/least active courses
-	def get_active_courses(department_id, time_period, sort_by, number_to_show)
+	def get_active_courses(department_id, time_period, end_date, sort_by, number_to_show)
 		courses_data = Hash.new
 		users = get_users(department_id)
 
 		users.each do |user|
 			if user.course_id.present?
 				course = Course.find(user.course_id)
-				if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+				if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(end_date, user.last_login_time), time_period)
 					if courses_data.key?(course)
 						courses_data[course] += 1
 					else
@@ -156,14 +157,14 @@ module AnalyticsHelper
 	end
 
 	# most/least active department
-	def get_active_departments(time_period, sort_by, number_to_show)
+	def get_active_departments(time_period, end_date, sort_by, number_to_show)
 		departments_data = Hash.new
 		users = get_users("any")
 
 		users.each do |user|
 			if user.department_id.present?
 				department = Department.find(user.department_id)
-				if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+				if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(end_date, user.last_login_time), time_period)
 					if departments_data.key?(department)
 						departments_data[department] += 1
 					else
@@ -178,13 +179,13 @@ module AnalyticsHelper
 	end
 
 	# most/least active department (admin-wise)
-	def get_active_departments_admin_wise(time_period, sort_by, number_to_show)
+	def get_active_departments_admin_wise(time_period, end_date, sort_by, number_to_show)
 		departments_data = Hash.new
 		users =  User.all.select{ |user| user.user_level == "department_admin_access"}
 
 		users.each do |user|
 			department = Department.find(user.department_id)
-			if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+			if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(end_date, user.last_login_time), time_period)
 				if departments_data.key?(department)
 					departments_data[department] += 1
 				else
@@ -198,14 +199,14 @@ module AnalyticsHelper
 	end
 
 	# most/least active users by number of saves
-	def get_active_user_by_saves(department_id, time_period, sort_by, number_to_show)
+	def get_active_user_by_saves(department_id, time_period, end_date, sort_by, number_to_show)
 		users_data = Hash.new
 		users = get_users(department_id)
 
 		users.each do |user|
 			if user.uni_modules.size > 0
 				user.uni_modules.each do |uni_module|
-					if is_within_timeframe?(get_day_difference(Time.now, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at), time_period)
+					if is_within_timeframe?(get_day_difference(end_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at), time_period)
 						if users_data.key?(user)
 							users_data[user] += 1
 						else
@@ -222,14 +223,14 @@ module AnalyticsHelper
 	end
 
 	# most/least active users by number of searches
-	def get_active_user_by_comments(department_id, time_period, sort_by, number_to_show)
+	def get_active_user_by_comments(department_id, time_period, end_date, sort_by, number_to_show)
 		users_data = Hash.new
 		users = get_users(department_id)
 
 		users.each do |user|
 			if user.comments.size > 0
 				user.comments.each do |comment|
-					if is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
+					if is_within_timeframe?(get_day_difference(end_date, comment.created_at), time_period)
 						if users_data.key?(user)
 							users_data[user] += 1
 						else
@@ -267,7 +268,7 @@ module AnalyticsHelper
 
 	# get number of visitors (both logged in and non-logged in)
 	def get_number_visitors
-		# TO DO
+		VisitorLog.all.size
 	end
 
 	# get number of logged in users
