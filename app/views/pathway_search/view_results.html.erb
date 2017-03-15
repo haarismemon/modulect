@@ -645,11 +645,15 @@
             " (" + required_modules_per_year[year][g][item].credits + ")");
       }
     }
+    console.log("here111");
     // Add credits from selected modules
     for(g = 0; g < selected_ids[year].length; ++g) {
-      for(item = 0; item < selected_ids[year][g].length; i++) {
+      console.log("here2");
+      for(item = 0; item < selected_ids[year][g].length; item++) {
+        console.log("here3");
         var findWithId = selected_ids[year][g][item];
         for(i = 0; i < optional_modules_per_year[year][g].uni_modules.length; ++i) {
+          console.log("here4");
           var currentMod = optional_modules_per_year[year][g].uni_modules[i];
           if(currentMod.id == findWithId) {
             credits_this_year += currentMod.credits;
@@ -666,6 +670,7 @@
         requiredMod = this_module.uni_module_requirements[module];
         moduleTaken = false;
         // Check if this required module is already in the compulsory modules (for all years)
+        console.log("start mod search 1");
         moduleSearch1:
         for(year = 0; year < js_course.year_structures.length; year++) {
           for(g = 0; g < required_modules_per_year[year].length; ++g) {
@@ -678,6 +683,7 @@
             }
           }
         }
+        console.log("finished mod search 1");
         if(moduleTaken) {
           continue; // If we have found the module at this point go to the next required module
         } else {
