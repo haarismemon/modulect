@@ -100,7 +100,7 @@ computer_science_15.year_structures << cs_year2
 cs1_semester_1 = Group.create(name: "Semester 1", max_credits: 60, min_credits: 60, compulsory: true)
 cs1_semester_2 = Group.create(name: "Semester 2", max_credits: 60, min_credits: 60, compulsory: false)
 cs2_semester_1 = Group.create(name: "Semester 1", max_credits: 60, min_credits: 60, compulsory: true)
-cs2_semester_2 = Group.create(name: "Semester 2", max_credits: 60, min_credits: 60, 	compulsory: false)
+cs2_semester_2 = Group.create(name: "Semester 2", max_credits: 60, min_credits: 60, compulsory: false)
 
 # Group-Modules association
 cs1_semester_1.uni_modules << prp
@@ -330,7 +330,8 @@ year3 = YearStructure.create(year_of_study: 3)
 
 req_1_year_1 = Group.create(
 	name: "Required modules", 
-	total_credits: 120, 
+	min_credits: 120,
+	max_credits: 120, 
 	compulsory: true)
 	req_1_year_1.uni_modules << UniModule.create(code: "4BBY1013", semester: "1", credits: 15, name: "Biochemistry")
 	req_1_year_1.uni_modules << UniModule.create(code: "4BBY1020", semester: "1", credits: 15, name: "Chemistry for the Biosciences")
@@ -341,7 +342,8 @@ req_1_year_1 = Group.create(
 	req_1_year_1.uni_modules << UniModule.create(code: "4AAA0001", semester: "2", credits: 15, name: "Skills for the Biosciences")
 req_1_year_2 = Group.create(
 	name: "Required modules", 
-	total_credits: 90, 
+	min_credits: 90,
+	max_credits: 90, 
 	compulsory: true)
 	req_1_year_2.uni_modules << UniModule.create(code: "5BBM0213", semester: "3", credits: 30, name: "Drugs & Disease B")
 	req_1_year_2.uni_modules << UniModule.create(code: "5BBM0216", semester: "1", credits: 15, name: "Drug Discovery & Development")
