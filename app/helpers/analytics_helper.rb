@@ -84,12 +84,11 @@ module AnalyticsHelper
 	def get_review_modules_analytics(department_id, course_id, time_period, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
-		users = get_users(department_id)
 		uni_modules = get_uni_modules(department_id, course_id)
-				
-		users.each do |user|
-			user.comments.each do |comment|
-				if is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
+
+		uni_modules.each do |uni_module|
+			uni_module.comments.each do |comment|
+				if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
 					uni_module = comment.uni_module
 					if uni_modules.include?(uni_module)
 						if uni_modules_data.key?(uni_module)
@@ -109,12 +108,11 @@ module AnalyticsHelper
 	def get_rating_modules_analytics(department_id, course_id, time_period, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
-		users = get_users(department_id)
 		uni_modules = get_uni_modules(department_id, course_id)
 					
-		users.each do |user|
-			user.comments.each do |comment|
-			if is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
+		uni_modules.each do |uni_module|
+			uni_module.comments.each do |comment|
+			if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
 				uni_module = comment.uni_module
 				if uni_modules.include?(uni_module)
 					if uni_modules_data.key?(uni_module)
@@ -127,6 +125,12 @@ module AnalyticsHelper
 			end
 		end
 			
+
+		# get average ratings
+		uni_modules_data.each do |uni_module, counter|
+			uni_modules_data[uni_module] = counter / uni_module.comments.select{ |comment| User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access"}.size.to_f
+		end
+
 		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
 
@@ -199,8 +203,13 @@ module AnalyticsHelper
 		users = get_users(department_id)
 
 		users.each do |user|
-			users_data[user] = user.uni_modules.size
+			if user.uni_modules.size > 0
+				users_data[user] = user.uni_modules.size
+			end
 		end
+
+
+		format_ouput_data(users_data, sort_by, number_to_show)
 
 	end
 
@@ -210,8 +219,13 @@ module AnalyticsHelper
 		users = get_users(department_id)
 
 		users.each do |user|
-			users_data[user] = user.comments.size
+			if user.comments.size > 0
+				users_data[user] = user.comments.size
+			end
 		end
+
+
+		format_ouput_data(users_data, sort_by, number_to_show)
 
 	end
 
