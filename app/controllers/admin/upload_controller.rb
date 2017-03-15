@@ -21,19 +21,16 @@ module Admin
 
       if parsed_csv.length == 0
         # Validate if uploaded CSV is empty
-        flash[:error] = "Upload Failed: No records found. CSV is empty"
+        flash[:error] = 'Upload Failed: No records found. CSV is empty'
 
         # Validate uploaded file headers
       elsif uploaded_header != session[:resource_header]
-        flash[:error] = "Upload Failed: Please ensure the CSV header matches the template file"
+        flash[:error] = 'Upload Failed: Please ensure the CSV header matches the template file'
 
       else # Validation checks passed, continue with upload
         # Reads each row of the uploaded csv file
         parsed_csv.each do |row|
           # if session[:resource_name] == 'faculties'
-          #   facultyRow = row.to_hash
-          #   logger.debug("***************#{facultyRow['name']}")
-          # end
           # Creates records for corresponding resource
           session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
         end
@@ -71,11 +68,19 @@ module Admin
       session[:resource_header] = resource_header
 
       # Add specific association attributes
-      # Add additional header for the departments of the faculty
+      # Add additional header attribute for the departments of the faculty
       if resource.to_s == 'faculties'
         resource_header << "departments"
-        logger.debug("8888888888888888888 #{resource_header}")
       end
+
+      # Replace faculty_id attribute with faculty_name for departments
+      if resource.to_s == "departments"
+        # Remove faculty_id attribute
+        resource_header.delete("faculty_id")
+        # Add faculty_name
+        resource_header << "faculty_name"
+      end
+
 
       # Create a CSV file in the specified path
       file_name = "app/assets/#{resource.to_s}_upload.csv"
