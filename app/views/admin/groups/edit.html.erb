@@ -1,7 +1,8 @@
 <% provide :title, "Edit Group" %>
 <% provide :submit_button_text, 'Update' %>
 
-<h1>Edit Group</h1>
+<h1 style="margin-bottom: 40px">Edit <%=Group.find(params[:id]).name%> <a
+   href="<% edit_admin_course_path(id: @group.year_structure.course.id)%>"
+   style="font-size: 20px">of <%= Group.find(params[:id]).year_structure.course.name%></a></h1>
 
-<%= render 'shared/error_messages', object: @group %>
-<%= render 'form' %>
+  <%= render 'form',:action =>"Update" %>

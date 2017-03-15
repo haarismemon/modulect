@@ -10,9 +10,8 @@
     <%= render 'group_fields', :f => group,:action => action %>
   <% end %>
 
-  <div class='links'>
+  <div class='links' id="add-another-group">
     <%= link_to_add_association "Add Module Group", f, :groups%>
   </div>
-  <%= f.submit "Year Structure", class: 'btn btn-primary' %>
-
+  <div class="form-actions"><button type="submit" name="commit" ><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> year</button></div>
 <% end %>
