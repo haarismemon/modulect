@@ -50,6 +50,7 @@ module AnalyticsHelper
 	# sort by: most, least
 	# number to show: how many to show
 
+	# most/least reviewed modules
 	def get_review_modules_analytics(department_id, course_id, time_period, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
@@ -87,7 +88,46 @@ module AnalyticsHelper
 		uni_modules_data
 	end
 
-	
+	# most/least highly rated modules
+	def get_rating_modules_analytics(department_id, course_id, time_period, sort_by, number_to_show)
+
+		uni_modules_data = Hash.new
+		users = get_users(department_id)
+		uni_modules = get_uni_modules(department_id, course_id)
+					
+		users.each do |user|
+			user.comments.each do |comment|
+			if is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
+				uni_module = comment.uni_module
+				if uni_modules.include?(uni_module)
+					if uni_modules_data.key?(uni_module)
+						uni_modules_data[uni_module] += comment.rating
+						else
+							uni_modules_data[uni_module] = comment.rating
+						end
+					end
+				end
+			end
+		end
+			
+		# sort alphabetically
+		uni_modules_data = uni_modules_data.sort_by {|_key, value| _key}
+
+		# then sort based on request
+		if sort_by == "least"
+			uni_modules_data = uni_modules_data.sort_by {|_key, value| value}
+		elsif
+			uni_modules_data = uni_modules_data.sort_by {|_key, value| value}.reverse
+		end
+
+		if is_number?(number_to_show)
+			uni_modules_data = uni_modules_data.first(number_to_show)
+		end
+			uni_modules_data
+	end
+
+
+
 
 
 end

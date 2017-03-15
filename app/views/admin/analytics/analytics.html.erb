@@ -71,15 +71,20 @@
       <div id="overview" class="tab-pane fade in active">
 
 
-
+most reviewed <br />
 <% get_review_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
   <%= uni_module.name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
+most highly rated <br />
+<% get_rating_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
+  <%= uni_module.name  + " " + count.to_s %><br />
+<% end %>
 
 
-
+<br />
+<br />
 
 
 
