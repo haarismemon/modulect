@@ -300,7 +300,7 @@
         "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
           "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
            if(isOptional) {
-            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + modIndex + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + module.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
           }
           moduleCard += "</div>" +
         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -317,7 +317,7 @@
          "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
           "<a href=\"/uni_modules/" + module.id + "\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
           if(isOptional) {
-            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + modIndex + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + module.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
           }
           moduleCard += "</div>" +
          "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -645,15 +645,11 @@
             " (" + required_modules_per_year[year][g][item].credits + ")");
       }
     }
-    console.log("here111");
     // Add credits from selected modules
     for(g = 0; g < selected_ids[year].length; ++g) {
-      console.log("here2");
       for(item = 0; item < selected_ids[year][g].length; item++) {
-        console.log("here3");
         var findWithId = selected_ids[year][g][item];
         for(i = 0; i < optional_modules_per_year[year][g].uni_modules.length; ++i) {
-          console.log("here4");
           var currentMod = optional_modules_per_year[year][g].uni_modules[i];
           if(currentMod.id == findWithId) {
             credits_this_year += currentMod.credits;
@@ -736,7 +732,8 @@
   function deselectModule(year, group, moduleId) {
     indexToDelete = selected_ids[year][group].indexOf(moduleId);
     if(indexToDelete > -1) {
-      selected_ids.splice(index, 1);
+      console.log("herererer");
+      selected_ids[year][group].splice(index, 1);
     }
     updateUI();
   }
