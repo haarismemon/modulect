@@ -63,6 +63,9 @@ module Admin
       to_remove = %w(id created_at updated_at)
       resource_header = resource_header - to_remove
 
+      # Store resource header as session variable
+      session[:resource_header] = resource_header
+
       # Add specific association attributes
       # Add additional header for the departments of the faculty
       if resource.to_s == 'faculties'
