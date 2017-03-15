@@ -11,18 +11,18 @@
    <% else %>
    <div class="col-md-12 result-card-main">
       <% end %>
-      <h2 id="uni_module_title"><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
+      <h2 id="uni-module-title-<%= uni_module.id %>"><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
       <h4>Semester <%= make_semester_nice size_check uni_module.semester %> - <%= uni_module.credits %> credits</h4>
       <% if type != "show" %>
       <div style="margin-top:30px">
          <% if logged_in? %>
          <script>
-            $("#uni_module_title").hover(function () {
+            $("#uni-module-title-<%= uni_module.id %>").hover(function () {
                 $(this).css("text-decoration", "underline");
             }, function () {
                 $(this).css("text-decoration", "none");
             });
-            $("#uni_module_title").click(function () {
+            $("#uni-module-title-<%= uni_module.id %>").click(function () {
                 var new_path = "<%= uni_module_path(uni_module.id) %>";
                 window.location = new_path;
             });
@@ -41,7 +41,7 @@
          </button>
          <% end %>
 
-         <button class="btn btn-lg btn-small" id="review-module" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</button>
+         <button class="btn btn-lg btn-small" id="review-module-<%= uni_module.id %>" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</button>
 
          <script>
             $("button#save-<%= uni_module.code%>").on("click", function(){
@@ -52,7 +52,7 @@
                 })
             });
 
-            $("button#review-module").click(function () {
+            $("button#review-module-<%= uni_module.id %>").click(function () {
                 var new_path = "<%= uni_module_path(uni_module.id) %>";
                 window.location = new_path + "#module_review";
             });
