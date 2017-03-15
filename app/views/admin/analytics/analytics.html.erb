@@ -604,8 +604,14 @@ most active users by comments<br />
 <br />
 <br />
 
-number of visitors UNFINISHED<br />
-<%= get_number_visitors %>
+number of visitors<br />
+<%= get_number_visitors("any", "month", Time.now) %>
+<br />
+<br />
+
+
+number of logged in visitors<br />
+<%= get_number_logged_in_users("any", "month", Time.now) %>
 <br />
 <br />
 

@@ -267,13 +267,46 @@ module AnalyticsHelper
 	end
 
 	# get number of visitors (both logged in and non-logged in)
-	def get_number_visitors(department_id, time_period, end_date, sort_by, number_to_show)
-		VisitorLog.all.size
+	def get_number_visitors(department_id, time_period, end_date)
+
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
+		else
+			logs = VisitorLog.all
+		end
+
+
+		total_visitors = 0
+		
+		logs.each do |log|
+			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+				total_visitors += 1
+			end
+		end
+
+		total_visitors
+
 	end
 
 	# get number of logged in users
-	def get_number_logged_in_users
-		# TO DO
+	def get_number_logged_in_users(department_id, time_period, end_date)
+		
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
+		else
+			logs = VisitorLog.all
+		end
+
+
+		total_visitors = 0
+		
+		logs.each do |log|
+			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period) && log.logged_in
+				total_visitors += 1
+			end
+		end
+
+		total_visitors
 	end
 
 	# get device usage
