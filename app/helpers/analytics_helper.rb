@@ -310,8 +310,29 @@ module AnalyticsHelper
 	end
 
 	# get device usage
-	def get_device_usage
-		# TO DO
+	def get_device_usage(department_id, time_period, end_date)
+		
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
+		else
+			logs = VisitorLog.all
+		end
+
+
+		devices = Hash.new
+		
+		logs.each do |log|
+			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+				if devices.key?(log.device_type)
+					devices[log.device_type] += 1
+				else
+					devices[log.device_type] = 1
+				end
+			end
+		end
+
+		devices
+
 	end
 
 	# get number quick searches

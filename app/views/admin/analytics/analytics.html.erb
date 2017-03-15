@@ -616,6 +616,14 @@ number of logged in visitors<br />
 <br />
 
 
+device usage<br />
+<% get_device_usage("any", "month", Time.now).each do |device, amount| %>
+<%= device  + ", " + amount.to_s %><br />
+
+<% end %>
+<br />
+<br />
+
 
 
 
