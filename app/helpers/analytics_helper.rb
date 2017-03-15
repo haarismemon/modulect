@@ -204,7 +204,15 @@ module AnalyticsHelper
 
 		users.each do |user|
 			if user.uni_modules.size > 0
-				users_data[user] = user.uni_modules.size
+				user.uni_modules.each do |uni_module|
+					if is_within_timeframe?(get_day_difference(Time.now, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at), time_period)
+						if users_data.key?(user)
+							users_data[user] += 1
+						else
+							users_data[user] = 1
+						end	
+					end
+				end
 			end
 		end
 
@@ -220,7 +228,15 @@ module AnalyticsHelper
 
 		users.each do |user|
 			if user.comments.size > 0
-				users_data[user] = user.comments.size
+				user.comments.each do |comment|
+					if is_within_timeframe?(get_day_difference(Time.now, comment.created_at), time_period)
+						if users_data.key?(user)
+							users_data[user] += 1
+						else
+							users_data[user] = 1
+						end	
+					end
+				end
 			end
 		end
 
