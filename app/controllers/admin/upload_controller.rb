@@ -30,9 +30,14 @@ module Admin
       else # Validation checks passed, continue with upload
         # Reads each row of the uploaded csv file
         parsed_csv.each do |row|
-          # if session[:resource_name] == 'faculties'
           # Creates records for corresponding resource
-          session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
+          if session[:resource_name] == 'departments'
+            row_hash = row.to_hash
+            # faculty_id = Faculty.find_by_name(row_hash['faculty_name'])
+            faculty_id = Faculty('Natural and Mathematical Sciences')
+            logger.debug("88888888888888888888#{faculty_id}")
+          end
+          # session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
         end
 
         flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
@@ -70,17 +75,16 @@ module Admin
       # Add specific association attributes
       # Add additional header attribute for the departments of the faculty
       if resource.to_s == 'faculties'
-        resource_header << "departments"
+        resource_header << 'departments'
       end
 
       # Replace faculty_id attribute with faculty_name for departments
-      if resource.to_s == "departments"
+      if resource.to_s == 'departments'
         # Remove faculty_id attribute
-        resource_header.delete("faculty_id")
+        resource_header.delete('faculty_id')
         # Add faculty_name
-        resource_header << "faculty_name"
+        resource_header << 'faculty_name'
       end
-
 
       # Create a CSV file in the specified path
       file_name = "app/assets/#{resource.to_s}_upload.csv"
