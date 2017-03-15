@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314200228) do
+ActiveRecord::Schema.define(version: 20170314233915) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -78,7 +78,6 @@ ActiveRecord::Schema.define(version: 20170314200228) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
-    t.integer  "total_credits"
     t.integer  "year_structure_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false

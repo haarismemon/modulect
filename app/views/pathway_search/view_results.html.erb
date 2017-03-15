@@ -588,14 +588,14 @@
     for(i = 0; i < optional_modules_per_year[_year][_i].uni_modules.length; ++i) {
       currentModId = optional_modules_per_year[_year][_i].uni_modules[i].id;
       if(!(selected_ids[_year][_i].indexOf(currentModId) > -1)) {
-        (function(_year_, _i_, i_){
+        (function(_year_, _i, currentModId){
           button = document.getElementById("btn_opt_select_" + currentModId);
           button.addEventListener("click", function(){
             console.log("hit");
             $("#optionsModalYear" + (_year + 1)).modal('hide');
-            selectModule(_year_,_i_,currentModId);
+            selectModule(_year_,_i,currentModId);
           });
-        })(_year, _i, i);
+        })(_year, _i, currentModId);
       }
     }
   }
@@ -605,7 +605,8 @@
     console.log("########################################");
     console.log("########### selecting module ###########");
     this_module = null;
-    for(i = 0; i < optional_modules_per_year[year][group].length; ++i) {
+    console.log(year + "   " + group + "    " + module_id);
+    for(i = 0; i < optional_modules_per_year[year][group].uni_modules.length; ++i) {
       var currentMod = optional_modules_per_year[year][group].uni_modules[i];
       if(currentMod.id == module_id) {
         this_module = currentMod;
@@ -656,8 +657,8 @@
 
     // 3. Check this module has its requirements satisified
     requirementsSatisfied = true;
-    if(this_module.uni_module_requirements.length > 0) {
-      for(module = 0; module < this_module.uni_module_requirements.length; module++) {
+    if(this_module.uni_modules.length > 0) {
+      for(module = 0; module < this_module.uni_modules.length; module++) {
         requiredMod = this_module.uni_module_requirements[module];
         moduleTaken = false;
         // Check if this required module is already in the compulsory modules (for all years)
@@ -700,7 +701,7 @@
     console.log("credits used this year: " + credits_this_year);      
     console.log("----------------------------------------");
     if(credits_used >= max_credits) {
-      window.alert("You have already selected enought credits from this group");
+      window.alert("You have already selected enough credits from this group");
     }
     // !!UNSURE IF THIS SHOULD BE STATIC!!
     else if(credits_this_year+this_module.credits > 120) {
