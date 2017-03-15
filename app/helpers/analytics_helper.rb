@@ -267,7 +267,7 @@ module AnalyticsHelper
 	end
 
 	# get number of visitors (both logged in and non-logged in)
-	def get_number_visitors
+	def get_number_visitors(department_id, time_period, end_date, sort_by, number_to_show)
 		VisitorLog.all.size
 	end
 

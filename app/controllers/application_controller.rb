@@ -76,6 +76,11 @@ class ApplicationController < ActionController::Base
         log.update_attribute("logged_in", true)
         log.save
       end
+
+      if logged_in? && current_user.department_id.present? && log.department_id.nil?
+        log.update_attribute("department_id", current_user.department_id)
+        log.save
+      end
     end
 
   end
