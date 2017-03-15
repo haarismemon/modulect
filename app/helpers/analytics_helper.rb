@@ -146,7 +146,6 @@ module AnalyticsHelper
 			end
 		end
 
-
 		format_ouput_data(courses_data, sort_by, number_to_show)
 	end
 
@@ -165,7 +164,6 @@ module AnalyticsHelper
 				end	
 			end
 		end
-
 
 		format_ouput_data(departments_data, sort_by, number_to_show)
 
@@ -187,17 +185,30 @@ module AnalyticsHelper
 			end
 		end
 
-
 		format_ouput_data(departments_data, sort_by, number_to_show)
 
 	end
 
 	# most/least users by saves
-	def get_active_user_by_saves(department_id, course_id, time_period, sort_by, number_to_show)
+	def get_active_user_by_saves(department_id, time_period, sort_by, number_to_show)
+		users_data = Hash.new
+		users = get_users(department_id)
+
+		users.each do |user|
+			users_data[user] = user.uni_modules.size
+		end
+
 	end
 
 	# most/least users by comments
-	def get_active_user_by_comments
+	def get_active_user_by_comments(department_id, time_period, sort_by, number_to_show)
+		users_data = Hash.new
+		users = get_users(department_id)
+		
+		users.each do |user|
+			users_data[user] = user.comments.size
+		end
+
 	end
 
 

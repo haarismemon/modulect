@@ -589,6 +589,30 @@ most active admin departments  (num admin users in time period)<br />
 
 
 
+most active users by saving<br />
+<% get_active_user_by_saves("any","month","most", 10).each do |user, count| %>
+  <%= user.first_name  + " " + count.to_s %><br />
+<% end %>
+<br />
+<br />
+
+
+most active users by comments<br />
+<% get_active_user_by_comments("any","month","most", 10).each do |user, count| %>
+  <%= user.first_name  + " " + count.to_s %><br />
+<% end %>
+<br />
+<br />
+
+
+
+
+
+
+
+
+
+
 <Br /><br />
 
       </div>
