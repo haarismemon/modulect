@@ -3,15 +3,22 @@
 <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
 <%= error_messages_for(f.object) %>
 
+
+    <%= render 'admin/application/course-partials/groups_set' %>
   <!-- Edit existing groups -->
-
-
   <% f.fields_for :groups do |group| %>
     <%= render 'group_fields', :f => group,:action => action %>
   <% end %>
 
-  <div class='links' id="add-another-group">
+  <div class='links' onclick='loseFocus()' id="add-another-group">
     <%= link_to_add_association "Add Module Group", f, :groups%>
   </div>
   <div class="form-actions"><button type="submit" name="commit" ><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> year</button></div>
 <% end %>
+
+
+<script>
+  function loseFocus(){
+    $("#add-another-group *").blur();
+  }
+</script>

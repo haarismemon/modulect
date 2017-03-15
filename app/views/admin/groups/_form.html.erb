@@ -2,60 +2,10 @@
 
 <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
 <%= error_messages_for(f.object) %>
-
-<div class="row field-unit field-unit--string name" >
-  <div class="col-xs-12">
-    <div class="field-unit__label">
-      <%= f.label :name, placeholder: 'i.e Semester 1' %>
-    </div>
-    <div class="field-unit__field ">
-    <%= f.text_field :name %>
-    </div>
-  </div>
-</div>
-
-
-
-<div class="row field-unit uni_modules" >
-  <div class="col-xs-12">
-    <div class="field-unit__label">
-        <%= f.label :modules_that_can_be_choosen%>
-    </div>§
-    <div class="field-unit__field " id="select-modules-from-group-form">
-        <%= f.select :uni_module_ids, possible_uni_modules_for_existing_group(@group).collect {|x| [x.to_s, x.id]}, {},
-        :multiple => true, class: 'selectize-field' %>
-    </div>
-  </div>
-</div>
-
-
-<div class="row field-unit total_credits" >
-  <div class="col-xs-12">
-    <div class="field-unit__label">
-      <%= f.label :total_credits %>
-    </div>
-    <div class="field-unit__field ">
-      <%= f.number_field :total_credits %>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-    <%= f.check_box :compulsory,style:"margin-right: 5px" %> <%= f.label "Make all modules in this group compulsory?" %>
-
-  <div class="form-actions" style="margin-top:30px"><button type="submit" name="commit" ><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> group</button></div>
+    <%= render "admin/application/course-partials/group_form_fields",:f => f %>
+    <div class="form-actions" style="margin-top:30px"><button type="submit" name="commit" ><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> group</button></div>
 <% end %>
 
 <script>
-$(function(){
-  $('.selectize-field').selectize({
-      plugins: ['remove_button'],
-      delimiter: ',',
-      persist: false,
-      create: false
-  });
-});
+    intializeSelectize();
 </script>

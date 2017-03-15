@@ -1,0 +1,46 @@
+
+<div id="landing" style="margin-left:10px;">
+  <div class="row" style="margin-top:20px;">
+
+
+
+    <div class="row field-unit groups" >
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <label style="font-size: 19px"> Groups belonging to this year structure  <a class="help-tooltip" style="font-size:14px" data-toggle="tooltip"  data-placement="right"
+                                                                                      title="Each year structure contains a set of groups where each contains modules i.e first term is a group. The students will pick modules for each group to satisfy required total credits. ">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+          <%= @year_structure.groups.empty? ? " - None (add below and update)": "" %>
+        </div>
+        <div class="field-unit__field">
+          <div id="landing" style="margin-left:10px;">
+            <div class="row" style="margin-top:20px;">
+              <% @year_structure.groups.each do |group| %>
+                  <div class="col-md-4 text-center" style = " margin-bottom:0px;">
+                    <div class="col-md-12 login-card">
+                      <div class="col-md-12">
+                        <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
+                        <div>
+                          <h3><%= group.name %></h3>
+                          <h5 style="margin-top: 20px">Total credits: <%= group.total_credits %></h5>
+                        </div>
+                        <div>
+                          <div style="margin-top: 30px;padding-left:0px">
+                            <div class="form-group">
+                              <a href="<%= edit_admin_group_path(group)%>" class="btn btn-lg" style="font-size: 15px; box-shadow:none"><span>Modify ></span></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              <% end %>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

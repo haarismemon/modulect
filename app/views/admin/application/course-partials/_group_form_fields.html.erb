@@ -1,0 +1,46 @@
+<div class="row field-unit field-unit--string name" >
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%= f.label :name_of_group%>
+    </div>
+    <div class="field-unit__field">
+      <%= f.text_field :name,placeholder: 'i.e Semester 1'  %>
+    </div>
+  </div>
+</div>
+
+<div class="row field-unit total_credits" >
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%= f.label :total_credits_for_this_group %>
+    </div>
+    <div class="field-unit__field">
+      <%= f.number_field :total_credits %>
+    </div>
+  </div>
+</div>
+
+<div class="row field-unit field-unit--string uni_modules" >
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%= f.label :Modules_to_choose_from %>
+    </div>
+    <div class="field-unit__field ">
+      <%= f.select :uni_module_ids,UniModule.all.collect {|x| [x.to_s, x.id]}, {},
+                   :multiple => true,:class =>"selectize" %>
+    </div>
+  </div>
+</div>
+
+<div class="row field-unit compulsory" >
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%= f.check_box :compulsory,{style: "margin-right: 4px"} %>  <label> Make all modules in this group compulsory? </label>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+</script>

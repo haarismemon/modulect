@@ -1,50 +1,7 @@
 <div class="nested-fields">
 
     <!--renders attributes-->
-    <div class="row field-unit field-unit--string name" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label :name%>
-        </div>
-        <div class="field-unit__field">
-          <%= f.text_field :name,placeholder: 'i.e Semester 1'  %>
-        </div>
-      </div>
-    </div>
-
-    <div class="row field-unit total_credits" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label :total_credits %>
-        </div>
-        <div class="field-unit__field">
-          <%= f.number_field :total_credits %>
-        </div>
-      </div>
-    </div>
-
-    <div class="row field-unit field-unit--string uni_modules" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-          <%= f.label :Modules %>
-        </div>
-        <div class="field-unit__field ">
-          <%= f.select :uni_module_ids, possible_uni_modules_for_new_group.collect {|x| [x.to_s, x.id]}, {},
-          :multiple => true, class: 'selectize-field' %>
-        </div>
-      </div>
-    </div>
-
-    <div class="row field-unit compulsory" >
-      <div class="col-xs-12">
-        <div class="field-unit__label">
-           <%= f.check_box :compulsory,{style: "margin-right: 4px"} %> <%= f.label "Make all modules in this group compulsory?" %>
-        </div>
-      </div>
-    </div>
-
-
-
+  <%= render "admin/application/course-partials/group_form_fields",:f => f %>
 
   <div class="remove-field" style="margin: 0px;">
     <%= link_to_remove_association "Remove Module Group", f %>
@@ -52,15 +9,3 @@
      <div class="page-header additional-info" style="margin: 0px;margin-bottom:20px;"></div>
 
 </div>
-<script>
-$(function(){
-  $('.selectize-field').selectize({
-      plugins: ['remove_button'],
-      delimiter: ',',
-      persist: false,
-      create: false
-  });
-
-
-});
-</script>

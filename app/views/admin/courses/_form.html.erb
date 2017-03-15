@@ -1,12 +1,14 @@
 <%= form_for [:admin, @course] do |f| %>
 
-  <!-- <%= render 'shared/error_messages', object: f.object %> -->
 
       <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
       <%= error_messages_for(f.object) %>
 
+      <% if action == "Update" %>
+       <%= render 'admin/application/course-partials/year_structures_set' %>
+      <%end%>
 
-          <!--renders attributes-->
+    <!--renders attributes-->
           <div class="row field-unit field-unit--string name" >
             <div class="col-xs-12">
               <div class="field-unit__label">

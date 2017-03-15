@@ -1,8 +1,15 @@
 <% provide :title, "Edit Group" %>
 <% provide :submit_button_text, 'Update' %>
 
-<h1 style="margin-bottom: 40px">Edit <%=Group.find(params[:id]).name%> <a
-   href="<% edit_admin_course_path(id: @group.year_structure.course.id)%>"
-   style="font-size: 20px">of <%= Group.find(params[:id]).year_structure.course.name%></a></h1>
+
+<header class="header" >
+  <h1 style="margin-bottom: 40px">Edit <%=Group.find(params[:id]).name%> <a
+  href="<%= edit_admin_course_path(@group.year_structure.course.id) %>"
+  style="font-size: 20px">of <%= Group.find(params[:id]).year_structure.course.name%></a></h1>
+  <div class="header__actions">
+    <!--back button-->
+    <a href="<%= admin_year_structure_path(Group.find(params[:id]).year_structure.id)%>" class= "button tool-box" style= "padding-top: 11px;padding-bottom: 11px;"><i class='fa fa-angle-left' aria-hidden='true'></i> Back</a>
+  </div>
+</header>
 
   <%= render 'form',:action =>"Update" %>
