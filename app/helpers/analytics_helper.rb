@@ -160,6 +160,40 @@ module AnalyticsHelper
 
 	end
 
+	# most/least active department
+	def get_active_departments(time_period, sort_by, number_to_show)
+		departments_data = Hash.new
+		users = get_users("any")
+
+		users.each do |user|
+			department = Department.find(user.department_id)
+			if is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+				if departments_data.key?(department)
+					departments_data[department] += 1
+				else
+					departments_data[department] = 1
+				end	
+			end
+		end
+
+
+		# sort alphabetically
+		departments_data = departments_data.sort_by {|_key, value| _key}
+
+		# then sort based on request
+		if sort_by == "least"
+			departments_data = departments_data.sort_by {|_key, value| value}
+		elsif
+			departments_data = departments_data.sort_by {|_key, value| value}.reverse
+		end
+
+		if is_number?(number_to_show)
+			departments_data = departments_data.first(number_to_show)
+		end
+			departments_data
+
+	end
+
 
 
 

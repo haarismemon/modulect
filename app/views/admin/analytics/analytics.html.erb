@@ -84,11 +84,16 @@ most highly rated <br />
 <br />
 <br />
 most active courses <br />
-<% get_most_active_courses("any","month","most", 10).each do |uni_module, count| %>
-  <%= uni_module.name  + " " + count.to_s %><br />
+<% get_active_courses("any","month","most", 10).each do |course, count| %>
+  <%= course.name  + " " + count.to_s %><br />
 <% end %>
+<br />
+<br />
 
-
+most active departments <br />
+<% get_active_departments("month","most", 10).each do |department, count| %>
+  <%= department.name  + " " + count.to_s %><br />
+<% end %>
 <br />
 <br />
 
@@ -96,8 +101,7 @@ most active courses <br />
 
 
 
-
-
+<Br /><br />
 
          <div class="row" >
             <div class="col-md-12  login-card header-card" style="">
