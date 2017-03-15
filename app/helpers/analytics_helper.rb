@@ -1,9 +1,14 @@
 module AnalyticsHelper
 
+	# general helpers:
+
+	# check if the input is a number
 	def is_number? string
   		true if Float(string) rescue false
 	end
 
+	# get the student users from the department
+	# if "any", return all users
 	def get_users(department_id)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			users = User.all.select { |user| user.department_id == department_id.to_i && user.user_level == "user_access"}
@@ -13,6 +18,8 @@ module AnalyticsHelper
 		users 
 	end
 
+	# get all the unimodules from department / course
+	# if "any", return all
 	def get_uni_modules(department_id, course_id)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil? && course_id != "any" && is_number?(course_id) && !Course.find(course_id.to_i).nil?
 			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i)) && uni_module.courses.include?(Course.find(course_id.to_i))}
@@ -24,11 +31,13 @@ module AnalyticsHelper
 		uni_modules
 	end
 
-
+	# get the difference in the number of days between two dates
+	# earlier_date < later_date
 	def get_day_difference(later_date, earlier_date)
 		(later_date.to_date - earlier_date.to_date).to_i
 	end
 
+	# check whether the difference in days is within the timeframe
 	def is_within_timeframe?(diffence_days, time_period)
 		time_periods = Hash.new
 		time_periods["day"] = 1
@@ -45,10 +54,31 @@ module AnalyticsHelper
 
 	end
 
+	# sort, filter and format the resulting dataset
+	def format_ouput_data(input_hash, sort_by, number_to_show)
+		# sort alphabetically
+		input_hash = input_hash.sort_by {|_key, value| _key}
+
+		# then sort based on request
+		if sort_by == "least"
+			input_hash = input_hash.sort_by {|_key, value| value}
+		elsif
+			input_hash = input_hash.sort_by {|_key, value| value}.reverse
+		end
+
+		if is_number?(number_to_show)
+			input_hash = input_hash.first(number_to_show)
+		end
+		input_hash
+	end
+
+	# actual data mining:
+	# generally the idea is to set up a hash of object => counter
+	# and sort based on the counter
 
 	# time period: day, week, month, year, all_time
 	# sort by: most, least
-	# number to show: how many to show
+	# number to show: how many records to retrieve
 
 	# most/least reviewed modules
 	def get_review_modules_analytics(department_id, course_id, time_period, sort_by, number_to_show)
@@ -72,20 +102,7 @@ module AnalyticsHelper
 			end
 		end
 		
-		# sort alphabetically
-		uni_modules_data = uni_modules_data.sort_by {|_key, value| _key}
-
-		# then sort based on request
-		if sort_by == "least"
-			uni_modules_data = uni_modules_data.sort_by {|_key, value| value}
-		elsif
-			uni_modules_data = uni_modules_data.sort_by {|_key, value| value}.reverse
-		end
-
-		if is_number?(number_to_show)
-			uni_modules_data = uni_modules_data.first(number_to_show)
-		end
-		uni_modules_data
+		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
 
 	# most/least highly rated modules
@@ -110,20 +127,7 @@ module AnalyticsHelper
 			end
 		end
 			
-		# sort alphabetically
-		uni_modules_data = uni_modules_data.sort_by {|_key, value| _key}
-
-		# then sort based on request
-		if sort_by == "least"
-			uni_modules_data = uni_modules_data.sort_by {|_key, value| value}
-		elsif
-			uni_modules_data = uni_modules_data.sort_by {|_key, value| value}.reverse
-		end
-
-		if is_number?(number_to_show)
-			uni_modules_data = uni_modules_data.first(number_to_show)
-		end
-			uni_modules_data
+		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
 
 	# most/least active courses
@@ -143,21 +147,7 @@ module AnalyticsHelper
 		end
 
 
-		# sort alphabetically
-		courses_data = courses_data.sort_by {|_key, value| _key}
-
-		# then sort based on request
-		if sort_by == "least"
-			courses_data = courses_data.sort_by {|_key, value| value}
-		elsif
-			courses_data = courses_data.sort_by {|_key, value| value}.reverse
-		end
-
-		if is_number?(number_to_show)
-			courses_data = courses_data.first(number_to_show)
-		end
-			courses_data
-
+		format_ouput_data(courses_data, sort_by, number_to_show)
 	end
 
 	# most/least active department
@@ -177,24 +167,13 @@ module AnalyticsHelper
 		end
 
 
-		# sort alphabetically
-		departments_data = departments_data.sort_by {|_key, value| _key}
-
-		# then sort based on request
-		if sort_by == "least"
-			departments_data = departments_data.sort_by {|_key, value| value}
-		elsif
-			departments_data = departments_data.sort_by {|_key, value| value}.reverse
-		end
-
-		if is_number?(number_to_show)
-			departments_data = departments_data.first(number_to_show)
-		end
-			departments_data
+		format_ouput_data(departments_data, sort_by, number_to_show)
 
 	end
 
-
+	# most/least users by saves
+	def get_most_active_user_by_saves(department_id, course_id, time_period, sort_by, number_to_show)
+	end
 
 
 end

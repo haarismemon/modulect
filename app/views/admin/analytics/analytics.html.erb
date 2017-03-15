@@ -66,43 +66,10 @@
       <li><a data-toggle="tab" href="#quick-search">Quick Search</a></li>
       <li><a data-toggle="tab" href="#pathway-search">Pathway Search</a></li>
       <li><a data-toggle="tab" href="#career-search">Career Search</a></li>
+      <li><a data-toggle="tab" href="#test">test</a></li>
    </ul>
    <div class="tab-content" style="margin-top:30px;">
       <div id="overview" class="tab-pane fade in active">
-
-
-most reviewed <br />
-<% get_review_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
-  <%= uni_module.name  + " " + count.to_s %><br />
-<% end %>
-<br />
-<br />
-most highly rated <br />
-<% get_rating_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
-  <%= uni_module.name  + " " + count.to_s %><br />
-<% end %>
-<br />
-<br />
-most active courses <br />
-<% get_active_courses("any","month","most", 10).each do |course, count| %>
-  <%= course.name  + " " + count.to_s %><br />
-<% end %>
-<br />
-<br />
-
-most active departments <br />
-<% get_active_departments("month","most", 10).each do |department, count| %>
-  <%= department.name  + " " + count.to_s %><br />
-<% end %>
-<br />
-<br />
-
-
-
-
-
-<Br /><br />
-
          <div class="row" >
             <div class="col-md-12  login-card header-card" style="">
                <div class="col-md-3 header-item">
@@ -582,6 +549,42 @@ var myPieChart = new Chart(ctxa,{
       </div>
       <div id="career-search" class="tab-pane fade">
          Career search
+      </div>
+      <div id="test" class="tab-pane fade">
+
+
+most reviewed <br />
+<% get_review_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
+  <%= uni_module.name  + " " + count.to_s %><br />
+<% end %>
+<br />
+<br />
+most highly rated <br />
+<% get_rating_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
+  <%= uni_module.name  + " " + count.to_s %><br />
+<% end %>
+<br />
+<br />
+most active courses (num users in time period)<br />
+<% get_active_courses("any","month","most", 10).each do |course, count| %>
+  <%= course.name  + " " + count.to_s %><br />
+<% end %>
+<br />
+<br />
+
+most active departments  (num users in time period)<br />
+<% get_active_departments("month","most", 10).each do |department, count| %>
+  <%= department.name  + " " + count.to_s %><br />
+<% end %>
+<br />
+<br />
+
+
+
+
+
+<Br /><br />
+
       </div>
    </div>
 </div>
