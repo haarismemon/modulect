@@ -19,7 +19,7 @@
                $("#save-<%= @uni_module.code%>").click(function() {
                $("#save-<%= @uni_module.code%> span").html($("#save-<%= @uni_module.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
                });});
-               
+
             </script>
             <% if current_user.uni_modules.include?(@uni_module) %>
             <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span>
@@ -67,34 +67,42 @@
               </div>
 
               <div id="comment-creation">
-                  <% if !logged_in? || (logged_in? && !current_user.is_limited) %>
-                    <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
-                    <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
-                      <h3>Add a Review</h3>
-                      <% if logged_in? %>
-                        <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
-                            <p id="rating-area">
-                                <%= f.label :rating %>
-                                <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
-                                <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
-                                <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
-                                <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
-                                <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
-                            </p>
-                            <p id="review-area">
-                                <%= f.label :body %><br>
-                                <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
-                            </p>
-                            <p>
-                                <%= f.submit 'Add Review', class:'btn' %>
-                            </p>
-                        <% end %>
-                      <% else %>
-                          <p>You must be logged in to add a review.</p>
-                      <%end%>
+                <% module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }.size %>
+                  <% if module_comments < 1 %>
+                    <% if !logged_in? || (logged_in? && !current_user.is_limited) %>
+                      <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
+                      <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
+                        <h3>Add a Review</h3>
+                        <% if logged_in? %>
+                          <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
+                              <p id="rating-area">
+                                  <%= f.label :rating %>
+                                  <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
+                                  <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
+                                  <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
+                                  <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
+                                  <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
+                              </p>
+                              <p id="review-area">
+                                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
+                              </p>
+                              <p>
+                                  <%= f.submit 'Add Review', class:'btn' %>
+                              </p>
+                          <% end %>
+                        <% else %>
+                            <p>You must be logged in to add a review.</p>
+                        <%end%>
+                      </div>
+                    <% end %>
+              </div>
+                  <% else %>
+                    <div id="review-made">
+                        <p>You have already made a review for this module.</p>
+                        <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
                     </div>
                   <% end %>
-              </div>
+
             </div>
          </div>
       </div>
@@ -137,6 +145,9 @@
         $("#comment_body").val("");
         openCommentCreation();
         $("input[name='comment[rating]']").val([5]);
+
+        $("#comment-creation").hide()
+        $("#review-made").show()
     });
 
     $("#comment-creation-box").hide();

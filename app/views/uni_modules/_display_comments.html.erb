@@ -1,32 +1,63 @@
+<% module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id } %>
 
-<% unless updated_comments.empty? %>
+<% if module_comments.length > 0 %>
+    <a name="your_review" id="your_review"></a>
+    <h3>Your Review</h3>
+  <% module_comments.each do |comment| %>
+      <table width="100%" border="0">
+        <colgroup>
+          <td>
+            <% for i in 1..comment.rating %>
+                <i class="fa fa-star star-rating" aria-hidden="true"></i>
+            <% end %>
+            <% for j in 1..(5 - comment.rating) %>
+                <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+            <% end %><p></p>
+            <p><%= comment.body %></p>
+            <p><strong><%= comment.user.full_name %>
+              , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+          </td>
+        </colgroup>
+      </table>
+  <% end %><br>
+<% end %>
+
+<% filter_comments = [] %>
+<% updated_comments.each do |comment|
+    unless module_comments.include? comment
+      filter_comments << comment
+    end
+ end %>
+
+<h3>All Reviews</h3>
+<% unless filter_comments.empty? %>
 
     <% num_comments_per_page = 5.0 %>
-    <% grouped_comments = updated_comments.in_groups_of(num_comments_per_page) %>
+    <% grouped_comments = filter_comments.in_groups_of(num_comments_per_page) %>
     <% num_pages = grouped_comments.length %>
 
     <div id="page-links">
-        <% if num_pages > 1 %>
-            <a id="first-page" class="unselected_page"><< First </a>
-            <a id="prev-page" class="unselected_page">< Prev</a>
-            <% for i in 1..num_pages %>
-                <a id="page-link-<%= i %>"><%= i %></a>
-            <% end %>
-            <a id="next-page" class="unselected_page"> Next ></a>
-            <a id="last-page" class="unselected_page"> Last >></a>
-            <br>
-        <% end %>
+      <% if num_pages > 1 %>
+          <a id="first-page" class="unselected_page"><< First </a>
+          <a id="prev-page" class="unselected_page">< Prev</a>
+          <% for i in 1..num_pages %>
+              <a id="page-link-<%= i %>"><%= i %></a>
+          <% end %>
+          <a id="next-page" class="unselected_page"> Next ></a>
+          <a id="last-page" class="unselected_page"> Last >></a>
+          <br>
+      <% end %>
 
-        <label id="display-comments-number">Displaying comments</label>
+      <label id="display-comments-number">Displaying comments</label>
     </div>
 
     <div id="comments-section">
-        <% for i in 1..num_pages %>
-              <div id="page-div-<%= i %>">
-                <% page_comments_group = grouped_comments[i - 1] %>
-                <% page_comments_group.each do |comment|
-                      unless comment.nil? %>
-                        <table width="100%" border="0">
+      <% for i in 1..num_pages %>
+          <div id="page-div-<%= i %>">
+            <% page_comments_group = grouped_comments[i - 1] %>
+            <% page_comments_group.each do |comment|
+              unless comment.nil? %>
+                    <table width="100%" border="0">
                       <colgroup>
                         <td>
                           <% for i in 1..comment.rating %>
@@ -36,7 +67,8 @@
                               <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                           <% end %><p></p>
                           <p><%= comment.body %></p>
-                          <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+                          <p><strong><%= comment.user.full_name %>
+                            , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
                         </td>
                         <td id="helpful-td" align="center">
                           <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
@@ -53,101 +85,111 @@
                         <hr>
                       </colgroup>
                     </table>
-                      <% end
-                 end %>
-              </div>
-        <% end %>
+                <% end
+                   end %>
+          </div>
+      <% end %>
     </div>
 <% else %>
     <p>Be the first to review this module!</p>
-<%end%>
+<% end %>
 <hr>
 
+<div id="review-made" style="display: none;">
+  <p>You have already made a review for this module.</p>
+  <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
+</div>
+
 <style>
-    #helpful-td {
-        width: 10%;
-        padding-left: 0px;
-        padding-right: 0px;
-    }
+  #helpful-td {
+    width: 10%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 
-    [id^=helpful-btn] {
-      text-transform: none;
-      margin-left: 10px;
-    }
+  [id^=helpful-btn] {
+    text-transform: none;
+    margin-left: 10px;
+  }
 
-    .not-helpful {
-      background: #2ab27b;
-      box-shadow: 0px 3px 0px 0px #228e62;
-      width: 81px;
-    }
+  .not-helpful {
+    background: #2ab27b;
+    box-shadow: 0px 3px 0px 0px #228e62;
+    width: 81px;
+  }
 
-    .not-helpful:focus {
-      background: #2ab27b;
-      box-shadow: 0px 3px 0px 0px #228e62;
-      width: 81px;
-    }
+  .not-helpful:focus {
+    background: #2ab27b;
+    box-shadow: 0px 3px 0px 0px #228e62;
+    width: 81px;
+  }
 
-    .helpful {
-      background: dodgerblue;
-      box-shadow: 0px 3px 0px 0px deepskyblue;
-      width: 81px;
-    }
+  .helpful {
+    background: dodgerblue;
+    box-shadow: 0px 3px 0px 0px deepskyblue;
+    width: 81px;
+  }
 
-    .helpful:focus {
-      background: dodgerblue;
-      box-shadow: 0px 3px 0px 0px deepskyblue;
-      width: 81px;
-    }
+  .helpful:focus {
+    background: dodgerblue;
+    box-shadow: 0px 3px 0px 0px deepskyblue;
+    width: 81px;
+  }
 
-    #comments-section div { display:none; }
-    #comments-section > div:first-child { display:block; }
+  #comments-section div {
+    display: none;
+  }
 
-    .selected_page {
-      font-weight: bold;
-      color: green;
-      font-size: 16px;
-    }
+  #comments-section > div:first-child {
+    display: block;
+  }
 
-    .unselected_page {
-      font-weight: normal;
-      font-size: 14px;
-    }
+  .selected_page {
+    font-weight: bold;
+    color: green;
+    font-size: 16px;
+  }
 
-    .unselected_page:hover {
-      text-decoration: underline;
-      cursor: pointer ;
-    }
+  .unselected_page {
+    font-weight: normal;
+    font-size: 14px;
+  }
 
-    #page-links {
-      margin-left: 20px;
-    }
+  .unselected_page:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 
-    .star-rating {
-      color: #2ab27b;
-    }
+  #page-links {
+    margin-left: 20px;
+  }
+
+  .star-rating {
+    color: #2ab27b;
+  }
 
 </style>
 
 <script>
     num_pages = <%= num_pages %>
-    num_comments_per_page = <%= num_comments_per_page %>
+        num_comments_per_page = <%= num_comments_per_page %>
 
-    <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
-    move_to_page = function (page_number) {
-        //hide all pages
-        $('#comments-section').children('div').each(function () {
-            $(this).css("display", "none");
-        });
-        //show only the corresponding page
-        $("#page-div-" + page_number).css("display", "block");
+            <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
+            move_to_page = function (page_number) {
+                //hide all pages
+                $('#comments-section').children('div').each(function () {
+                    $(this).css("display", "none");
+                });
+                //show only the corresponding page
+                $("#page-div-" + page_number).css("display", "block");
 
-        //give all page links only unselected css class
-        $("a[id^=page-link]").addClass("unselected_page");
-        $("a[id^=page-link]").removeClass("selected_page");
-        //give the corresponding page link clicked a selected css class
-        $("#page-link-" + page_number).removeClass("unselected_page");
-        $("#page-link-" + page_number).addClass("selected_page");
-    };
+                //give all page links only unselected css class
+                $("a[id^=page-link]").addClass("unselected_page");
+                $("a[id^=page-link]").removeClass("selected_page");
+                //give the corresponding page link clicked a selected css class
+                $("#page-link-" + page_number).removeClass("unselected_page");
+                $("#page-link-" + page_number).addClass("selected_page");
+            };
 
     move_to_first_page = function () {
         move_to_page(1);
@@ -177,7 +219,7 @@
                 last_comment = current_page * num_comments_per_page;
             }
 
-            display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= updated_comments.length %>;
+            display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
             $("label#display-comments-number").html(display_text);
         }
     };
@@ -199,7 +241,7 @@
         current_page_div_id = $("#comments-section div:visible").first().attr('id');
         next_page = parseInt(current_page_div_id.replace("page-div-", "")) + 1;
 
-        if(next_page == num_pages) {
+        if (next_page == num_pages) {
             move_to_last_page();
         }
         else {
@@ -213,7 +255,7 @@
         current_page_div_id = $("#comments-section div:visible").first().attr('id');
         prev_page = parseInt(current_page_div_id.replace("page-div-", "")) - 1;
 
-        if(prev_page == 1) {
+        if (prev_page == 1) {
             move_to_first_page();
         }
         else {
@@ -233,11 +275,11 @@
         page_link_id = event.target.id;
         page_number = parseInt(page_link_id.replace("page-link-", ""));
 
-        if(page_number == 1) {
+        if (page_number == 1) {
             $("#first-page").hide();
             $("#prev-page").hide();
         }
-        else if(page_number == num_pages) {
+        else if (page_number == num_pages) {
             $("#next-page").hide();
             $("#last-page").hide();
         }
@@ -256,7 +298,7 @@
         $.ajax({
             type: "POST",
             url: "<%= comments_like_path %>",
-            data: { comment_id: comment_id },
+            data: {comment_id: comment_id},
             context: document.body,
             success: function (data) {
                 label.html(data.like_count);
