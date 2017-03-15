@@ -3,12 +3,19 @@ class CommentsController < ApplicationController
   def create
     @uni_module = UniModule.find(params[:uni_module_id])
 
-    @comment = @uni_module.comments.create(comment_params)
+    @user = User.find(current_user.id)
+    @user_comments = Array(@user.comments).keep_if { |c| String(c.uni_module.id) == params[:uni_module_id] }
 
-    @updated_comments = @uni_module.comments.order("created_at DESC")
+    if @user_comments.length < 1
+      @comment = @uni_module.comments.create(comment_params)
 
-    respond_to do |format|
-      format.js { render 'update_comments.js.erb' }
+      @updated_comments = @uni_module.comments.order("created_at DESC")
+
+      respond_to do |format|
+        format.js { render 'update_comments.js.erb' }
+      end
+    else
+      head :no_content
     end
   end
 
