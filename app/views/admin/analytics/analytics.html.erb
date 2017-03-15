@@ -81,6 +81,12 @@ most highly rated <br />
 <% get_rating_modules_analytics("any","any","month","most", 10).each do |uni_module, count| %>
   <%= uni_module.name  + " " + count.to_s %><br />
 <% end %>
+<br />
+<br />
+most active courses <br />
+<% get_most_active_courses("any","month","most", 10).each do |uni_module, count| %>
+  <%= uni_module.name  + " " + count.to_s %><br />
+<% end %>
 
 
 <br />

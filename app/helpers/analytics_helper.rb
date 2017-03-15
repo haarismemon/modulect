@@ -63,7 +63,7 @@ module AnalyticsHelper
 					uni_module = comment.uni_module
 					if uni_modules.include?(uni_module)
 						if uni_modules_data.key?(uni_module)
-							uni_modules_data[uni_module] = uni_modules_data[uni_module] + 1
+							uni_modules_data[uni_module] += 1
 						else
 							uni_modules_data[uni_module] = 1
 						end
@@ -126,6 +126,39 @@ module AnalyticsHelper
 			uni_modules_data
 	end
 
+	# most/least active courses
+	def get_active_courses(department_id, time_period, sort_by, number_to_show)
+		courses_data = Hash.new
+		users = get_users(department_id)
+
+		users.each do |user|
+			course = Course.find(user.course_id)
+			if is_within_timeframe?(get_day_difference(Time.now, user.last_login_time), time_period)
+				if courses_data.key?(course)
+					courses_data[course] += 1
+				else
+					courses_data[course] = 1
+				end	
+			end
+		end
+
+
+		# sort alphabetically
+		courses_data = courses_data.sort_by {|_key, value| _key}
+
+		# then sort based on request
+		if sort_by == "least"
+			courses_data = courses_data.sort_by {|_key, value| value}
+		elsif
+			courses_data = courses_data.sort_by {|_key, value| value}.reverse
+		end
+
+		if is_number?(number_to_show)
+			courses_data = courses_data.first(number_to_show)
+		end
+			courses_data
+
+	end
 
 
 
