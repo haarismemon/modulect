@@ -317,9 +317,19 @@ module AnalyticsHelper
 				end
 			end
 		end
+			
+		# then sort based on request
+		if sort_by == "least"
+			tags_data = tags_data.sort_by {|_key, value| value}
+		elsif
+			tags_data = tags_data.sort_by {|_key, value| value}.reverse
+		end
 
-		#format_ouput_data(tags_data, sort_by, number_to_show)
+		if is_number?(number_to_show)
+			tags_data = tags_data.first(number_to_show)
+		end
 		tags_data
+
 	end
 
 	# get number of visitors (both logged in and non-logged in)
