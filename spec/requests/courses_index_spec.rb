@@ -8,7 +8,8 @@ feature "Index page of courses: admin", :js => true do
   include LoginHelper
   include CoursesIndexSteps
 
-  given! (:admin) { create(:user, user_level: "super_admin_access") }
+  given! (:admin) { create(:user, first_name: "Vlad", last_name: "Nedelescu",
+                           email: "vlad.nedelescu@kcl.ac.uk", user_level: "super_admin_access") }
   given! (:course) { create(:course) }
   given! (:department) { create(:department) }
   given! (:uni_module) { create(:uni_module) }
