@@ -4,7 +4,8 @@
      if module_comments.length > 0 %>
         <a name="your_review" id="your_review"></a>
         <h3>Your Review</h3>
-      <% module_comments.each do |comment| %>
+        <hr>
+        <% module_comments.each do |comment| %>
           <table width="100%" border="0">
             <colgroup>
               <td>
@@ -20,13 +21,13 @@
               </td>
               <% if logged_in? %>
               <td id="delete-td" align="right">
-                  <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>">Delete</button>
+                  <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
               </td>
               <% end %>
-              <hr>
             </colgroup>
           </table>
-      <% end %><br>
+          <hr>
+        <% end %>
     <% end %>
 
     <% filter_comments = [] %>
