@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Course, type: :model do
 
   let(:course) { build(:course) }
+  let!(:year_structure) { build(:year_structure, course: course) }
 
   describe "#valid?" do
 
@@ -114,6 +115,20 @@ RSpec.describe Course, type: :model do
       it "adds the department to the course's list of departments" do
         expect(course.departments.include?(valid_department)).to eq true
       end
+    end
+  end
+
+  describe "cascading delete" do
+   
+    before do
+      course.save
+      create(:year_structure, course: course)
+    end
+
+    it "deletes the year_structure as well" do
+      expect(YearStructure.count).not_to eq 0
+      course.destroy
+      expect(YearStructure.count).to eq 0
     end
   end
 end
