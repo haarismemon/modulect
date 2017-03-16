@@ -80,6 +80,28 @@ module AnalyticsHelper
 		percentage_change
 	end
 
+	# used to colour percentage changes
+	def colour(input_number)
+		if input_number < 0
+			"red"
+		elsif input_number > 0
+			"green"
+		else 
+			""
+		end
+	end
+
+	# used to display indicator percentage changes
+	def indicator(input_number)
+		if input_number < 0
+			"down"
+		elsif input_number > 0
+			"up"
+		else 
+			""
+		end
+	end
+
 	# actual data mining:
 	# generally the idea is to set up a hash of object => counter
 	# and sort based on the counter
