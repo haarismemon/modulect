@@ -1,13 +1,17 @@
 <% module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id } %>
-
+<% rating = -1 %>
+<% created_at = -1 %>
+<% edited_at = -1 %>
 <% if module_comments.length > 0 %>
     <a name="your_review" id="your_review"></a>
     <h3>Your Review</h3>
     <% module_comments.each do |comment| %>
-        <% @your_comment_rating = comment.rating%>
+        <% rating = comment.rating%>
         <table width="100%" border="0" id="comment-entry-<%=comment.id%>">
           <colgroup>
             <td>
+              <% created_at = comment.created_at %>
+              <% edited_at = comment.updated_at %>
               <% for i in 1..comment.rating %>
                   <i class="fa fa-star star-rating" aria-hidden="true"></i>
               <% end %>
@@ -16,13 +20,18 @@
               <% end %><p></p>
               <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
               <p><strong><%= comment.user.full_name %>
-                , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+                , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %>.</strong></p>
             </td>
             <td id="edit-td" align="center">
               <button class="btn edit-btn" id="edit-btn-<%= comment.id %>">Edit</button>
             </td>
           </colgroup>
         </table>
+        <p id="updated-time">
+          <% if created_at != edited_at %>
+              <%= '(Edited)' %>
+          <% end%>
+        </p>
     <% end %><br/>
 <% end %>
 
@@ -195,6 +204,10 @@ end %>
     margin: auto;
   }
 
+  #updated-time {
+    padding-left: 2%;
+  }
+
 </style>
 
 <script>
@@ -359,7 +372,7 @@ end %>
         "</form>" +
         "</div>");
     radio_button_id = "";
-    switch (<%= @your_comment_rating.to_i%>){
+    switch ( <%= rating%>){
       case 1:
         radio_button_id = "#rating1";
         break;
@@ -376,7 +389,7 @@ end %>
         radio_button_id = "#rating5";
         break;
     }
-    $(radio_button_id).prop("checked", true)
+    $(radio_button_id).prop("checked", true);
     $("#edit-text-area").val(text);
     $("#submit-btn").on("click", function (event) {
       edited_text = $("#edit-text-area").val();
@@ -387,9 +400,9 @@ end %>
         data: { edited_text: edited_text, new_rating_val: new_rating_val, comment_id: comment_id},
         context: document.body
       });
+      <% if(created_at != edited_at)%>
+      $("#updated-time").text(" <%= '(Edited)' %>");
+      <% end%>
     });
-    comment_id = parseInt(button_id.replace("edit-btn-", ""));
-    button = $("#edit-btn-" + comment_id);
-    label = $("#edit-label-" + comment_id);
   })
 </script>
