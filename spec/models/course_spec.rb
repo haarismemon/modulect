@@ -116,4 +116,18 @@ RSpec.describe Course, type: :model do
       end
     end
   end
+
+  describe "cascading delete" do
+   
+    before do
+      course.save
+      create(:year_structure, course: course)
+    end
+
+    it "deletes the year_structure as well" do
+      expect(YearStructure.count).not_to eq 0
+      course.destroy
+      expect(YearStructure.count).to eq 0
+    end
+  end
 end
