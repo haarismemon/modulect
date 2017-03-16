@@ -284,7 +284,7 @@ module ApplicationHelper
   		desired_log = logs.first
   		desired_log.update_attribute("counter", desired_log.counter + 1)
   	else
-  		UniModuleLog.create(:tag_id => incoming_tag_id, :counter => 1)
+  		TagLog.create(:tag_id => incoming_tag_id, :counter => 1)
   	end
   end
 

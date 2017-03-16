@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-
+  include ApplicationHelper
   def home
     @tag_names = Tag.pluck(:name)
     @module_names = UniModule.pluck(:name)
@@ -13,6 +13,12 @@ class SearchController < ApplicationController
     @results = []
     if params.has_key?(:chosen_tags) && !params[:chosen_tags].empty? 
       @temp_array = params[:chosen_tags].split(",")
+
+      @temp_array.each do |tag_name|
+        add_to_tag_log(Tag.find_by_name(tag_name).id)
+      end
+
+
       @results = UniModule.basic_search(@temp_array)
     else
      redirect_to "/"

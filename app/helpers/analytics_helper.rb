@@ -310,7 +310,7 @@ module AnalyticsHelper
 
 		tags_data = Hash.new
 		TagLog.all.each do |log|
-			if TagLog.find(log.tag_id)
+			if Tag.find(log.tag_id)
 				tag = Tag.find(log.tag_id)
 				if all_tags.include?(tag) && is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
 						tags_data[tag] = log.counter
