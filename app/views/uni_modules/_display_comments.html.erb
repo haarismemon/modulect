@@ -3,34 +3,35 @@
 <% if module_comments.length > 0 %>
     <a name="your_review" id="your_review"></a>
     <h3>Your Review</h3>
-  <% module_comments.each do |comment| %>
-      <table width="100%" border="0" id="comment-entry-<%=comment.id%>">
-        <colgroup>
-          <td>
-            <% for i in 1..comment.rating %>
-                <i class="fa fa-star star-rating" aria-hidden="true"></i>
-            <% end %>
-            <% for j in 1..(5 - comment.rating) %>
-                <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
-            <% end %><p></p>
-            <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
-            <p><strong><%= comment.user.full_name %>
-              , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
-          </td>
-          <td id="edit-td" align="center">
-            <button class="btn edit-btn" id="edit-btn-<%= comment.id %>">Edit</button>
-          </td>
-        </colgroup>
-      </table>
-  <% end %><br>
+    <% module_comments.each do |comment| %>
+        <% @your_comment_rating = comment.rating%>
+        <table width="100%" border="0" id="comment-entry-<%=comment.id%>">
+          <colgroup>
+            <td>
+              <% for i in 1..comment.rating %>
+                  <i class="fa fa-star star-rating" aria-hidden="true"></i>
+              <% end %>
+              <% for j in 1..(5 - comment.rating) %>
+                  <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+              <% end %><p></p>
+              <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
+              <p><strong><%= comment.user.full_name %>
+                , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+            </td>
+            <td id="edit-td" align="center">
+              <button class="btn edit-btn" id="edit-btn-<%= comment.id %>">Edit</button>
+            </td>
+          </colgroup>
+        </table>
+    <% end %><br/>
 <% end %>
 
 <% filter_comments = [] %>
 <% updated_comments.each do |comment|
-    unless module_comments.include? comment
-      filter_comments << comment
-    end
- end %>
+  unless module_comments.include? comment
+    filter_comments << comment
+  end
+end %>
 
 <h3>All Reviews</h3>
 <% unless filter_comments.empty? %>
@@ -55,12 +56,12 @@
     </div>
 
     <div id="comments-section">
-        <% for i in 1..num_pages %>
-              <div id="page-div-<%= i %>">
-                <% page_comments_group = grouped_comments[i - 1] %>
-                <% page_comments_group.each do |comment|
-                      unless comment.nil? %>
-                        <table width="100%" border="0">
+      <% for i in 1..num_pages %>
+          <div id="page-div-<%= i %>">
+            <% page_comments_group = grouped_comments[i - 1] %>
+            <% page_comments_group.each do |comment|
+              unless comment.nil? %>
+                    <table width="100%" border="0">
                       <colgroup>
                         <td>
                           <% for i in 1..comment.rating %>
@@ -171,185 +172,206 @@
     color: #2ab27b;
   }
 
-    #edit_text_area{
-      width: 100%;
-      padding-left: 0px;
-      padding-right: 0px;
-    }
+  #edit-text-area{
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 
-    .submit-btn{
-      text-transform: none;
-      margin-left: 10px;
-    }
+  .submit-btn{
+    text-transform: none;
+    margin-left: 10px;
+  }
 
-    [id^=edit-btn] {
-      text-transform: none;
-      margin-left: 10px;
-    }
+  [id^=edit-btn] {
+    text-transform: none;
+    margin-left: 10px;
+  }
 
-    #edit-td {
-      width: 5%;
-      padding-left: 0px;
-      padding-right: 0px;
-      margin: auto;
-    }
+  #edit-td {
+    width: 5%;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: auto;
+  }
 
 </style>
 
 <script>
-    num_pages = <%= num_pages %>
-    num_comments_per_page = <%= num_comments_per_page %>
+  num_pages = <%= num_pages %>
+      num_comments_per_page = <%= num_comments_per_page %>
 
-    <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
-    move_to_page = function (page_number) {
-        //hide all pages
-        $('#comments-section').children('div').each(function () {
-            $(this).css("display", "none");
-        });
-        //show only the corresponding page
-        $("#page-div-" + page_number).css("display", "block");
+          <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
+          move_to_page = function (page_number) {
+            //hide all pages
+            $('#comments-section').children('div').each(function () {
+              $(this).css("display", "none");
+            });
+            //show only the corresponding page
+            $("#page-div-" + page_number).css("display", "block");
 
-        //give all page links only unselected css class
-        $("a[id^=page-link]").addClass("unselected_page");
-        $("a[id^=page-link]").removeClass("selected_page");
-        //give the corresponding page link clicked a selected css class
-        $("#page-link-" + page_number).removeClass("unselected_page");
-        $("#page-link-" + page_number).addClass("selected_page");
-    };
+            //give all page links only unselected css class
+            $("a[id^=page-link]").addClass("unselected_page");
+            $("a[id^=page-link]").removeClass("selected_page");
+            //give the corresponding page link clicked a selected css class
+            $("#page-link-" + page_number).removeClass("unselected_page");
+            $("#page-link-" + page_number).addClass("selected_page");
+          };
 
-    move_to_first_page = function () {
-        move_to_page(1);
+  move_to_first_page = function () {
+    move_to_page(1);
 
-        $("#first-page").hide();
-        $("#prev-page").hide();
-        $("#next-page").show();
-        $("#last-page").show();
-    };
+    $("#first-page").hide();
+    $("#prev-page").hide();
+    $("#next-page").show();
+    $("#last-page").show();
+  };
 
-    move_to_last_page = function () {
-        move_to_page(num_pages);
+  move_to_last_page = function () {
+    move_to_page(num_pages);
 
-        $("#first-page").show();
-        $("#prev-page").show();
-        $("#next-page").hide();
-        $("#last-page").hide();
-    };
+    $("#first-page").show();
+    $("#prev-page").show();
+    $("#next-page").hide();
+    $("#last-page").hide();
+  };
 
-    update_display_comments_number = function () {
-        if ($("#comments-section div").length > 0) {
-            current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
-            first_comment = ((current_page - 1) * num_comments_per_page) + 1;
-            if (current_page == num_pages) {
-                last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1);
-            } else {
-                last_comment = current_page * num_comments_per_page;
-            }
+  update_display_comments_number = function () {
+    if ($("#comments-section div").length > 0) {
+      current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
+      first_comment = ((current_page - 1) * num_comments_per_page) + 1;
+      if (current_page == num_pages) {
+        last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1);
+      } else {
+        last_comment = current_page * num_comments_per_page;
+      }
 
-            display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
-            $("label#display-comments-number").html(display_text);
-        }
-    };
+      display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
+      $("label#display-comments-number").html(display_text);
+    }
+  };
 
+  move_to_first_page();
+  update_display_comments_number();
+
+  $("#first-page").on("click", function () {
     move_to_first_page();
     update_display_comments_number();
+  });
 
-    $("#first-page").on("click", function () {
-        move_to_first_page();
-        update_display_comments_number();
-    });
+  $("#last-page").on("click", function () {
+    move_to_last_page();
+    update_display_comments_number();
+  });
 
-    $("#last-page").on("click", function () {
-        move_to_last_page();
-        update_display_comments_number();
-    });
+  $("#next-page").on("click", function () {
+    current_page_div_id = $("#comments-section div:visible").first().attr('id');
+    next_page = parseInt(current_page_div_id.replace("page-div-", "")) + 1;
 
-    $("#next-page").on("click", function () {
-        current_page_div_id = $("#comments-section div:visible").first().attr('id');
-        next_page = parseInt(current_page_div_id.replace("page-div-", "")) + 1;
+    if(next_page == num_pages) {
+      move_to_last_page();
+    }
+    else {
+      move_to_page(next_page)
+    }
 
-        if(next_page == num_pages) {
-            move_to_last_page();
+    update_display_comments_number();
+  });
+
+  $("#prev-page").on("click", function () {
+    current_page_div_id = $("#comments-section div:visible").first().attr('id');
+    prev_page = parseInt(current_page_div_id.replace("page-div-", "")) - 1;
+
+    if(prev_page == 1) {
+      move_to_first_page();
+    }
+    else {
+      move_to_page(prev_page)
+    }
+
+    update_display_comments_number();
+  });
+
+  $("a[id^=page-link]").on("click", function (event) {
+
+    $("#first-page").show();
+    $("#prev-page").show();
+    $("#next-page").show();
+    $("#last-page").show();
+
+    page_link_id = event.target.id;
+    page_number = parseInt(page_link_id.replace("page-link-", ""));
+
+    if(page_number == 1) {
+      $("#first-page").hide();
+      $("#prev-page").hide();
+    }
+    else if(page_number == num_pages) {
+      $("#next-page").hide();
+      $("#last-page").hide();
+    }
+
+    move_to_page(page_number);
+    update_display_comments_number();
+  });
+
+  //on click method for the helpful button, makes a ajax post request
+  $(".helpful-btn").on("click", function (event) {
+    button_id = event.target.id;
+    comment_id = parseInt(button_id.replace("helpful-btn-", ""));
+    button = $("#helpful-btn-" + comment_id);
+    label = $("#helpful-label-" + comment_id);
+
+    $.ajax({
+      type: "POST",
+      url: "<%= comments_like_path %>",
+      data: { comment_id: comment_id },
+      context: document.body,
+      success: function (data) {
+        label.html(data.like_count);
+        if (data.helpful == true) {
+          button.html("Helpful");
+          button.removeClass("not-helpful");
+          button.addClass("helpful")
         }
-        else {
-            move_to_page(next_page)
+        else if (data.helpful == false) {
+          button.html("Helpful?");
+          button.removeClass("helpful");
+          button.addClass("not-helpful")
         }
-
-        update_display_comments_number();
+      }
     });
+  });
 
-    $("#prev-page").on("click", function () {
-        current_page_div_id = $("#comments-section div:visible").first().attr('id');
-        prev_page = parseInt(current_page_div_id.replace("page-div-", "")) - 1;
-
-        if(prev_page == 1) {
-            move_to_first_page();
-        }
-        else {
-            move_to_page(prev_page)
-        }
-
-        update_display_comments_number();
+  $("[id^=edit-btn]").on("click", function (event) {
+    button_id = event.target.id;
+    comment_id = parseInt(button_id.replace("edit-btn-",""));
+    text = $("#comment-body-" + comment_id).text().trim();
+    old_rating_val = <%= @your_comment_rating%>;
+    $("#comment-entry-" + comment_id).html("<div>" +
+        "<form id=\"edit-form\"><tr>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /> <label for=\"rating1\">2</label>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /> <label for=\"rating1\">3</label>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /> <label for=\"rating1\">4</label>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/> <label for=\"rating1\">5</label>" +
+        "</tr><tr><textarea autofocus id=\"edit-text-area\"></textarea>" +
+        "<input class=\"btn submit-btn\" id=\"submit-btn\" type=\"submit\"/></tr>" +
+        "</form>" +
+        "</div>");
+    $("#edit-text-area").val(text);
+    $("#submit-btn").on("click", function (event) {
+      edited_text = $("#edit-text-area").val();
+      new_rating_val = $("input[name='rating']:checked").val();
+      $.ajax({
+        type: "POST",
+        url: "<%= comments_edit_path %>",
+        data: { edited_text: edited_text, new_rating_val: new_rating_val, comment_id: comment_id},
+        context: document.body
+      });
     });
-
-    $("a[id^=page-link]").on("click", function (event) {
-
-        $("#first-page").show();
-        $("#prev-page").show();
-        $("#next-page").show();
-        $("#last-page").show();
-
-        page_link_id = event.target.id;
-        page_number = parseInt(page_link_id.replace("page-link-", ""));
-
-        if(page_number == 1) {
-            $("#first-page").hide();
-            $("#prev-page").hide();
-        }
-        else if(page_number == num_pages) {
-            $("#next-page").hide();
-            $("#last-page").hide();
-        }
-
-        move_to_page(page_number);
-        update_display_comments_number();
-    });
-
-    //on click method for the helpful button, makes a ajax post request
-    $(".helpful-btn").on("click", function (event) {
-        button_id = event.target.id;
-        comment_id = parseInt(button_id.replace("helpful-btn-", ""));
-        button = $("#helpful-btn-" + comment_id);
-        label = $("#helpful-label-" + comment_id);
-
-        $.ajax({
-            type: "POST",
-            url: "<%= comments_like_path %>",
-            data: { comment_id: comment_id },
-            context: document.body,
-            success: function (data) {
-                label.html(data.like_count);
-                if (data.helpful == true) {
-                    button.html("Helpful");
-                    button.removeClass("not-helpful");
-                    button.addClass("helpful")
-                }
-                else if (data.helpful == false) {
-                    button.html("Helpful?");
-                    button.removeClass("helpful");
-                    button.addClass("not-helpful")
-                }
-            }
-        });
-    });
-
-    $("[id^=edit-btn]").on("click", function (event) {
-      button_id = event.target.id;
-      comment_id = parseInt(button_id.replace("edit-btn-",""));
-      text = $("#comment-body-" + comment_id).text();
-      $("#comment-entry-" + comment_id).html("<div> <tr></tr><tr><textarea autofocus id=\"edit_text_area\"> </textarea> <button class=\"btn submit-btn\" > Submit</button> </tr></div>");
-      $("#edit_text_area").val(text.trim());
-      comment_id = parseInt(button_id.replace("edit-btn-", ""));
-      button = $("#edit-btn-" + comment_id);
-      label = $("#edit-label-" + comment_id);
-    })
+    comment_id = parseInt(button_id.replace("edit-btn-", ""));
+    button = $("#edit-btn-" + comment_id);
+    label = $("#edit-label-" + comment_id);
+  })
 </script>
