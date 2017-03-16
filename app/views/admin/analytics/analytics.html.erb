@@ -76,27 +76,7 @@
       });
       
    </script>
-
-<%= VisitorLog.last.created_at %>
-
-HERE <BR />
-
-<%= is_within_timeframe?(get_day_difference(Date.parse("2017-02-08 22:52:33"), Date.parse("2017-02-08 22:52:33")), @time_period) %>
-<Br /><br />
-
-         <%= get_number_visitors(@department, @time_period, Date.parse("2017-02-08 22:52:33")) %>
-<Br /><br />
-<% VisitorLog.all.each do |log| %>
-  <%= get_day_difference(Date.parse("2017-02-08 22:52:33"), log.created_at) %> | <%= log.id.to_s + " created at " + log.created_at.to_s %> | <%= is_within_timeframe?(get_day_difference(Date.parse("2017-02-08 22:52:33"), log.created_at), @time_period) %>
-
-  <br />
-<% end %>
-
-
-<BR /><BR /><BR /><BR /><BR />
-
-
-   <ul id="analytics-tabs" class="nav nav-tabs" style="margin-top:-10px;">
+<ul id="analytics-tabs" class="nav nav-tabs" style="margin-top:-10px;">
       <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
       <li><a data-toggle="tab" href="#quick-search">Quick Search</a></li>
       <li><a data-toggle="tab" href="#pathway-search">Pathway Search</a></li>
@@ -117,10 +97,17 @@ HERE <BR />
          <%= get_number_visitors(@department, @time_period, Time.now) %>
 
                   </div>
-                  <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 4% from last month
 
+              <% percentage_difference_total_users = percentage_difference(get_number_visitors(@department, @time_period, Time.now), get_number_visitors(@department, @time_period, Date.today.prev_month))%>
+                  <div class="percentage-change <%= colour(percentage_difference_total_users)%>">
+                  <% if percentage_difference_total_users != 0 %>
+                    <i class="fa fa-caret-<%= indicator(percentage_difference_total_users)%>" aria-hidden="true"></i>
+                  <% end %> <%= percentage_difference_total_users %>% from last month
                   </div>
                </div>
+
+
+               
                <div class="col-md-3 header-item">
                   <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "all_time" %>all time <% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
                   </div>
