@@ -236,10 +236,34 @@ module ApplicationHelper
 
   def add_to_search_log(type)
   	logs = SearchLog.select{|log| log.search_type == type && log.created_at.to_date == Time.now.to_date}
-  	# TO DO
 
-  SearchLog.create(:search_type => type, :counter => 1)
-	
+  	if logs.size > 0
+  		updated_some_log = false
+  		logs.each do |log|
+
+  			if (log.department_id.present? && logged_in? && current_user.department_id.present? && current_user.department_id == log.department_id) || !logged_in?
+
+	  			log.update_attribute("counter", log.counter + 1)
+	  			log.save
+	  			updated_some_log = true
+	  			break
+	  		elsif logged_in? && !current_user.department_id.present?	
+	  			log.update_attribute("counter", log.counter + 1)
+	  			updated_some_log = true
+	  			break
+	  		end
+
+  		end
+
+  		if !updated_some_log
+  			if logged_in? && current_user.department_id.present?
+  				SearchLog.create(:search_type => type, :counter => 1, :department_id => current_user.department_id)
+  			end
+  		end
+
+  	else
+  		SearchLog.create(:search_type => type, :counter => 1)
+	end
 
   end
 
