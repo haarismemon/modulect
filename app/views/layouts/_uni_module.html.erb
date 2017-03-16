@@ -32,7 +32,7 @@
             </td>
             <% if logged_in? %>
                 <td id="delete-td" align="right">
-                  <button id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                 </td>
             <% end %>
           </colgroup>
@@ -211,8 +211,16 @@
               data: {comment_id: <%= comment ? comment.id : nil %>, uni_module_id: <%= uni_module  ? uni_module.id : nil %>, type_delete: 'review_page'},
               context: document.body,
               success: function (data) {
-                  $("#your-review-card-<%= comment.id %>").css("display","none");
-                  $("#reviewed-modules-number").html("Reviewed " + data.user_reviews_count + " modules");
+                  if(data.user_reviews_count < 1) {
+                      $("#all-module-reviews").html("<div class=\"row\" style=\"margin-bottom:20px;\"> " +
+                          "<div class=\"col-md-10 col-md-offset-1 text-center\"> " +
+                          "<h1>You haven't made any reviews :(</h1>" +
+                          "</div>" +
+                          "</div>");
+                  } else {
+                      $("#your-review-card-<%= comment.id %>").css("display","none");
+                      $("#reviewed-modules-number").html("Reviewed " + data.user_reviews_count + " modules");
+                  }
               }
           });
       });
