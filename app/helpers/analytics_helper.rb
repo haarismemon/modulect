@@ -46,7 +46,7 @@ module AnalyticsHelper
 		time_periods["year"] = 365
 		time_periods["all_time"] = (2**(0.size * 8 -2) -1)
 
-		if diffence_days <= time_periods[time_period]	
+		if diffence_days <= time_periods[time_period] && diffence_days >= 0
 			true
 		else
 			false
