@@ -25,37 +25,34 @@
         <hr>
         <% module_comments.each do |comment| %>
           <% rating = comment.rating%>
-          <table width="100%" border="0" id="comment-entry-<%=comment.id%>">
-            <colgroup>
-              <td>
-                <% created_at = comment.created_at %>
-                <% edited_at = comment.updated_at %>
-                <% for i in 1..comment.rating %>
-                    <i class="fa fa-star star-rating" aria-hidden="true"></i>
+          <div id="comment-entry-<%=comment.id%>">
+            <table width="100%" border="0">
+              <colgroup>
+                <td>
+                  <% created_at = comment.created_at %>
+                  <% edited_at = comment.updated_at %>
+                  <% for i in 1..comment.rating %>
+                      <i class="fa fa-star star-rating" aria-hidden="true"></i>
+                  <% end %>
+                  <% for j in 1..(5 - comment.rating) %>
+                      <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+                  <% end %><p></p>
+                  <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
+                  <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime('%d %B %Y at %H:%M %p')%></strong> <%= created_at != edited_at ? '(Edited)' : '' %></p>
+                </td>
+                <% if logged_in? %>
+                    <td id="edit-td" align="center">
+                      <button class="btn edit-btn" id="edit-btn-<%= comment.id %>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+                    </td>
+                    <td id="delete-td" align="right">
+                        <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                    </td>
                 <% end %>
-                <% for j in 1..(5 - comment.rating) %>
-                    <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
-                <% end %><p></p>
-                <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
-                <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
-              </td>
-              <% if logged_in? %>
-                  <td id="edit-td" align="center">
-                    <button class="btn edit-btn" id="edit-btn-<%= comment.id %>">Edit</button>
-                  </td>
-                  <td id="delete-td" align="right">
-                      <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                  </td>
-              <% end %>
-            </colgroup>
-          </table>
+              </colgroup>
+            </table>
+          </div>
           <hr>
-          <p id="updated-time">
-            <% if created_at != edited_at %>
-                <%= '(Edited)' %>
-            <% end%>
-          </p>
-        <% end %><br/>
+        <% end %>
     <% end %>
 
     <% filter_comments = [] %>
@@ -106,7 +103,7 @@
                               <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                           <% end %><p></p>
                           <p><%= comment.body %></p>
-                          <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+                          <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong> <%= comment.created_at != comment.updated_at ? '(Edited)' : '' %></p>
                         </td>
                         <td id="helpful-td" align="right">
                           <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
@@ -170,9 +167,10 @@
 
 <style>
   #delete-td {
-    width: 10%;
+    width: 1%;
     padding-left: 0px;
     padding-right: 0px;
+    margin: auto;
   }
 
   [id^=delete-btn] {
@@ -188,6 +186,19 @@
   [id^=helpful-btn] {
     text-transform: none;
     margin-left: 10px;
+  }
+
+  [id^=edit-btn] {
+    text-transform: none;
+    margin-left: 10px;
+  }
+
+  #edit-td {
+    width: 1%;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: auto;
+    horiz-align: right;
   }
 
   .not-helpful {
@@ -255,7 +266,7 @@
   }
 
   #edit-text-area{
-    width: 100%;
+    width: 95%;
     padding-left: 0px;
     padding-right: 0px;
   }
@@ -263,18 +274,6 @@
   .submit-btn{
     text-transform: none;
     margin-left: 10px;
-  }
-
-  [id^=edit-btn] {
-    text-transform: none;
-    margin-left: 10px;
-  }
-
-  #edit-td {
-    width: 5%;
-    padding-left: 0px;
-    padding-right: 0px;
-    margin: auto;
   }
 
   #updated-time {
@@ -430,53 +429,62 @@
   });
 
   $("[id^=edit-btn]").on("click", function (event) {
-    button_id = event.target.id;
-    comment_id = parseInt(button_id.replace("edit-btn-",""));
-    text = $("#comment-body-" + comment_id).text().trim();
-    $("#comment-entry-" + comment_id).html("<div>" +
-        "<form id=\"edit-form\"><tr>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /> <label for=\"rating1\">2</label>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /> <label for=\"rating1\">3</label>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /> <label for=\"rating1\">4</label>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/> <label for=\"rating1\">5</label>" +
-        "</tr><tr><textarea autofocus id=\"edit-text-area\"></textarea>" +
-        "<input class=\"btn submit-btn\" id=\"submit-btn\" type=\"submit\"/></tr>" +
-        "</form>" +
-        "</div>");
-    radio_button_id = "";
-    switch ( <%= rating%>){
-      case 1:
-        radio_button_id = "#rating1";
-        break;
-      case 2:
-        radio_button_id = "#rating2";
-        break;
-      case 3:
-        radio_button_id = "#rating3";
-        break;
-      case 4:
-        radio_button_id = "#rating4";
-        break;
-      case 5:
-        radio_button_id = "#rating5";
-        break;
-    }
-    $(radio_button_id).prop("checked", true);
-    $("#edit-text-area").val(text);
-    $("#submit-btn").on("click", function (event) {
-      edited_text = $("#edit-text-area").val();
-      new_rating_val = $("input[name='rating']:checked").val();
-      $.ajax({
-        type: "POST",
-        url: "<%= comments_edit_path %>",
-        data: { edited_text: edited_text, new_rating_val: new_rating_val, comment_id: comment_id},
-        context: document.body
+      button_id = event.target.id;
+      comment_id = parseInt(button_id.replace("edit-btn-",""));
+      text = $("#comment-body-" + comment_id).text().trim();
+
+      $("#comment-entry-" + comment_id).html("<div>" +
+          "<h3 style=\"margin-left: 10px;\">Edit a Review</h3>" +
+          "<form id=\"edit-form\"><tr>" +
+          "<label style=\"margin-left: 10px;\">Rating</label>" +
+          "<div style=\"margin-left: 10px; display: inline-block\">" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /> <label for=\"rating1\">2</label>" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /> <label for=\"rating1\">3</label>" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /> <label for=\"rating1\">4</label>" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/> <label for=\"rating1\">5</label>  </div>" +
+          "</tr>" +
+          "<tr><textarea autofocus id=\"edit-text-area\" style=\"margin-left: 10px; margin-right: 10px; margin-bottom: 15px\"></textarea>" +
+          "<a class=\"btn submit-btn\" id=\"submit-btn\">Edit</a>" +
+          "</form>" +
+          "</div>");
+
+      radio_button_id = "";
+      switch ( <%= rating%>){
+        case 1:
+          radio_button_id = "#rating1";
+          break;
+        case 2:
+          radio_button_id = "#rating2";
+          break;
+        case 3:
+          radio_button_id = "#rating3";
+          break;
+        case 4:
+          radio_button_id = "#rating4";
+          break;
+        case 5:
+          radio_button_id = "#rating5";
+          break;
+      }
+      $(radio_button_id).prop("checked", true);
+
+      $("#edit-text-area").val(text);
+
+      $("#submit-btn").on("click", function (event) {
+          edited_text = $("#edit-text-area").val();
+          new_rating_val = $("input[name='rating']:checked").val();
+          $.ajax({
+              type: "POST",
+              url: "<%= comments_edit_path %>",
+              data: { edited_text: edited_text, new_rating_val: new_rating_val, comment_id: comment_id},
+              context: document.body
+          });
+
+          <% if(created_at != edited_at)%>
+              $("#updated-time").text(" <%= '(Edited)' %>");
+          <% end%>
       });
-      <% if(created_at != edited_at)%>
-      $("#updated-time").text(" <%= '(Edited)' %>");
-      <% end%>
-    });
   });
 
     $(".delete-btn").click(function () {
