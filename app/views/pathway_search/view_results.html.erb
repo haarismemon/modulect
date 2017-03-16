@@ -553,7 +553,7 @@
       if(result.length > 0 && useTags) {
         var tagsmatched = result[0][1];
         moduleCard = "<div class =\"row\">" +
-                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
+                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                     console.log("fond");
@@ -600,7 +600,7 @@
         if(hasTags.length > 0) {
           var tagsmatched = hasTags[0][1];
           moduleCard = "<div class =\"row\">" +
-                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
+                              "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
@@ -623,7 +623,7 @@
                             "</div>"; 
         } else {
           moduleCard = "<div class =\"row\">" +
-                              "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"No tags matched.\"";
+                              "<button type=\"button\" class=\"login-card res-card result-card-orange res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"No tags matched.\"";
                                 if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
                                   }
@@ -647,6 +647,10 @@
         target.innerHTML += moduleCard;
       }
     }
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
 
     var selecter = document.getElementById("sort_by");
     selecter.value = sortby;
