@@ -58,11 +58,20 @@ class CommentsController < ApplicationController
 
     @uni_module = UniModule.find(params[:uni_module_id])
 
-    @updated_comments = @uni_module.comments.order("created_at DESC")
+    user_reviews_count = (Comment.all.where user_id: current_user.id).length
 
-    respond_to do |format|
-      format.js { render 'update_comments.js.erb' }
+    type_delete = params[:type_delete].to_s
+    if type_delete.eql? "module_page"
+      respond_to do |format|
+        format.js { render 'update_comments.js.erb' }
+      end
+    elsif type_delete.eql? "review_page"
+      data = {user_reviews_count: user_reviews_count}
+      render json: data
+    else
+      head :no_content
     end
+
 
   end
 

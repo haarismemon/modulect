@@ -30,8 +30,7 @@
                     <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                 <% end %><p></p>
                 <p><%= comment.body %></p>
-                <p><strong><%= comment.user.full_name %>
-                  , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+                <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
               </td>
               <% if logged_in? %>
               <td id="delete-td" align="right">
@@ -92,8 +91,7 @@
                               <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                           <% end %><p></p>
                           <p><%= comment.body %></p>
-                          <p><strong><%= comment.user.full_name %>
-                            , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+                          <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
                         </td>
                         <td id="helpful-td" align="right">
                           <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
@@ -128,7 +126,7 @@
             <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
           </div>
       <% elsif logged_in? %>
-          <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
+          <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn ">Add a Review</a>
           <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
             <h3>Add a Review</h3>
 
@@ -142,9 +140,9 @@
                   <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
                 </p>
                 <p id="review-area">
-                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
+                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true %>
                 </p>
-                <p>
+                <p id="submit-area">
                   <%= f.submit 'Add Review', class:'btn' %>
                 </p>
             <% end %>
@@ -233,28 +231,36 @@
     color: #2ab27b;
   }
 
+  #comment-creation-link {
+    text-transform: none;
+  }
+
+  p#submit-area input {
+    text-transform: none  ;
+  }
+
 </style>
 
 <script>
     num_pages = <%= num_pages %>
-        num_comments_per_page = <%= num_comments_per_page %>
+    num_comments_per_page = <%= num_comments_per_page %>
 
-            <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
-            move_to_page = function (page_number) {
-                //hide all pages
-                $('#comments-section').children('div').each(function () {
-                    $(this).css("display", "none");
-                });
-                //show only the corresponding page
-                $("#page-div-" + page_number).css("display", "block");
+    <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
+    move_to_page = function (page_number) {
+        //hide all pages
+        $('#comments-section').children('div').each(function () {
+            $(this).css("display", "none");
+        });
+        //show only the corresponding page
+        $("#page-div-" + page_number).css("display", "block");
 
-                //give all page links only unselected css class
-                $("a[id^=page-link]").addClass("unselected_page");
-                $("a[id^=page-link]").removeClass("selected_page");
-                //give the corresponding page link clicked a selected css class
-                $("#page-link-" + page_number).removeClass("unselected_page");
-                $("#page-link-" + page_number).addClass("selected_page");
-            };
+        //give all page links only unselected css class
+        $("a[id^=page-link]").addClass("unselected_page");
+        $("a[id^=page-link]").removeClass("selected_page");
+        //give the corresponding page link clicked a selected css class
+        $("#page-link-" + page_number).removeClass("unselected_page");
+        $("#page-link-" + page_number).addClass("selected_page");
+    };
 
     move_to_first_page = function () {
         move_to_page(1);
@@ -388,9 +394,26 @@
         $.ajax({
             type: "POST",
             url: "<%= comments_delete_path %>",
-            data: {comment_id: comment_id, uni_module_id: <%= @uni_module.id %>},
+            data: {comment_id: comment_id, uni_module_id: <%= @uni_module.id %>, type_delete: "module_page"},
             context: document.body,
         });
+    });
+
+    $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
+        $("#comment_body").val("");
+        openCommentCreation();
+        $("input[name='comment[rating]']").val([5]);
+    });
+
+    $("#comment-creation-box").hide();
+    var openCommentCreation = function(){
+        $("#comment-creation-box").slideToggle("fast");
+        $("#comment-creation-link").text($(".comment-creation-link").text()==open_comment_creation?"Close box":open_comment_creation);;
+    };
+
+    var open_comment_creation;
+    $(document).ready(function () {
+        open_comment_creation = $(".comment-creation-link").text();
     });
 
 </script>

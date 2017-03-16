@@ -99,21 +99,4 @@
             context: document.body,
         })
     });
-
-    $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
-        $("#comment_body").val("");
-        openCommentCreation();
-        $("input[name='comment[rating]']").val([5]);
-    });
-
-    $("#comment-creation-box").hide();
-    var openCommentCreation = function(){
-        $("#comment-creation-box").slideToggle("fast");
-        $(".comment-creation-link").text($(".comment-creation-link").text()==open_comment_creation?"Close box":open_comment_creation);;
-    };
-
-    var open_comment_creation;
-    $(document).ready(function () {
-        open_comment_creation = $(".comment-creation-link").text()
-    });
 </script>
