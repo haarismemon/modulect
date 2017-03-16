@@ -1,0 +1,68 @@
+<% provide(:title, 'Your reviews') %>
+<% if logged_in? %>
+    <script type="text/javascript">
+        $(function () {
+            var hashTab = window.location.hash;
+            if (hashTab != '') {
+                $('.nav-tabs a[href="' + hashTab + '"]').tab('show');
+                $(hashTab).addClass('active');
+            }
+        });
+
+    </script>
+
+    <% your_reviews = Comment.where user_id: current_user.id %>
+
+    <div class="banner" style="padding-top:40px;">
+      <div class="container">
+        <h1>Your reviews</h1>
+      </div>
+    </div>
+    <div id="page" style="padding-top:30px;">
+      <div class="container">
+        <div id="saved-page" class="col-md-10 col-md-offset-1">
+          <div class="tab-content" style="margin-top:30px;">
+            <div id="modules" class="tab-pane fade in active">
+              <div class="col-md-12">
+                <% if your_reviews.length == 0 %>
+                    <div class="row" style="margin-bottom:20px;">
+                      <div class="col-md-10 col-md-offset-1 text-center">
+                        <h1>You haven't made any reviews :(</h1>
+                      </div>
+                    </div>
+                <% else %>
+                    <div class="row here-what" style="margin-bottom:20px;">
+                      <div class="col-md-7">
+                        <h1>Your reviewed modules:</h1>
+                        <h5>Reviewed <%= your_reviews.length %> modules</h5>
+                      </div>
+                    </div>
+                    <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
+                      <div class="col-md-12 text-right">
+                        <ul class="results-page-options">
+                          <li>
+                            <a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+                              page</a></li>
+                          <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
+                           <%= request.original_url %>
+                           %0A%0A
+                           Regards,%0A
+                           {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email
+                            someone</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <% your_reviews.each do |comment| %>
+                            <%= render partial: 'layouts/uni_module', locals: {comment: comment, uni_module: comment.uni_module, tags_matched: "", tags_searched_for: "", type: "review"} %>
+                        <% end %>
+                      </div>
+                    </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<% end %>
