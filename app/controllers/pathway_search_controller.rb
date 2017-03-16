@@ -77,6 +77,12 @@ class PathwaySearchController < ApplicationController
 				@chosen_tags = params[:chosen_tags].split(",") 				 
 			end
 
+			 @chosen_tags.each do |tag_name|
+		        if Tag.find_by_name(tag_name)
+		          add_to_tag_log(Tag.find_by_name(tag_name).id)
+		        end
+		      end
+
 	      if !@course_obj.nil?
 			@results = UniModule.pathway_search(@chosen_tags, @course_obj) 
 	      else

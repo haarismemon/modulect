@@ -15,9 +15,10 @@ class SearchController < ApplicationController
       @temp_array = params[:chosen_tags].split(",")
 
       @temp_array.each do |tag_name|
-        add_to_tag_log(Tag.find_by_name(tag_name).id)
+        if Tag.find_by_name(tag_name)
+          add_to_tag_log(Tag.find_by_name(tag_name).id)
+        end
       end
-
 
       @results = UniModule.basic_search(@temp_array)
     else

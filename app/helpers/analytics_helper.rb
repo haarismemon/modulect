@@ -318,8 +318,8 @@ module AnalyticsHelper
 			end
 		end
 
-		format_ouput_data(tags_data, sort_by, number_to_show)
-
+		#format_ouput_data(tags_data, sort_by, number_to_show)
+		tags_data
 	end
 
 	# get number of visitors (both logged in and non-logged in)
