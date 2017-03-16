@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Course, type: :model do
 
   let(:course) { build(:course) }
-  let!(:year_structure) { build(:year_structure, course: course) }
 
   describe "#valid?" do
 
