@@ -219,8 +219,12 @@
   }
 
   function updateResultLink() {
-    window.history.replaceState({}, "Pathway Results | Modulect", window.location.href + "&selected=" + JSON.stringify(selected_ids));
-    console.log("link");
+    if(window.location.href.includes("&selected")) {
+      clearedLink = (window.location.href).substring(0, (window.location.href).indexOf("&selected"));
+      window.history.replaceState({}, "Pathway Results | Modulect", clearedLink + "&selected=" + JSON.stringify(selected_ids));
+    } else {
+      window.history.replaceState({}, "Pathway Results | Modulect", window.location.href + "&selected=" + JSON.stringify(selected_ids));
+    }
   }
 
   function savePathway() {
