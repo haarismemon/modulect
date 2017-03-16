@@ -111,6 +111,9 @@ Rails.application.routes.draw do
   post 'application/save_module'
   post 'application/save_pathway'
   post 'application/delete_pathway'
+
+  get 'application/rating_for_module'
+  
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
   post 'comments/like'

@@ -194,6 +194,40 @@
     return 0;
   }
 
+  function ratingCompare(a, b) {
+    aRating = 0;
+    bRating = 0;
+    $.ajax({
+      url: '<%= application_rating_for_module_path %>',
+      type: 'GET',
+      data: {
+        mod: a.id
+      },
+      success: function(data, event, status, xhr) {
+        aRating = response
+      },
+    }); 
+    $.ajax({
+      url: '<%= application_rating_for_module_path %>',
+      type: 'GET',
+      data: {
+        mod: b.id
+      },
+      success: function(data, event, status, xhr) {
+        bRating = response
+      },
+    });
+
+    if(aRating < bRating) {
+      return -1;
+    }
+    if(aRating > bRating) {
+      return 1;
+    }
+    return 0;
+  } 
+  }
+
 
   function sort(year, group) {
     var select = document.getElementById("sort_by");
@@ -214,6 +248,10 @@
     else if(selected == "pass") {
       optional_modules_per_year[year][group].uni_modules.sort(passRateCompare);
       return optional_button_pressed(year, group, false, "pass");
+    }
+    else if(selected == "rating") {
+      optional_modules_per_year[year][group].uni_modules.sort(ratingCompare);
+      return optional_button_pressed(year, group, false, "rating");
     }
 
   }
@@ -486,7 +524,7 @@
     target = document.getElementById("div_opt_year_" + _year);
     target.innerHTML = "";
     target.innerHTML += "<div class=\"row\"><span style=\"margin-bottom: 20px; display:inline-block;\" class=\"sort-area\">" +
-                  <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate"} %>
+                  <% sorting_options = {"tags" => "Tag match", "coursework" => "Coursework weighting", "exam" => "Exam weighting", "pass" => "Pass rate", "rating" => "Module Rating"} %>
                   "Sort by: &nbsp;&nbsp;" +
                     " <select class=\"selectpicker\" id=\"sort_by\" style=\"display:inline-block !important;\" onchange=\"sort(" + _year + "," + _i + ")\">" +
                       <% sorting_options.each do |option| %>
