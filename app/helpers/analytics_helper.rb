@@ -338,31 +338,62 @@ module AnalyticsHelper
 	# get number quick searches
 	def get_number_quick_searches(department_id, time_period, end_date)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i}
+			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "quick"}
 		else
-			logs = SearchLog.all
+			logs = SearchLog.all.select{|log| log.search_type == "quick"}
 		end
 
 
 		total_searches = 0
 		
 		logs.each do |log|
-			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period) && log.search_type == "quick"
-				total_searches += 1
+			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+				total_searches += log.counter
 			end
 		end
 
 		total_searches
 	end
 
-	# get number pathway searches
-	def get_number_pathway_searches
-		# TO DO
+	# get number pathway searches(department_id, time_period, end_date)
+	def get_number_pathway_searches(department_id, time_period, end_date)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "pathway"}
+		else
+			logs = SearchLog.all.select{|log| log.search_type == "pathway"}
+		end
+
+
+		total_searches = 0
+		
+		logs.each do |log|
+			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+				total_searches += log.counter
+			end
+		end
+
+		total_searches
 	end
 
 	# get number career searches
-	def get_number_career_searches
-		# TO DO
+	def get_number_career_searches(department_id, time_period, end_date)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "career"}
+		else
+			logs = SearchLog.all.select{|log| log.search_type == "career"}
+		end
+
+
+		total_searches = 0
+		
+		logs.each do |log|
+			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+				total_searches += log.counter
+			end
+		end
+
+		total_searches
+		
 	end
 
 
