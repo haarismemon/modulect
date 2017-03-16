@@ -21,8 +21,11 @@
                         <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
                         <div>
                           <h3><%= group.name %></h3>
-                          <h5 style="margin-top: 20px">Total credits: <%= group.total_credits %></h5>
-                        </div>
+
+                          <% if !group.max_credits.nil? && !group.min_credits.nil? %>
+                              <h5 style="margin-top: 20px"> <%=  group.max_credits.to_int==group.min_credits.to_int ? "Total credits: "+group.min_credits.to_s : "Min credits: #{ group.min_credits.to_s} |  Max credits: "+group.max_credits.to_s%></h5>
+                          <%end%>
+                              </div>
                         <div>
                           <div style="margin-top: 30px;padding-left:0px">
                             <div class="form-group">

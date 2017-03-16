@@ -9,17 +9,29 @@
   </div>
 </div>
 
-<div class="row field-unit total_credits" >
+
+<div class="row field-unit min_credits" >
   <div class="col-xs-12">
     <div class="field-unit__label">
-      <%= f.label :total_credits_for_this_group %>
+      <%= f.label :Minimum_possible_credits_for_this_group %>
     </div>
     <div class="field-unit__field">
-      <%= f.number_field :total_credits %>
+      <%= f.number_field :min_credits %>
     </div>
   </div>
 </div>
 
+<div class="row field-unit max_credits" >
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%= f.label :Maximum_possible_credits_for_this_group %>
+    </div>
+    <span  class="instruction-label" id="super-admin-warning" >*if there exists a single value total credit limit for this group , then make the maximum field value equal the minimum field</span>
+    <div class="field-unit__field">
+      <%= f.number_field :max_credits %>
+    </div>
+  </div>
+</div>
 <div class="row field-unit field-unit--string uni_modules" >
   <div class="col-xs-12">
     <div class="field-unit__label">
