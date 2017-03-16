@@ -8,7 +8,8 @@ feature "Creating a new course", :js => true do
   include CourseCreationSteps
   include WaitForAjax
 
-  given! (:admin) { create(:user, user_level: "super_admin_access") }
+  given! (:admin) { create(:user, first_name: "Omar", last_name: "Rahman",
+                           email: "omar.rahman@kcl.ac.uk", user_level: "super_admin_access") }
   given! (:course) { create(:course) }
   given! (:department) { create(:department) }
   given! (:uni_module) { create(:uni_module) }
