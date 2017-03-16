@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315232751) do
+ActiveRecord::Schema.define(version: 20170316111056) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -122,6 +122,14 @@ ActiveRecord::Schema.define(version: 20170315232751) do
     t.datetime "updated_at",    null: false
   end
 
+  create_table "tag_logs", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "counter"
+    t.integer  "department_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string   "name"
     t.string   "type"
@@ -133,6 +141,13 @@ ActiveRecord::Schema.define(version: 20170315232751) do
     t.integer "tag_id"
     t.integer "uni_module_id"
     t.index ["tag_id", "uni_module_id"], name: "index_tags_uni_modules_on_tag_id_and_uni_module_id"
+  end
+
+  create_table "uni_module_logs", force: :cascade do |t|
+    t.integer  "counter"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "uni_module_id"
   end
 
   create_table "uni_module_requirements", id: false, force: :cascade do |t|

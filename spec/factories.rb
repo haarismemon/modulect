@@ -1,6 +1,12 @@
 # Build mock objects for testing purposes here.
 # The name of a factory needs to be the same as the model's that it is building.
 FactoryGirl.define do
+  factory :tag_log do
+    
+  end
+  factory :uni_module_log do
+    
+  end
   factory :search_log do
     
   end

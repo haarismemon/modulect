@@ -649,6 +649,22 @@ most saved modules<br />
 
 
 
+most visited modules<br />
+<% get_visited_modules("any","any","month",Time.now,"most", 10).each do |uni_module, count| %>
+<%= uni_module.name + "  " + count.to_s %><Br />
+<% end %>
+<br />
+<br />
+
+
+
+most clciked tags<br />
+<% get_clicked_tags("any","any","month",Time.now,"most", 10).each do |tag, count| %>
+<%= tag.name + "  " + tag.type + "  " + count.to_s %><Br />
+<% end %>
+<br />
+<br />
+
 <Br /><br />
 
       </div>

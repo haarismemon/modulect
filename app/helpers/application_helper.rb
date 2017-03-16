@@ -267,6 +267,27 @@ module ApplicationHelper
 
   end
 
+  def add_to_uni_module_log(incoming_uni_module_id)
+  	logs = UniModuleLog.select{|log| log.uni_module_id == incoming_uni_module_id && log.created_at.to_date == Time.now.to_date}
+  	if logs.size > 0
+  		desired_log = logs.first
+  		desired_log.update_attribute("counter", desired_log.counter + 1)
+  	else
+  		UniModuleLog.create(:uni_module_id => incoming_uni_module_id, :counter => 1)
+  	end
+
+  end
+
+  def add_to_tag_log(incoming_tag_id)
+  	logs = TagLog.select{|log| log.tag_id == incoming_tag_id && log.created_at.to_date == Time.now.to_date}
+  	if logs.size > 0
+  		desired_log = logs.first
+  		desired_log.update_attribute("counter", desired_log.counter + 1)
+  	else
+  		UniModuleLog.create(:tag_id => incoming_tag_id, :counter => 1)
+  	end
+  end
+
 
   private
   # determines what the link needs to be to redirect back to faculty form

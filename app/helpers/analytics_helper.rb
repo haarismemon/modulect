@@ -271,13 +271,16 @@ module AnalyticsHelper
 	end
 
 	# most/least clicked tags
-	def get_visited_modules
+	def get_visited_modules(department_id, course_id, time_period, end_date, sort_by, number_to_show)
+
+		Hash.new
 		# TO DO
 	end
 
 	# most/least clicked (trending) tags
-	def get_most_clicked_tags
+	def get_clicked_tags(department_id, course_id, time_period, end_date, sort_by, number_to_show)
 		# TO DO
+		Hash.new
 	end
 
 	# get number of visitors (both logged in and non-logged in)
