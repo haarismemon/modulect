@@ -37,7 +37,7 @@
                     <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                 <% end %><p></p>
                 <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
-                <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+                <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime('%d %B %Y at %H:%M %p')%></strong> <%= created_at != edited_at ? '(Edited)' : '' %></p>
               </td>
               <% if logged_in? %>
                   <td id="edit-td" align="center">
@@ -50,11 +50,6 @@
             </colgroup>
           </table>
           <hr>
-          <p id="updated-time">
-            <% if created_at != edited_at %>
-                <%= '(Edited)' %>
-            <% end%>
-          </p>
         <% end %><br/>
     <% end %>
 
