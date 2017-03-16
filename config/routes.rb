@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
     get 'upload', to: 'upload#upload'
+    get 'analytics', to: 'analytics#analytics'
 
 
     put '/app_settings' => 'app_settings#update'

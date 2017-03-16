@@ -96,6 +96,25 @@
    </div>
 </div>
 </div>
+
+<div class="col-md-3">
+<div class="row field-unit field-unit--checkbox last-login-time" >
+   <div class="col-xs-12">
+      <div class="field-unit__label">
+        <label for="user_is_limited">Last login time</label>
+      </div>
+      <div class="field-unit__field">
+         <% if !@user.last_login_time.present? %>
+            Never
+         <% else %>
+            <%= @user.last_login_time.strftime("%d %B %Y at %H:%M %p") %>
+         <% end %>
+      </div>
+   </div>
+</div>
+</div>
+
+
 </div>
 <%if parent=="edit"  %>
 <div style="margin-bottom:20px;"><a onclick="openPasswordFields();" class=" form-actions password-show-toggle">Change password</a></div>
@@ -130,7 +149,7 @@
             <%= f.label :faculty %>
          </div>
          <div class="field-unit__field default-select-field">
-
+            
          <% if current_user.user_level == "super_admin_access" %>
          <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
                         [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => true}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off"  }) %>
@@ -138,7 +157,7 @@
          <%= f.select(:faculty_id, options_for_select(@faculties.collect { |faculty|
                         [faculty.name.titleize, faculty.id]}, @user.faculty_id), {:include_blank => false}, {:class => 'form-control', :id => "faculties_select", :autocomplete => "off", :readonly => true, :disabled => true  }) %>
 
-            <% end %>
+            <% end %>   
          </div>
       </div>
    </div>
@@ -233,8 +252,8 @@
           $(".password-hidden").slideToggle("slow");
           $(".password-show-toggle").text($(".password-show-toggle").text()=="Change password"?"Close panel":"Change password");
       };
-
-
-
-
+      
+      
+      
+      
 </script>

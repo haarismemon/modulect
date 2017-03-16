@@ -3,6 +3,8 @@ module SessionsHelper
 	# Logs in the given user.
 	def log_in(user)
 		session[:user_id] = user.id
+		session[:last_login_time] = user.last_login_time
+		user.update_attribute(:last_login_time, Time.now)
 	end
 
 	# Remembers a user in a persistent session.
@@ -32,6 +34,15 @@ module SessionsHelper
 				log_in user
 				@current_user = user
 			end
+		end
+	end
+
+	def current_user_last_login_time
+		cached_last_login_time = session[:last_login_time] 
+		if cached_last_login_time.nil? || cached_last_login_time.size == 0
+			"Never"
+		else
+			DateTime.parse(session[:last_login_time]).strftime("%d %B %Y at %H:%M %p")
 		end
 	end
 
