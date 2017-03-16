@@ -347,7 +347,6 @@ end %>
     button_id = event.target.id;
     comment_id = parseInt(button_id.replace("edit-btn-",""));
     text = $("#comment-body-" + comment_id).text().trim();
-    old_rating_val = <%= @your_comment_rating%>;
     $("#comment-entry-" + comment_id).html("<div>" +
         "<form id=\"edit-form\"><tr>" +
         "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
@@ -359,6 +358,25 @@ end %>
         "<input class=\"btn submit-btn\" id=\"submit-btn\" type=\"submit\"/></tr>" +
         "</form>" +
         "</div>");
+    radio_button_id = "";
+    switch (<%= @your_comment_rating.to_i%>){
+      case 1:
+        radio_button_id = "#rating1";
+        break;
+      case 2:
+        radio_button_id = "#rating2";
+        break;
+      case 3:
+        radio_button_id = "#rating3";
+        break;
+      case 4:
+        radio_button_id = "#rating4";
+        break;
+      case 5:
+        radio_button_id = "#rating5";
+        break;
+    }
+    $(radio_button_id).prop("checked", true)
     $("#edit-text-area").val(text);
     $("#submit-btn").on("click", function (event) {
       edited_text = $("#edit-text-area").val();
