@@ -4,6 +4,10 @@
     <i class="fa fa-star star-rating" aria-hidden="true"></i>
     <% number_of_stars = number_of_stars + 1  %>
 <% end %>
+<% if (average_rating - average_rating.floor) > 0 %>
+    <i class="fa fa-star-half-o star-rating" aria-hidden="true"></i>
+    <% number_of_stars = number_of_stars + 1 %>
+<% end %>
 <% for j in 1..(5 - number_of_stars) %>
     <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
 <% end %><p>
