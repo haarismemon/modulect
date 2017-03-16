@@ -15,32 +15,47 @@
 <% if logged_in?
      module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }
 
+      rating = -1
+      created_at = -1
+      edited_at = -1
+
      if module_comments.length > 0 %>
         <a name="your_review" id="your_review"></a>
         <h3>Your Review</h3>
         <hr>
         <% module_comments.each do |comment| %>
-          <table width="100%" border="0">
+          <% rating = comment.rating%>
+          <table width="100%" border="0" id="comment-entry-<%=comment.id%>">
             <colgroup>
               <td>
+                <% created_at = comment.created_at %>
+                <% edited_at = comment.updated_at %>
                 <% for i in 1..comment.rating %>
                     <i class="fa fa-star star-rating" aria-hidden="true"></i>
                 <% end %>
                 <% for j in 1..(5 - comment.rating) %>
                     <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                 <% end %><p></p>
-                <p><%= comment.body %></p>
+                <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
                 <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
               </td>
               <% if logged_in? %>
-              <td id="delete-td" align="right">
-                  <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-              </td>
+                  <td id="edit-td" align="center">
+                    <button class="btn edit-btn" id="edit-btn-<%= comment.id %>">Edit</button>
+                  </td>
+                  <td id="delete-td" align="right">
+                      <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  </td>
               <% end %>
             </colgroup>
           </table>
           <hr>
-        <% end %>
+          <p id="updated-time">
+            <% if created_at != edited_at %>
+                <%= '(Edited)' %>
+            <% end%>
+          </p>
+        <% end %><br/>
     <% end %>
 
     <% filter_comments = [] %>
@@ -239,6 +254,33 @@
     text-transform: none  ;
   }
 
+  #edit-text-area{
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .submit-btn{
+    text-transform: none;
+    margin-left: 10px;
+  }
+
+  [id^=edit-btn] {
+    text-transform: none;
+    margin-left: 10px;
+  }
+
+  #edit-td {
+    width: 5%;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: auto;
+  }
+
+  #updated-time {
+    padding-left: 2%;
+  }
+
 </style>
 
 <script>
@@ -271,121 +313,171 @@
         $("#last-page").show();
     };
 
-    move_to_last_page = function () {
-        move_to_page(num_pages);
+  move_to_last_page = function () {
+    move_to_page(num_pages);
 
-        $("#first-page").show();
-        $("#prev-page").show();
-        $("#next-page").hide();
-        $("#last-page").hide();
-    };
+    $("#first-page").show();
+    $("#prev-page").show();
+    $("#next-page").hide();
+    $("#last-page").hide();
+  };
 
-    update_display_comments_number = function () {
-        if ($("#comments-section div").length > 0) {
-            current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
-            first_comment = ((current_page - 1) * num_comments_per_page) + 1;
-            if (current_page == num_pages) {
-                last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1);
-            } else {
-                last_comment = current_page * num_comments_per_page;
-            }
+  update_display_comments_number = function () {
+    if ($("#comments-section div").length > 0) {
+      current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
+      first_comment = ((current_page - 1) * num_comments_per_page) + 1;
+      if (current_page == num_pages) {
+        last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1);
+      } else {
+        last_comment = current_page * num_comments_per_page;
+      }
 
-            display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
-            $("label#display-comments-number").html(display_text);
-        }
-    };
+      display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
+      $("label#display-comments-number").html(display_text);
+    }
+  };
 
+  move_to_first_page();
+  update_display_comments_number();
+
+  $("#first-page").on("click", function () {
     move_to_first_page();
     update_display_comments_number();
+  });
 
-    $("#first-page").on("click", function () {
-        move_to_first_page();
-        update_display_comments_number();
-    });
+  $("#last-page").on("click", function () {
+    move_to_last_page();
+    update_display_comments_number();
+  });
 
-    $("#last-page").on("click", function () {
-        move_to_last_page();
-        update_display_comments_number();
-    });
+  $("#next-page").on("click", function () {
+    current_page_div_id = $("#comments-section div:visible").first().attr('id');
+    next_page = parseInt(current_page_div_id.replace("page-div-", "")) + 1;
 
-    $("#next-page").on("click", function () {
-        current_page_div_id = $("#comments-section div:visible").first().attr('id');
-        next_page = parseInt(current_page_div_id.replace("page-div-", "")) + 1;
+    if(next_page == num_pages) {
+      move_to_last_page();
+    }
+    else {
+      move_to_page(next_page)
+    }
 
-        if (next_page == num_pages) {
-            move_to_last_page();
+    update_display_comments_number();
+  });
+
+  $("#prev-page").on("click", function () {
+    current_page_div_id = $("#comments-section div:visible").first().attr('id');
+    prev_page = parseInt(current_page_div_id.replace("page-div-", "")) - 1;
+
+    if(prev_page == 1) {
+      move_to_first_page();
+    }
+    else {
+      move_to_page(prev_page)
+    }
+
+    update_display_comments_number();
+  });
+
+  $("a[id^=page-link]").on("click", function (event) {
+
+    $("#first-page").show();
+    $("#prev-page").show();
+    $("#next-page").show();
+    $("#last-page").show();
+
+    page_link_id = event.target.id;
+    page_number = parseInt(page_link_id.replace("page-link-", ""));
+
+    if(page_number == 1) {
+      $("#first-page").hide();
+      $("#prev-page").hide();
+    }
+    else if(page_number == num_pages) {
+      $("#next-page").hide();
+      $("#last-page").hide();
+    }
+
+    move_to_page(page_number);
+    update_display_comments_number();
+  });
+
+  //on click method for the helpful button, makes a ajax post request
+  $(".helpful-btn").on("click", function (event) {
+    button_id = event.target.id;
+    comment_id = parseInt(button_id.replace("helpful-btn-", ""));
+    button = $("#helpful-btn-" + comment_id);
+    label = $("#helpful-label-" + comment_id);
+
+    $.ajax({
+      type: "POST",
+      url: "<%= comments_like_path %>",
+      data: { comment_id: comment_id },
+      context: document.body,
+      success: function (data) {
+        label.html(data.like_count);
+        if (data.helpful == true) {
+          button.html("Helpful");
+          button.removeClass("not-helpful");
+          button.addClass("helpful")
         }
-        else {
-            move_to_page(next_page)
+        else if (data.helpful == false) {
+          button.html("Helpful?");
+          button.removeClass("helpful");
+          button.addClass("not-helpful")
         }
-
-        update_display_comments_number();
+      }
     });
+  });
 
-    $("#prev-page").on("click", function () {
-        current_page_div_id = $("#comments-section div:visible").first().attr('id');
-        prev_page = parseInt(current_page_div_id.replace("page-div-", "")) - 1;
-
-        if (prev_page == 1) {
-            move_to_first_page();
-        }
-        else {
-            move_to_page(prev_page)
-        }
-
-        update_display_comments_number();
+  $("[id^=edit-btn]").on("click", function (event) {
+    button_id = event.target.id;
+    comment_id = parseInt(button_id.replace("edit-btn-",""));
+    text = $("#comment-body-" + comment_id).text().trim();
+    $("#comment-entry-" + comment_id).html("<div>" +
+        "<form id=\"edit-form\"><tr>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /> <label for=\"rating1\">2</label>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /> <label for=\"rating1\">3</label>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /> <label for=\"rating1\">4</label>" +
+        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/> <label for=\"rating1\">5</label>" +
+        "</tr><tr><textarea autofocus id=\"edit-text-area\"></textarea>" +
+        "<input class=\"btn submit-btn\" id=\"submit-btn\" type=\"submit\"/></tr>" +
+        "</form>" +
+        "</div>");
+    radio_button_id = "";
+    switch ( <%= rating%>){
+      case 1:
+        radio_button_id = "#rating1";
+        break;
+      case 2:
+        radio_button_id = "#rating2";
+        break;
+      case 3:
+        radio_button_id = "#rating3";
+        break;
+      case 4:
+        radio_button_id = "#rating4";
+        break;
+      case 5:
+        radio_button_id = "#rating5";
+        break;
+    }
+    $(radio_button_id).prop("checked", true);
+    $("#edit-text-area").val(text);
+    $("#submit-btn").on("click", function (event) {
+      edited_text = $("#edit-text-area").val();
+      new_rating_val = $("input[name='rating']:checked").val();
+      $.ajax({
+        type: "POST",
+        url: "<%= comments_edit_path %>",
+        data: { edited_text: edited_text, new_rating_val: new_rating_val, comment_id: comment_id},
+        context: document.body
+      });
+      <% if(created_at != edited_at)%>
+      $("#updated-time").text(" <%= '(Edited)' %>");
+      <% end%>
     });
-
-    $("a[id^=page-link]").on("click", function (event) {
-
-        $("#first-page").show();
-        $("#prev-page").show();
-        $("#next-page").show();
-        $("#last-page").show();
-
-        page_link_id = event.target.id;
-        page_number = parseInt(page_link_id.replace("page-link-", ""));
-
-        if (page_number == 1) {
-            $("#first-page").hide();
-            $("#prev-page").hide();
-        }
-        else if (page_number == num_pages) {
-            $("#next-page").hide();
-            $("#last-page").hide();
-        }
-
-        move_to_page(page_number);
-        update_display_comments_number();
-    });
-
-    //on click method for the helpful button, makes a ajax post request
-    $(".helpful-btn").on("click", function (event) {
-        button_id = event.target.id;
-        comment_id = parseInt(button_id.replace("helpful-btn-", ""));
-        button = $("#helpful-btn-" + comment_id);
-        label = $("#helpful-label-" + comment_id);
-
-        $.ajax({
-            type: "POST",
-            url: "<%= comments_like_path %>",
-            data: {comment_id: comment_id},
-            context: document.body,
-            success: function (data) {
-                label.html(data.like_count);
-                if (data.helpful == true) {
-                    button.html("Helpful");
-                    button.removeClass("not-helpful");
-                    button.addClass("helpful")
-                }
-                else if (data.helpful == false) {
-                    button.html("Helpful?");
-                    button.removeClass("helpful");
-                    button.addClass("not-helpful")
-                }
-            }
-        });
-    });
+  });
 
     $(".delete-btn").click(function () {
         button_id = event.target.id;

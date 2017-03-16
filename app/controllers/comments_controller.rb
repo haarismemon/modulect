@@ -36,6 +36,20 @@ class CommentsController < ApplicationController
 
   end
 
+  def edit
+    edited_text = params[:edited_text]
+    comment_id = params[:comment_id]
+    new_rating_val = params[:new_rating_val]
+    @comment = Comment.find(comment_id.to_i)
+    @comment.update_attributes(body: edited_text, rating: new_rating_val)
+    @uni_module = UniModule.find(@comment.uni_module_id)
+    @updated_comments = @uni_module.comments.order("created_at DESC")
+
+    respond_to do |format|
+      format.js { render 'update_comments.js.erb' }
+    end
+  end
+
   def like
     @comment = Comment.find(params[:comment_id])
     @user = User.find(current_user.id)
@@ -62,6 +76,7 @@ class CommentsController < ApplicationController
 
     type_delete = params[:type_delete].to_s
     if type_delete.eql? "module_page"
+      @updated_comments = @uni_module.comments.order("created_at DESC")
       respond_to do |format|
         format.js { render 'update_comments.js.erb' }
       end

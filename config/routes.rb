@@ -115,6 +115,7 @@ Rails.application.routes.draw do
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
   post 'comments/like'
+  post 'comments/edit'
   post 'comments/delete'
 
 
