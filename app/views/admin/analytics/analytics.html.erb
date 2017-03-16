@@ -658,8 +658,8 @@ most visited modules<br />
 
 
 
-most clciked tags<br />
-<% get_clicked_tags("any","any","month",Time.now,"most", 10).each do |tag, count| %>
+most clicked tags<br />
+<% get_clicked_tags("any","month",Time.now,"most", 10).each do |tag, count| %>
 <%= tag.name + "  " + tag.type + "  " + count.to_s %><Br />
 <% end %>
 <br />

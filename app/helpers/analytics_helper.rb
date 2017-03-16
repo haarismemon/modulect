@@ -272,15 +272,54 @@ module AnalyticsHelper
 
 	# most/least clicked tags
 	def get_visited_modules(department_id, course_id, time_period, end_date, sort_by, number_to_show)
+		uni_modules_data = Hash.new
+		uni_modules = get_uni_modules(department_id, course_id)
 
-		Hash.new
-		# TO DO
+		UniModuleLog.all.each do |log|
+			if UniModule.find(log.uni_module_id)
+				uni_module = UniModule.find(log.uni_module_id)
+				if uni_modules.include?(uni_module) && is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+						uni_modules_data[uni_module] = log.counter
+				end
+			end
+		end
+
+		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
 
 	# most/least clicked (trending) tags
-	def get_clicked_tags(department_id, course_id, time_period, end_date, sort_by, number_to_show)
-		# TO DO
-		Hash.new
+	def get_clicked_tags(department_id, time_period, end_date, sort_by, number_to_show)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			departments = [Department.find(department_id.to_i)]
+		else
+			departments = Department.all
+		end
+
+		all_uni_modules = []
+		departments.each do |department|
+			all_uni_modules.concat get_uni_modules(department.id.to_s, "any")
+		end
+		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
+		
+
+		all_tags = []
+		all_uni_modules.each do |uni_module|
+			all_tags.concat uni_module.tags
+		end
+		all_tags = all_tags.uniq{|tag| tag.id}
+
+		tags_data = Hash.new
+		TagLog.all.each do |log|
+			if TagLog.find(log.tag_id)
+				tag = Tag.find(log.tag_id)
+				if all_tags.include?(tag) && is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+						tags_data[tag] = log.counter
+				end
+			end
+		end
+
+		format_ouput_data(tags_data, sort_by, number_to_show)
+
 	end
 
 	# get number of visitors (both logged in and non-logged in)
