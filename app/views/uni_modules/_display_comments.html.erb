@@ -1,3 +1,13 @@
+<label>Average Module Rating: </label><% updated_comments.empty? ? average_rating = 0 : average_rating = module_average_rating(@uni_module) %>
+<% number_of_stars = 0 %>
+<% for i in 1..(average_rating.floor) %>
+    <i class="fa fa-star star-rating" aria-hidden="true"></i>
+    <% number_of_stars = number_of_stars + 1  %>
+<% end %>
+<% for j in 1..(5 - number_of_stars) %>
+    <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+<% end %><p>
+
 <% if logged_in?
      module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }
 
