@@ -42,11 +42,11 @@
 <button class="btn btn-small" type="button" id="btn_generate_tags" style="margin-bottom: 20px">Generate Tags from description</button>
 <div class="form-group">
   <label for="career_tags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-  <%= f.text_field :career_tags, :value => @careerTags.join(","), class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :id => "career_tags" %>
+  <%= f.text_field :career_tags, :value => @careerTags.join(","), class: 'form-control', :placeholder => 'Type to add a career tag and press enter', data: {:role => "tagsinput"}, :id => "career_tags" %>
 </div>
 <div class="form-group">
   <label for="interest_tags">Interest Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the interests this module may suit.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-  <%= f.text_field :interest_tags, :value => @interestTags.join(","), class: 'form-control', :placeholder => 'Type to add a interest tag', data: {:role => "tagsinput"}, :id => "interest_tags" %>
+  <%= f.text_field :interest_tags, :value => @interestTags.join(","), class: 'form-control', :placeholder => 'Type to add a interest tag and press enter', data: {:role => "tagsinput"}, :id => "interest_tags" %>
 </div>
 <div class="form-group">
   <label for="assessment_methods">Assessment Methods <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the assessment method(s) which are used in this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
