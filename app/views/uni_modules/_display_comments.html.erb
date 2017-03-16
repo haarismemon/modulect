@@ -140,9 +140,9 @@
                   <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
                 </p>
                 <p id="review-area">
-                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
+                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true %>
                 </p>
-                <p>
+                <p id="submit-area">
                   <%= f.submit 'Add Review', class:'btn' %>
                 </p>
             <% end %>
@@ -229,6 +229,14 @@
 
   .star-rating {
     color: #2ab27b;
+  }
+
+  #comment-creation-link {
+    text-transform: none;
+  }
+
+  p#submit-area input {
+    text-transform: none  ;
   }
 
 </style>
