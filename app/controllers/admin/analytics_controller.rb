@@ -14,6 +14,18 @@ module Admin
 
 			if current_user.user_level == "department_admin_access"
 				@department = current_user.department_id.to_s
+			elsif params[:search].present? && current_user.user_level == "super_admin_access"
+        		@deparments_list = Department.all.select { |department| department.name.downcase.include?(params[:search].downcase) }
+        		if @deparments_list.size == 1
+        			@department = @deparments_list.first.id.to_s
+        			flash[:success] = "Succesfully found " + Department.find(@department.to_i).name
+        		elsif @deparments_list.size > 1
+        			flash[:error] = "Your query resulted in too many deparments. Please be more specific"
+        			@department = "any"
+        		else 
+        			flash[:error] = "No departments found"
+        			@department = "any"
+        		end
 			elsif params[:department].present? && Department.exists?(params[:department].to_i) && current_user.user_level == "super_admin_access"
 				@department = params[:department]
 			elsif current_user.user_level == "super_admin_access"
@@ -25,6 +37,8 @@ module Admin
 			else
 				@course = "any"
 			end
+
+			
 		end
 		
 	end
