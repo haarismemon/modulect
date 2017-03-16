@@ -340,4 +340,17 @@
             }
         });
     });
+
+    $(".delete-btn").click(function () {
+        button_id = event.target.id;
+        comment_id = parseInt(button_id.replace("delete-btn-", ""));
+
+        $.ajax({
+            type: "POST",
+            url: "<%= comments_delete_path %>",
+            data: {comment_id: comment_id, uni_module_id: <%= @uni_module.id %>},
+            context: document.body,
+        });
+    });
+
 </script>
