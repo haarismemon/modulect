@@ -2,7 +2,6 @@ require 'timeout'
 require 'rails_helper'
 require 'support/login_helper'
 require 'support/courses_index_steps'
-require 'pry'
 
 feature "Index page of courses: admin", :js => true do
   include LoginHelper
@@ -12,7 +11,6 @@ feature "Index page of courses: admin", :js => true do
                            email: "vlad.nedelescu@kcl.ac.uk", user_level: "super_admin_access") }
   given! (:course) { create(:course) }
   given! (:department) { create(:department) }
-  given! (:uni_module) { create(:uni_module) }
 
   before do
     visit admin_courses_path
@@ -39,6 +37,7 @@ feature "Index page of courses: admin", :js => true do
     select_edit_action
     fill_in_course_form(department)
     click_update_button
+    i_should_see_an_update_success_flash
     i_should_see_the_name_of_the_new_course
     i_should_be_on_the_edit_page_of_the_new_course
   end
