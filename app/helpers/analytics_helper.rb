@@ -228,9 +228,9 @@ module AnalyticsHelper
 		users = get_users(department_id)
 
 		users.each do |user|
-			if user.comments.size > 0
-				user.comments.each do |comment|
-					if is_within_timeframe?(get_day_difference(end_date, comment.created_at), time_period)
+			if user.uni_modules.size > 0
+				user.uni_modules.each do |uni_module|
+					if is_within_timeframe?(get_day_difference(end_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at), time_period)
 						if users_data.key?(user)
 							users_data[user] += 1
 						else
@@ -246,14 +246,28 @@ module AnalyticsHelper
 
 	end
 
-	# most/least active users by number of comments
-	def get_active_user_by_searches
-		# TO DO
-	end
-
 	# most/least saved modules
-	def get_saved_modules
-		# TO DO
+	def get_saved_modules(department_id, course_id, time_period, end_date, sort_by, number_to_show)
+		uni_modules_data = Hash.new
+		uni_modules = get_uni_modules(department_id, course_id)
+		users = get_users(department_id)
+				
+		users.each do |user|
+			if user.uni_modules.size > 0
+				user.uni_modules.each do |uni_module|
+					if uni_modules.include?(uni_module) && is_within_timeframe?(get_day_difference(end_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at), time_period)
+						if uni_modules_data.key?(uni_module)
+							uni_modules_data[uni_module] += 1
+						else
+							uni_modules_data[uni_module] = 1
+						end	
+					end
+				end
+			end
+		end
+			
+
+		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
 
 	# most/least clicked tags
@@ -393,7 +407,7 @@ module AnalyticsHelper
 		end
 
 		total_searches
-		
+
 	end
 
 

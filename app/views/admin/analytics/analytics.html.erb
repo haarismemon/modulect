@@ -640,6 +640,13 @@ num career searches<br />
 <br />
 
 
+most saved modules<br />
+<% get_saved_modules("any","any","month",Time.now,"most", 10).each do |uni_module, count| %>
+<%= uni_module.name + "  " + count.to_s %><Br />
+<% end %>
+<br />
+<br />
+
 
 
 <Br /><br />
