@@ -76,6 +76,7 @@ class CommentsController < ApplicationController
 
     type_delete = params[:type_delete].to_s
     if type_delete.eql? "module_page"
+      @updated_comments = @uni_module.comments.order("created_at DESC")
       respond_to do |format|
         format.js { render 'update_comments.js.erb' }
       end
