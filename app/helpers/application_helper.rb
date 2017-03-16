@@ -234,6 +234,15 @@ module ApplicationHelper
     AppSetting.instance
   end
 
+  def add_to_search_log(type)
+  	logs = SearchLog.select{|log| log.search_type == type && log.created_at.to_date == Time.now.to_date}
+  	# TO DO
+
+  SearchLog.create(:search_type => type, :counter => 1)
+	
+
+  end
+
 
   private
   # determines what the link needs to be to redirect back to faculty form

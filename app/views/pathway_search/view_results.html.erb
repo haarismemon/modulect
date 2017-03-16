@@ -1,4 +1,7 @@
 <% provide(:title, 'Pathway Results') %>
+<% if request.query_parameters["sl"].present? &&  request.query_parameters["sl"] == "true"%>
+  <% add_to_search_log("pathway") %>
+<% end %>
 <div class="banner" style="padding-top:40px;">
   <div class="container">
     <div class="row">

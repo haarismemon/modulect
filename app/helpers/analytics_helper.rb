@@ -336,8 +336,23 @@ module AnalyticsHelper
 	end
 
 	# get number quick searches
-	def get_number_quick_searches
-		# TO DO
+	def get_number_quick_searches(department_id, time_period, end_date)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i}
+		else
+			logs = SearchLog.all
+		end
+
+
+		total_searches = 0
+		
+		logs.each do |log|
+			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period) && log.search_type == "quick"
+				total_searches += 1
+			end
+		end
+
+		total_searches
 	end
 
 	# get number pathway searches

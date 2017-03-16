@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315225707) do
+ActiveRecord::Schema.define(version: 20170315232751) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -112,6 +112,14 @@ ActiveRecord::Schema.define(version: 20170315225707) do
     t.datetime "updated_at",    null: false
     t.integer  "user_id"
     t.integer  "uni_module_id"
+  end
+
+  create_table "search_logs", force: :cascade do |t|
+    t.string   "search_type"
+    t.integer  "counter"
+    t.integer  "department_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "tags", force: :cascade do |t|
