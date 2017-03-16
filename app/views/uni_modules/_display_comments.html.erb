@@ -18,6 +18,11 @@
                 <p><strong><%= comment.user.full_name %>
                   , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
               </td>
+              <% if logged_in? %>
+              <td id="delete-td" align="right">
+                  <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>">Delete</button>
+              </td>
+              <% end %>
               <hr>
             </colgroup>
           </table>
@@ -75,7 +80,7 @@
                           <p><strong><%= comment.user.full_name %>
                             , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
                         </td>
-                        <td id="helpful-td" align="center">
+                        <td id="helpful-td" align="right">
                           <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
                           <% if logged_in? %>
                               <% if comment.liked_users.include?(current_user) %>
@@ -106,6 +111,16 @@
 </div>
 
 <style>
+  #delete-td {
+    width: 10%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  [id^=delete-btn] {
+    text-transform: none;
+  }
+
   #helpful-td {
     width: 10%;
     padding-left: 0px;
