@@ -1,46 +1,72 @@
-<% module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id } %>
-<% rating = -1 %>
-<% created_at = -1 %>
-<% edited_at = -1 %>
-<% if module_comments.length > 0 %>
-    <a name="your_review" id="your_review"></a>
-    <h3>Your Review</h3>
-    <% module_comments.each do |comment| %>
-        <% rating = comment.rating%>
-        <table width="100%" border="0" id="comment-entry-<%=comment.id%>">
-          <colgroup>
-            <td>
-              <% created_at = comment.created_at %>
-              <% edited_at = comment.updated_at %>
-              <% for i in 1..comment.rating %>
-                  <i class="fa fa-star star-rating" aria-hidden="true"></i>
-              <% end %>
-              <% for j in 1..(5 - comment.rating) %>
-                  <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
-              <% end %><p></p>
-              <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
-              <p><strong><%= comment.user.full_name %>
-                , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %>.</strong></p>
-            </td>
-            <td id="edit-td" align="center">
-              <button class="btn edit-btn" id="edit-btn-<%= comment.id %>">Edit</button>
-            </td>
-          </colgroup>
-        </table>
-        <p id="updated-time">
-          <% if created_at != edited_at %>
-              <%= '(Edited)' %>
-          <% end%>
-        </p>
-    <% end %><br/>
+<label>Average Module Rating: </label><% updated_comments.empty? ? average_rating = 0 : average_rating = module_average_rating(@uni_module) %>
+<% number_of_stars = 0 %>
+<% for i in 1..(average_rating.floor) %>
+    <i class="fa fa-star star-rating" aria-hidden="true"></i>
+    <% number_of_stars = number_of_stars + 1  %>
 <% end %>
+<% if (average_rating - average_rating.floor) > 0 %>
+    <i class="fa fa-star-half-o star-rating" aria-hidden="true"></i>
+    <% number_of_stars = number_of_stars + 1 %>
+<% end %>
+<% for j in 1..(5 - number_of_stars) %>
+    <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+<% end %><p>
 
-<% filter_comments = [] %>
-<% updated_comments.each do |comment|
-  unless module_comments.include? comment
-    filter_comments << comment
-  end
-end %>
+<% if logged_in?
+     module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }
+
+      rating = -1
+      created_at = -1
+      edited_at = -1
+
+     if module_comments.length > 0 %>
+        <a name="your_review" id="your_review"></a>
+        <h3>Your Review</h3>
+        <hr>
+        <% module_comments.each do |comment| %>
+          <% rating = comment.rating%>
+          <table width="100%" border="0" id="comment-entry-<%=comment.id%>">
+            <colgroup>
+              <td>
+                <% created_at = comment.created_at %>
+                <% edited_at = comment.updated_at %>
+                <% for i in 1..comment.rating %>
+                    <i class="fa fa-star star-rating" aria-hidden="true"></i>
+                <% end %>
+                <% for j in 1..(5 - comment.rating) %>
+                    <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+                <% end %><p></p>
+                <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
+                <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+              </td>
+              <% if logged_in? %>
+                  <td id="edit-td" align="center">
+                    <button class="btn edit-btn" id="edit-btn-<%= comment.id %>">Edit</button>
+                  </td>
+                  <td id="delete-td" align="right">
+                      <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  </td>
+              <% end %>
+            </colgroup>
+          </table>
+          <hr>
+          <p id="updated-time">
+            <% if created_at != edited_at %>
+                <%= '(Edited)' %>
+            <% end%>
+          </p>
+        <% end %><br/>
+    <% end %>
+
+    <% filter_comments = [] %>
+    <% updated_comments.each do |comment|
+        unless module_comments.include? comment
+          filter_comments << comment
+        end
+     end %>
+<% else %>
+    <% filter_comments = updated_comments %>
+<% end %>
 
 <h3>All Reviews</h3>
 <% unless filter_comments.empty? %>
@@ -80,10 +106,9 @@ end %>
                               <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                           <% end %><p></p>
                           <p><%= comment.body %></p>
-                          <p><strong><%= comment.user.full_name %>
-                            , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+                          <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
                         </td>
-                        <td id="helpful-td" align="center">
+                        <td id="helpful-td" align="right">
                           <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
                           <% if logged_in? %>
                               <% if comment.liked_users.include?(current_user) %>
@@ -108,12 +133,52 @@ end %>
 <% end %>
 <hr>
 
-<div id="review-made" style="display: none;">
-  <p>You have already made a review for this module.</p>
-  <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
+<div id="comment-creation">
+  <% if !logged_in? || (logged_in? && !current_user.is_limited) %>
+      <% if logged_in? && Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }.size > 0 %>
+          <div id="review-made">
+            <p>You have already made a review for this module.</p>
+            <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
+          </div>
+      <% elsif logged_in? %>
+          <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn ">Add a Review</a>
+          <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
+            <h3>Add a Review</h3>
+
+            <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
+                <p id="rating-area">
+                  <%= f.label :rating %>
+                  <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
+                  <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
+                  <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
+                  <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
+                  <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
+                </p>
+                <p id="review-area">
+                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true %>
+                </p>
+                <p id="submit-area">
+                  <%= f.submit 'Add Review', class:'btn' %>
+                </p>
+            <% end %>
+      <% else %>
+          <p>You must be logged in to add a review.</p>
+      <%end%>
+      </div>
+  <% end %>
 </div>
 
 <style>
+  #delete-td {
+    width: 10%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  [id^=delete-btn] {
+    text-transform: none;
+  }
+
   #helpful-td {
     width: 10%;
     padding-left: 0px;
@@ -181,6 +246,14 @@ end %>
     color: #2ab27b;
   }
 
+  #comment-creation-link {
+    text-transform: none;
+  }
+
+  p#submit-area input {
+    text-transform: none  ;
+  }
+
   #edit-text-area{
     width: 100%;
     padding-left: 0px;
@@ -211,34 +284,34 @@ end %>
 </style>
 
 <script>
-  num_pages = <%= num_pages %>
-      num_comments_per_page = <%= num_comments_per_page %>
+    num_pages = <%= num_pages %>
+    num_comments_per_page = <%= num_comments_per_page %>
 
-          <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
-          move_to_page = function (page_number) {
-            //hide all pages
-            $('#comments-section').children('div').each(function () {
-              $(this).css("display", "none");
-            });
-            //show only the corresponding page
-            $("#page-div-" + page_number).css("display", "block");
+    <!-- moves to a given page. Changes the page links and also displays the corresponding comments on page -->
+    move_to_page = function (page_number) {
+        //hide all pages
+        $('#comments-section').children('div').each(function () {
+            $(this).css("display", "none");
+        });
+        //show only the corresponding page
+        $("#page-div-" + page_number).css("display", "block");
 
-            //give all page links only unselected css class
-            $("a[id^=page-link]").addClass("unselected_page");
-            $("a[id^=page-link]").removeClass("selected_page");
-            //give the corresponding page link clicked a selected css class
-            $("#page-link-" + page_number).removeClass("unselected_page");
-            $("#page-link-" + page_number).addClass("selected_page");
-          };
+        //give all page links only unselected css class
+        $("a[id^=page-link]").addClass("unselected_page");
+        $("a[id^=page-link]").removeClass("selected_page");
+        //give the corresponding page link clicked a selected css class
+        $("#page-link-" + page_number).removeClass("unselected_page");
+        $("#page-link-" + page_number).addClass("selected_page");
+    };
 
-  move_to_first_page = function () {
-    move_to_page(1);
+    move_to_first_page = function () {
+        move_to_page(1);
 
-    $("#first-page").hide();
-    $("#prev-page").hide();
-    $("#next-page").show();
-    $("#last-page").show();
-  };
+        $("#first-page").hide();
+        $("#prev-page").hide();
+        $("#next-page").show();
+        $("#last-page").show();
+    };
 
   move_to_last_page = function () {
     move_to_page(num_pages);
@@ -404,5 +477,34 @@ end %>
       $("#updated-time").text(" <%= '(Edited)' %>");
       <% end%>
     });
-  })
+
+    $(".delete-btn").click(function () {
+        button_id = event.target.id;
+        comment_id = parseInt(button_id.replace("delete-btn-", ""));
+
+        $.ajax({
+            type: "POST",
+            url: "<%= comments_delete_path %>",
+            data: {comment_id: comment_id, uni_module_id: <%= @uni_module.id %>, type_delete: "module_page"},
+            context: document.body,
+        });
+    });
+
+    $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
+        $("#comment_body").val("");
+        openCommentCreation();
+        $("input[name='comment[rating]']").val([5]);
+    });
+
+    $("#comment-creation-box").hide();
+    var openCommentCreation = function(){
+        $("#comment-creation-box").slideToggle("fast");
+        $("#comment-creation-link").text($(".comment-creation-link").text()==open_comment_creation?"Close box":open_comment_creation);;
+    };
+
+    var open_comment_creation;
+    $(document).ready(function () {
+        open_comment_creation = $(".comment-creation-link").text();
+    });
+
 </script>

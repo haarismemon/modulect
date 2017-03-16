@@ -67,6 +67,28 @@ class CommentsController < ApplicationController
 
   end
 
+  def delete
+    Comment.delete(params[:comment_id])
+
+    @uni_module = UniModule.find(params[:uni_module_id])
+
+    user_reviews_count = (Comment.all.where user_id: current_user.id).length
+
+    type_delete = params[:type_delete].to_s
+    if type_delete.eql? "module_page"
+      respond_to do |format|
+        format.js { render 'update_comments.js.erb' }
+      end
+    elsif type_delete.eql? "review_page"
+      data = {user_reviews_count: user_reviews_count}
+      render json: data
+    else
+      head :no_content
+    end
+
+
+  end
+
   private
     def comment_params
       if logged_in?

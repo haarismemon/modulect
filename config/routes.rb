@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
+  get '/reviews', to: 'reviews#view'
   get '/admin', to: 'admin#dashboard'
   get 'career_search/choose'
   get 'career_search/view'
@@ -115,6 +116,7 @@ Rails.application.routes.draw do
   post 'comments/sort'
   post 'comments/like'
   post 'comments/edit'
+  post 'comments/delete'
 
 
   # ERROR PAGES
