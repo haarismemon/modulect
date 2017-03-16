@@ -208,11 +208,11 @@
           $.ajax({
               type: "POST",
               url: "<%= comments_delete_path %>",
-              data: {comment_id: <%= comment ? comment.id : nil %>, uni_module_id: <%= uni_module  ? uni_module.id : nil %>},
+              data: {comment_id: <%= comment ? comment.id : nil %>, uni_module_id: <%= uni_module  ? uni_module.id : nil %>, type_delete: 'review_page'},
               context: document.body,
-              success: function () {
+              success: function (data) {
                   $("#your-review-card-<%= comment.id %>").css("display","none");
-                  $("#reviewed-modules-number").html("Reviewed <%= (Comment.where user_id: current_user.id).length %> modules");
+                  $("#reviewed-modules-number").html("Reviewed " + data.user_reviews_count + " modules");
               }
           });
       });
