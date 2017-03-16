@@ -1,0 +1,428 @@
+<div class="row" >
+            <div class="col-md-12  login-card header-card" style="">
+               <div class="col-md-3 header-item">
+                  <div class="small-header"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (<% if @time_period == "all_time" %>all time<% elsif @time_period == "day" %>past 24 hours<% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
+                  </div>
+                  <div class="main-figure">
+                    <%= get_number_visitors(@department, @time_period, Time.now) %>
+                  </div>
+
+              <% percentage_difference_total_users = percentage_difference(get_number_visitors(@department, @time_period, Time.now), get_number_visitors(@department, @time_period, Date.today.prev_week))%>
+              <% if @time_period != "all_time" %>
+                  <div class="percentage-change <%= colour(percentage_difference_total_users)%>">
+                  <% if percentage_difference_total_users != 0 %>
+                    <i class="fa fa-caret-<%= indicator(percentage_difference_total_users)%>" aria-hidden="true"></i>
+                  <% end %> <%= percentage_difference_total_users %>% from <% if @time_period == "day" %>past 24 hours<% else %>last <%= @time_period.titleize.downcase%><% end %>
+                  </div>
+              <% end %>
+
+               </div>
+
+
+               
+               <div class="col-md-3 header-item">
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "all_time" %>all time <% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
+                  </div>
+                  <div class="main-figure">10255</div>
+                  <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 7% from last month </div>
+               </div>
+               <div class="col-md-3 header-item">
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "all_time" %>all time <% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
+                  </div>
+                  <div class="main-figure">218</div>
+                  <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 1% from last month</div>
+               </div>
+               <div class="col-md-3 header-item last">
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "all_time" %>all time <% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
+                  </div>
+                  <div class="main-figure">4894</div>
+                  <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 12% from last month</div>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-12 login-card">
+               <canvas id="myChart" width="400" height="120"></canvas>
+               <script>
+                  var ctx = document.getElementById("myChart");
+                  var myChart = new Chart(ctx, {
+                      type: 'line',
+                      data: {
+                          labels: ["January", "February", "March", "April", "May", "June"],
+                          datasets: [{
+                              label: '# of quick searches',
+                              data: [1550, 1569, 1800, 2000, 2085, 3900],
+                              backgroundColor: [
+                                  'rgba(255, 99, 132, 0.2)',
+                                  'rgba(54, 162, 235, 0.2)',
+                                  'rgba(255, 206, 86, 0.2)',
+                                  'rgba(75, 192, 192, 0.2)',
+                                  'rgba(153, 102, 255, 0.2)',
+                                  'rgba(255, 159, 64, 0.2)'
+                              ],
+                              borderColor: [
+                                  'rgba(255,99,132,1)',
+                                  'rgba(54, 162, 235, 1)',
+                                  'rgba(255, 206, 86, 1)',
+                                  'rgba(75, 192, 192, 1)',
+                                  'rgba(153, 102, 255, 1)',
+                                  'rgba(255, 159, 64, 1)'
+                              ],
+                              borderWidth: 1
+                          }]
+                      },
+                      options: {
+                          scales: {
+                              yAxes: [{
+                                  ticks: {
+                                      beginAtZero:true
+                                  }
+                              }]
+                          }
+                      }
+                  });
+               </script>
+            </div>
+            <div class="row">
+               <div class="col-md-4" >
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Trending tags</a></h4>
+                     <ol class="trending-list">
+                        <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                     </ol>
+                     <div class="expand-link">
+                        <a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Trending modules</h4>
+                     <ol class="trending-list">
+                        <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                     </ol>
+                     <div class="expand-link">
+                        <a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Most saved modules</h4>
+                     <ol class="trending-list">
+                        <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                     </ol>
+                     <div class="expand-link">
+                        <a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-4" >
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Device usage</h4>
+                     <canvas id="myPieChart" width="50" height="30"></canvas>
+                     <script>
+                        var ctxa = document.getElementById("myPieChart");
+                        // For a pie chart
+                        var myPieChart = new Chart(ctxa,{
+                            type: 'pie',
+                            data: {
+                            labels: [
+                                "iPhone",
+                                "Android device",
+                                "Windows 10"
+                            ],
+                            datasets: [
+                                {
+                                    data: [300, 50, 100],
+                                    backgroundColor: [
+                                        "#FF6384",
+                                        "#36A2EB",
+                                        "#FFCE56"
+                                    ],
+                                    hoverBackgroundColor: [
+                                        "#FF6384",
+                                        "#36A2EB",
+                                        "#FFCE56"
+                                    ]
+                                }]
+                        },
+                            options: {
+                                animation:{
+                                    animateScale:true
+                                }
+                            }
+                        });
+                     </script>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Top x reviewed modules</h4>
+                     <ol class="trending-list">
+                        <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                     </ol>
+                     <div class="expand-link">
+                        <a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Top x highly rated modules</h4>
+                     <canvas id="myLineChart" width="50" height="30"></canvas>
+                     <script>
+                        var ctxa = document.getElementById("myLineChart");
+                        // For a pie chart
+                        var myPieChart = new Chart(ctxa,{
+                            type: 'bar',
+                            data: {
+                            labels: [
+                                "Red",
+                                "Blue",
+                                "Yellow"
+                            ],
+                            datasets: [
+                                {
+                                    data: [300, 50, 100],
+                                    backgroundColor: [
+                                        "#FF6384",
+                                        "#36A2EB",
+                                        "#FFCE56"
+                                    ],
+                                    hoverBackgroundColor: [
+                                        "#FF6384",
+                                        "#36A2EB",
+                                        "#FFCE56"
+                                    ]
+                                }]
+                        },
+                            options: {
+                                animation:{
+                                    animateScale:true
+                                }
+                            }
+                        });
+                     </script>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-4" >
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Most active student users</h4>
+                     <ol class="trending-list">
+                        <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                     </ol>
+                     <div class="expand-link">
+                        <a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Logged in vs logged out visitors</h4>
+                     <canvas id="myPieChart3" width="50" height="30"></canvas>
+                     <script>
+                        var ctxa = document.getElementById("myPieChart3");
+                        // For a pie chart
+                        var myPieChart = new Chart(ctxa,{
+                            type: 'pie',
+                            data: {
+                            labels: [
+                                "Logged in %",
+                                "Logged out %"
+                            ],
+                            datasets: [
+                                {
+                                    data: [75, 25],
+                                    backgroundColor: [
+                                        "#FF6384",
+                                        "#36A2EB"
+                                    ],
+                                    hoverBackgroundColor: [
+                                        "#FF6384",
+                                        "#36A2EB"
+                                    ]
+                                }]
+                        },
+                            options: {
+                                animation:{
+                                    animateScale:true
+                                }
+                            }
+                        });
+                     </script>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Most active courses</h4>
+                     <canvas id="myHBarChart" width="50" height="30"></canvas>
+                     <script>
+                        var ctxa = document.getElementById("myHBarChart");
+                        // For a pie chart
+                        var myPieChart = new Chart(ctxa,{
+                            type: 'horizontalBar',
+                            data: {
+                            labels: [
+                                "Red",
+                                "Blue",
+                                "Yellow"
+                            ],
+                            datasets: [
+                                {
+                                    data: [300, 50, 100],
+                                    backgroundColor: [
+                                        "#FF6384",
+                                        "#36A2EB",
+                                        "#FFCE56"
+                                    ],
+                                    hoverBackgroundColor: [
+                                        "#FF6384",
+                                        "#36A2EB",
+                                        "#FFCE56"
+                                    ]
+                                }]
+                        },
+                            options: {
+                                animation:{
+                                    animateScale:true
+                                }
+                            }
+                        });
+                     </script>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-4" >
+                  <div class="col-md-12 login-card subox-card">
+                     <div class="side-right">
+                        <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                           <option value="500" >Area chart</option>
+                           <option value="500" >Bar chart</option>
+                           <option value="50" >Line chart</option>
+                           <option value="250" >Pie chart</option>
+                           <option value="10" selected="selected">Table</option>
+                        </select>
+                     </div>
+                     <h4>Most active departments</h4>
+                     <ol class="trending-list">
+                        <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                        <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
+                        <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
+                     </ol>
+                     <div class="expand-link">
+                        <a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
