@@ -1,33 +1,38 @@
-<% module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id } %>
+<% if logged_in?
+     module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }
 
-<% if module_comments.length > 0 %>
-    <a name="your_review" id="your_review"></a>
-    <h3>Your Review</h3>
-  <% module_comments.each do |comment| %>
-      <table width="100%" border="0">
-        <colgroup>
-          <td>
-            <% for i in 1..comment.rating %>
-                <i class="fa fa-star star-rating" aria-hidden="true"></i>
-            <% end %>
-            <% for j in 1..(5 - comment.rating) %>
-                <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
-            <% end %><p></p>
-            <p><%= comment.body %></p>
-            <p><strong><%= comment.user.full_name %>
-              , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
-          </td>
-        </colgroup>
-      </table>
-  <% end %><br>
+     if module_comments.length > 0 %>
+        <a name="your_review" id="your_review"></a>
+        <h3>Your Review</h3>
+      <% module_comments.each do |comment| %>
+          <table width="100%" border="0">
+            <colgroup>
+              <td>
+                <% for i in 1..comment.rating %>
+                    <i class="fa fa-star star-rating" aria-hidden="true"></i>
+                <% end %>
+                <% for j in 1..(5 - comment.rating) %>
+                    <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+                <% end %><p></p>
+                <p><%= comment.body %></p>
+                <p><strong><%= comment.user.full_name %>
+                  , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+              </td>
+              <hr>
+            </colgroup>
+          </table>
+      <% end %><br>
+    <% end %>
+
+    <% filter_comments = [] %>
+    <% updated_comments.each do |comment|
+        unless module_comments.include? comment
+          filter_comments << comment
+        end
+     end %>
+<% else %>
+    <% filter_comments = updated_comments %>
 <% end %>
-
-<% filter_comments = [] %>
-<% updated_comments.each do |comment|
-    unless module_comments.include? comment
-      filter_comments << comment
-    end
- end %>
 
 <h3>All Reviews</h3>
 <% unless filter_comments.empty? %>
@@ -95,7 +100,7 @@
 <% end %>
 <hr>
 
-<div id="review-made" style="display: none;">
+<div id="review-made-new" style="display: none;">
   <p>You have already made a review for this module.</p>
   <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
 </div>
@@ -166,6 +171,10 @@
 
   .star-rating {
     color: #2ab27b;
+  }
+
+  #review-made-new {
+    margin-left: 20px;
   }
 
 </style>
