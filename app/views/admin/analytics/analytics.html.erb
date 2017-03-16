@@ -89,25 +89,25 @@
             <div class="col-md-12  login-card header-card" style="">
                <div class="col-md-3 header-item">
                   <div class="small-header"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;
-                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (this month)</a>
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (<% if @time_period == "all_time" %>all time <% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
                   </div>
                   <div class="main-figure">3470</div>
                   <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 4% from last month</div>
                </div>
                <div class="col-md-3 header-item">
-                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches</a>
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "all_time" %>all time <% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
                   </div>
                   <div class="main-figure">10255</div>
-                  <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 7% from last month</div>
+                  <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 7% from last month </div>
                </div>
                <div class="col-md-3 header-item">
-                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches</a>
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "all_time" %>all time <% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
                   </div>
                   <div class="main-figure">218</div>
                   <div class="percentage-change green"><i class="fa fa-caret-up" aria-hidden="true"></i> 1% from last month</div>
                </div>
                <div class="col-md-3 header-item last">
-                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period">Career Searches</a>
+                  <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "all_time" %>all time <% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
                   </div>
                   <div class="main-figure">4894</div>
                   <div class="percentage-change red"><i class="fa fa-caret-down" aria-hidden="true"></i> 12% from last month</div>
