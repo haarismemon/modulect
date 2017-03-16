@@ -1,5 +1,7 @@
 module Admin
   class CoursesController < Admin::BaseController
+    include CoursesHelper
+
     before_action :verify_correct_department, only: [:update, :edit, :destroy]
 
     def show
@@ -71,7 +73,7 @@ module Admin
       @course = Course.new(course_params)
       if @course.save
         @course.create_year_structures
-        flash[:notice] = @course.name+ " was created successfully. "
+        flash[:success] = @course.name+ " was created successfully. "
         redirect_to(edit_admin_course_path @course)
       else
         render('new')
@@ -87,7 +89,7 @@ module Admin
       duration_in_years_pre_update = @course.duration_in_years
       if @course.update_attributes course_params
         @course.update_year_structures(duration_in_years_pre_update)
-        flash[:notice] = "#{@course.name} successfully updated."
+        flash[:success] = "#{@course.name} successfully updated."
         redirect_to edit_admin_course_path(@course)
       else
         render 'edit'
@@ -96,8 +98,13 @@ module Admin
 
     def destroy
       @course = Course.find(params[:id])
+
+      @course.users.each do |user|
+        user.update_attribute("course_id", nil)
+      end
+
       @course.destroy
-      flash[:notice] =  @course.name + " was deleted successfully."
+      flash[:success] =  @course.name + " was deleted successfully."
       redirect_to(admin_courses_path)
     end
 
@@ -108,11 +115,9 @@ module Admin
 
       course_ids.each do |id|
         course = Course.find(id.to_i)
-        
           if !course.nil?
             course.destroy
           end
-        
       end
 
       head :no_content
@@ -121,37 +126,8 @@ module Admin
 
     def clone
       course_ids_string = params[:ids]
-      course_ids = eval(course_ids_string)
-
-      course_ids.each do |id|
-         course = Course.find(id.to_i)
-        
-          if !course.nil?
-            cloned = course.dup
-            cloned.update_attribute("name", cloned.name + "-CLONE")
-
-            Department.all.each do |department|
-              if department.courses.include?(course)
-                department.courses << cloned
-              end
-            end
-
-            course.year_structures.each do |year_structure|
-              cloned_year_structure = year_structure.dup
-              cloned.year_structures << cloned_year_structure
-
-              year_structure.groups.each do |group|
-                cloned_group = group.dup
-                cloned_year_structure.groups << cloned_group
-
-                group.uni_modules.each do |uni_module|
-                  cloned_group.uni_modules << uni_module
-                end
-              end
-            end
-          end
-       end
-       head :no_content
+      deep_clone_courses_with_ids(course_ids_string)
+      head :no_content
     end
 
 

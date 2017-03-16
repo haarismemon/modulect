@@ -1,6 +1,10 @@
 module Admin
   class DepartmentsController < Admin::BaseController
     before_action :verify_super_admin, only: [:destroy, :new, :create, :update, :edit, :index,]
+
+    def show
+      redirect_to edit_admin_department_path(params[:id])
+    end
      
   	def index      
 
@@ -35,7 +39,6 @@ module Admin
       if current_user.user_level == "super_admin_access"
 
 
-
         @departments_to_export = @departments
         if params[:export].present?
           export_departments_ids_string = params[:export]
@@ -47,7 +50,6 @@ module Admin
           @departments_to_export = @departments
         end
 
-
          respond_to do |format|
           format.html
           format.csv {send_data @departments_to_export.to_csv}
@@ -55,8 +57,6 @@ module Admin
 
       end
 
-
-     
     end
 
     def new
@@ -69,7 +69,7 @@ module Admin
       # Save the object
       if @department.save
         # If save succeeds, redirect to the index action
-        flash[:notice] = "You have successfully created #{@department.name}"
+        flash[:success] = "You have successfully created #{@department.name}"
         redirect_to(admin_departments_path)
       else
         # If save fails, redisplay the form so user can fix problems
@@ -102,6 +102,9 @@ module Admin
       # check for constraints
       if has_no_course_dependacies && has_no_uni_module_dependacies
         #delete tuple object from db
+        @department.users.each do |user|
+          user.update_attribute("department_id", nil)
+        end
         @department.destroy
         flash[:success] = @department.name+" has been deleted successfully."
       else
@@ -120,6 +123,9 @@ module Admin
         department = Department.find(id.to_i)
         
           if !department.nil? && department.courses.empty? && department.uni_modules.empty?
+             department.users.each do |user|
+                user.update_attribute("department_id", nil)
+            end
             department.destroy
           end
         

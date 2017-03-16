@@ -1,6 +1,18 @@
 <% provide :title, 'Edit Year Structure' %>
 <% provide :submit_button_text, 'Update' %>
 
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons',
+               :locals => {:object => @year_structure,
+                           :name_of_file=> @year_structure.course.name + "_year" + @year_structure.year_of_study,
+                           :blacklist_attributes=>"",
+                           :entity_attributes=>"Course",
+                           :has_many_attributes=>["groups"]})%>
+  </div>
+</header>
+
 <h1>
   Edit <%= @year_structure.to_s %> of <a href="<%= admin_course_path(@year_structure.course) %>">
     <%= @year_structure.course.name %></a> <%= @year_structure.course.year %>
@@ -15,7 +27,8 @@
           <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
           <div>
             <h3><%= group.name %></h3>
-            <h5 style="margin-top: 20px">Total credits: <%= group.total_credits %></h5>
+            <h5 style="margin-top: 20px">Minimum Credits: <%= group.min_credits %></h5>
+            <h5 style="margin-top: 20px">Maximum Credits: <%= group.max_credits %></h5>
           </div>
           <div>
             <div style="margin-top: 30px;padding-left:0px">

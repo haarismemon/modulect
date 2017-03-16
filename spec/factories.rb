@@ -1,9 +1,16 @@
 # Build mock objects for testing purposes here.
 # The name of a factory needs to be the same as the model's that it is building.
 FactoryGirl.define do
+  factory :app_setting do
+    is_offline false
+    offline_message "MyString"
+    allow_new_registration false
+  end
+
   factory :group do
     name "Semester 1"
-    total_credits 120
+    min_credits 60
+    max_credits 60
     year_structure
   end
 
@@ -52,7 +59,7 @@ FactoryGirl.define do
   factory :user do
     first_name              "Allison"
     last_name               "Wonderland"
-    email                   "allison_wonderland@kcl.ac.uk"
+    email                   "allison.wonderland@kcl.ac.uk"
     password                "password"
     password_confirmation   "password"
     activated               true

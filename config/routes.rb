@@ -2,20 +2,21 @@ Rails.application.routes.draw do
 
   # ADMIN
   namespace :admin do
-    resources :courses do
-      resources :year_structures, only: :edit
-    end
-    resources :departments, except: [:show]
-    resources :faculties, except: [:show]
-    resources :groups, except: [:show]
-    resources :tags, except: [:show]
-    resources :uni_modules, except: [:show]
-    resources :users, except: [:show]
-    resources :year_structures, except: [:show]
-    resources :career_tags, except: [:show]
-    resources :interest_tags, except: [:show]
+    resources :courses
+    resources :departments
+    resources :faculties
+    resources :groups
+    resources :uni_modules
+    resources :users, except: [:show] # adding to fix dropdowns
+    resources :year_structures
     get 'upload', to: 'upload#upload'
+    get 'analytics', to: 'analytics#analytics'
 
+
+    put '/app_settings' => 'app_settings#update'
+    patch '/app_settings' => 'app_settings#update'
+    match 'settings' => 'app_settings#edit', :defaults => {:id => 1}, via: [:get]
+   
     # BULK ACTIONS
     post '/courses/bulk_delete', to: 'courses#bulk_delete'
     post '/courses/clone', to: 'courses#clone'
@@ -48,6 +49,7 @@ Rails.application.routes.draw do
   get 'career_search/view'
   get 'errors/not_found'
   get 'errors/internal_server_error'
+  get '/offline', to: 'errors#offline'
 
 
   # USERS & AUTHENTICATION
@@ -99,7 +101,9 @@ Rails.application.routes.draw do
 
   # UNI MODULES
   # Uni Modules
-  resources :uni_modules, only: [:show]
+  resources :uni_modules, only: [:show] do
+    resources :comments
+  end
 
 
   # AJAX
@@ -107,12 +111,17 @@ Rails.application.routes.draw do
   post 'application/save_module'
   post 'application/save_pathway'
   post 'application/delete_pathway'
-  post 'admin/add_new_tag',   to: 'admin/tags#add_new_tag'
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
+  post 'comments/sort'
+  post 'comments/like'
 
 
   # ERROR PAGES
   match "/404", :to => "errors#not_found", :via => :all
   match "/500", :to => "errors#internal_server_error", :via => :all
+
+  # OPEN CALAIS
+  get 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
+  post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
 
 end

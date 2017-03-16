@@ -19,7 +19,7 @@
                $("#save-<%= @uni_module.code%>").click(function() {
                $("#save-<%= @uni_module.code%> span").html($("#save-<%= @uni_module.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
                });});
-               
+
             </script>
             <% if current_user.uni_modules.include?(@uni_module) %>
             <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span>
@@ -28,6 +28,7 @@
             <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
             </button>
             <% end %>
+            <a href="#module_review" class="btn btn-lg btn-small" id="review-module" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</a>
             <script>
                $("button#save-<%= @uni_module.code%>").on("click", function(){
                    $.ajax({
@@ -35,13 +36,7 @@
                        url: "<%=application_save_module_path(module_par: @uni_module) %>",
                        context: document.body
                    })
-               
-               
-               
-               
                });
-               
-               
             </script>
             <% else %>
             <form action="/login" method="get">
@@ -52,13 +47,117 @@
          </div>
       </div>
       <%= render partial: 'layouts/uni_module', locals: {uni_module: @uni_module, tags_matched: "", tags_searched_for: "", type: "show"}  %>
+
+     <a name="module_review" id="module_review" class="anchor"></a>
       <div class="col-md-12 login-card res-card">
          <div class="row">
-            <div class="col-md-9 result-card-main">
-               <h2>Discussion forum</h2>
-               <h4>Coming soon</h4>
+            <div class="col-md-9 result-card-main" id="module-review-card">
+              <h2>Module Reviews</h2>
+
+              <div id="sort-comments">
+                <label>Sort by: </label>
+                <select id="sort-by-name" name="sort-by-name">
+                  <option value="created_at">Created at</option>
+                  <option value="rating">Rating</option>
+                </select>
+              </div><br>
+
+              <div id="comments-partial">
+                <%= render "display_comments", updated_comments: @comments %>
+              </div>
+
+              <div id="comment-creation">
+                <% module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }.size %>
+                  <% if module_comments < 1 %>
+                    <% if !logged_in? || (logged_in? && !current_user.is_limited) %>
+                      <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
+                      <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
+                        <h3>Add a Review</h3>
+                        <% if logged_in? %>
+                          <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
+                              <p id="rating-area">
+                                  <%= f.label :rating %>
+                                  <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
+                                  <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
+                                  <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
+                                  <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
+                                  <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
+                              </p>
+                              <p id="review-area">
+                                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
+                              </p>
+                              <p>
+                                  <%= f.submit 'Add Review', class:'btn' %>
+                              </p>
+                          <% end %>
+                        <% else %>
+                            <p>You must be logged in to add a review.</p>
+                        <%end%>
+                      </div>
+                    <% end %>
+              </div>
+                  <% else %>
+                    <div id="review-made">
+                        <p>You have already made a review for this module.</p>
+                        <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
+                    </div>
+                  <% end %>
+
             </div>
          </div>
       </div>
    </div>
 </div>
+</div>
+</div>
+
+<style>
+    #rating-area input[type=radio] {display:inline-block;}
+    #sort-comments { float: right}
+    #review-area textarea {width: 100%; height: 100%}
+
+    #module-review-card {
+      width: 100%;
+    }
+
+    #sort-by-name {
+      margin-right: 25px;
+    }
+
+    #comment-creation {
+      margin-left: 20px;
+    }
+</style>
+
+<script>
+    $("#sort-by-name").change(function() {
+        sort_by_type = $("#sort-by-name").val();
+
+        $.ajax({
+            type: "POST",
+            url: "<%= comments_sort_path %>",
+            data: { sort_by_type: sort_by_type, uni_module_id: <%= @uni_module.id %>},
+            context: document.body,
+        })
+    });
+
+    $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
+        $("#comment_body").val("");
+        openCommentCreation();
+        $("input[name='comment[rating]']").val([5]);
+
+        $("#comment-creation").hide()
+        $("#review-made").show()
+    });
+
+    $("#comment-creation-box").hide();
+    var openCommentCreation = function(){
+        $("#comment-creation-box").slideToggle("fast");
+        $(".comment-creation-link").text($(".comment-creation-link").text()==open_comment_creation?"Close box":open_comment_creation);;
+    };
+
+    var open_comment_creation;
+    $(document).ready(function () {
+        open_comment_creation = $(".comment-creation-link").text()
+    });
+</script>

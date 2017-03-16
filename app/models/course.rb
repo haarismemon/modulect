@@ -9,7 +9,7 @@ class Course < ApplicationRecord
 
   has_and_belongs_to_many :departments
 
-  has_many :year_structures
+  has_many :year_structures, dependent: :delete_all
   has_many :groups, through: :year_structures
   has_many :uni_modules, through: :groups
 
@@ -41,15 +41,26 @@ class Course < ApplicationRecord
     end
   end
 
+  def all_year_structures_defined?
+    self.year_structures.each do |year_structure|
+      if !year_structure.groups_existent?
+        return false
+      end
+    end
+    true
+  end
+
   # Registers a department as belonging to this course.
   def add_department(valid_department)
     departments << valid_department
   end
 
   def self.to_csv
-    attributes = %w{name year description}
+    attributes = %w{name description year}
+    headers = Array.new
+    attributes.each{|att| headers.push att.capitalize}
     CSV.generate(headers:true)do |csv|
-      csv << attributes
+      csv << headers
       all.each do |course|
         csv << course.attributes.values_at(*attributes)
       end

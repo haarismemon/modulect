@@ -1,17 +1,17 @@
-<% provide :title, "Edit #{@course.name}" %>
+<% provide :title, "Edit #{Course.find(params[:id]).name}" %>
 <% provide :submit_button_text, 'Update' %>
 
 
-<div class="row">
-  <div class="col-md-1" %>
-    <a href="<%= admin_courses_path %>">
-      <i class="fa fa-arrow-circle-left fa-4x" aria-hidden="true"></i>
-    </a>
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons',
+               :locals => {:object => Course.find(params[:id]),
+                           :name_of_file=>Course.find(params[:id]).name.to_s,
+                           :blacklist_attributes=>"",:entity_attributes=>"",
+                           :has_many_attributes=>["uni_modules"]})%>
   </div>
-  <div class="col-md-11 text-center">
-    <h1>Edit <%= @course.name %></h1>
-  </div>
-</div>
+</header>
 
 <div id="landing" style="margin-left:10px;">
   <div class="row" style="margin-top:20px;">
@@ -23,12 +23,18 @@
               <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
               <div>
                 <h3><%= year_structure.year_of_study.titleize %></h3>
-                <h5 style="margin-top: 20px">Module groups: <%= year_structure.groups.count %></h5>
+                <h5 style="margin-top: 20px">
+                 <% if !year_structure.groups_existent? %>
+                   <%= render partial: "admin/layouts/index_warning", locals: {message: "No modules have been given for this year", 
+                                                                               destination: edit_admin_year_structure_path(year_structure) } %>
+                <% end %>
+                  Module groups: <%= year_structure.groups.count %>
+                </h5>
               </div>
               <div>
                 <div style="margin-top: 30px;padding-left:0px">
                   <div class="form-group">
-                    <a href="<%= edit_admin_year_structure_path(year_structure) %>" class="btn btn-lg"><span>Modify ></span></a>
+                    <a id="modify-<%= index + 1 %>" href="<%= edit_admin_year_structure_path(year_structure) %>" class="btn btn-lg"><span>Modify ></span></a>
                   </div>
                 </div>
               </div>

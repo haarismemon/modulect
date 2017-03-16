@@ -1,8 +1,15 @@
 @charset "utf-8";
+/*
+*= require_self
+*= require admin-side/selectize.bootstrap3
+*= require admin-side/_admin-style
+*/
 
 @import "bourbon";
 
+
 @import "selectize";
+
 
 @import "library/**/*";
 @import "base/**/*";
@@ -400,7 +407,7 @@ a.action-edit{margin-right:10px;}
 }
 
 #flash-container{
-    margin-bottom:35px;
+    margin-bottom:0px;
 }
 
 
@@ -447,6 +454,43 @@ a.action-edit{margin-right:10px;}
 .dropdown-menu > li > a:hover{
     color: #2ab27b;
 }
+
+
+.tooltip {
+    text-align: left;
+    font-family: "Open Sans";
+}
+.tooltip-inner {
+    padding: 8px 12px;
+    text-align: left;
+    width:200px;
+}
+
+
+#analytics-page .nav-tabs{
+    border-bottom: 0px;
+}
+#analytics-page .nav-tabs>li.active>a,
+#analytics-page .nav-tabs>li.active>a:focus,
+#analytics-page .nav-tabs>li.active>a:hover {
+    background: transparent;
+    border: 0px;
+    color: #2ab27b;
+    border-bottom: 2px solid #2ab27b;
+    text-decoration: none
+}
+#analytics-page .nav-tabs>li>a{
+    border: 0px;
+    border-bottom: 1px solid #f9f9f9;
+    color: #555459;
+}
+#analytics-page .nav>li>a:focus,
+#analytics-page .nav>li>a:hover {
+    background: transparent;
+    text-decoration: underline;
+}
+
+.page-title,#page-title{margin-top:0px;}
 
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{

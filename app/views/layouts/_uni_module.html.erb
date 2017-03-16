@@ -11,12 +11,22 @@
    <% else %>
    <div class="col-md-12 result-card-main">
       <% end %>
-      <h2><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
+      <h2 id="uni-module-title-<%= uni_module.id %>" style="cursor: pointer;"><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
       <h4>Semester <%= make_semester_nice size_check uni_module.semester %> - <%= uni_module.credits %> credits</h4>
       <% if type != "show" %>
       <div style="margin-top:30px">
          <% if logged_in? %>
          <script>
+            $("#uni-module-title-<%= uni_module.id %>").hover(function () {
+                $(this).css("text-decoration", "underline");
+            }, function () {
+                $(this).css("text-decoration", "none");
+            });
+            $("#uni-module-title-<%= uni_module.id %>").click(function () {
+                var new_path = "<%= uni_module_path(uni_module.id) %>";
+                window.location = new_path;
+            });
+
             $(window).load(function(){
             $("#save-<%= uni_module.code%>").click(function() {
             $("#save-<%= uni_module.code%> span").html($("#save-<%= uni_module.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
@@ -30,6 +40,9 @@
          <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= uni_module.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
          </button>
          <% end %>
+
+         <button class="btn btn-lg btn-small" id="review-module-<%= uni_module.id %>" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</button>
+
          <script>
             $("button#save-<%= uni_module.code%>").on("click", function(){
                 $.ajax({
@@ -37,10 +50,11 @@
                     url: "<%=application_save_module_path(module_par: uni_module) %>",
                     context: document.body
                 })
-            
-            
-            
-            
+            });
+
+            $("button#review-module-<%= uni_module.id %>").click(function () {
+                var new_path = "<%= uni_module_path(uni_module.id) %>";
+                window.location = new_path + "#module_review";
             });
             
             
@@ -104,7 +118,9 @@
                <% if uni_module_requirements.size == 0 %>
                None given
                <% else %>
-               <%= uni_module_requirements.join(", ") %>
+                  <% uni_module_requirements.each do |req_mod| %>
+                     <%= UniModule.find(req_mod).name %>
+                  <% end %>
                <% end %>
             </p>
          </div>
@@ -115,8 +131,9 @@
       </div>
       <div class="row" style="margin-left:0px;">
          <div class="col-md-4" style="margin-bottom:15px;">
-            <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods</h5>
+            <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods and dates</h5>
             <p><%= size_check uni_module.assessment_methods %></p>
+            <p><%= size_check uni_module.assessment_dates %></p>
          </div>
          <div class="col-md-4" style="margin-bottom:15px;">
             <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
