@@ -41,10 +41,10 @@
               </td>
               <% if logged_in? %>
                   <td id="edit-td" align="center">
-                    <button class="btn edit-btn" id="edit-btn-<%= comment.id %>">Edit</button>
+                    <button class="btn edit-btn" id="edit-btn-<%= comment.id %>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
                   </td>
                   <td id="delete-td" align="right">
-                      <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                      <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                   </td>
               <% end %>
             </colgroup>
@@ -170,9 +170,10 @@
 
 <style>
   #delete-td {
-    width: 10%;
+    width: 1%;
     padding-left: 0px;
     padding-right: 0px;
+    margin: auto;
   }
 
   [id^=delete-btn] {
@@ -188,6 +189,19 @@
   [id^=helpful-btn] {
     text-transform: none;
     margin-left: 10px;
+  }
+
+  [id^=edit-btn] {
+    text-transform: none;
+    margin-left: 10px;
+  }
+
+  #edit-td {
+    width: 1%;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: auto;
+    horiz-align: right;
   }
 
   .not-helpful {
@@ -263,18 +277,6 @@
   .submit-btn{
     text-transform: none;
     margin-left: 10px;
-  }
-
-  [id^=edit-btn] {
-    text-transform: none;
-    margin-left: 10px;
-  }
-
-  #edit-td {
-    width: 5%;
-    padding-left: 0px;
-    padding-right: 0px;
-    margin: auto;
   }
 
   #updated-time {
@@ -430,53 +432,61 @@
   });
 
   $("[id^=edit-btn]").on("click", function (event) {
-    button_id = event.target.id;
-    comment_id = parseInt(button_id.replace("edit-btn-",""));
-    text = $("#comment-body-" + comment_id).text().trim();
-    $("#comment-entry-" + comment_id).html("<div>" +
-        "<form id=\"edit-form\"><tr>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /> <label for=\"rating1\">2</label>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /> <label for=\"rating1\">3</label>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /> <label for=\"rating1\">4</label>" +
-        "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/> <label for=\"rating1\">5</label>" +
-        "</tr><tr><textarea autofocus id=\"edit-text-area\"></textarea>" +
-        "<input class=\"btn submit-btn\" id=\"submit-btn\" type=\"submit\"/></tr>" +
-        "</form>" +
-        "</div>");
-    radio_button_id = "";
-    switch ( <%= rating%>){
-      case 1:
-        radio_button_id = "#rating1";
-        break;
-      case 2:
-        radio_button_id = "#rating2";
-        break;
-      case 3:
-        radio_button_id = "#rating3";
-        break;
-      case 4:
-        radio_button_id = "#rating4";
-        break;
-      case 5:
-        radio_button_id = "#rating5";
-        break;
-    }
-    $(radio_button_id).prop("checked", true);
-    $("#edit-text-area").val(text);
-    $("#submit-btn").on("click", function (event) {
-      edited_text = $("#edit-text-area").val();
-      new_rating_val = $("input[name='rating']:checked").val();
-      $.ajax({
-        type: "POST",
-        url: "<%= comments_edit_path %>",
-        data: { edited_text: edited_text, new_rating_val: new_rating_val, comment_id: comment_id},
-        context: document.body
+      button_id = event.target.id;
+      comment_id = parseInt(button_id.replace("edit-btn-",""));
+      text = $("#comment-body-" + comment_id).text().trim();
+
+      $("#comment-entry-" + comment_id).html("<div>" +
+          "<form id=\"edit-form\"><tr>" +
+          "<label style=\"margin-left: 10px;\">Rating</label>" +
+          "<div style=\"margin-left: 10px; display: inline-block\">" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /> <label for=\"rating1\">2</label>" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /> <label for=\"rating1\">3</label>" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /> <label for=\"rating1\">4</label>" +
+          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/> <label for=\"rating1\">5</label>  </div>" +
+          "</tr>" +
+          "<tr><textarea autofocus id=\"edit-text-area\" style=\"margin-left: 10px; margin-right: 10px;\"></textarea>" +
+          "<input class=\"btn submit-btn\" id=\"submit-btn\" type=\"submit\" value='Edit'/></tr>" +
+          "</form>" +
+          "</div>");
+
+      radio_button_id = "";
+      switch ( <%= rating%>){
+        case 1:
+          radio_button_id = "#rating1";
+          break;
+        case 2:
+          radio_button_id = "#rating2";
+          break;
+        case 3:
+          radio_button_id = "#rating3";
+          break;
+        case 4:
+          radio_button_id = "#rating4";
+          break;
+        case 5:
+          radio_button_id = "#rating5";
+          break;
+      }
+      $(radio_button_id).prop("checked", true);
+
+      $("#edit-text-area").val(text);
+
+      $("#submit-btn").on("click", function (event) {
+          edited_text = $("#edit-text-area").val();
+          new_rating_val = $("input[name='rating']:checked").val();
+          $.ajax({
+              type: "POST",
+              url: "<%= comments_edit_path %>",
+              data: { edited_text: edited_text, new_rating_val: new_rating_val, comment_id: comment_id},
+              context: document.body
+          });
+
+          <% if(created_at != edited_at)%>
+              $("#updated-time").text(" <%= '(Edited)' %>");
+          <% end%>
       });
-      <% if(created_at != edited_at)%>
-      $("#updated-time").text(" <%= '(Edited)' %>");
-      <% end%>
-    });
   });
 
     $(".delete-btn").click(function () {
