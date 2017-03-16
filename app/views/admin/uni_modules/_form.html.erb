@@ -1,5 +1,10 @@
 <%= tinymce_assets %>
 <%= error_messages_for(f.object) %>
+<style>
+.form-group {
+  margin-bottom: 20px;
+}
+</style>
 <div class="form-group">
   <label for="inputName">Name</label>
   <%= f.text_field :name, class: 'form-control', :required => true %>
@@ -34,7 +39,7 @@
   <%= f.text_field :required, :value => @required.join(","), class: 'form-control', :placeholder => 'Search for modules', data: {:role => "tagsinput"}, :id => "required" %>
 </div>
 <h3>Tags</h3>
-<button class="btn btn-lg" type="button" id="btn_generate_tags" style="margin-bottom: 10px">Generate Tags from description</button>
+<button class="btn btn-small" type="button" id="btn_generate_tags" style="margin-bottom: 20px">Generate Tags from description</button>
 <div class="form-group">
   <label for="career_tags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
   <%= f.text_field :career_tags, :value => @careerTags.join(","), class: 'form-control', :placeholder => 'Type to add a career tag', data: {:role => "tagsinput"}, :id => "career_tags" %>
