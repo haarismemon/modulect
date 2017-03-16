@@ -128,7 +128,7 @@
             <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
           </div>
       <% elsif logged_in? %>
-          <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
+          <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn ">Add a Review</a>
           <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
             <h3>Add a Review</h3>
 
@@ -391,6 +391,23 @@
             data: {comment_id: comment_id, uni_module_id: <%= @uni_module.id %>},
             context: document.body,
         });
+    });
+
+    $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
+        $("#comment_body").val("");
+        openCommentCreation();
+        $("input[name='comment[rating]']").val([5]);
+    });
+
+    $("#comment-creation-box").hide();
+    var openCommentCreation = function(){
+        $("#comment-creation-box").slideToggle("fast");
+        $("#comment-creation-link").text($(".comment-creation-link").text()==open_comment_creation?"Close box":open_comment_creation);;
+    };
+
+    var open_comment_creation;
+    $(document).ready(function () {
+        open_comment_creation = $(".comment-creation-link").text();
     });
 
 </script>
