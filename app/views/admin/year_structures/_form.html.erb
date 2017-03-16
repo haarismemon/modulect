@@ -1,11 +1,15 @@
+
+<%= render 'admin/application/course-partials/groups_set' %>
 <%= form_for @year_structure, url: admin_year_structure_path(@year_structure) do |f| %>
 
-<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
-<%= error_messages_for(f.object) %>
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(f.object) %>
 
 
-    <%= render 'admin/application/course-partials/groups_set' %>
-  <!-- Edit existing groups -->
+
+
+
+    <!-- Edit existing groups -->
   <% f.fields_for :groups do |group| %>
     <%= render 'group_fields', :f => group,:action => action %>
   <% end %>
