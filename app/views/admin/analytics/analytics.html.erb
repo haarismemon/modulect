@@ -554,26 +554,26 @@ var myPieChart = new Chart(ctxa,{
 
 
 most reviewed <br />
-<% get_review_modules_analytics("any","any","month",Time.now,"most", 10).each do |uni_module, count| %>
+<% get_review_modules_analytics(@department,@course,@time_period,Time.now,"most", 10).each do |uni_module, count| %>
   <%= uni_module.name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
 most highly rated <br />
-<% get_rating_modules_analytics("any","any","month",Time.now,"most", 10).each do |uni_module, count| %>
+<% get_rating_modules_analytics(@department,@course,@time_period,Time.now,"most", 10).each do |uni_module, count| %>
   <%= uni_module.name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
 most active courses (num users in time period)<br />
-<% get_active_courses("any","month",Time.now,"most", 10).each do |course, count| %>
+<% get_active_courses(@department,@time_period,Time.now,"most", 10).each do |course, count| %>
   <%= course.name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
 
 most active departments  (num users in time period)<br />
-<% get_active_departments("month",Time.now,"most", 10).each do |department, count| %>
+<% get_active_departments(@time_period,Time.now,"most", 10).each do |department, count| %>
   <%= department.name  + " " + count.to_s %><br />
 <% end %>
 <br />
@@ -581,7 +581,7 @@ most active departments  (num users in time period)<br />
 
 
 most active admin departments  (num admin users in time period)<br />
-<% get_active_departments_admin_wise("month",Time.now,"most", 10).each do |department, count| %>
+<% get_active_departments_admin_wise(@time_period,Time.now,"most", 10).each do |department, count| %>
   <%= department.name  + " " + count.to_s %><br />
 <% end %>
 <br />
@@ -590,7 +590,7 @@ most active admin departments  (num admin users in time period)<br />
 
 
 most active users by saving<br />
-<% get_active_user_by_saves("any","month",Time.now,"most", 10).each do |user, count| %>
+<% get_active_user_by_saves(@department,@time_period,Time.now,"most", 10).each do |user, count| %>
   <%= user.first_name  + " " + count.to_s %><br />
 <% end %>
 <br />
@@ -598,26 +598,26 @@ most active users by saving<br />
 
 
 most active users by comments<br />
-<% get_active_user_by_comments("any","month",Time.now,"most", 10).each do |user, count| %>
+<% get_active_user_by_comments(@department,@time_period,Time.now,"most", 10).each do |user, count| %>
   <%= user.first_name  + " " + count.to_s %><br />
 <% end %>
 <br />
 <br />
 
 number of visitors<br />
-<%= get_number_visitors("any", "month", Time.now) %>
+<%= get_number_visitors(@department, @time_period, Time.now) %>
 <br />
 <br />
 
 
 number of logged in visitors<br />
-<%= get_number_logged_in_users("any", "month", Time.now) %>
+<%= get_number_logged_in_users(@department, @time_period, Time.now) %>
 <br />
 <br />
 
 
 device usage<br />
-<% get_device_usage("any", "month", Time.now).each do |device, amount| %>
+<% get_device_usage(@department, @time_period, Time.now).each do |device, amount| %>
 <%= device  + ", " + amount.to_s %><br />
 
 <% end %>
@@ -625,23 +625,23 @@ device usage<br />
 <br />
 
 num quick searches<br />
-<%= get_number_quick_searches("any","month", Time.now) %>
+<%= get_number_quick_searches(@department,@time_period, Time.now) %>
 <br />
 <br />
 
 num pathway searches<br />
-<%= get_number_pathway_searches("any","month", Time.now) %>
+<%= get_number_pathway_searches(@department,@time_period, Time.now) %>
 <br />
 <br />
 
 num career searches<br />
-<%= get_number_career_searches("any","month", Time.now) %>
+<%= get_number_career_searches(@department,@time_period, Time.now) %>
 <br />
 <br />
 
 
 most saved modules<br />
-<% get_saved_modules("any","any","month",Time.now,"most", 10).each do |uni_module, count| %>
+<% get_saved_modules(@department,@course,@time_period,Time.now,"most", 10).each do |uni_module, count| %>
 <%= uni_module.name + "  " + count.to_s %><Br />
 <% end %>
 <br />
@@ -650,7 +650,7 @@ most saved modules<br />
 
 
 most visited modules<br />
-<% get_visited_modules("any","any","month",Time.now,"most", 10).each do |uni_module, count| %>
+<% get_visited_modules(@department,@course,@time_period,Time.now,"most", 10).each do |uni_module, count| %>
 <%= uni_module.name + "  " + count.to_s %><Br />
 <% end %>
 <br />
@@ -659,7 +659,7 @@ most visited modules<br />
 
 
 most clicked tags<br />
-<% get_clicked_tags("any","month",Time.now,"most", 10).each do |tag, count| %>
+<% get_clicked_tags(@department,@time_period,Time.now,"most", 10).each do |tag, count| %>
 <%= tag.name + "  " + tag.type + "  " + count.to_s %><Br />
 <% end %>
 <br />
