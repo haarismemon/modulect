@@ -53,6 +53,19 @@ class CommentsController < ApplicationController
 
   end
 
+  def delete
+    Comment.delete(params[:comment_id])
+
+    @uni_module = UniModule.find(params[:uni_module_id])
+
+    @updated_comments = @uni_module.comments.order("created_at DESC")
+
+    respond_to do |format|
+      format.js { render 'update_comments.js.erb' }
+    end
+
+  end
+
   private
     def comment_params
       if logged_in?
