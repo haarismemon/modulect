@@ -72,6 +72,14 @@ module AnalyticsHelper
 		input_hash
 	end
 
+	# get percentage difference
+	# if negative output, then a decrease else increase
+	def percentage_difference(new_value, old_value)
+		increase = new_value.to_f - old_value.to_f
+		percentage_change = (increase / old_value.to_f) * 100
+		percentage_change
+	end
+
 	# actual data mining:
 	# generally the idea is to set up a hash of object => counter
 	# and sort based on the counter
@@ -317,7 +325,7 @@ module AnalyticsHelper
 				end
 			end
 		end
-			
+
 		# then sort based on request
 		if sort_by == "least"
 			tags_data = tags_data.sort_by {|_key, value| value}
