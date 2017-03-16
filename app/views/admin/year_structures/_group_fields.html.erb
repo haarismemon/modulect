@@ -1,7 +1,7 @@
 <div class="nested-fields">
 
     <!--renders attributes-->
-  <%= render "admin/application/course-partials/group_form_fields",:f => f %>
+  <%= render "admin/application/course-partials/group_form_fields",:f => f,:year_structure => YearStructure.find(params[:id]) %>
 
   <div class="remove-field" style="margin: 0px;">
     <%= link_to_remove_association "Remove Module Group", f %>

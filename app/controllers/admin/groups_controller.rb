@@ -23,6 +23,15 @@ module Admin
   	end
 
   	def destroy
+      @group = Group.find(params[:id])
+      #store copy of the next redirect path before deletion of object
+      redirect_path  = edit_admin_year_structure_path_path(@group.year_structure.id)
+      #delete tuple object from db
+      @group.destroy
+      #to indicate success to user
+      flash[:success] = @group.name+" has been deleted successfully."
+      #redirect to action which displays parent year_structure
+      redirect_back_or redirect_path
   	end
 
     private

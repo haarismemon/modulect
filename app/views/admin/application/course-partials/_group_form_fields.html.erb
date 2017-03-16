@@ -38,7 +38,7 @@
       <%= f.label :Modules_to_choose_from %>
     </div>
     <div class="field-unit__field ">
-      <%= f.select :uni_module_ids,UniModule.all.collect {|x| [x.to_s, x.id]}, {},
+      <%= f.select :uni_module_ids,possible_uni_modules_for_existing_group(year_structure){|x| [x.to_s, x.id]}, {},
                    :multiple => true,:class =>"selectize" %>
     </div>
   </div>

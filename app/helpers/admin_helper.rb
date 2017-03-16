@@ -78,10 +78,10 @@ module AdminHelper
       end
     end
       
-    def possible_uni_modules_for_existing_group(group)
+    def possible_uni_modules_for_existing_group(year_structure)
       to_return = []
 
-      group.year_structure.course.departments.each do |department|
+      year_structure.course.departments.each do |department|
         department.uni_modules.each do |uni_module|
           to_return << uni_module if !to_return.include?(uni_module)
         end
