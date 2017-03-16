@@ -5,8 +5,8 @@ module Admin
 		include SessionsHelper
 
 		def analytics
-			possible_times = ["day","week","month","year"]
-			if params[:time].present? && possible_times.include?(params[:time])
+			@possible_times = ["day","week","month","year", "all_time"]
+			if params[:time].present? && @possible_times.include?(params[:time])
 				@time_period = params[:time]
 			else
 				@time_period = "month"
@@ -17,7 +17,7 @@ module Admin
 			elsif params[:department].present? && Department.exists?(params[:department].to_i) && current_user.user_level == "super_admin_access"
 				@department = params[:department]
 			elsif current_user.user_level == "super_admin_access"
-				@department == "any"
+				@department = "any"
 			end
 
 			if params[:course].present? && Course.exists?(params[:course].to_i)

@@ -43,9 +43,50 @@
    }
 </style>
 <header class="header">
-   <h1 class="page-title"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Analytics</h1>
+   <h1 class="page-title"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Analytics <%if @department != "any" %><span style="font-size:16px;">for <%= Department.find(@department.to_i).name %></span><% end %>
+
+
+   </h1>
    <div class="header__actions">
-      Department dropdown | Time Dropdown here  | 
+
+
+
+
+
+
+   <% if current_user.user_level == "super_admin_access" %>
+         <div class="btn-group">
+            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter  <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu scrollable-submenu">
+               <li> <%= link_to ("View All"), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0  ), method: :get %></li>
+               <% Department.all.sort_by{|department| department[:name].downcase}.each do |department| %>
+                  <li> <%= link_to (department.name.titleize), url_for( :department => department.id, :time => @time_period  ), method: :get %></li>
+               <% end %>
+            </ul>
+            </div>
+            <% end %>
+
+ <div class="btn-group">
+            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Time period <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu scrollable-submenu">
+            <% @possible_times.each do |time_period| %>
+                  <li> <%= link_to (time_period.titleize), url_for( :department => @department, :time => @time_period  ), method: :get %></li>
+            <% end %>
+              
+            </ul>
+            </div>
+
+
+
+
+
+
+
+
+
+
       <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
          :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
    </div>
