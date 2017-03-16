@@ -5,7 +5,7 @@
 <% elsif type == "show" %>
     <div class="col-md-12 login-card res-card">
 <% elsif type == "review" %>
-    <div class="col-md-12 login-card res-card">
+    <div class="col-md-12 login-card res-card review-<%= comment.id %> ">
 <% end %>
 <div class="row">
   <% if type == "search" %>
@@ -28,12 +28,11 @@
                   <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
               <% end %><p></p>
               <p><%= comment.body %></p>
-              <p><strong><%= comment.user.full_name %>
-                , <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+              <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
             </td>
             <% if logged_in? %>
                 <td id="delete-td" align="right">
-                  <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  <button id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                 </td>
             <% end %>
           </colgroup>
@@ -195,3 +194,28 @@
   </div>
   </div>
   </div>
+
+  <style>
+    .star-rating {
+      color: #2ab27b;
+    }
+  </style>
+
+  <script type="text/javascript" charset="utf-8">
+
+      <% if type == "review" %>
+      $("#delete-btn-<%= comment.id %>").on("click", function(event) {
+          $.ajax({
+              type: "POST",
+              url: "<%= comments_delete_path %>",
+              data: {comment_id: <%= comment ? comment.id : nil %>, uni_module_id: <%= uni_module  ? uni_module.id : nil %>},
+              context: document.body,
+              success: function () {
+                  $("#your-review-card-<%= comment.id %>").css("display","none");
+                  $("#reviewed-modules-number").html("Reviewed <%= (Comment.where user_id: current_user.id).length %> modules");
+              }
+          });
+      });
+
+      <% end %>
+  </script>

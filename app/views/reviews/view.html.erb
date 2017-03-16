@@ -34,7 +34,7 @@
                     <div class="row here-what" style="margin-bottom:20px;">
                       <div class="col-md-7">
                         <h1>Your reviewed modules:</h1>
-                        <h5>Reviewed <%= your_reviews.length %> modules</h5>
+                        <h5 id="reviewed-modules-number">Reviewed <%= your_reviews.length %> modules</h5>
                       </div>
                     </div>
                     <div class="row nomobile" style="margin-top:-20px;margin-bottom:10px;">
@@ -55,7 +55,9 @@
                     <div class="row">
                       <div class="col-md-12">
                         <% your_reviews.each do |comment| %>
-                            <%= render partial: 'layouts/uni_module', locals: {comment: comment, uni_module: comment.uni_module, tags_matched: "", tags_searched_for: "", type: "review"} %>
+                            <div id="your-review-card-<%= comment.id %>">
+                                <%= render partial: 'layouts/uni_module', locals: {comment: comment, uni_module: comment.uni_module, tags_matched: "", tags_searched_for: "", type: "review"} %>
+                            </div>
                         <% end %>
                       </div>
                     </div>
