@@ -3,8 +3,11 @@
     <%= f.label :name, placeholder: 'i.e: Semester 1' %>
     <%= f.text_field :name, class: "nested-field-name" %>
 
-    <%= f.label :total_credits %>
-    <%= f.number_field :total_credits, class: "nested-field-total-credits" %>
+    <%= f.label :min_credits, 'Minimum credits' %>
+    <%= f.number_field :min_credits, class: "nested-field-min-credits" %>
+
+    <%= f.label :max_credits, 'Maximum credits' %>
+    <%= f.number_field :max_credits, class: "nested-field-max-credits" %>
 
     <%= f.label :uni_modules %>
     <div id="select-modules">

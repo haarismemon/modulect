@@ -9,7 +9,8 @@ FactoryGirl.define do
 
   factory :group do
     name "Semester 1"
-    total_credits 120
+    min_credits 60
+    max_credits 60
     year_structure
   end
 

@@ -10,7 +10,8 @@ module CourseCreationSteps
 
   def fill_in_new_group_form
     fill_in("Name", with: "Semester 1")
-    fill_in("Total credits", with: 60)
+    fill_in("Minimum credits", with: 60)
+    fill_in("Maximum credits", with: 60)
     selectize_select(uni_module.to_s)
   end
 
