@@ -102,6 +102,7 @@ module AnalyticsHelper
 		end
 	end
 
+	# get the start date of the desired period of time
 	def get_start_desired_period(amount_time, time_period, from_date)
 		if time_period == "hour"
 			from_date - amount_time.hour
@@ -118,6 +119,7 @@ module AnalyticsHelper
 		end
 	end
 
+	# check whether the input (created_at) falls in the desired period of time
 	def date_check(amount_time, time_period, from_date, created_at)
 		created_at >= get_start_desired_period(amount_time, time_period, from_date) && created_at < from_date
 	end
@@ -516,8 +518,10 @@ module AnalyticsHelper
 
 	end
 
-	def get_search_lists(type)
-		SearchLog.where(search_type: type)
+	# return search logs
+	def get_search_lists(type, amount_time, time_period, from_date)
+		logs = SearchLog.where(search_type: type)
+		logs.select{|log| date_check(amount_time, time_period, from_date, log.created_at)}
 	end
 
 

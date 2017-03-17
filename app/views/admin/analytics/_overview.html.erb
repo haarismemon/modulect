@@ -99,9 +99,9 @@
 
 
 
-day: <%= get_number_quick_searches(@department, 1, "day", Time.now) %><br />
-<% VisitorLog.where("created_at >= ?", 1.day.ago).each do |log| %>
-<%= log.created_at %>  <br />
+<%= get_number_quick_searches(@department, 1, @time_period, Time.now) %><br />
+<% get_search_lists("quick", 1, @time_period, Time.now).each do |log| %>
+<%= log.created_at %> <%= log.counter %> <br />
 <% end %>
 
 <br /><br />
