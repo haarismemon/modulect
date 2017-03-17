@@ -12,24 +12,17 @@ feature "Creating a new course", :js => true do
                            email: "omar.rahman@kcl.ac.uk", user_level: "super_admin_access") }
   given! (:course) { create(:course) }
   given! (:department) { create(:department) }
-  given! (:uni_module) { create(:uni_module) }
+  given! (:prp) { create(:uni_module, name: "Programming Practice", code: "4CCS1PRP") }
+  given! (:pra) { create(:uni_module, name: "Programming Applications", code: "4CCS1PRA") }
 
   before do
     visit admin_courses_path
     login_user(admin, "password")
+    create_new_course_belonging_to(department)
+    assert_text "Edit"
   end
 
-  scenario "allows a module group to be defined for First Year" do
-    select_new_course_action
-    i_should_be_on_the_create_a_new_course_page
-    fill_in_course_form(department)
-    click_button "Create"
-    find("#modify-1").click
-    i_should_be_on_the_edit_page_of_the_new_course
-    find('.add_fields').click
-    wait_for_ajax
-    fill_in_new_group_form
-    click_button "Update"
-    i_should_be_on_the_edit_page_of_the_new_course
+  scenario "allows a module group to be defined for each year" do
+    define_a_module_group_for_each_year_structure([prp, pra])
   end
 end
