@@ -1,5 +1,5 @@
 module Admin
-  class UploadController < Admin::ApplicationController
+  class UploadController < Admin::BaseController
     require 'csv'
 
     def upload
