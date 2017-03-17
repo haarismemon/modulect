@@ -1,5 +1,7 @@
 module Admin
   class CoursesController < Admin::BaseController
+    include CoursesHelper
+
     before_action :verify_correct_department, only: [:update, :edit, :destroy]
 
     def show
@@ -96,14 +98,10 @@ module Admin
 
     def destroy
       @course = Course.find(params[:id])
+
       @course.users.each do |user|
         user.update_attribute("course_id", nil)
       end
-
-      @course.year_structures.each do |year_structure|
-       Group.where(year_structure_id: year_structure.id).destroy_all
-      end
-      YearStructure.where(course_id: @course.id).destroy_all
 
       @course.destroy
       flash[:success] =  @course.name + " was deleted successfully."
@@ -117,15 +115,9 @@ module Admin
 
       course_ids.each do |id|
         course = Course.find(id.to_i)
-        
           if !course.nil?
-            course.year_structures.each do |year_structure|
-              Group.where(year_structure_id: year_structure.id).destroy_all
-            end
-            YearStructure.where(course_id: @course.id).destroy_all
             course.destroy
           end
-        
       end
 
       head :no_content
@@ -134,39 +126,9 @@ module Admin
 
     def clone
       course_ids_string = params[:ids]
-      course_ids = eval(course_ids_string)
-
-      course_ids.each do |id|
-         course = Course.find(id.to_i)
-        
-          if !course.nil?
-            cloned = course.dup
-            cloned.update_attribute("name", cloned.name + "-CLONE")
-
-            Department.all.each do |department|
-              if department.courses.include?(course)
-                department.courses << cloned
-              end
-            end
-
-            course.year_structures.each do |year_structure|
-              cloned_year_structure = year_structure.dup
-              cloned.year_structures << cloned_year_structure
-
-              year_structure.groups.each do |group|
-                cloned_group = group.dup
-                cloned_year_structure.groups << cloned_group
-
-                group.uni_modules.each do |uni_module|
-                  cloned_group.uni_modules << uni_module
-                end
-              end
-            end
-          end
-       end
-       head :no_content
+      deep_clone_courses_with_ids(course_ids_string)
+      head :no_content
     end
-
 
 
     private

@@ -61,4 +61,18 @@ RSpec.describe YearStructure, type: :model do
       end
     end
   end
+
+  describe "cascading delete" do
+   
+    before do
+      year_structure.save
+      create(:group, year_structure: year_structure)
+    end
+
+    it "deletes the year_structure as well" do
+      expect(Group.count).not_to eq 0
+      year_structure.destroy
+      expect(Group.count).to eq 0
+    end
+  end
 end

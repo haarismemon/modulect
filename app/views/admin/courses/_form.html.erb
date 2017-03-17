@@ -5,7 +5,7 @@
   <%= f.label :owner_departments %>
   <div id="select-departments">
     <%= f.select :department_ids, Department.all.collect {|x| [x.name, x.id]}, {},
-    :multiple => true, class: 'selectize' %>
+    :multiple => true, class: 'selectize', name: "departments-dropdown" %>
   </div>
   <%= f.label :name %>
   <%= f.text_field :name, class: 'form-control' %>
