@@ -20,9 +20,18 @@ RSpec.describe Group, type: :model do
       end
     end
 
-    context "when total_credits is blank" do
+    context "when min_credits is blank" do
       before do
-        group.total_credits = nil
+        group.min_credits = nil
+      end
+      it "evaluates to false" do
+        expect(group.valid?).to eq false
+      end
+    end
+
+    context "when max_credits is blank" do
+      before do
+        group.max_credits = nil
       end
       it "evaluates to false" do
         expect(group.valid?).to eq false

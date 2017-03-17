@@ -26,16 +26,12 @@ gem 'cocoon'
 gem 'selectize-rails'
 gem 'kaminari'
 gem 'tinymce-rails',          '~> 4.3'
+gem 'pry'
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'factory_girl_rails'
-  gem 'capybara'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug',      '9.0.0', platform: :mri
-  gem 'rspec-rails', '~> 3.5'
-  gem 'rspec-mocks', '~> 3.4', '>= 3.4.1'
-  gem 'rails-controller-testing'
 end
 
 
@@ -53,7 +49,13 @@ group :development do
 end
 
 group :test do
+  gem 'factory_girl_rails'
+  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-mocks', '~> 3.4', '>= 3.4.1'
+  gem 'capybara'
+  gem 'selenium-webdriver', '3.3.0'
   gem 'database_cleaner'
+  gem 'rails-controller-testing'
 end
 
 group :production do

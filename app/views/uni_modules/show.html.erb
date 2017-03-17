@@ -66,43 +66,6 @@
                 <%= render "display_comments", updated_comments: @comments %>
               </div>
 
-              <div id="comment-creation">
-                <% module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }.size %>
-                  <% if module_comments < 1 %>
-                    <% if !logged_in? || (logged_in? && !current_user.is_limited) %>
-                      <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
-                      <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
-                        <h3>Add a Review</h3>
-                        <% if logged_in? %>
-                          <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
-                              <p id="rating-area">
-                                  <%= f.label :rating %>
-                                  <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
-                                  <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
-                                  <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
-                                  <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
-                                  <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
-                              </p>
-                              <p id="review-area">
-                                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
-                              </p>
-                              <p>
-                                  <%= f.submit 'Add Review', class:'btn' %>
-                              </p>
-                          <% end %>
-                        <% else %>
-                            <p>You must be logged in to add a review.</p>
-                        <%end%>
-                      </div>
-                    <% end %>
-              </div>
-                  <% else %>
-                    <div id="review-made">
-                        <p>You have already made a review for this module.</p>
-                        <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
-                    </div>
-                  <% end %>
-
             </div>
          </div>
       </div>
@@ -120,10 +83,6 @@
       width: 100%;
     }
 
-    #sort-by-name {
-      margin-right: 25px;
-    }
-
     #comment-creation {
       margin-left: 20px;
     }
@@ -139,25 +98,5 @@
             data: { sort_by_type: sort_by_type, uni_module_id: <%= @uni_module.id %>},
             context: document.body,
         })
-    });
-
-    $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
-        $("#comment_body").val("");
-        openCommentCreation();
-        $("input[name='comment[rating]']").val([5]);
-
-        $("#comment-creation").hide()
-        $("#review-made").show()
-    });
-
-    $("#comment-creation-box").hide();
-    var openCommentCreation = function(){
-        $("#comment-creation-box").slideToggle("fast");
-        $(".comment-creation-link").text($(".comment-creation-link").text()==open_comment_creation?"Close box":open_comment_creation);;
-    };
-
-    var open_comment_creation;
-    $(document).ready(function () {
-        open_comment_creation = $(".comment-creation-link").text()
     });
 </script>
