@@ -433,6 +433,51 @@ module AnalyticsHelper
 
 	end
 
+	# most/least clicked (trending) tags
+	def get_clicked_interest_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			departments = [Department.find(department_id.to_i)]
+		else
+			departments = Department.all
+		end
+
+		all_uni_modules = []
+		departments.each do |department|
+			all_uni_modules.concat get_uni_modules(department.id.to_s, "any")
+		end
+		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
+		
+
+		all_tags = []
+		all_uni_modules.each do |uni_module|
+			all_tags.concat uni_module.interest_tags
+		end
+		all_tags = all_tags.uniq{|tag| tag.id}
+
+		tags_data = Hash.new
+		TagLog.all.each do |log|
+			if Tag.find(log.tag_id)
+				tag = Tag.find(log.tag_id)
+				if all_tags.include?(tag) && date_check(amount_time, time_period, from_date, log.created_at)
+						tags_data[tag] = log.counter
+				end
+			end
+		end
+
+		# then sort based on request
+		if sort_by == "least"
+			tags_data = tags_data.sort_by {|_key, value| value}
+		elsif
+			tags_data = tags_data.sort_by {|_key, value| value}.reverse
+		end
+
+		if is_number?(number_to_show)
+			tags_data = tags_data.first(number_to_show)
+		end
+		tags_data
+
+	end
+
 	# get number of visitors (both logged in and non-logged in)
 	def get_number_visitors(department_id, amount_time, time_period, from_date)
 
