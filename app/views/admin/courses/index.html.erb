@@ -26,7 +26,7 @@
             </div>
             <% end %>
          <div class="btn-group">
-            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
+            <button style="height: 34px;" id="bulk-actions" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                <li> <a id="clone-all" style="cursor:pointer;"><i class='fa fa-clone' aria-hidden='true'></i>&nbsp;&nbsp;Clone selected</a>
@@ -36,7 +36,7 @@
             </ul>
           </div>
          <% end %>
-         <a class="button" href="<%= new_admin_course_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New course</a>
+         <a id="new-course" class="button" href="<%= new_admin_course_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New course</a>
       </div>
    </div>
 </header>

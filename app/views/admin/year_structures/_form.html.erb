@@ -1,35 +1,43 @@
+<!-- Renders a complete form of group form which is displayed within edit year structure form
+
+Contains a form with several partials within.
+
+To modify this file access the partials within
+-->
+
 <%= form_for @year_structure, url: admin_year_structure_path(@year_structure) do |f| %>
 
-  <%= render 'shared/error_messages', object: f.object %>
-  <!-- Edit existing groups -->
+    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%= error_messages_for(f.object) %>
 
-   <style>
-      @media (min-width: 990px) {
-      #landing .row {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display:         flex;
-      flex-wrap: wrap;
-      width:100%;
-      text-align: center;
-      }
-      #landing .row > [class*='col-'] {
-      display: flex;
-      flex-direction: column;
-      }
-      .login-card{    height: 100%;
-      text-align: center;}
-      }
-   </style>
+    <!--year structure's groups-->
+    <%= render 'admin/application/course-partials/groups_set' %>
 
-  <% f.fields_for :groups do |group| %>
-    <%= render 'group_fields', :f => group %>
-  <% end %>
+    <!-- Render nested group form in year structure -->
+    <% f.fields_for :groups do |group| %>
+        <!--renders attributes-->
+        <%= render "admin/application/course-partials/group_form_fields",
+                   :f => group, :year_structure => YearStructure.find(params[:id]) %>
+    <% end %>
 
-  <div class='links'>
-    <%= link_to_add_association "Add Module Group", f, :groups%>
-  </div>
-  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
+    <!--button to allow for a new group form to be added-->
+    <div class='links' onclick='loseFocus()' id="add-another-group">
+      <%= link_to_add_association "Add Module Group", f, :groups %>
+    </div>
+
+    <!--submit button-->
+    <div class="form-actions">
+      <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
+        <%= action %> year
+      </button>
+    </div>
 
 <% end %>
+
+
+<script>
+    //remove focus from add group button
+    function loseFocus() {
+        $("#add-another-group *").blur();
+    }
+</script>

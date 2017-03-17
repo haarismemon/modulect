@@ -156,6 +156,15 @@ module Admin
       else 
         # Failed to update
         # If save fails, redisplay the form so user can fix problems
+        if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty
+          @uni_module.errors[:base] << "Module must belong to at least one department."
+        end
+        if !params[:uni_module][:interest_tags].present? || params[:uni_module][:interest_tags].empty?
+          @uni_module.errors[:base] << "Module must have at least one interest tag."
+        end
+        if !params[:uni_module][:career_tags].present? || params[:uni_module][:career_tags].empty?
+          @uni_module.errors[:base] << "Module must have at least one career tag."
+        end
         @departments = @uni_module.departments.pluck(:name)
         @careerTags = @uni_module.career_tags.pluck(:name)
         @interestTags = @uni_module.interest_tags.pluck(:name)

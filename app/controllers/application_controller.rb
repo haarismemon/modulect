@@ -42,6 +42,12 @@ class ApplicationController < ActionController::Base
     current_user.pathways.delete(pathway)
   end
 
+  # Retrieve module rating
+  def rating_for_module
+    uni_module = UniModule.find_by_id(params[:mod])
+    module_average_rating(uni_module)
+  end
+
   private
   def admin_has_dept
     if logged_in? && admin_user && current_user.user_level == "department_admin_access" && !current_user.department_id.present?
