@@ -34,7 +34,7 @@ module Admin
 
     def create
       # Instantiate a new object using form parameters
-      @notice = Notice.new(user_params)
+      @notice = Notice.new(notice_params)
       # sets department id of notice to be the same as currently signed user
       @notice.department_id = @current_user.department_id
       # Save the object
@@ -75,9 +75,9 @@ module Admin
       #find by id
       @notice = Notice.find(params[:id])
       #delete tuple object from db
-      @user.destroy
+      @notice.destroy
       flash[:success] = "notice has been deleted successfully."
-      #redirect to action which displays all users
+      #redirect to action which displays all notices
       redirect_to(admin_notices_path)
     end
 
