@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314233915) do
+ActiveRecord::Schema.define(version: 20170317184228) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -92,6 +92,18 @@ ActiveRecord::Schema.define(version: 20170314233915) do
     t.integer "uni_module_id", null: false
     t.index ["group_id", "uni_module_id"], name: "index_groups_uni_modules_on_group_id_and_uni_module_id"
     t.index ["uni_module_id", "group_id"], name: "index_groups_uni_modules_on_uni_module_id_and_group_id"
+  end
+
+  create_table "notices", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "department_id"
+    t.string   "notice_body"
+    t.date     "display_period"
+    t.string   "additional_link"
+    t.date     "date_of_event"
+    t.boolean  "broadcast"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "pathways", force: :cascade do |t|
