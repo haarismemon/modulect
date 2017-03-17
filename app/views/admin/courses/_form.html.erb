@@ -17,7 +17,7 @@
     <%= render path_of_field_store+"string_form_field", :f => f,
                :name => :name %>
 
-      <!--course's departments field-->
+    <!--course's departments field-->
     <div class="row field-unit  departments">
       <div class="col-xs-12">
         <div class="field-unit__label">
@@ -65,7 +65,9 @@
 
     <!--submit button-->
     <div class="form-actions">
-      <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> Course</button>
+      <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %>
+        Course
+      </button>
     </div>
 
 <% end %>
@@ -73,5 +75,7 @@
 
 <script>
     //intialize selectize plugin for select fields
-    $(function () {intializeSelectize()});
+    $(function () {
+        intializeSelectize()
+    });
 </script>

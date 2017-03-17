@@ -24,13 +24,13 @@ comma. This is show it can be passed to javascript to be used
     <!--tool box-->
     <%= render(:partial => 'admin/application/edit_toolbox_buttons',
                :locals => {:object => YearStructure.find(params[:id]),
-                           :name_of_file=>YearStructure.find(params[:id]).course.name+"_year"+YearStructure.find(params[:id]).year_of_study,
-                           :blacklist_attributes=>"",
-                           :entity_attributes=>"Course",
-                           :has_many_attributes=>["groups"],
-                            :back_button => false })%>
+                           :name_of_file => YearStructure.find(params[:id]).course.name+"_year"+YearStructure.find(params[:id]).year_of_study,
+                           :blacklist_attributes => "",
+                           :entity_attributes => "Course",
+                           :has_many_attributes => ["groups"],
+                           :back_button => false}) %>
 
-   <!--back button-->
+    <!--back button-->
     <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
                 edit_admin_course_path(@year_structure.course.id), class: "button tool-box",
                 style: "padding-top: 11px;padding-bottom: 11px;" %>
@@ -42,4 +42,4 @@ comma. This is show it can be passed to javascript to be used
 
 
 <!--form render-->
-<%= render 'form',:action=>"Update" %>
+<%= render 'form', :action => "Update" %>

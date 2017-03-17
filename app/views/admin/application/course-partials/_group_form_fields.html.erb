@@ -9,38 +9,39 @@ see partial fields for additional documentation
 
 <% path_of_field_store = "admin/application/fields/" %>
 
-<%= render path_of_field_store+"string_form_field",:f => f,
+<%= render path_of_field_store+"string_form_field", :f => f,
            :name => :name,
            :label => :name_of_group,
            :placeholder => "i.e Semester 1" %>
 
 
-<%= render path_of_field_store+"number_form_field",:f => f,
+<%= render path_of_field_store+"number_form_field", :f => f,
            :name => :min_credits,
            :label => :Minimum_possible_credits_for_this_group %>
 
-<%= render path_of_field_store+"number_form_field",:f => f,
+<%= render path_of_field_store+"number_form_field", :f => f,
            :name => :max_credits,
            :label => :Maximum_possible_credits_for_this_group %>
 
 
 
-<div class="row field-unit uni_modules" >
+<div class="row field-unit uni_modules">
   <div class="col-xs-12">
     <div class="field-unit__label">
       <%= f.label :Modules_to_choose_from %>
     </div>
     <div class="field-unit__field ">
-      <%= f.select :uni_module_ids,possible_uni_modules_for_existing_group(year_structure){|x| [x.to_s, x.id]}, {},
-                   :multiple => true,:class =>"selectize" %>
+      <%= f.select :uni_module_ids, possible_uni_modules_for_existing_group(year_structure) { |x| [x.to_s, x.id] }, {},
+                   :multiple => true, :class => "selectize" %>
     </div>
   </div>
 </div>
 
-<div class="row field-unit compulsory" >
+<div class="row field-unit compulsory">
   <div class="col-xs-12">
     <div class="field-unit__label">
-      <%= f.check_box :compulsory,{style: "margin-right: 4px"} %>  <label> Make all modules in this group compulsory? </label>
+      <%= f.check_box :compulsory, {style: "margin-right: 4px"} %>
+      <label> Make all modules in this group compulsory? </label>
     </div>
   </div>
 </div>

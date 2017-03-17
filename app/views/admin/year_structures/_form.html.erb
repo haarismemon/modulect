@@ -14,27 +14,30 @@ To modify this file access the partials within
     <%= render 'admin/application/course-partials/groups_set' %>
 
     <!-- Render nested group form in year structure -->
-  <% f.fields_for :groups do |group| %>
+    <% f.fields_for :groups do |group| %>
         <!--renders attributes-->
         <%= render "admin/application/course-partials/group_form_fields",
-                   :f => group,:year_structure => YearStructure.find(params[:id]) %>
-  <% end %>
+                   :f => group, :year_structure => YearStructure.find(params[:id]) %>
+    <% end %>
 
     <!--button to allow for a new group form to be added-->
-  <div class='links' onclick='loseFocus()' id="add-another-group">
-    <%= link_to_add_association "Add Module Group", f, :groups%>
-  </div>
+    <div class='links' onclick='loseFocus()' id="add-another-group">
+      <%= link_to_add_association "Add Module Group", f, :groups %>
+    </div>
 
     <!--submit button-->
-  <div class="form-actions"><button type="submit" name="commit" ><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
-    <%= action %> year</button></div>
+    <div class="form-actions">
+      <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
+        <%= action %> year
+      </button>
+    </div>
 
 <% end %>
 
 
 <script>
-  //remove focus from add group button
-  function loseFocus(){
-    $("#add-another-group *").blur();
-  }
+    //remove focus from add group button
+    function loseFocus() {
+        $("#add-another-group *").blur();
+    }
 </script>
