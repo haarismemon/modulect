@@ -66,7 +66,7 @@
 </div>
 <div class="row">
    <div class="col-md-12 login-card">
-      <h4 class="small-header" style="margin-bottom:20px;">Number of number of quick searches <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></h4>
+      <h4 class="small-header" style="margin-bottom:20px;">Number of quick searches <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></h4>
       <canvas id="quick-search-main-chart" width="400" height="120"></canvas>
       <script>
          var ctx = document.getElementById("quick-search-main-chart");
@@ -90,7 +90,14 @@
                  scales: {
                      yAxes: [{
                          ticks: {
-                             beginAtZero:true
+                             beginAtZero:true,
+                             userCallback: function(label, index, labels) {
+		                     // no decimals
+		                     if (Math.floor(label) === label) {
+		                         return label;
+		                     }
+
+		                 	},
                          }
                      }]
                  }
