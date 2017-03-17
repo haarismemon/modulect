@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :departments
     resources :faculties
     resources :groups
+    resources :notices
     resources :uni_modules
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
