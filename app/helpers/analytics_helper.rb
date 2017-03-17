@@ -31,29 +31,6 @@ module AnalyticsHelper
 		uni_modules
 	end
 
-	# get the difference in the number of days between two dates
-	# earlier_date < later_date
-	def get_day_difference(later_date, earlier_date)
-		(later_date.to_date - earlier_date.to_date).to_i
-	end
-
-	# check whether the difference in days is within the timeframe
-	def is_within_timeframe?(diffence_days, time_period)
-		time_periods = Hash.new
-		time_periods["day"] = 1
-		time_periods["week"] = 7
-		time_periods["month"] = 30
-		time_periods["year"] = 365
-		time_periods["all_time"] = (2**(0.size * 8 -2) -1)
-
-		if diffence_days <= time_periods[time_period] && diffence_days >= 0
-			true
-		else
-			false
-		end
-
-	end
-
 	# sort, filter and format the resulting dataset
 	def format_ouput_data(input_hash, sort_by, number_to_show)
 		# sort alphabetically
@@ -125,21 +102,7 @@ module AnalyticsHelper
 		end
 	end
 
-	def get_prev_time_period(time_period)
-		if time_period == "day"
-			Date.yesterday
-		elsif time_period == "week"
-			Date.today.prev_week
-		elsif time_period == "month"
-			Date.today.prev_month
-		elsif time_period == "year"
-			Date.today.prev_year
-		end
-	end
-
-
-
-	def get_amount_time_period(amount_time, time_period, from_date)
+	def get_start_desired_period(amount_time, time_period, from_date)
 		if time_period == "hour"
 			from_date - amount_time.hour
 		elsif time_period == "day"
@@ -151,12 +114,12 @@ module AnalyticsHelper
 		elsif time_period == "year"
 			from_date - amount_time.year
 		elsif time_period == "all_time"
-			from_date - 20.year.ago
+			from_date - 20.year
 		end
 	end
 
 	def date_check(amount_time, time_period, from_date, created_at)
-		created_at >= get_amount_time_period(amount_time, time_period, from_date) && created_at < from_date
+		created_at >= get_start_desired_period(amount_time, time_period, from_date) && created_at < from_date
 	end
 
 
