@@ -388,6 +388,96 @@ module AnalyticsHelper
 
 	end
 
+	# most/least clicked (trending) tags
+	def get_clicked_career_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			departments = [Department.find(department_id.to_i)]
+		else
+			departments = Department.all
+		end
+
+		all_uni_modules = []
+		departments.each do |department|
+			all_uni_modules.concat get_uni_modules(department.id.to_s, "any")
+		end
+		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
+		
+
+		all_tags = []
+		all_uni_modules.each do |uni_module|
+			all_tags.concat uni_module.career_tags
+		end
+		all_tags = all_tags.uniq{|tag| tag.id}
+
+		tags_data = Hash.new
+		TagLog.all.each do |log|
+			if Tag.find(log.tag_id)
+				tag = Tag.find(log.tag_id)
+				if all_tags.include?(tag) && date_check(amount_time, time_period, from_date, log.created_at)
+						tags_data[tag] = log.counter
+				end
+			end
+		end
+
+		# then sort based on request
+		if sort_by == "least"
+			tags_data = tags_data.sort_by {|_key, value| value}
+		elsif
+			tags_data = tags_data.sort_by {|_key, value| value}.reverse
+		end
+
+		if is_number?(number_to_show)
+			tags_data = tags_data.first(number_to_show)
+		end
+		tags_data
+
+	end
+
+	# most/least clicked (trending) tags
+	def get_clicked_interest_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			departments = [Department.find(department_id.to_i)]
+		else
+			departments = Department.all
+		end
+
+		all_uni_modules = []
+		departments.each do |department|
+			all_uni_modules.concat get_uni_modules(department.id.to_s, "any")
+		end
+		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
+		
+
+		all_tags = []
+		all_uni_modules.each do |uni_module|
+			all_tags.concat uni_module.interest_tags
+		end
+		all_tags = all_tags.uniq{|tag| tag.id}
+
+		tags_data = Hash.new
+		TagLog.all.each do |log|
+			if Tag.find(log.tag_id)
+				tag = Tag.find(log.tag_id)
+				if all_tags.include?(tag) && date_check(amount_time, time_period, from_date, log.created_at)
+						tags_data[tag] = log.counter
+				end
+			end
+		end
+
+		# then sort based on request
+		if sort_by == "least"
+			tags_data = tags_data.sort_by {|_key, value| value}
+		elsif
+			tags_data = tags_data.sort_by {|_key, value| value}.reverse
+		end
+
+		if is_number?(number_to_show)
+			tags_data = tags_data.first(number_to_show)
+		end
+		tags_data
+
+	end
+
 	# get number of visitors (both logged in and non-logged in)
 	def get_number_visitors(department_id, amount_time, time_period, from_date)
 
@@ -519,11 +609,117 @@ module AnalyticsHelper
 	end
 
 	# return search logs
-	def get_search_lists(type, amount_time, time_period, from_date)
-		logs = SearchLog.where(search_type: type)
+	def get_search_lists(department_id, type, amount_time, time_period, from_date)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == type}
+		else
+			logs = SearchLog.all.select{|log| log.search_type == type}
+		end
+
 		logs.select{|log| date_check(amount_time, time_period, from_date, log.created_at)}
 	end
 
+	# e.g. 17:00 18:00 19:00 20:00 21:00 22:00 23:00 00:00 01:00 02:00 03:00 04:00 05:00 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 
+	# Friday 10 Saturday 11 Sunday 12 Monday 13 Tuesday 14 Wednesday 15 Thursday 16 Friday 17 
+	# March ('16) April ('16) May ('16) June ('16) July ('16) August ('16) September ('16) October ('16) November ('16) December ('16) January ('17) February ('17) March ('17) 2012 2013 2014 2015 2016 2017
+	def get_list_of_time_periods(time_period)
+		toReturn = []
+		if time_period == "day"
+			24.downto(0) do |i|
+				toReturn << i.hours.ago.strftime("%a %d %H:00")
+			end
+		elsif time_period == "week"
+			7.downto(0) do |i|
+				toReturn << i.days.ago.strftime("%A %d")
+			end
+		elsif  time_period == "month"
+			31.downto(0) do |i|
+				toReturn << i.days.ago.strftime("%b %d")
+			end
+		elsif  time_period == "year"
+			12.downto(0) do |i|
+				toReturn << i.months.ago.strftime("%B ('%y)")
+			end
+		elsif time_period == "all_time"
+			3.downto(0) do |i|
+				toReturn << i.years.ago.strftime("%Y")
+			end		
+		end
+
+		toReturn
+	end
+
+	def attach_search_log_data_to_time_period(data_log, time_period)
+
+		data_with_time = Hash.new
+
+		get_list_of_time_periods(time_period).each do |time|
+			data_with_time[time] = 0
+		end
+
+		if time_period == "day"
+			data_log.each do |log|
+				hour = log.created_at.strftime("%a %d %H:00")
+				data_with_time[hour] = data_with_time[hour] + log.counter
+			end
+		elsif time_period == "week"
+			data_log.each do |log|
+				day = log.created_at.strftime("%A %d")
+				data_with_time[day] = data_with_time[day] + log.counter
+			end
+		elsif  time_period == "month"
+			data_log.each do |log|
+				day = log.created_at.strftime("%b %d")
+				data_with_time[day] = data_with_time[day] + log.counter
+			end
+		elsif  time_period == "year"
+			data_log.each do |log|
+				month = log.created_at.strftime("%B ('%y)")
+				data_with_time[month] = data_with_time[month] + log.counter
+			end
+		elsif time_period == "all_time"
+			data_log.each do |log|
+				year = log.created_at.strftime("%Y")
+				data_with_time[year] = data_with_time[year] + log.counter
+			end
+		end
+
+		data_to_return = []
+
+		data_with_time.each do |time, data|
+			data_to_return << data
+		end
+
+		data_to_return
+	end
+
+
+
+	def get_top_size_check_analytics(input_hash)
+		if input_hash.size == 0
+			"(None)"
+		else
+			input_hash.first.first
+		end
+	end
+
+	def get_top_module_name(input)
+		if input == "(None)"
+			"(None)"
+		else
+			input.name
+		end
+	end
+
+
+
+	def get_top_module_code(input)
+		if input == "(None)"
+			"(None)"
+		else
+			input.code
+		end
+	end
 
 
 end

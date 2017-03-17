@@ -1,1 +1,225 @@
-modules
+<div class="row" >
+   <div class="col-md-12  login-card header-card" style="">
+
+
+
+
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most clicked module from search results">Most clicked module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+         <% most_clicked_module =  get_top_size_check_analytics(get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+            <%= get_top_module_code(most_clicked_module) %>
+         </div>
+        
+         <div class="percentage-change">
+            <%= get_top_module_name(most_clicked_module) %>
+         </div>
+      </div>
+
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most saved module from results">Most saved module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+         <% most_saved_module =  get_top_size_check_analytics(get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+            <%= get_top_module_code(most_saved_module) %>
+         </div>
+        
+         <div class="percentage-change">
+            <%= get_top_module_name(most_saved_module) %>
+         </div>
+      </div>
+
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most highly rated module from student reviews">Most highly rated (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+         <% most_highly_rated =  get_top_size_check_analytics(get_rating_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+            <%= get_top_module_code(most_highly_rated) %>
+         </div>
+        
+         <div class="percentage-change">
+            <%= get_top_module_name(most_highly_rated) %>
+         </div>
+      </div>
+
+      <div class="col-md-3 header-item last">
+         <div class="small-header"><i class="fa fa-star-half-o" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most reviewed module in the time period">Most reviewed module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+         <% most_reviewed =  get_top_size_check_analytics(get_review_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+            <%= get_top_module_code(most_reviewed) %>
+         </div>
+        
+         <div class="percentage-change">
+            <%= get_top_module_name(most_reviewed) %>
+         </div>
+      </div>
+
+      
+   </div>
+  
+
+
+
+
+
+<% most_visited_modules = get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 20) %>
+
+
+   <div class="row">
+
+
+      <div class="col-md-6" >
+         <div class="col-md-12 login-card subox-card">
+         <% if most_visited_modules.size != 0 %>
+            <div class="side-right">
+               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                  <option value="500" >Area chart</option>
+                  <option value="500" >Bar chart</option>
+                  <option value="50" >Line chart</option>
+                  <option value="250" >Pie chart</option>
+                  <option value="10" selected="selected">Table</option>
+               </select>
+            </div>
+            <% end %>
+         
+            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules currently trending on Modulect">Trending modules</a></h4>
+            <% if most_visited_modules.size == 0 %>
+	            No data avaiable right now. Please try again later.
+            <% else %>
+	            <ol class="trending-list">
+	            <% most_visited_modules.each do |uni_module, counter| %>
+	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
+	            <% end %>
+	            </ol>
+            <% end %>
+            	
+         </div>
+      </div>
+
+
+<% most_saved_modules = get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 20) %>
+
+
+       <div class="col-md-6" >
+         <div class="col-md-12 login-card subox-card">
+         <% if most_saved_modules.size != 0 %>
+            <div class="side-right">
+               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                  <option value="500" >Area chart</option>
+                  <option value="500" >Bar chart</option>
+                  <option value="50" >Line chart</option>
+                  <option value="250" >Pie chart</option>
+                  <option value="10" selected="selected">Table</option>
+               </select>
+            </div>
+            <% end %>
+         
+            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules most saved on Modulect">Top saved modules</a></h4>
+            <% if most_saved_modules.size == 0 %>
+	            No data avaiable right now. Please try again later.
+            <% else %>
+	            <ol class="trending-list">
+	            <% most_saved_modules.each do |uni_module, counter| %>
+	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
+	            <% end %>
+	            </ol>
+            <% end %>
+            	
+         </div>
+      </div>
+
+
+      
+
+
+
+   </div>
+
+
+   <% most_reviewed_modules = get_review_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 20) %>
+
+
+   <div class="row">
+
+
+      <div class="col-md-6" >
+         <div class="col-md-12 login-card subox-card">
+         <% if most_reviewed_modules.size != 0 %>
+            <div class="side-right">
+               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                  <option value="500" >Area chart</option>
+                  <option value="500" >Bar chart</option>
+                  <option value="50" >Line chart</option>
+                  <option value="250" >Pie chart</option>
+                  <option value="10" selected="selected">Table</option>
+               </select>
+            </div>
+            <% end %>
+         
+            <h4 class="small-header"><i class="fa fa-star-half-o" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules currently trending on Modulect">Most reviewed modules</a></h4>
+            <% if most_reviewed_modules.size == 0 %>
+	            No data avaiable right now. Please try again later.
+            <% else %>
+	            <ol class="trending-list">
+	            <% most_reviewed_modules.each do |uni_module, counter| %>
+	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
+	            <% end %>
+	            </ol>
+            <% end %>
+            	
+         </div>
+      </div>
+
+
+<% most_highly_rated_modules = get_rating_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 20) %>
+
+
+       <div class="col-md-6" >
+         <div class="col-md-12 login-card subox-card">
+         <% if most_highly_rated_modules.size != 0 %>
+            <div class="side-right">
+               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                  <option value="500" >Area chart</option>
+                  <option value="500" >Bar chart</option>
+                  <option value="50" >Line chart</option>
+                  <option value="250" >Pie chart</option>
+                  <option value="10" selected="selected">Table</option>
+               </select>
+            </div>
+            <% end %>
+         
+            <h4 class="small-header"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules most saved on Modulect">Most highly rated modules</a></h4>
+            <% if most_highly_rated_modules.size == 0 %>
+	            No data avaiable right now. Please try again later.
+            <% else %>
+	            <ol class="trending-list">
+	            <% most_highly_rated_modules.each do |uni_module, counter| %>
+	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
+	            <% end %>
+	            </ol>
+            <% end %>
+            	
+         </div>
+      </div>
+
+
+      
+
+
+
+   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

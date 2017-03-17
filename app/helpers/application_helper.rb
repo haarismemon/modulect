@@ -235,7 +235,7 @@ module ApplicationHelper
   end
 
   def add_to_search_log(type)
-  	logs = SearchLog.select{|log| log.search_type == type && log.created_at.to_date == Time.now.to_date}
+  	logs = SearchLog.select{|log| log.search_type == type && log.created_at.hour == Time.now.hour}
 
   	if logs.size > 0
   		updated_some_log = false
