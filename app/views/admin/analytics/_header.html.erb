@@ -19,7 +19,11 @@
          </button>
          <ul class="dropdown-menu scrollable-submenu">
             <% @possible_times.each do |time_period| %>
-            <li> <%= link_to (time_period.titleize), url_for( :department => @department, :time => time_period  ), method: :get %></li>
+               <% if time_period == "all_time" %>
+                  <li> <%= link_to ("All time"), url_for( :department => @department, :time => time_period  ), method: :get %></li>
+             <% else %>
+                  <li> <%= link_to (format_time_period(time_period, false, true).titleize), url_for( :department => @department, :time => time_period  ), method: :get %></li>
+               <% end %>
             <% end %>
          </ul>
       </div>

@@ -1,19 +1,22 @@
 <div class="row" >
             <div class="col-md-12  login-card header-card" style="">
+            
                <div class="col-md-3 header-item">
                   <div class="small-header"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;
-                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (<% if @time_period == "all_time" %>all time<% elsif @time_period == "day" %>past 24 hours<% else %>this <%= @time_period.titleize.downcase%><% end %>)</a>
+                     <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
                   </div>
                   <div class="main-figure">
                     <%= get_number_visitors(@department, @time_period, Time.now) %>
                   </div>
 
-              <% percentage_difference_total_users = percentage_difference(get_number_visitors(@department, @time_period, Time.now), get_number_visitors(@department, @time_period, Date.today.prev_week))%>
               <% if @time_period != "all_time" %>
+                <% percentage_difference_total_users = 
+                  percentage_difference(get_number_visitors(@department, @time_period, Time.now), get_number_visitors(@department, @time_period, get_prev_time_period(@time_period)))
+                  %>
                   <div class="percentage-change <%= colour(percentage_difference_total_users)%>">
                   <% if percentage_difference_total_users != 0 %>
                     <i class="fa fa-caret-<%= indicator(percentage_difference_total_users)%>" aria-hidden="true"></i>
-                  <% end %> <%= percentage_difference_total_users %>% from <% if @time_period == "day" %>past 24 hours<% else %>last <%= @time_period.titleize.downcase%><% end %>
+                  <% end %> <%= percentage_difference_total_users %>% from <%= format_time_period(@time_period, false, true)%>
                   </div>
               <% end %>
 
@@ -41,6 +44,21 @@
                </div>
             </div>
          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
          <div class="row">
             <div class="col-md-12 login-card">
                <canvas id="myChart" width="400" height="120"></canvas>

@@ -77,7 +77,7 @@ module AnalyticsHelper
 	def percentage_difference(new_value, old_value)
 		increase = new_value.to_f - old_value.to_f
 		percentage_change = (increase / old_value.to_f) * 100
-		percentage_change
+		percentage_change.round(2)
 	end
 
 	# used to colour percentage changes
@@ -99,6 +99,37 @@ module AnalyticsHelper
 			"up"
 		else 
 			""
+		end
+	end
+
+	# make time periods look nicer
+	def format_time_period(time_period_string, add_this, add_past)
+		if time_period_string == "all_time"
+			"all time"
+		elsif time_period_string == "day" 
+			if add_this
+				"24 hours"
+			elsif add_past
+				"past 24 hours"
+			end
+		else 
+			if add_this
+				"this " + time_period_string.titleize.downcase
+			elsif add_past
+				"past " + time_period_string.titleize.downcase
+			end
+		end
+	end
+
+	def get_prev_time_period(time_period)
+		if time_period == "day"
+			Date.yesterday
+		elsif time_period == "week"
+			Date.today.prev_week
+		elsif time_period == "month"
+			Date.today.prev_month
+		elsif time_period == "year"
+			Date.today.prev_year
 		end
 	end
 
