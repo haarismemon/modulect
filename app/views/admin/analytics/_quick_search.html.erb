@@ -139,7 +139,7 @@
             <% else %>
 	            <ol class="trending-list">
 	            <% most_visited_modules.each do |uni_module, counter| %>
-	            	<li><%= uni_module.name %></li>
+	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
 	            <% end %>
 	            </ol>
 	            <div class="expand-link">
