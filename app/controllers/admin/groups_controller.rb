@@ -5,9 +5,6 @@ module Admin
       redirect_to edit_admin_group_path(params[:id])
     end
 
-  	def index
-  	end
-
   	def edit
       @group = Group.find(params[:id])
   	end
@@ -22,12 +19,18 @@ module Admin
       end
   	end
 
-  	def destroy
-  	end
+    def destroy
+      @group = Group.find(params[:id])
+      @group.destroy
+      #to indicate success to user
+      flash[:success] = @group.name+" has been deleted successfully."
+      #redirect to action which displays parent year_structure
+      redirect_to :back
+    end
 
     private
     def group_params
-      params.require(:group).permit(:name, :total_credits, :compulsory, uni_module_ids: [])
+      params.require(:group).permit(:name, :max_credits,:min_credits, :compulsory, uni_module_ids: [])
     end
 
   end
