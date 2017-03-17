@@ -1,6 +1,6 @@
 module Admin
   class NoticesController < Admin::BaseController
-    before_action :verify_correct_department, only: [:destroy, :update, :edit]
+    before_action :verify_correct_access, only: [:destroy, :update, :edit]
 
     def index
       @notices = Notice.all.where(department_id: @current_user.department_id)
@@ -51,14 +51,14 @@ module Admin
 
 
     def edit
-      #! allows for template's form to be ready populated with the associated notice data ready for modification by admin
-      @notice = Notice.find(params[:id])
+      # @notice global variable exists
+      #! allows for template's form to be ready populated with the associated notice data ready for modification by admin )
     end
 
 
     def update
-      # Find a  object using id parameters
-      @notice = Notice.find(params[:id])
+      # @notice global variable exists
+
       # Update the object
       if @notice.update_attributes(notice_params)
         # If save succeeds, redirect to the index action
@@ -72,8 +72,8 @@ module Admin
 
 
     def destroy
-      #find by id
-      @notice = Notice.find(params[:id])
+      # @notice global variable exists
+
       #delete tuple object from db
       @notice.destroy
       flash[:success] = "notice has been deleted successfully."
@@ -87,6 +87,12 @@ module Admin
     def notice_params
       #!add params that want to be recognized by this application
       params.require(:notice).permit(:title, :notice_body, :display_period, :date_of_event, :broadcast, :additional_link)
+    end
+
+    def verify_correct_access
+      @notice = Notice.find(params[:id])
+      redirect_to admin_path unless (current_user.department_id == @notice.department_id )
+
     end
 
 
