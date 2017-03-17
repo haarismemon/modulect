@@ -53,7 +53,7 @@ module Admin
       resource = nil
 
       # Verify that the resource with the corresponding name exists
-      Administrate::Namespace.new(namespace).resources.each do |administrate_resource|
+      %w(courses uni_modules departments faculties).each do |administrate_resource|
         if administrate_resource.to_s == resource_name
           resource = administrate_resource
         end
