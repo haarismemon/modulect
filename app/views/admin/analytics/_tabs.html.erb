@@ -1,0 +1,42 @@
+ <script type="text/javascript">
+      $(function() {
+       var hashTab = window.location.hash;
+       if (hashTab != '') {
+           $('.nav-tabs a[href="' + hashTab + '"]').tab('show');
+           $(hashTab).addClass('active');
+       }
+   });
+
+   function clearActiveTabs() {
+       var listItems = $("#analytics-tabs li");
+       listItems.each(function(idx, li) {
+           var tab = $(li);
+           tab.removeClass('active');
+       });
+   }
+   $(document).ready(function() {
+       $(".go-to-tags").click(function(e) {
+           clearActiveTabs();
+           e.preventDefault();
+           $('#analytics-tabs a[href="#tags"]').closest("li").addClass('active');
+
+       })
+   });
+   $(document).ready(function() {
+       $(".go-to-modules").click(function(e) {
+           clearActiveTabs();
+           e.preventDefault();
+           $('#analytics-tabs a[href="#modules"]').closest("li").addClass('active');
+
+       })
+   });
+</script>
+<ul id="analytics-tabs" class="nav nav-tabs" style="margin-top:-10px;">
+      <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
+      <li><a data-toggle="tab" href="#quick-search">Quick Search</a></li>
+      <li><a data-toggle="tab" href="#pathway-search">Pathway Search</a></li>
+      <li><a data-toggle="tab" href="#career-search">Career Search</a></li>
+      <li><a data-toggle="tab" href="#modules">Modules</a></li>
+      <li><a data-toggle="tab" href="#tags">Tags</a></li>
+      <li><a data-toggle="tab" href="#test">test</a></li>
+   </ul>
