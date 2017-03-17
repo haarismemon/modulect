@@ -5,9 +5,6 @@ module Admin
       redirect_to edit_admin_group_path(params[:id])
     end
 
-  	def index
-  	end
-
   	def edit
       @group = Group.find(params[:id])
   	end
