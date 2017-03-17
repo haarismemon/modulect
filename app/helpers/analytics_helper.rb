@@ -524,6 +524,79 @@ module AnalyticsHelper
 		logs.select{|log| date_check(amount_time, time_period, from_date, log.created_at)}
 	end
 
+	# e.g. 17:00 18:00 19:00 20:00 21:00 22:00 23:00 00:00 01:00 02:00 03:00 04:00 05:00 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 
+	# Friday 10 Saturday 11 Sunday 12 Monday 13 Tuesday 14 Wednesday 15 Thursday 16 Friday 17 
+	# March ('16) April ('16) May ('16) June ('16) July ('16) August ('16) September ('16) October ('16) November ('16) December ('16) January ('17) February ('17) March ('17) 2012 2013 2014 2015 2016 2017
+	def get_list_of_time_periods(time_period)
+		toReturn = []
+		if time_period == "day"
+			24.downto(0) do |i|
+				toReturn << i.hours.ago.strftime("%a %d %H:00")
+			end
+		elsif time_period == "week"
+			7.downto(0) do |i|
+				toReturn << i.days.ago.strftime("%A %d")
+			end
+		elsif  time_period == "month"
+			31.downto(0) do |i|
+				toReturn << i.days.ago.strftime("%b %d")
+			end
+		elsif  time_period == "year"
+			12.downto(0) do |i|
+				toReturn << i.months.ago.strftime("%B ('%y)")
+			end
+		elsif time_period == "all_time"
+			3.downto(0) do |i|
+				toReturn << i.years.ago.strftime("%Y")
+			end		
+		end
+
+		toReturn
+	end
+
+	def attach_search_log_data_to_time_period(data_log, time_period)
+
+		data_with_time = Hash.new
+
+		get_list_of_time_periods(time_period).each do |time|
+			data_with_time[time] = 0
+		end
+
+		if time_period == "day"
+			data_log.each do |log|
+				hour = log.created_at.strftime("%a %d %H:00")
+				data_with_time[hour] = data_with_time[hour] + log.counter
+			end
+		elsif time_period == "week"
+			data_log.each do |log|
+				day = log.created_at.strftime("%A %d")
+				data_with_time[day] = data_with_time[day] + log.counter
+			end
+		elsif  time_period == "month"
+			data_log.each do |log|
+				day = log.created_at.strftime("%b %d")
+				data_with_time[day] = data_with_time[day] + log.counter
+			end
+		elsif  time_period == "year"
+			data_log.each do |log|
+				month = log.created_at.strftime("%B ('%y)")
+				data_with_time[month] = data_with_time[month] + log.counter
+			end
+		elsif time_period == "all_time"
+			data_log.each do |log|
+				year = log.created_at.strftime("%Y")
+				data_with_time[year] = data_with_time[year] + log.counter
+			end
+		end
+
+		data_to_return = []
+
+		data_with_time.each do |time, data|
+			data_to_return << data
+		end
+
+		data_to_return
+	end
 
 
 end

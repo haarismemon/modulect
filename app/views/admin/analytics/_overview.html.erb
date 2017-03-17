@@ -94,32 +94,6 @@
             </div>
 
 
-
-
-
-
-
-<%= get_number_quick_searches(@department, 1, @time_period, Time.now) %><br />
-<% get_search_lists("quick", 1, @time_period, Time.now).each do |log| %>
-<%= log.created_at %> <%= log.counter %> <br />
-<% end %>
-
-<br /><br />
-<br />
-day: <%= get_number_quick_searches(@department, 1, "day", Time.now) %><br />
-week: <%= get_number_quick_searches(@department, 1, "week", Time.now) %><br />
-month: <%= get_number_quick_searches(@department, 1, "month", Time.now) %><br />
-year: <%= get_number_quick_searches(@department, 1, "year", Time.now) %><br />
-all time: <%= get_number_quick_searches(@department, 1, "all_time", Time.now) %><br />
-    
-
-
-
-
-
-
-
-
          <div class="row">
             <div class="col-md-12 login-card">
              <h4 class="small-header" style="margin-bottom:20px;">Comparison of number of searches <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></h4>
@@ -129,46 +103,36 @@ all time: <%= get_number_quick_searches(@department, 1, "all_time", Time.now) %>
 
 
 
-
-
-
-
-
-
-
-
-
-
-               <script>
+ <script>
                   var ctx = document.getElementById("overview-main-chart");
                   
-                  var mydata1 = {
-labels : ["January","February","March","April","May","June"],
+                  var searchData = {
+labels : <%= get_list_of_time_periods(@time_period).to_json.html_safe %>,
 datasets : [
     {
         label : "# number of quick searches",
-        data : [95,53,99,73,27,82,40],
+        data : <%= attach_search_log_data_to_time_period(get_search_lists("quick", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
         borderColor : "rgba(217,83,79,1)",
         backgroundColor : "rgba(217,83,79,0.1)"
     },
     {
         label : "# number of pathway searches",
-        data : [105,43,69,73,17,92,70],
+        data : <%= attach_search_log_data_to_time_period(get_search_lists("pathway", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
         borderColor : "rgba(42,178,123,1)",
         backgroundColor : "rgba(42,178,123,0.1)",
     },
     {
         label : "# number of career searches",
-        data : [15,14,87,62,34,100,25],
+        data : <%= attach_search_log_data_to_time_period(get_search_lists("career", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
         borderColor : "rgba(2,148,214,1)",
         backgroundColor: "rgba(42,148,214,0.1)"
     }
     
  ]
 };
-var myChart = new Chart(ctx, {
+var mainSearchChart = new Chart(ctx, {
                       type: 'line',
-                      data: mydata1,
+                      data: searchData,
                       options: {
                           scales: {
                               yAxes: [{
