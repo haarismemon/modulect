@@ -16,7 +16,9 @@ module Admin
       else
         render 'edit'
       end
-  	end
+    end
+
+
 
     def year_structure_params
       params.require(:year_structure).permit(:year_of_study,

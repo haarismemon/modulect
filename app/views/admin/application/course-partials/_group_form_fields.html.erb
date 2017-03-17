@@ -1,38 +1,31 @@
-<div class="row field-unit field-unit--string name" >
-  <div class="col-xs-12">
-    <div class="field-unit__label">
-      <%= f.label :name_of_group%>
-    </div>
-    <div class="field-unit__field">
-      <%= f.text_field :name,placeholder: 'i.e Semester 1'  %>
-    </div>
-  </div>
-</div>
+<!-- Renders a form which is displayed in both the edit year structure form and edit group form
+
+note: renders of fields belong in in admin/application/fields. For some fields there exists no partials
+because of such fields being such rare instances. If you require a field to adapted, copy the partial over replacing the render
+statement .
+
+see partial fields for additional documentation
+-->
+
+<% path_of_field_store = "admin/application/fields/" %>
+
+<%= render path_of_field_store+"string_form_field",:f => f,
+           :name => :name,
+           :label => :name_of_group,
+           :placeholder => "i.e Semester 1" %>
 
 
-<div class="row field-unit min_credits" >
-  <div class="col-xs-12">
-    <div class="field-unit__label">
-      <%= f.label :Minimum_possible_credits_for_this_group %>
-    </div>
-    <div class="field-unit__field">
-      <%= f.number_field :min_credits %>
-    </div>
-  </div>
-</div>
+<%= render path_of_field_store+"number_form_field",:f => f,
+           :name => :min_credits,
+           :label => :Minimum_possible_credits_for_this_group %>
 
-<div class="row field-unit max_credits" >
-  <div class="col-xs-12">
-    <div class="field-unit__label">
-      <%= f.label :Maximum_possible_credits_for_this_group %>
-    </div>
-    <span  class="instruction-label" id="super-admin-warning" >*if there exists a single value total credit limit for this group , then make the maximum field value equal the minimum field</span>
-    <div class="field-unit__field">
-      <%= f.number_field :max_credits %>
-    </div>
-  </div>
-</div>
-<div class="row field-unit field-unit--string uni_modules" >
+<%= render path_of_field_store+"number_form_field",:f => f,
+           :name => :max_credits,
+           :label => :Maximum_possible_credits_for_this_group %>
+
+
+
+<div class="row field-unit uni_modules" >
   <div class="col-xs-12">
     <div class="field-unit__label">
       <%= f.label :Modules_to_choose_from %>
@@ -53,6 +46,3 @@
 </div>
 
 
-<script>
-
-</script>

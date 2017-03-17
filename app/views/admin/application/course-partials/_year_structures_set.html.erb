@@ -1,39 +1,61 @@
+<!--renders space to display and print a box for each year_structure that exists in the current course being
+ displayed in edit
+
+ ! for modification to how year_structue cards are displayed, it can done within the for loop below.
+ -->
+
 <div class="row field-unit field-unit--select year_of_study user-field" >
    <div class="col-xs-12">
       <div class="field-unit__label">
-         <label style="font-size: 19px;margin-top: 20px;"> Year structure belonging to this course  <a class="help-tooltip" style="font-size:14px" data-toggle="tooltip"  data-placement="right"
-           title="Each year structure contains groups of modules i.e first term is a group. The student will pick modules from the set of groups that belong to each year structure for this course. ">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+
+        <!--label of year_structure card stack belonging to this year structure-->
+        <label style="font-size: 19px;margin-top: 20px;"> Year structure belonging to this course
+          <a class="help-tooltip" style="font-size:14px" data-toggle="tooltip"  data-placement="right"
+           title="Each year structure contains groups of modules i.e first term is a group. The student will pick modules from the set of groups that belong to each year structure for this course. ">
+            [<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+
       </div>
-      <div class="field-unit__field default-select-field">
+
+     <!--card space reserved-->
+     <div class="field-unit__field ">
         <div id="landing" style="margin-left:10px;">
           <div class="row" style="margin-top:20px;">
+
+            <!--iterate through each year_structure and produce a card for it-->
             <%@course.year_structures.each_with_index do |year_structure, index| %>
+
               <% if index < Course.find(params[:id]).duration_in_years %>
                 <div class="col-md-4 text-center" style="padding-left: 0px">
                   <div class="col-md-12 login-card">
                     <div class="col-md-12">
                       <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
                       <div>
+                        <!--year of study for year_structure-->
                         <h3><%= year_structure.year_of_study.titleize %></h3>
+
+
                         <h5 style="margin-top: 20px">
-                         <% if !year_structure.groups_existent? %>
+                          <!--renders warning if no groups exist for a module -->
+                          <% if !year_structure.groups_existent? %>
                            <%= render partial: "admin/layouts/index_warning", locals: {message: "No modules have been given for this year",
                                                                                        destination: edit_admin_year_structure_path(year_structure) } %>
-                        <% end %>
+                          <% end %>
+
+                          <!--specifies amount of module groups in year_structure-->
                           Module groups: <%= year_structure.groups.count %>
+
                         </h5>
                       </div>
-                      <div>
-                        <div style="margin-top: 30px;padding-left:0px">
-                          <div class="form-group">
+                          <!--the edit button which redirects to associated edit in year_structure -->
+                          <div class="form-group" style="margin-top: 30px;padding-left:0px">
                             <a href="<%= edit_admin_year_structure_path(year_structure) %>" class="btn btn-lg" style="box-shadow:none; font-size:15px"><span>Modify ></span></a>
                           </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
+
               <% end %>
+
             <% end %>
           </div>
         </div>

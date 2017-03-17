@@ -1,11 +1,31 @@
+<!-- Renders a  complete form which is displayed in edit group form
+Contains a form with several partials within.
+
+To modify this file access the partials within
+-->
+
 <%= form_for [:admin, @group] do |f| %>
 
-<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
-<%= error_messages_for(f.object) %>
-    <%= render "admin/application/course-partials/group_form_fields",:f => f , :year_structure => Group.find(params[:id]).year_structure%>
-    <div class="form-actions" style="margin-top:30px"><button type="submit" name="commit" ><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> group</button></div>
+  <!--Helper which renders error message of current object if there is any on to screen(does nothing, if none)
+  via a partial render (see helper for more info)-->
+  <%= error_messages_for(f.object) %>
+
+    <!--render form fields for group form-->
+    <%= render "admin/application/course-partials/group_form_fields",:f => f ,
+               :year_structure => Group.find(params[:id]).year_structure%>
+
+
+    <!--submit button-->
+    <div class="form-actions" style="margin-top:30px">
+      <button type="submit" name="commit" >
+        <i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> group
+      </button>
+    </div>
+
 <% end %>
 
+
 <script>
+    //intialize selectize plugin for select fields
     intializeSelectize();
 </script>
