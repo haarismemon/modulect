@@ -77,7 +77,11 @@ module AnalyticsHelper
 	def percentage_difference(new_value, old_value)
 		increase = new_value.to_f - old_value.to_f
 		percentage_change = (increase / old_value.to_f) * 100
-		percentage_change.round(2)
+		if percentage_change.nan?
+			0.round(2)
+		else 
+			percentage_change.round(2)
+		end
 	end
 
 	# used to colour percentage changes
