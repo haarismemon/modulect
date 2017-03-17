@@ -137,6 +137,29 @@ module AnalyticsHelper
 		end
 	end
 
+
+
+	def get_amount_time_period(amount_time, time_period, from_date)
+		if time_period == "hour"
+			from_date - amount_time.hour
+		elsif time_period == "day"
+			from_date - amount_time.day
+		elsif time_period == "week"
+			from_date - amount_time.week
+		elsif time_period == "month"
+			from_date - amount_time.month
+		elsif time_period == "year"
+			from_date - amount_time.year
+		elsif time_period == "all_time"
+			from_date - 20.year.ago
+		end
+	end
+
+	def date_check(amount_time, time_period, from_date, created_at)
+		created_at >= get_amount_time_period(amount_time, time_period, from_date) && created_at < from_date
+	end
+
+
 	# actual data mining:
 	# generally the idea is to set up a hash of object => counter
 	# and sort based on the counter
@@ -147,14 +170,17 @@ module AnalyticsHelper
 	# end date: for example, having month with end date of 31st january, should show the month of january
 
 	# most/least reviewed modules
-	def get_review_modules_analytics(department_id, course_id, time_period, end_date, sort_by, number_to_show)
+
+
+
+	def get_review_modules_analytics(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
 
 		uni_modules.each do |uni_module|
 			uni_module.comments.each do |comment|
-				if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && is_within_timeframe?(get_day_difference(end_date, comment.created_at), time_period)
+				if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && date_check(amount_time, time_period, from_date, comment.created_at)
 					uni_module = comment.uni_module
 					if uni_modules.include?(uni_module)
 						if uni_modules_data.key?(uni_module)
@@ -171,15 +197,14 @@ module AnalyticsHelper
 	end
 
 	# most/least highly rated modules
-	def get_rating_modules_analytics(department_id, course_id, time_period, end_date, sort_by, number_to_show)
+	def get_rating_modules_analytics(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
 					
 		uni_modules.each do |uni_module|
 			uni_module.comments.each do |comment|
-			if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && is_within_timeframe?(get_day_difference(end_date, comment.created_at), time_period)
-				uni_module = comment.uni_module
+			if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && date_check(amount_time, time_period, from_date, comment.created_at)
 				if uni_modules.include?(uni_module)
 					if uni_modules_data.key?(uni_module)
 						uni_modules_data[uni_module] += comment.rating
@@ -201,14 +226,14 @@ module AnalyticsHelper
 	end
 
 	# most/least active courses
-	def get_active_courses(department_id, time_period, end_date, sort_by, number_to_show)
+	def get_active_courses(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		courses_data = Hash.new
 		users = get_users(department_id)
 
 		users.each do |user|
 			if user.course_id.present?
 				course = Course.find(user.course_id)
-				if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(end_date, user.last_login_time), time_period)
+				if !user.last_login_time.nil? && date_check(amount_time, time_period, from_date, user.last_login_time)
 					if courses_data.key?(course)
 						courses_data[course] += 1
 					else
@@ -222,14 +247,14 @@ module AnalyticsHelper
 	end
 
 	# most/least active department
-	def get_active_departments(time_period, end_date, sort_by, number_to_show)
+	def get_active_departments(amount_time, time_period, from_date, sort_by, number_to_show)
 		departments_data = Hash.new
 		users = get_users("any")
 
 		users.each do |user|
 			if user.department_id.present?
 				department = Department.find(user.department_id)
-				if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(end_date, user.last_login_time), time_period)
+				if !user.last_login_time.nil? && date_check(amount_time, time_period, from_date, user.last_login_time)
 					if departments_data.key?(department)
 						departments_data[department] += 1
 					else
@@ -244,13 +269,13 @@ module AnalyticsHelper
 	end
 
 	# most/least active department (admin-wise)
-	def get_active_departments_admin_wise(time_period, end_date, sort_by, number_to_show)
+	def get_active_departments_admin_wise(amount_time, time_period, from_date, sort_by, number_to_show)
 		departments_data = Hash.new
 		users =  User.all.select{ |user| user.user_level == "department_admin_access"}
 
 		users.each do |user|
 			department = Department.find(user.department_id)
-			if !user.last_login_time.nil? && is_within_timeframe?(get_day_difference(end_date, user.last_login_time), time_period)
+			if !user.last_login_time.nil? && date_check(amount_time, time_period, from_date, user.last_login_time)
 				if departments_data.key?(department)
 					departments_data[department] += 1
 				else
@@ -264,14 +289,15 @@ module AnalyticsHelper
 	end
 
 	# most/least active users by number of saves
-	def get_active_user_by_saves(department_id, time_period, end_date, sort_by, number_to_show)
+	def get_active_user_by_saves(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		users_data = Hash.new
 		users = get_users(department_id)
 
 		users.each do |user|
 			if user.uni_modules.size > 0
 				user.uni_modules.each do |uni_module|
-					if is_within_timeframe?(get_day_difference(end_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at), time_period)
+					if date_check(amount_time, time_period, from_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at)
+
 						if users_data.key?(user)
 							users_data[user] += 1
 						else
@@ -288,14 +314,14 @@ module AnalyticsHelper
 	end
 
 	# most/least active users by number of searches
-	def get_active_user_by_comments(department_id, time_period, end_date, sort_by, number_to_show)
+	def get_active_user_by_comments(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		users_data = Hash.new
 		users = get_users(department_id)
 
 		users.each do |user|
 			if user.uni_modules.size > 0
 				user.uni_modules.each do |uni_module|
-					if is_within_timeframe?(get_day_difference(end_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at), time_period)
+					if date_check(amount_time, time_period, from_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at)
 						if users_data.key?(user)
 							users_data[user] += 1
 						else
@@ -312,7 +338,7 @@ module AnalyticsHelper
 	end
 
 	# most/least saved modules
-	def get_saved_modules(department_id, course_id, time_period, end_date, sort_by, number_to_show)
+	def get_saved_modules(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
 		users = get_users(department_id)
@@ -320,7 +346,7 @@ module AnalyticsHelper
 		users.each do |user|
 			if user.uni_modules.size > 0
 				user.uni_modules.each do |uni_module|
-					if uni_modules.include?(uni_module) && is_within_timeframe?(get_day_difference(end_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at), time_period)
+					if uni_modules.include?(uni_module) && date_check(amount_time, time_period, from_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at)
 						if uni_modules_data.key?(uni_module)
 							uni_modules_data[uni_module] += 1
 						else
@@ -336,14 +362,14 @@ module AnalyticsHelper
 	end
 
 	# most/least clicked tags
-	def get_visited_modules(department_id, course_id, time_period, end_date, sort_by, number_to_show)
+	def get_visited_modules(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
 
 		UniModuleLog.all.each do |log|
 			if UniModule.find(log.uni_module_id)
 				uni_module = UniModule.find(log.uni_module_id)
-				if uni_modules.include?(uni_module) && is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+				if uni_modules.include?(uni_module) && date_check(amount_time, time_period, from_date, log.created_at)
 						uni_modules_data[uni_module] = log.counter
 				end
 			end
@@ -353,7 +379,7 @@ module AnalyticsHelper
 	end
 
 	# most/least clicked (trending) tags
-	def get_clicked_tags(department_id, time_period, end_date, sort_by, number_to_show)
+	def get_clicked_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			departments = [Department.find(department_id.to_i)]
 		else
@@ -377,7 +403,7 @@ module AnalyticsHelper
 		TagLog.all.each do |log|
 			if Tag.find(log.tag_id)
 				tag = Tag.find(log.tag_id)
-				if all_tags.include?(tag) && is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+				if all_tags.include?(tag) && date_check(amount_time, time_period, from_date, log.created_at)
 						tags_data[tag] = log.counter
 				end
 			end
@@ -398,7 +424,7 @@ module AnalyticsHelper
 	end
 
 	# get number of visitors (both logged in and non-logged in)
-	def get_number_visitors(department_id, time_period, end_date)
+	def get_number_visitors(department_id, amount_time, time_period, from_date)
 
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
@@ -410,7 +436,7 @@ module AnalyticsHelper
 		total_visitors = 0
 		
 		logs.each do |log|
-			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+			if date_check(amount_time, time_period, from_date, log.created_at)
 				total_visitors += 1
 			end
 		end
@@ -420,7 +446,7 @@ module AnalyticsHelper
 	end
 
 	# get number of logged in users
-	def get_number_logged_in_users(department_id, time_period, end_date)
+	def get_number_logged_in_users(department_id, amount_time, time_period, from_date)
 		
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
@@ -432,7 +458,7 @@ module AnalyticsHelper
 		total_visitors = 0
 		
 		logs.each do |log|
-			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period) && log.logged_in
+			if date_check(amount_time, time_period, from_date, log.created_at) && log.logged_in
 				total_visitors += 1
 			end
 		end
@@ -441,7 +467,7 @@ module AnalyticsHelper
 	end
 
 	# get device usage
-	def get_device_usage(department_id, time_period, end_date)
+	def get_device_usage(department_id, amount_time, time_period, from_date)
 		
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
@@ -453,7 +479,7 @@ module AnalyticsHelper
 		devices = Hash.new
 		
 		logs.each do |log|
-			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+			if  date_check(amount_time, time_period, from_date, log.created_at)
 				if devices.key?(log.device_type)
 					devices[log.device_type] += 1
 				else
@@ -467,7 +493,7 @@ module AnalyticsHelper
 	end
 
 	# get number quick searches
-	def get_number_quick_searches(department_id, time_period, end_date)
+	def get_number_quick_searches(department_id, amount_time, time_period, from_date)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "quick"}
 		else
@@ -478,7 +504,7 @@ module AnalyticsHelper
 		total_searches = 0
 		
 		logs.each do |log|
-			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+			if  date_check(amount_time, time_period, from_date, log.created_at)
 				total_searches += log.counter
 			end
 		end
@@ -487,7 +513,7 @@ module AnalyticsHelper
 	end
 
 	# get number pathway searches(department_id, time_period, end_date)
-	def get_number_pathway_searches(department_id, time_period, end_date)
+	def get_number_pathway_searches(department_id, amount_time, time_period, from_date)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "pathway"}
 		else
@@ -498,7 +524,7 @@ module AnalyticsHelper
 		total_searches = 0
 		
 		logs.each do |log|
-			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+			if date_check(amount_time, time_period, from_date, log.created_at)
 				total_searches += log.counter
 			end
 		end
@@ -507,7 +533,7 @@ module AnalyticsHelper
 	end
 
 	# get number career searches
-	def get_number_career_searches(department_id, time_period, end_date)
+	def get_number_career_searches(department_id, amount_time, time_period, from_date)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "career"}
 		else
@@ -518,13 +544,17 @@ module AnalyticsHelper
 		total_searches = 0
 		
 		logs.each do |log|
-			if is_within_timeframe?(get_day_difference(end_date, log.created_at), time_period)
+			if  date_check(amount_time, time_period, from_date, log.created_at)
 				total_searches += log.counter
 			end
 		end
 
 		total_searches
 
+	end
+
+	def get_search_lists(type)
+		SearchLog.where(search_type: type)
 	end
 
 
