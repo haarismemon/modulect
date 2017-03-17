@@ -9,7 +9,6 @@ Rails.application.routes.draw do
     resources :uni_modules
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
-    get 'upload', to: 'upload#upload'
     get 'analytics', to: 'analytics#analytics'
 
 
@@ -129,4 +128,9 @@ Rails.application.routes.draw do
   # OPEN CALAIS
   post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
 
+  # CSV Upload
+  get 'upload', to: 'admin/upload#upload'
+  get 'admin/upload', to: 'admin/upload#upload'
+  post 'admin/download',   to: 'admin/upload#download'
+  post 'admin/upload/upload_csv', to: 'admin/upload#upload_csv'
 end
