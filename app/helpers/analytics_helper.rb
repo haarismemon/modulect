@@ -519,8 +519,13 @@ module AnalyticsHelper
 	end
 
 	# return search logs
-	def get_search_lists(type, amount_time, time_period, from_date)
-		logs = SearchLog.where(search_type: type)
+	def get_search_lists(department_id, type, amount_time, time_period, from_date)
+		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == type}
+		else
+			logs = SearchLog.all.select{|log| log.search_type == type}
+		end
+
 		logs.select{|log| date_check(amount_time, time_period, from_date, log.created_at)}
 	end
 
