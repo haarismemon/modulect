@@ -9,10 +9,10 @@ Rails.application.routes.draw do
     resources :uni_modules
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
-    resources :career_tags
-    resources :interest_tags
-    root to: "application#homepage"
+    get 'upload', to: 'upload#upload'
     get 'analytics', to: 'analytics#analytics'
+
+
     put '/app_settings' => 'app_settings#update'
     patch '/app_settings' => 'app_settings#update'
     match 'settings' => 'app_settings#edit', :defaults => {:id => 1}, via: [:get]
@@ -125,11 +125,6 @@ Rails.application.routes.draw do
   # ERROR PAGES
   match "/404", :to => "errors#not_found", :via => :all
   match "/500", :to => "errors#internal_server_error", :via => :all
-
-  # CSV Upload
-  get 'admin/upload', to: 'admin/upload#upload'
-  post 'admin/download',   to: 'admin/upload#download'
-  post 'admin/upload/upload_csv', to: 'admin/upload#upload_csv'
 
   # OPEN CALAIS
   post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
