@@ -73,7 +73,7 @@
          <br />
          <br />
          most visited modules<br />
-         <% get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 10).each do |uni_module, count| %>
+         <% get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 1).each do |uni_module, count| %>
          <%= uni_module.name + "  " + count.to_s %><Br />
          <% end %>
          <br />

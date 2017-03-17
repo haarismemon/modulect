@@ -604,4 +604,32 @@ module AnalyticsHelper
 	end
 
 
+
+	def get_top_size_check_analytics(input_hash)
+		if input_hash.size == 0
+			"None"
+		else
+			input_hash.first.first
+		end
+	end
+
+	def get_top_module_name(input)
+		if input == "None"
+			"None"
+		else
+			input.name
+		end
+	end
+
+
+
+	def get_top_module_code(input)
+		if input == "None"
+			"None"
+		else
+			input.code
+		end
+	end
+
+
 end
