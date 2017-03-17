@@ -14,7 +14,7 @@
          <div class="percentage-change <%= colour(percentage_difference_total_users)%>">
             <% if percentage_difference_total_users != 0 %>
             <i class="fa fa-caret-<%= indicator(percentage_difference_total_users)%>" aria-hidden="true"></i>
-            <% end %> <%= percentage_difference_total_users %>% from <%= format_time_period(@time_period, false, true)%>
+            <% end %> <%= percentage_difference_total_users %>% from previous <%= @time_period.titleize.downcase%>
          </div>
          <% end %>
       </div>
@@ -31,7 +31,7 @@
          <div class="percentage-change <%= colour(percentage_difference_total_quick_searches)%>">
             <% if percentage_difference_total_quick_searches != 0 %>
             <i class="fa fa-caret-<%= indicator(percentage_difference_total_quick_searches)%>" aria-hidden="true"></i>
-            <% end %> <%= percentage_difference_total_quick_searches %>% from <%= format_time_period(@time_period, false, true)%>
+            <% end %> <%= percentage_difference_total_quick_searches %>% from previous <%= @time_period.titleize.downcase%>
          </div>
          <% end %>
       </div>
@@ -48,7 +48,7 @@
          <div class="percentage-change <%= colour(percentage_difference_total_pathway_searches)%>">
             <% if percentage_difference_total_pathway_searches != 0 %>
             <i class="fa fa-caret-<%= indicator(percentage_difference_total_pathway_searches)%>" aria-hidden="true"></i>
-            <% end %> <%= percentage_difference_total_pathway_searches %>% from <%= format_time_period(@time_period, false, true)%>
+            <% end %> <%= percentage_difference_total_pathway_searches %>% from previous <%= @time_period.titleize.downcase%>
          </div>
          <% end %>
       </div>
@@ -65,7 +65,7 @@
          <div class="percentage-change <%= colour(percentage_difference_total_career_searches)%>">
             <% if percentage_difference_total_career_searches != 0 %>
             <i class="fa fa-caret-<%= indicator(percentage_difference_total_career_searches)%>" aria-hidden="true"></i>
-            <% end %> <%= percentage_difference_total_career_searches %>% from <%= format_time_period(@time_period, false, true)%>
+            <% end %> <%= percentage_difference_total_career_searches %>% from previous <%= @time_period.titleize.downcase%>
          </div>
          <% end %>
       </div>
@@ -134,7 +134,7 @@
 
 
 
-   
+
    <div class="row">
       <div class="col-md-4" >
          <div class="col-md-12 login-card subox-card">
