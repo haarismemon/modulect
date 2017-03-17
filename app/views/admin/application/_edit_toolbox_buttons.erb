@@ -1,7 +1,9 @@
-<div class="btn-group">
 
+<!--assign back-button to true by default to render back button in this partial, unless specified otherwise-->
+<% back_button = true if local_assigns[:back_button].nil? %>
+<div class="btn-group">
   <!--button for drop down-->
-  <button style="height: 37px; outline: none; padding-bottom:4px"
+  <button style="height: 36px; outline: none; padding-bottom:4px"
           class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin toolbox"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="fa fa-wrench" aria-hidden="true"></i>&nbsp;&nbsp;Toolbox
@@ -25,9 +27,12 @@
     </li>
   </ul>
 </div>
+
+<%if back_button %>
 <!--back button-->
 <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
             :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
+<%end%>
 
 <!--styling of toolbox dropdown-->
 <style>
@@ -40,7 +45,7 @@
   }
 
   button.toolbox {
-    height: 37px;
+    height: 35px;
     border-radius: 4%;
     font-weight: 700;
   }

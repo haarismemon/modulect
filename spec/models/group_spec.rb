@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Group, type: :model do
-  let(:group) { build(:group) }
+  let!(:group) { create(:group) }
 
   describe "#valid?" do
 
@@ -20,9 +20,18 @@ RSpec.describe Group, type: :model do
       end
     end
 
-    context "when total_credits is blank" do
+    context "when min_credits is blank" do
       before do
-        group.total_credits = nil
+        group.min_credits = nil
+      end
+      it "evaluates to false" do
+        expect(group.valid?).to eq false
+      end
+    end
+
+    context "when max_credits is blank" do
+      before do
+        group.max_credits = nil
       end
       it "evaluates to false" do
         expect(group.valid?).to eq false
@@ -36,6 +45,13 @@ RSpec.describe Group, type: :model do
       it "evaluates to false" do
         expect(group.valid?).to eq false
       end
+    end
+  end
+
+  describe "#destroy" do
+    it "does not delete the parent year_structure" do
+      expect(YearStructure.count).not_to eq 0
+      expect{ group.destroy }.not_to change{ YearStructure.count }
     end
   end
 end

@@ -1,146 +1,234 @@
 <% if type == "search" %>
-<div class="col-md-12 login-card res-card result-card-<%= colour_code_card uni_module.code, tags_matched, tags_searched_for %>" >
+    <div class="col-md-12 login-card res-card result-card-<%= colour_code_card uni_module.code, tags_matched, tags_searched_for %>">
 <% elsif type == "saved" %>
-<div class="col-md-12 login-card res-card" >
+    <div class="col-md-12 login-card res-card">
 <% elsif type == "show" %>
-<div class="col-md-12 login-card res-card" >
+    <div class="col-md-12 login-card res-card">
+<% elsif type == "review" %>
+    <div class="col-md-12 login-card res-card review-<%= comment.id %> ">
 <% end %>
 <div class="row">
-<% if type == "search" %>
-<div class="col-md-9 result-card-main">
-   <% else %>
-   <div class="col-md-12 result-card-main">
-      <% end %>
-      <h2><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
-      <h4>Semester <%= make_semester_nice size_check uni_module.semester %> - <%= uni_module.credits %> credits</h4>
-      <% if type != "show" %>
-      <div style="margin-top:30px">
-         <% if logged_in? %>
-         <script>
-            $(window).load(function(){
-            $("#save-<%= uni_module.code%>").click(function() {
-            $("#save-<%= uni_module.code%> span").html($("#save-<%= uni_module.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
-            });});
-            
-         </script>
-         <% if current_user.uni_modules.include?(uni_module) %>
-         <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= uni_module.code%>"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span>
-         </button>
-         <% else %>
-         <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= uni_module.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
-         </button>
-         <% end %>
-         <script>
-            $("button#save-<%= uni_module.code%>").on("click", function(){
-                $.ajax({
-                   type: "POST",
-                    url: "<%=application_save_module_path(module_par: uni_module) %>",
-                    context: document.body
-                })
-            
-            
-            
-            
-            });
-            
-            
-         </script>
-         <% else %>
-         <form action="/login" method="get">
-            <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="right" title="To save modules, you must be logged in."id="save-<%= uni_module.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
-            </button>
-         </form>
-         <% end %>
-         <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= uni_module.code %>-more" class="more-info-link">More info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-      </div>
-      <% end %>
-   </div>
-   <% if type == "search" %>
-   <div class="col-md-3 result-side-column result-card-side">
-      <div class="row">
-         <h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
-         <% if direct_search_check uni_module.code, tags_matched, tags_searched_for %>
-         <p>You searched for this directly</p>
-         <% else %>
-         <div class="tag-match-figure" style="font-size:18px;">
-            <%= percentage_tag tags_matched.length, tags_searched_for.length %>
-         </div>
-         <p><%= count_tag tags_matched.length, tags_searched_for.length %></p>
-         <% end %>
-      </div>
-      <div class="row" style="margin-top:10px">
-         <style>
-         </style>
-         <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
-         <div class="tags-area">
-            <% tags_matched.each do |t| %>
-            <span title="" href="" class="color5"><%= t %></span>
+  <% if type == "search" %>
+      <div class="col-md-9 result-card-main">
+  <% else %>
+      <div class="col-md-12 result-card-main">
+  <% end %>
+  <h2 id="uni-module-title-<%= uni_module.id %>" style="cursor: pointer;"><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
+  <h4>Semester <%= make_semester_nice size_check uni_module.semester %> - <%= uni_module.credits %> credits</h4><br>
+
+  <% if type == "review" %>
+      <div id="module-comment">
+        <table width="100%" border="0">
+          <colgroup>
+            <td>
+              <% for i in 1..comment.rating %>
+                  <i class="fa fa-star star-rating" aria-hidden="true"></i>
+              <% end %>
+              <% for j in 1..(5 - comment.rating) %>
+                  <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
+              <% end %><p></p>
+              <p><%= comment.body %></p>
+              <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
+            </td>
+            <% if logged_in? %>
+                <td id="delete-td" align="right">
+                  <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>" style="text-transform: none"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                </td>
             <% end %>
-         </div>
+          </colgroup>
+        </table>
       </div>
-   </div>
-   <% end %>
-</div>
-<% if type == "show" %>
-<div id="result-<%= uni_module.code %>-more" style="margin-left:-15px;margin-top:20px;">
-   <% else %>
-   <div id="result-<%= uni_module.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
+  <% end %>
+
+
+  <% if type != "show" %>
+      <div style="margin-top:30px">
+        <% if logged_in? %>
+            <script>
+                $("#uni-module-title-<%= uni_module.id %>").hover(function () {
+                    $(this).css("text-decoration", "underline");
+                }, function () {
+                    $(this).css("text-decoration", "none");
+                });
+                $("#uni-module-title-<%= uni_module.id %>").click(function () {
+                    var new_path = "<%= uni_module_path(uni_module.id) %>";
+                    window.location = new_path;
+                });
+
+                $(window).load(function () {
+                    $("#save-<%= uni_module.code%>").click(function () {
+                        $("#save-<%= uni_module.code%> span").html($("#save-<%= uni_module.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
+                    });
+                });
+
+            </script>
+            <% if current_user.uni_modules.include?(uni_module) %>
+                <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= uni_module.code %>">
+                  <span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span>
+                </button>
+            <% else %>
+                <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= uni_module.code %>">
+                  <span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
+                </button>
+            <% end %>
+
+            <button class="btn btn-lg btn-small" id="review-module-<%= uni_module.id %>" style="width: 170px">
+              <i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module
+            </button>
+
+            <script>
+                $("button#save-<%= uni_module.code%>").on("click", function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "<%=application_save_module_path(module_par: uni_module) %>",
+                        context: document.body
+                    })
+                });
+
+                $("button#review-module-<%= uni_module.id %>").click(function () {
+                    var new_path = "<%= uni_module_path(uni_module.id) %>";
+                    window.location = new_path + "#module_review";
+                });
+
+
+            </script>
+        <% else %>
+            <form action="/login" method="get">
+              <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in." id="save-<%= uni_module.code %>">
+                <span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
+              </button>
+            </form>
+        <% end %>
+        <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= uni_module.code %>-more" class="more-info-link">More
+          info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+      </div>
+  <% end %>
+  </div>
+  <% if type == "search" %>
+      <div class="col-md-3 result-side-column result-card-side">
+        <div class="row">
+          <h5><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;Tag match </h5>
+          <% if direct_search_check uni_module.code, tags_matched, tags_searched_for %>
+              <p>You searched for this directly</p>
+          <% else %>
+              <div class="tag-match-figure" style="font-size:18px;">
+                <%= percentage_tag tags_matched.length, tags_searched_for.length %>
+              </div>
+              <p><%= count_tag tags_matched.length, tags_searched_for.length %></p>
+          <% end %>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <style>
+          </style>
+          <h5><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;&nbsp;Matched tags</h5>
+          <div class="tags-area">
+            <% tags_matched.each do |t| %>
+                <span title="" href="" class="color5"><%= t %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  <% end %>
+  </div>
+  <% if type == "show" %>
+      <div id="result-<%= uni_module.code %>-more" style="margin-left:-15px;margin-top:20px;">
+  <% else %>
+      <div id="result-<%= uni_module.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
+  <% end %>
+  <div class="col-md-12" style="margin-bottom:15px;">
+    <h5>Description</h5>
+    <p><%= size_check uni_module.description %></p>
+  </div>
+  <div class="row" style="margin-left:0px;">
+    <div class="col-md-4" style="margin-bottom:15px;">
+      <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
+      <p>
+        <%= size_check get_careers_for_module(uni_module).sort.join(", ") %>
+      </p>
+    </div>
+    <div class="col-md-4" style="margin-bottom:15px;">
+      <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
+      <p>
+        <% uni_module_requirements = uni_module.uni_module_ids %>
+        <% if uni_module_requirements.size == 0 %>
+            None given
+        <% else %>
+            <% uni_module_requirements.each do |req_mod| %>
+                <%= UniModule.find(req_mod).name %>
+            <% end %>
+        <% end %>
+      </p>
+    </div>
+    <div class="col-md-4" style="margin-bottom:15px;">
+      <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
+      <p><%= size_check uni_module.lecturers %></p>
+    </div>
+  </div>
+  <div class="row" style="margin-left:0px;">
+    <div class="col-md-4" style="margin-bottom:15px;">
+      <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods and dates</h5>
+      <% if uni_module.assessment_methods.empty? && uni_module.assessment_dates.empty? %>
+         <p>No data available</p>
+      <% else %>
+         <p><%= uni_module.assessment_methods %></p>
+         <p><%= uni_module.assessment_dates %></p>
       <% end %>
-      <div class="col-md-12" style="margin-bottom:15px;">
-         <h5>Description</h5>
-         <p><%= size_check uni_module.description %></p>
-      </div>
-      <div class="row" style="margin-left:0px;">
-         <div class="col-md-4" style="margin-bottom:15px;">
-            <h5><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;Careers for this module</h5>
-            <p>
-               <%= size_check get_careers_for_module(uni_module).sort.join(", ") %>
-            </p>
-         </div>
-         <div class="col-md-4" style="margin-bottom:15px;">
-            <h5><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;Requirements/Pre-requisites</h5>
-            <p>
-               <% uni_module_requirements = uni_module.uni_module_ids %>
-               <% if uni_module_requirements.size == 0 %>
-               None given
-               <% else %>
-                  <% uni_module_requirements.each do |req_mod| %>
-                     <%= UniModule.find(req_mod).name %>
-                  <% end %>
-               <% end %>
-            </p>
-         </div>
-         <div class="col-md-4" style="margin-bottom:15px;">
-            <h5><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Lecturer(s)</h5>
-            <p><%= size_check uni_module.lecturers %></p>
-         </div>
-      </div>
-      <div class="row" style="margin-left:0px;">
-         <div class="col-md-4" style="margin-bottom:15px;">
-            <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods and dates</h5>
-            <p><%= size_check uni_module.assessment_methods %></p>
-            <p><%= size_check uni_module.assessment_dates %></p>
-         </div>
-         <div class="col-md-4" style="margin-bottom:15px;">
-            <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
-            <p>
-               <% if uni_module.exam_percentage.nil? || uni_module.coursework_percentage.nil?%>
-               No data available
-               <% else %>
-               <%= uni_module.exam_percentage %>:<%= uni_module.coursework_percentage %>
-               <% end %>
-            </p>
-         </div>
-         <div class="col-md-4" style="margin-bottom:15px;">
-            <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
-            <p><%= size_check uni_module.pass_rate %></p>
-         </div>
-      </div>
-      <div class="col-md-12 text-right" style="margin-bottom:15px;">
-         <% if !uni_module.more_info_link.nil? %>
-         <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, uni_module.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
-         <% end %>
-         <% if type != "show" %> <%= link_to "Open page >", uni_module, method: :get, class: "btn btn-lg btn-small" %> <% end %>
-      </div>
-   </div>
-</div>
+    </div>
+    <div class="col-md-4" style="margin-bottom:15px;">
+      <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
+      <p>
+        <% if uni_module.exam_percentage.nil? || uni_module.coursework_percentage.nil? %>
+            No data available
+        <% else %>
+            <%= uni_module.exam_percentage %>:<%= uni_module.coursework_percentage %>
+        <% end %>
+      </p>
+    </div>
+    <div class="col-md-4" style="margin-bottom:15px;">
+      <h5><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;Pass rate (%)</h5>
+      <p><%= size_check uni_module.pass_rate %></p>
+    </div>
+  </div>
+  <div class="col-md-12 text-right" style="margin-bottom:15px;">
+    <% if !uni_module.more_info_link.nil? %>
+        <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, uni_module.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
+    <% end %>
+    <% if type != "show" %> <%= link_to "Open page >", uni_module, method: :get, class: "btn btn-lg btn-small" %>
+    <% end %>
+  </div>
+  </div>
+  </div>
+
+  <style>
+    .star-rating {
+      color: #2ab27b;
+    }
+  </style>
+
+  <script type="text/javascript" charset="utf-8">
+
+      <% if type == "review" %>
+      $("#delete-btn-<%= comment.id %>").on("click", function(event) {
+          $.ajax({
+              type: "POST",
+              url: "<%= comments_delete_path %>",
+              data: {comment_id: <%= comment ? comment.id : nil %>, uni_module_id: <%= uni_module  ? uni_module.id : nil %>, type_delete: 'review_page'},
+              context: document.body,
+              success: function (data) {
+                  if(data.user_reviews_count < 1) {
+                      $("#all-module-reviews").html("<div class=\"row\" style=\"margin-bottom:20px;\"> " +
+                          "<div class=\"col-md-10 col-md-offset-1 text-center\"> " +
+                          "<h1>You haven't made any reviews :(</h1>" +
+                          "</div>" +
+                          "</div>");
+                  } else {
+                      $("#your-review-card-<%= comment.id %>").css("display","none");
+                      $("#reviewed-modules-number").html("Reviewed " + data.user_reviews_count + " modules");
+                  }
+              }
+          });
+      });
+
+      <% end %>
+
+  </script>

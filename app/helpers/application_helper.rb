@@ -225,7 +225,7 @@ module ApplicationHelper
     end
 
     average = total / comments.length
-    average.round
+		((average)*2).round / 2.0
   end
 
 

@@ -531,3 +531,27 @@ a.action-edit{margin-right:10px;}
         display: block;
     }
 }
+.remove-field{
+  a{
+    color: #2a94d6
+  }
+
+  a:hover{
+    color: #293f54;
+  }
+}
+
+a.add_fields{
+  font-size: 14px;
+}
+
+
+.groups div.field-unit__label{
+  align-self: flex-start;
+  margin-top: 20px;
+}
+
+.header{
+  padding-bottom: 0px;
+}
+
