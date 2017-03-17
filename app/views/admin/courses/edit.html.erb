@@ -6,8 +6,8 @@ Also contains fields which corresponds to a particular course's attributes
 Toolbox partial takes several locals. Each helps in specifying format of how a form is exported for this type form.
 Can easily be adjusted to preference. I.e to remove a attribute from resulting export, add to the attribute name
 to the blacklist_attributes string.
-Note: Both blacklist and entity attributes are strings when each attribute is seperated by
-comma. This is show it can be passed to javascript to be used
+Note: Both blacklist and entity attributes are strings when each attribute is separated by
+comma. This is so it can be passed to javascript, to be used.
 -->
 
 <% provide :title, "Edit #{Course.find(params[:id]).name}" %>
