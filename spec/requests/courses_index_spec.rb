@@ -1,9 +1,8 @@
-require 'timeout'
 require 'rails_helper'
 require 'support/login_helper'
 require 'support/courses_index_steps'
 
-feature "Index page of courses: admin", :js => true do
+feature "Admin visiting index page of courses", :js => true do
   include LoginHelper
   include CoursesIndexSteps
 
@@ -15,21 +14,22 @@ feature "Index page of courses: admin", :js => true do
   before do
     visit admin_courses_path
     login_user(admin, "password")
+    i_should_be_on_the_courses_index_page
   end
 
   scenario "can clone a course" do
-    select_first_course
+    select_first_checkbox
     select_clone_action
     confirm_action
-    i_should_be_back_on_the_index_page
+    i_should_be_on_the_courses_index_page
     i_should_see_a_clone_of(course)
   end
 
   scenario "can delete a course" do
-    select_first_course
+    select_first_checkbox
     select_delete_action
     confirm_action
-    i_should_be_back_on_the_index_page
+    i_should_be_on_the_courses_index_page
     i_should_not_see(course)
   end
 
