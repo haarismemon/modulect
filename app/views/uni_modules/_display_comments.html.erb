@@ -38,14 +38,14 @@
                       <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                   <% end %><p></p>
                   <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
-                  <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime('%d %B %Y at %H:%M %p')%></strong> <%= created_at != edited_at ? '(Edited)' : '' %></p>
+                  <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime('%d %B %Y at %H:%M %p')%></strong> <%= created_at != edited_at ? '(edited)' : '' %></p>
                 </td>
                 <% if logged_in? %>
                     <td id="edit-td" align="center">
                       <button class="btn edit-btn" id="edit-btn-<%= comment.id %>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
                     </td>
                     <td id="delete-td" align="right">
-                        <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                        <button class="btn delete-btn delete red-btn" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                     </td>
                 <% end %>
               </colgroup>
@@ -140,7 +140,7 @@
       <% if logged_in? && Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }.size > 0 %>
           <div id="review-made">
             <p>You have already made a review for this module.</p>
-            <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
+            <a href="#module_review" class="btn" id="your-review-btn" style="margin-top:10px;text-transform: none"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;See your review</a>
           </div>
       <% elsif logged_in? %>
       <% if !app_settings.disable_new_reviews %>
@@ -175,7 +175,7 @@
                   </ul>
                 </div>
                 <p id="review-area">
-                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true %>
+                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true, :class => "form-control" %>
                 </p>
                 <p id="submit-area">
                   <%= f.submit 'Add Review', class:'btn' %>
@@ -206,7 +206,11 @@
     color: white;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #2ab27b;
+    cursor: pointer;
   }
+
+  ul.star-rating li i{
+    cursor: pointer;}
 
   ul.star-rating li:hover {
     color: #2ab27b;
@@ -546,8 +550,8 @@
               "</div>" +
           "</tr>" +
           "<tr>" +
-          "<textarea autofocus id=\"edit-text-area\" style=\"margin-left: 10px; margin-right: 10px; margin-bottom: 15px\"></textarea>" +
-          "<a class=\"btn submit-btn\" id=\"submit-btn\">Edit</a>" +
+          "<textarea autofocus class=\"form-control\" id=\"edit-text-area\" style=\"margin-left: 10px; margin-right: 10px; margin-bottom: 15px\"></textarea>" +
+          "<a class=\"btn submit-btn\" id=\"submit-btn\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Save edits</a>" +
           "</form>" +
           "</div>");
 
@@ -584,7 +588,7 @@
           });
 
           <% if(created_at != edited_at)%>
-              $("#updated-time").text(" <%= '(Edited)' %>");
+              $("#updated-time").text(" <%= '(edited)' %>");
           <% end%>
       });
 
