@@ -38,8 +38,20 @@ module Admin
             new_record['faculty_id'] = Faculty.where(:name => row.to_hash['faculty_name']).first.id
             # Remove the faculty name attribute from row hash
             new_record = new_record.except('faculty_name')
+
+          elsif session[:resource_name] == 'faculties'
+            # Faculties upload: Add departments attribute to create and/or link departments to the faculty
+            # Retrieve departments field from record
+            departments_s = new_record['departments']
+            logger.debug("&&&&&&&&&&&&&& #{departments_s}")
+            # Normalise separators by removing whitespace
+            departments_s = departments_s.gsub!('; ', ';')
+            logger.debug("^^^^^^^^^^^^^ #{departments_s}")
+            # Transform string of departments into array of departments
+            departments_a = departments_s.split(';')
+            logger.debug("[[[[[[]]]]]]]] #{departments_a}")
           end
-          session[:resource_name].to_s.classify.constantize.create!(new_record)
+          # session[:resource_name].to_s.classify.constantize.create!(new_record)
         end
 
         flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
