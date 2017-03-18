@@ -717,9 +717,10 @@
       window.alert("This module has prerequisites which you have not met");
     } else {
       console.log(year + " " + group);
-      console.log(selected_ids[year][group]);
       selected_ids[year][group].push(this_module.id);
       updateUI();
+      console.log(selected_ids);
+      console.log("!!!!!!!!!!!!!!!!!!!!!");
     }
     
     //Tell the user they can now save again

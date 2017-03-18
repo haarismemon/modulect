@@ -5,6 +5,7 @@ module Admin
 		end
 
 		def new_pathway
+			@course = Course.find_by(id: params[:id])
 		end
 	end
 end
