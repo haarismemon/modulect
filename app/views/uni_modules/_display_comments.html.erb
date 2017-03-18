@@ -109,12 +109,12 @@
                           <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
                           <% if logged_in? %>
                               <% if comment.liked_users.include?(current_user) %>
-                                  <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>">Helpful</button>
+                                  <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>" title="Mark as helpful/unhelpful"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
                               <% else %>
-                                  <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
+                                  <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>" title="Mark as helpful/unhelpful"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
                               <% end %>
                           <% else %>
-                              <button class="btn btn-disabled" id="helpful-btn-disabled" data-toggle="tooltip" data-placement="right" title="To like a comment, you must be logged in.">Helpful?</button>
+                              <button class="btn btn-disabled helpful" id="helpful-btn-disabled" title="To mark a review as helpful, you must be logged in."><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
                           <% end %>
                         </td>
                         <hr>
@@ -303,26 +303,18 @@
   }
 
   .not-helpful {
-    background: #2ab27b;
-    box-shadow: 0px 3px 0px 0px #228e62;
     width: 81px;
   }
 
   .not-helpful:focus {
-    background: #2ab27b;
-    box-shadow: 0px 3px 0px 0px #228e62;
     width: 81px;
   }
 
   .helpful {
-    background: #45bbc8;
-    box-shadow: 0px 3px 0px 0px lightskyblue;
     width: 81px;
   }
 
   .helpful:focus {
-    background: #45bbc8;
-    box-shadow: 0px 3px 0px 0px lightskyblue;
     width: 81px;
   }
 
@@ -516,12 +508,12 @@
       success: function (data) {
         label.html(data.like_count);
         if (data.helpful == true) {
-          button.html("Helpful");
+          button.html("<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
           button.removeClass("not-helpful");
           button.addClass("helpful")
         }
         else if (data.helpful == false) {
-          button.html("Helpful?");
+          button.html("<i class='fa fa-thumbs-o-up' aria-hidden='true'></i>");
           button.removeClass("helpful");
           button.addClass("not-helpful")
         }
