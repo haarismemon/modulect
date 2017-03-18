@@ -8,7 +8,7 @@
 </header>
 
 <div>
-	<input type="text" class="form-control" id="save-name" placeholder="Name your Pathway" required/>
+	<input type="text" class="form-control" id="save-name" placeholder="Name the pathway"/>
 </div>
 
 
@@ -16,7 +16,7 @@
 </div>
 
 <div>
-	<button type="submit" class="btn btn-lg" id="save">Save Pathway</button>
+	<button onclick="savePathway()" class="btn btn-lg" id="save">Save Pathway</button>
 </div>
 
 <script type="text/javascript">
@@ -79,7 +79,7 @@ function generateView(){
 			out+='<ul class="list-group">';
 			for(m=0; m<optional_modules_per_year[y][g].uni_modules.length; m++){
 				out+='<li class ="list-group-item" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
-				out+=optional_modules_per_year[y][g].uni_modules[m].name;
+				out+=optional_modules_per_year[y][g].uni_modules[m].name + ", " + optional_modules_per_year[y][g].uni_modules[m].credits + " credits";
 				out+='</li>'
 			}
 			out+='</ul>';
@@ -88,7 +88,38 @@ function generateView(){
 	document.getElementById("main-container").innerHTML = out;
 }
 function savePathway(){
-
+	txt = $('input#save-name').val();
+	if(txt == ""){
+		window.alert("Please give this pathway a name");
+	}else{
+		$.ajax({
+		    type: "POST",
+		    url: "<%= application_save_course_pathway_path %>",
+		    data: {
+		        name: document.getElementById('save-name').value,
+		        data: JSON.stringify(selected_ids),
+		        year: <%= @year_of_study.to_i %>,
+		        course: js_course.id
+		    }
+   		})
+	}
+	console.log(txt);
 }
-
+/*
+function savePathwayFromViewResults() {
+    console.log("SAVING");
+    $.ajax({
+        type: "POST",
+        url: "<%= application_save_pathway_path %>",
+        data: {
+        	course_id: @course.id,
+            name: document.getElementById('save-name').value,
+            data: JSON.stringify(selected_ids),
+            year: 1,
+            course: js_course.id
+        }
+    })
+    document.getElementById("save").innerHTML= "<span><i class=\"fa fa-star\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Saved</span>";     
+  }
+*/
 </script>

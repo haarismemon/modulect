@@ -115,6 +115,7 @@ Rails.application.routes.draw do
   # Save pathways and modules, and create tags used in ajax
   post 'application/save_module'
   post 'application/save_pathway'
+  post 'application/save_course_pathway'
   post 'application/delete_pathway'
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
