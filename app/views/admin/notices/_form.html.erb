@@ -1,0 +1,60 @@
+<!-- Renders a form which is displayed in both the edit and new notice form
+
+note: renders of fields belong in in admin/application/fields. For some fields there exists no partials
+because of such fields being such rare instances. If you require a field to adapted, copy the partial over replacing the render
+statement .
+
+see partial fields for additional documentation
+-->
+
+<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+<%= error_messages_for(f.object) %>
+
+
+
+<!--renders attributes-->
+<% path_of_field_store = "admin/application/fields/" %>
+
+<!--name field-->
+<%= render path_of_field_store+"string_form_field", :f => f,
+           :name => :title ,
+            :label => :header%>
+
+
+
+<!--renders notice body field -->
+<%= render path_of_field_store+"textarea_form_field", :f => f,
+           :name => :notice_body,
+           :label => "Notice description",
+           :tooltip => "The body of text defined here, is what will be shown to every student in this department in their home page." %>
+
+
+
+
+
+<div class="row field-unit compulsory">
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%= f.check_box :broadcast, {style: "margin-right: 4px"} %>
+      <label for="broadcast"> Broadcast?
+            <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
+               title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+            </a>
+      </label>
+    </div>
+  </div>
+</div>
+
+<!--submit button-->
+<div class="form-actions">
+  <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %>
+    Notice
+  </button>
+</div>
+
+<script>
+    //intialize selectize plugin for select fields
+    $(function () {
+        intializeSelectize()
+    });
+</script>

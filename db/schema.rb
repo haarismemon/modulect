@@ -98,12 +98,13 @@ ActiveRecord::Schema.define(version: 20170317184228) do
     t.string   "title"
     t.integer  "department_id"
     t.string   "notice_body"
-    t.date     "display_period"
-    t.string   "additional_link"
-    t.date     "date_of_event"
+    t.date     "live_date"
+    t.date     "end_date"
+    t.string   "optional_link"
     t.boolean  "broadcast"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.boolean  "auto_delete"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "pathways", force: :cascade do |t|
