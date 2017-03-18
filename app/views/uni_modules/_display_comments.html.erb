@@ -146,16 +146,28 @@
             <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
                 <div id="rating-area">
                   <%= f.label :rating %>
-                  <label for="comment_rating_1"><i class="fa fa-star" aria-hidden="true"></i></label>
-                  <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
-                  <label for="comment_rating_2"><i class="fa fa-star" aria-hidden="true"></i></label>
-                  <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
-                  <label for="comment_rating_3"><i class="fa fa-star" aria-hidden="true"></i></label>
-                  <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
-                  <label for="comment_rating_4"><i class="fa fa-star" aria-hidden="true"></i></label>
-                  <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
-                  <label for="comment_rating_5"><i class="fa fa-star" aria-hidden="true"></i></label>
-                  <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
+                  <ul class="star-rating">
+                    <li id="1">
+                      <label for="comment_rating_1"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 1 %>
+                    </li>
+                    <li id="2">
+                      <label for="comment_rating_2"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 2 %>
+                    </li>
+                    <li id="3">
+                      <label for="comment_rating_3"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 3 %>
+                    </li>
+                    <li id="4">
+                      <label for="comment_rating_4"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 4 %>
+                    </li>
+                    <li id="5">
+                      <label for="comment_rating_5"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 5, :checked => true %>
+                    </li>
+                  </ul>
                 </div>
                 <p id="review-area">
                   <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true %>
@@ -172,8 +184,6 @@
 </div>
 
 <style>
-
-
   #delete-td {
     width: 1%;
     padding-left: 0px;
