@@ -83,12 +83,15 @@ module Admin
       @uni_module = UniModule.new(uni_module_params)
       if @uni_module.save
         # If save succeeds, redirect to the index action
+
+        tag_clean_up
         flash[:success] = "Succesfully created module"
         redirect_to(admin_uni_modules_path)
       else
         # If save fails, redisplay the form so user can fix problems
         render(:new)
       end
+
   	end
 
 
@@ -148,6 +151,8 @@ module Admin
             @uni_module.tags << new_tag
           end
         end
+
+        tag_clean_up
 
         # Successfully updated
         flash[:success] = "Successfully updated #{@uni_module.name}"
@@ -210,11 +215,12 @@ module Admin
 
       if can_delete
         @uni_module.destroy
+        tag_clean_up
         flash[:success] = "Module successfully deleted"
-        redirect_back_or admin_uni_modules_path
+        redirect_to admin_uni_modules_path
       else 
         flash[:error] = "Module is linked to a course, remove from course first"
-        redirect_back_or admin_uni_modules_path
+        redirect_to admin_uni_modules_path
       end
 
   	end  
@@ -259,6 +265,23 @@ module Admin
 
       if current_user.user_level == "department_admin_access" && !Department.find(current_user.department_id).uni_module_ids.include?(@uni_module.id)
         redirect_to admin_path
+      end
+    end
+
+    def tag_clean_up
+      all_tags = Tag.all
+      all_modules = UniModule.all
+
+      all_tags.each do |tag|
+        is_used_somewhere = false
+        all_modules.each do |uni_module|
+          if uni_module.tags.include?(tag)
+            is_used_somewhere = true
+          end
+        end
+        if !is_used_somewhere
+          tag.destroy
+        end
       end
     end
 
