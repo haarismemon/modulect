@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :uni_modules
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
+    resources :course_pathways
     get 'upload', to: 'upload#upload'
     get 'analytics', to: 'analytics#analytics'
 
