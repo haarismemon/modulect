@@ -46,6 +46,10 @@ module Admin
       else
         @uni_modules = @uni_modules.order('LOWER(name) ASC').page(params[:page]).per(@per_page)
       end
+
+      if @uni_modules.size == 0 && params[:page].present? && params[:page] != "1"
+        redirect_to admin_uni_modules_path
+      end
      
       @uni_modules_to_export = @uni_modules
       if params[:export].present?

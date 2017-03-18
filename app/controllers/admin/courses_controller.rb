@@ -42,6 +42,10 @@ module Admin
          @courses = @courses.order('name ASC').page(params[:page]).per(@per_page)
       end
 
+      if @courses.size == 0 && params[:page].present? && params[:page] != "1"
+        redirect_to admin_courses_path
+      end
+
       @courses_to_export = @courses
       if params[:export].present?
         export_course_ids_string = params[:export]
