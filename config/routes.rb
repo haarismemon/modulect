@@ -118,6 +118,7 @@ Rails.application.routes.draw do
   post 'comments/like'
   post 'comments/edit'
   post 'comments/delete'
+  delete 'comments/destroy'
 
 
   # ERROR PAGES
