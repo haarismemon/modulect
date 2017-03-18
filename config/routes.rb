@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
+  get '/reviews', to: 'reviews#view'
   get '/admin', to: 'admin#dashboard'
   get 'career_search/choose'
   get 'career_search/view'
@@ -119,9 +120,14 @@ Rails.application.routes.draw do
   post 'application/delete_course_pathway'
   post 'application/update_course_pathway'
   post 'application/delete_pathway'
+
+  get 'application/rating_for_module'
+  
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
   post 'comments/like'
+  post 'comments/edit'
+  post 'comments/delete'
 
 
   # ERROR PAGES
@@ -129,7 +135,6 @@ Rails.application.routes.draw do
   match "/500", :to => "errors#internal_server_error", :via => :all
 
   # OPEN CALAIS
-  get 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
   post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
 
 end

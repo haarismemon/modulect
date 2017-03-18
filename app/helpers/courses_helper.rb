@@ -6,24 +6,29 @@ module CoursesHelper
        course = Course.find(id.to_i)
       
         if !course.nil?
-          cloned = clone_course(course)
+          if Course.where(name: course.name + "-CLONE", year: course.year).exists?
+              flash[:error] = "Some records have already been cloned and cannot be recloned."
+          else
 
-          Department.all.each do |department|
-            if department.courses.include?(course)
-              department.courses << cloned
+            cloned = clone_course(course)
+
+            Department.all.each do |department|
+              if department.courses.include?(course)
+                department.courses << cloned
+              end
             end
-          end
 
-          course.year_structures.each do |year_structure|
-            cloned_year_structure = year_structure.dup
-            cloned.year_structures << cloned_year_structure
+            course.year_structures.each do |year_structure|
+              cloned_year_structure = year_structure.dup
+              cloned.year_structures << cloned_year_structure
 
-            year_structure.groups.each do |group|
-              cloned_group = group.dup
-              cloned_year_structure.groups << cloned_group
+              year_structure.groups.each do |group|
+                cloned_group = group.dup
+                cloned_year_structure.groups << cloned_group
 
-              group.uni_modules.each do |uni_module|
-                cloned_group.uni_modules << uni_module
+                group.uni_modules.each do |uni_module|
+                  cloned_group.uni_modules << uni_module
+                end
               end
             end
           end

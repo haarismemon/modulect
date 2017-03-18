@@ -142,8 +142,12 @@ module Admin
         department = Department.find(id.to_i)
         
           if !department.nil?
-            cloned = department.dup
-            cloned.update_attribute("name", cloned.name + "-CLONE")
+            if Department.exists?(name: department.name + "-CLONE")
+              flash[:error] = "Some records have already been cloned and cannot be recloned."
+            else
+              cloned = department.dup
+              cloned.update_attribute("name", cloned.name + "-CLONE")
+            end
           end
         
       end

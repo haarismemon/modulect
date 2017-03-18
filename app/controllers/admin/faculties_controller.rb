@@ -162,8 +162,12 @@ module Admin
         faculty = Faculty.find(id.to_i)
         
           if !faculty.nil?
-            cloned = faculty.dup
-            cloned.update_attribute("name", cloned.name + "-CLONE")
+            if Faculty.exists?(name: faculty.name + "-CLONE")
+              flash[:error] = "Some records have already been cloned and cannot be recloned."
+            else
+              cloned = faculty.dup
+              cloned.update_attribute("name", cloned.name + "-CLONE")
+            end
           end
         
       end
