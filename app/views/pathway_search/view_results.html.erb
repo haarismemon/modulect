@@ -820,7 +820,20 @@
       console.log("herererer");
       selected_ids[year][group].splice(index, 1);
     }
-    updatePathwaySearchLogs()
+    // Decrement every tuple of the selected modules
+    for(g = 0; g < selected_ids[year].length; ++g) {
+      for(i = 0; i < selected_ids[year][g].length; ++i) {
+        $.ajax({
+          url: '<%= pathway_search_decrement_pathway_search_log_path %>',
+          type: 'POST',
+          data: {
+            first_mod_id: moduleId
+            second_mod_id: selected_ids[year][g][i]
+            course_id: @course
+          }
+        });
+      }
+    }
     updateUI();
   }
 
