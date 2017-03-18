@@ -807,7 +807,6 @@
   function deselectModule(year, group, moduleId) {
     indexToDelete = selected_ids[year][group].indexOf(moduleId);
     if(indexToDelete > -1) {
-      console.log("herererer");
       selected_ids[year][group].splice(index, 1);
     }
     // Decrement every tuple of the selected modules
@@ -820,6 +819,7 @@
   }
 
   function callIncrementLog(firstMod, secondMod) {
+    console.log("IIIDDDD: " + <%= @course %>);
     $.ajax({
       url: '<%= pathway_search_increment_pathway_search_log_path %>',
       type: 'POST',

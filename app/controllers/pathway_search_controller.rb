@@ -112,7 +112,7 @@ class PathwaySearchController < ApplicationController
     add_to_pathway_search_log(params[:first_mod_id], params[:second_mod_id], params[:course_id])
   end
 
-  def increment_pathway_search_log
+  def decrement_pathway_search_log
     remove_from_pathway_search_log(params[:first_mod_id], params[:second_mod_id], params[:course_id])
   end
 
