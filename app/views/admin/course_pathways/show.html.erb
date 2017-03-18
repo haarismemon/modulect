@@ -1,0 +1,11 @@
+<% provide :title, "#{Course.find(params[:id]).name} Pathways" %>
+<% provide :submit_button_text, 'Update' %>
+
+
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+  </div>
+</header>
+
+ <a id="new-course" class="button" href="<%= new_pathway_admin_course_pathway_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Pathway</a>
