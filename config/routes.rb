@@ -34,6 +34,8 @@ Rails.application.routes.draw do
     post '/users/make_student_user', to: 'users#make_student_user'
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
+    post '/notices/bulk_delete', to: 'notices#bulk_delete'
+    post '/notices/clone', to: 'notices#clone'
 
     root to: "dashboard#index"
   end

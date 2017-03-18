@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery_ujs
+//= require admin-side/moment.js
 //= require bootstrap
 //= require cocoon
 //= require_self
@@ -8,6 +9,9 @@
 //= require_tree
 //= require twitter/typeahead.min
 //= require tinymce
+//= require admin-side/transition.js
+//= require admin-side/collapse.js
+//= require admin-side/bootstrap-datetimepicker.js
 
 
 function intializeSelectize() {

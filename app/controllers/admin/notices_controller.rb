@@ -40,11 +40,11 @@ module Admin
       # Save the object
       if @notice.save
         # If save succeeds, redirect to the index action
-        flash[:success] = "The notice has successfuly been created "+@notice.broadcast ? "and is currently live." : ""
+        flash[:success] = "The notice has successfuly been created "+(@notice.broadcast ? "and is currently live." : "")
         redirect_to(admin_notices_path)
       else
         # If save fails, redisplay the form so user can fix problems
-        render("admin/noticeS/new")
+        render("admin/notices/new")
 
       end
     end
@@ -81,12 +81,44 @@ module Admin
       redirect_to(admin_notices_path)
     end
 
+    def bulk_delete
+      faculties_ids_string = params[:ids]
+      faculty_ids = eval(faculties_ids_string)
+
+      faculty_ids.each do |id|
+        faculty = Notice.find(id.to_i)
+
+        if !faculty.nil?
+          faculty.destroy
+        end
+
+      end
+
+      head :no_content
+    end
+
+    def clone
+      faculties_ids_string = params[:ids]
+      faculty_ids = eval(faculties_ids_string)
+
+      faculty_ids.each do |id|
+        notice = Notice.find(id.to_i)
+
+        if !notice.nil?
+          cloned = notice.dup
+          cloned.update_attribute("title", cloned.title + "-CLONE")
+        end
+
+      end
+
+      head :no_content
+    end
 
     private
 
     def notice_params
       #!add params that want to be recognized by this application
-      params.require(:notice).permit(:title, :notice_body, :display_period, :date_of_event, :broadcast, :additional_link)
+      params.require(:notice).permit(:title, :notice_body, :live_date, :end_date, :broadcast, :optional_link, :auto_delete)
     end
 
     def verify_correct_access

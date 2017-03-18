@@ -17,8 +17,8 @@ see partial fields for additional documentation
 
 <!--name field-->
 <%= render path_of_field_store+"string_form_field", :f => f,
-           :name => :title ,
-            :label => :header%>
+           :name => :title,
+           :label => :header %>
 
 
 
@@ -29,6 +29,42 @@ see partial fields for additional documentation
            :tooltip => "The body of text defined here, is what will be shown to every student in this department in their home page." %>
 
 
+<div class="row field-unit field-unit--string">
+  <div class="col-xs-12">
+    <div class="field-unit__field">
+      <div class='col-md-6' style="padding: 0px">
+        <label for="broadcast"> Start live date
+          <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
+             title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+          </a>
+        </label>
+        <div class='input-group date' id='datetimepicker6'>
+          <%= f.text_field :live_date %>
+
+          <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+        </div>
+      </div>
+      <div class='col-md-6'>
+        <label for="broadcast"> Expire date
+          <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
+             title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+          </a>
+        </label>
+        <div class='input-group date' id='datetimepicker7'>
+          <%= f.text_field :end_date %>
+          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--url field-->
+<%= render path_of_field_store+"string_form_field", :f => f,
+           :name => :optional_link %>
 
 
 
@@ -36,14 +72,41 @@ see partial fields for additional documentation
   <div class="col-xs-12">
     <div class="field-unit__label">
       <%= f.check_box :broadcast, {style: "margin-right: 4px"} %>
-      <label for="broadcast"> Broadcast?
-            <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
-               title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
-            </a>
+      <label for="broadcast" style="margin-right: 50px"> Broadcast?
+        <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
+           title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+        </a>
+      </label>
+
+      <%= f.check_box :auto_delete, {style: "margin-right: 4px"} %>
+      <label for="broadcast"> Automatically delete this notice at expiry date?
+        <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
+           title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+        </a>
       </label>
     </div>
   </div>
 </div>
+
+<!--date fields-->
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker6').datetimepicker();
+        $('#datetimepicker7').datetimepicker({
+            useCurrent: false //Important! See issue #1075
+        });
+        $("#datetimepicker6").on("dp.change", function (e) {
+            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker7").on("dp.change", function (e) {
+            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+</script>
 
 <!--submit button-->
 <div class="form-actions">
