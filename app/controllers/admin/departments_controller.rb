@@ -177,9 +177,5 @@ module Admin
          redirect_to admin_path unless current_user.user_level == "super_admin_access"
 
       end
-
-      
-
-
   end
 end
