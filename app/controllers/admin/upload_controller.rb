@@ -37,7 +37,7 @@ module Admin
             faculty_id = Faculty('Natural and Mathematical Sciences')
             logger.debug("88888888888888888888#{faculty_id}")
           end
-          # session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
+          session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
         end
 
         flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
