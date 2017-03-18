@@ -1,5 +1,7 @@
 class PathwaySearchController < ApplicationController
 
+  include PathwaySearchHelper
+
 
 	def begin
     @faculties = Faculty.all

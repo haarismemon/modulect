@@ -91,7 +91,8 @@ Rails.application.routes.draw do
   get 'pathway-search/begin'
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
-  get 'pathway-search/view_results_test'
+  post 'pathway-search/increment_pathway_search_log', to: 'pathway_search#increment_pathway_search_log'
+  post 'pathway-search/decrement_pathway_search_log', to: 'pathway_search#decrement_pathway_search_log'
 
 
   # Career search
@@ -114,8 +115,6 @@ Rails.application.routes.draw do
   post 'application/delete_pathway'
 
   get 'application/rating_for_module'
-  post 'pathway_search/increment_pathway_search_log'
-  post 'pathway_search/decrement_pathway_search_log'
   
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
