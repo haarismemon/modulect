@@ -7,5 +7,7 @@
   <div class="header__actions">
   </div>
 </header>
-
+<% @course.pathways.each do |pathway| %>
+	<%= pathway.name %><br/>
+<% end %>
  <a id="new-course" class="button" href="<%= new_pathway_admin_course_pathway_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Pathway</a>

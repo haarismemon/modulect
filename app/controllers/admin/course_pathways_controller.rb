@@ -1,6 +1,6 @@
 module Admin
 	class CoursePathwaysController < Admin::BaseController
-		def index
+		def show
 			@course = Course.find_by(id: params[:id])
 		end
 

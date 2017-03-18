@@ -100,7 +100,10 @@ function savePathway(){
 		        data: JSON.stringify(selected_ids),
 		        year: <%= @year_of_study.to_i %>,
 		        course: js_course.id
-		    }
+		    },
+		    success: function(result) {
+				window.location = "<%= admin_course_pathway_path(@course.id) %>";
+			}
    		})
 	}
 	console.log(txt);
