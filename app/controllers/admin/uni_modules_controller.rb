@@ -81,7 +81,7 @@ module Admin
 
   	def create
       @uni_module = UniModule.new(uni_module_params)
-      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.update_attributes(uni_module_params)
+      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.save
         @uni_module.departments.clear()
         departments = params[:uni_module][:department_ids].split(',')
         user_dept = Department.find(current_user.department_id).name
@@ -129,6 +129,11 @@ module Admin
             @uni_module.tags << new_tag
           end
         end
+
+        # If save succeeds, redirect to the index action
+        tag_clean_up
+        flash[:success] = "Succesfully created module"
+        redirect_to(edit_admin_uni_module_path(@uni_module))
       else
         # If save fails, redisplay the form so user can fix problems
         if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty?
@@ -140,17 +145,10 @@ module Admin
         if !params[:uni_module][:career_tags].present? || params[:uni_module][:career_tags].empty?
           @uni_module.errors[:base] << "Module must have at least one career tag."
         end
-        # If save fails, redisplay the form so user can fix problems
-        render(:new)
-      end
-
-      if @uni_module.save
-        # If save succeeds, redirect to the index action
-
-        tag_clean_up
-        flash[:success] = "Succesfully created module"
-        redirect_to(edit_admin_uni_module_path(@uni_module))
-      else
+        @departments = []
+        @careerTags = []
+        @interestTags = []
+        @required = []
         # If save fails, redisplay the form so user can fix problems
         render(:new)
       end
