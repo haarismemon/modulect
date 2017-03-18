@@ -4,7 +4,8 @@ module Admin
 	before_action :authenticate_admin
 	before_action :admin_has_dept
 	before_action :is_activated
-
+	before_action :verify_super_admin, only: [:reset_modulect]
+      
 	layout "admin/application"
 
    	include SessionsHelper
@@ -41,11 +42,27 @@ module Admin
 		end
 	end
 
-	
-      def reset_modulect
+
+    def reset_modulect
         password_received = params[:dwp]
-        flash[:success] = "Successfully reset modulect " + password_received
-        redirect_to admin_path
+        if current_user.is_password?(password_received)
+
+
+
+        	
+        	flash[:success] = "Modulect has succesfully been reset"
+        else
+        	flash[:error] = "The password you entered was incorrect."
+        end
+        head :no_content
+      end
+
+      private 
+
+       
+      def verify_super_admin
+       redirect_to admin_path unless current_user.user_level == "super_admin_access"
+
       end
 
 

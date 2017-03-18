@@ -36,6 +36,10 @@ Rails.application.routes.draw do
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
 
+    
+    post '/reset_modulect', to: 'base#reset_modulect'
+
+
 
     root to: "dashboard#index"
   end

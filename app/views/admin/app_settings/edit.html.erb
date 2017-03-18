@@ -182,60 +182,47 @@ Save settings</button>
 $(document).ready(function() {
     $("#reset-modulect-link").click(function(event) {
 
-      bootbox.prompt({
-   title: "Password confirmation",
-              size: "medium",
-              closeButton: false,
-    inputType: 'password',
-    buttons: {
-                  confirm: {
-                      label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
-                      className: 'btn-success'
-                  },
-                  cancel: {
-                      label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
-                      className: 'red-btn pull-left'
-                  }
-              },
-    callback: function (result) {
-        if(result != null){
+        bootbox.prompt({
+            title: "Password confirmation",
+            size: "medium",
+            closeButton: false,
+            inputType: 'password',
+            buttons: {
+                confirm: {
+                    label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                    className: 'red-btn pull-left'
+                }
+            },
+            callback: function(result) {
+                if (result != null) {
 
 
-
- $.ajax({
-                          type: "POST",
-                          url: "<%= admin_reset_modulect_path %>",
-                          context: document.body,
-                          data: {
-                              dwp: result
-                          },
-                          success() {
-                            bootbox.alert({
-                                title: "Completed bulk deletion",
-                                size: "medium",
-                                closeButton: false,
-                                message: "The bulk action has been applied. Some modules may not have been deleted because they are linked to courses."
-                            })
+                    $.ajax({
+                        type: "POST",
+                        url: "<%= admin_reset_modulect_path %>",
+                        context: document.body,
+                        data: {
+                            dwp: result
+                        },
+                        success() {
+                            window.location.replace("<%= admin_settings_path%>");
                         }
 
-                      })
+                    })
 
 
 
 
+                }
+            }
+        });
 
 
-
-
-
-
-
-        }
-    }
-});
-
-
-});
+    });
 
 
 });
