@@ -89,17 +89,19 @@ module Admin
         interest_tags = params[:uni_module][:interest_tags].split(',')
 
         @uni_module.departments.clear()
-        user_dept = Department.find(current_user.department_id).name
-        if !(departments.include? user_dept)
-          # If user does not include their own department in the department list.
-          @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
-          @departments = departments
-          @careerTags = career_tags
-          @interestTags = interest_tags
-          @required = required
-          # Redisplay the form so user can fix problems
-          ## THIS RENDER IS CAUSING PROBLEMS - FORM IS NOT RESUBMITTING
-          render("admin/uni_modules/new") and return
+        if current_user.user_level == "department_admin_access"
+          user_dept = Department.find(current_user.department_id).name
+          if !(departments.include? user_dept)
+            # If user does not include their own department in the department list.
+            @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+            @departments = departments
+            @careerTags = career_tags
+            @interestTags = interest_tags
+            @required = required
+            # Redisplay the form so user can fix problems
+            ## THIS RENDER IS CAUSING PROBLEMS - FORM IS NOT RESUBMITTING
+            render("admin/uni_modules/new") and return
+          end
         end
         departments.each do |dept|
           chosen_dept = Department.find_by_name(dept)
@@ -199,17 +201,19 @@ module Admin
       if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.update_attributes(uni_module_params)
         @uni_module.departments.clear()
         departments = params[:uni_module][:department_ids].split(',')
-        user_dept = Department.find(current_user.department_id).name
-        if !(departments.include? user_dept)
-          # If user does not include their own department in the department list.
-          @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
-          @departments = @uni_module.departments.pluck(:name)
-          @careerTags = @uni_module.career_tags.pluck(:name)
-          @interestTags = @uni_module.interest_tags.pluck(:name)
-          @required = @uni_module.uni_modules.pluck(:name)
-          # Redisplay the form so user can fix problems
-          render(:edit)
-          return
+        if current_user.user_level == "department_admin_access"
+          user_dept = Department.find(current_user.department_id).name
+          if !(departments.include? user_dept)
+            # If user does not include their own department in the department list.
+            @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+            @departments = @uni_module.departments.pluck(:name)
+            @careerTags = @uni_module.career_tags.pluck(:name)
+            @interestTags = @uni_module.interest_tags.pluck(:name)
+            @required = @uni_module.uni_modules.pluck(:name)
+            # Redisplay the form so user can fix problems
+            render(:edit)
+            return
+          end
         end
         departments.each do |dept|
           chosen_dept = Department.find_by_name(dept)
