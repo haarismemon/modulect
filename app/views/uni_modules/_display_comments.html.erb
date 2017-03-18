@@ -579,6 +579,36 @@
               $("#updated-time").text(" <%= '(Edited)' %>");
           <% end%>
       });
+
+      selected_rating = 0;
+
+      $('ul.star-rating li').on('click', function () {
+          $('ul.star-rating li').removeClass('active');
+          $('ul.star-rating li').removeClass('secondary-active');
+          $(this).addClass('active');
+          $(this).prevAll().addClass('secondary-active');
+
+          selected_rating = $(this).attr('id');
+      });
+
+      $('ul.star-rating').hover(function () {
+          $('ul.star-rating li').hover(function () {
+              $('ul.star-rating li').removeClass('active');
+              $('ul.star-rating li').removeClass('secondary-active');
+              $(this).addClass('active-hover');
+              $(this).prevAll().addClass('secondary-active-hover');
+          }, function () {
+              $('ul.star-rating li').removeClass('active-hover');
+              $('ul.star-rating li').removeClass('secondary-active-hover');
+//          $(this).addClass('active-hover');
+              $(this).prevAll().addClass('secondary-active-hover');
+          })
+      }, function () {
+          $('ul.star-rating li').removeClass('active-hover');
+          $('ul.star-rating li').removeClass('secondary-active-hover');
+          $('ul.star-rating li#' + selected_rating).addClass('active');
+          $('ul.star-rating li#'+ selected_rating).prevAll().addClass('secondary-active');
+      })
   });
 
     $(".delete-btn").click(function () {
