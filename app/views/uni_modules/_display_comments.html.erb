@@ -208,6 +208,10 @@
     color: #2ab27b;
   }
 
+  ul[class="star-rating"] li.active-hover, ul[class="star-rating"] li.secondary-active-hover {
+    color: #2ab27b;
+  }
+
   ul[class="star-rating"] li input[type="radio"] {
     display: none;
   }
@@ -215,13 +219,19 @@
 </style>
 
 <script>
-
   $('ul[class="star-rating"] li').on('click', function () {
       $('ul[class="star-rating"] li').removeClass('active');
       $('ul[class="star-rating"] li').removeClass('secondary-active');
       $(this).addClass('active');
       $(this).prevAll().addClass('secondary-active');
   });
+
+  $('ul[class="star-rating"]').hover(function () {
+      $('ul[class="star-rating"] li').removeClass('active');
+      $('ul[class="star-rating"] li').removeClass('secondary-active');
+      $(this).addClass('active-hover');
+      $(this).prevAll().addClass('secondary-active-hover');
+  })
 </script>
 
 <style>
