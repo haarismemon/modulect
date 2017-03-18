@@ -81,7 +81,7 @@ module Admin
 
   	def create
       @uni_module = UniModule.new(uni_module_params)
-      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.save
+      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty?
 
         departments = params[:uni_module][:department_ids].split(',')
         required = params[:uni_module][:required].split(',')
@@ -138,9 +138,28 @@ module Admin
           end
         end
 
-        # If save succeeds, redirect to the index action
-        flash[:success] = "Succesfully created module"
-        redirect_to(admin_uni_modules_path)
+        if @uni_module.save
+          # If save succeeds, redirect to the index action
+          flash[:success] = "Succesfully created module"
+          redirect_to(admin_uni_modules_path)
+        else
+          # If save fails, redisplay the form so user can fix problems
+          if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty?
+            @uni_module.errors[:base] << "Module must belong to at least one department."
+          end
+          if !params[:uni_module][:interest_tags].present? || params[:uni_module][:interest_tags].empty?
+            @uni_module.errors[:base] << "Module must have at least one interest tag."
+          end
+          if !params[:uni_module][:career_tags].present? || params[:uni_module][:career_tags].empty?
+            @uni_module.errors[:base] << "Module must have at least one career tag."
+          end
+          @departments = []
+          @careerTags = []
+          @interestTags = []
+          @required = []
+          # If save fails, redisplay the form so user can fix problems
+          render('admin/uni_modules/new')
+        end
       else
         # If save fails, redisplay the form so user can fix problems
         if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty?
