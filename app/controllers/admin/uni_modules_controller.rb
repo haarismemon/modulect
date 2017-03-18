@@ -82,7 +82,7 @@ module Admin
   	def create
       @uni_module = UniModule.new(uni_module_params)
       if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.save
-        
+
         departments = params[:uni_module][:department_ids].split(',')
         required = params[:uni_module][:required].split(',')
         career_tags = params[:uni_module][:career_tags].split(',')
@@ -98,7 +98,8 @@ module Admin
           @interestTags = interest_tags
           @required = required
           # Redisplay the form so user can fix problems
-          render('admin/uni_modules/new') and return
+          ## THIS RENDER IS CAUSING PROBLEMS - FORM IS NOT RESUBMITTING
+          render("admin/uni_modules/new") and return
         end
         departments.each do |dept|
           chosen_dept = Department.find_by_name(dept)
@@ -139,7 +140,6 @@ module Admin
 
         # If save succeeds, redirect to the index action
         flash[:success] = "Succesfully created module"
-        p "herererererer"
         redirect_to(admin_uni_modules_path)
       else
         # If save fails, redisplay the form so user can fix problems
