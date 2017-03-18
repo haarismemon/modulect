@@ -788,6 +788,7 @@
       console.log(year + " " + group);
       console.log(selected_ids[year][group]);
       selected_ids[year][group].push(this_module.id);
+      updatePathwaySearchLogs();
       updateUI();
     }
     
@@ -804,7 +805,12 @@
       console.log("herererer");
       selected_ids[year][group].splice(index, 1);
     }
+    updatePathwaySearchLogs()
     updateUI();
+  }
+
+  function updatePathwaySearchLogs() {
+    
   }
 
   function updateData(){
