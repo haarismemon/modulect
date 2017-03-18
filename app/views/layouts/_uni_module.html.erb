@@ -72,9 +72,14 @@
                 </button>
             <% end %>
 
+
+
+
+            <% if !app_settings.disable_all_reviews %>
             <button class="btn btn-lg btn-small" id="review-module-<%= uni_module.id %>" style="width: 170px">
               <i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module
             </button>
+            <% end %>
 
             <script>
                 $("button#save-<%= uni_module.code%>").on("click", function () {
