@@ -56,7 +56,7 @@ module PathwaySearchHelper
       mod_b = first_mod_id
     end
     # Check if there is an existing tuple for this pair
-    
+    existing_logs = PathwaySearchLog.
 
 
 end
