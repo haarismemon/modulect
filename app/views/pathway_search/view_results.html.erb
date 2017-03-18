@@ -787,8 +787,23 @@
     } else {
       console.log(year + " " + group);
       console.log(selected_ids[year][group]);
+      // Increment every tuple of the selected modules
+      for(g = 0; g < selected_ids[year].length; ++g) {
+        for(i = 0; i < selected_ids[year][g].length; ++i) {
+          $.ajax({
+            url: '<%= pathway_search_increment_pathway_search_log_path %>',
+            type: 'POST',
+            data: {
+              first_mod_id: module_id
+              second_mod_id: selected_ids[year][g][i]
+              course_id: @course
+            }
+          });
+        }
+      }
       selected_ids[year][group].push(this_module.id);
       updatePathwaySearchLogs();
+
       updateUI();
     }
     
