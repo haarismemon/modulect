@@ -4,8 +4,8 @@
 <header class="header" style="padding-bottom: 40px">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
-    <!--back button-->
-    <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, :back, class: "button" %>
+    <!--quit button-->
+    <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, admin_notices_path, class: "button" %>
   </div>
 </header>
 

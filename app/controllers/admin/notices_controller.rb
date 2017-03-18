@@ -3,7 +3,14 @@ module Admin
     before_action :verify_correct_access, only: [:destroy, :update, :edit]
 
     def index
-      @notices = Notice.all.where(department_id: @current_user.department_id)
+      # checks current user status
+      if current_user.user_level == "super_admin_access"
+        # if super admin only display global ntoices
+        @notices = Notice.all.where(:department_id => nil)
+      else
+        # if department admin only display department notices
+        @notices = Notice.all.where(:department_id => [@current_user.department_id, nil])
+      end
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
@@ -35,8 +42,11 @@ module Admin
     def create
       # Instantiate a new object using form parameters
       @notice = Notice.new(notice_params)
-      # sets department id of notice to be the same as currently signed user
-      @notice.department_id = @current_user.department_id
+      # if super_admin user, keep department id of notice to nil as a indication to display everywhere
+      if current_user.user_level != "super_admin_access"
+        # sets department id of notice to be the same as currently signed user
+        @notice.department_id = @current_user.department_id
+      end
       # Save the object
       if @notice.save
         # If save succeeds, redirect to the index action
@@ -58,7 +68,6 @@ module Admin
 
     def update
       # @notice global variable exists
-
       # Update the object
       if @notice.update_attributes(notice_params)
         # If save succeeds, redirect to the index action
@@ -78,7 +87,7 @@ module Admin
       @notice.destroy
       flash[:success] = "notice has been deleted successfully."
       #redirect to action which displays all notices
-      redirect_to(admin_notices_path)
+      redirect_to(admin_noticvves_path)
     end
 
     def bulk_delete
