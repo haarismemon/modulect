@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170316111056) do
+ActiveRecord::Schema.define(version: 20170318190315) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -78,13 +78,10 @@ ActiveRecord::Schema.define(version: 20170316111056) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
-    t.integer  "total_credits"
     t.integer  "year_structure_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.boolean  "compulsory"
-    t.integer  "min_modules"
-    t.integer  "max_modules"
     t.integer  "min_credits"
     t.integer  "max_credits"
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
@@ -95,6 +92,16 @@ ActiveRecord::Schema.define(version: 20170316111056) do
     t.integer "uni_module_id", null: false
     t.index ["group_id", "uni_module_id"], name: "index_groups_uni_modules_on_group_id_and_uni_module_id"
     t.index ["uni_module_id", "group_id"], name: "index_groups_uni_modules_on_uni_module_id_and_group_id"
+  end
+
+  create_table "pathway_search_logs", force: :cascade do |t|
+    t.integer  "first_mod_id"
+    t.integer  "second_mod_id"
+    t.integer  "counter"
+    t.integer  "department_id"
+    t.integer  "course_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "pathways", force: :cascade do |t|

@@ -108,13 +108,4 @@ class PathwaySearchController < ApplicationController
 	    end
 
 	end
-
-	def view_results_test
-		if params.has_key?(:course)
-			@course = Course.find_by_id(params[:course])
-		else
-	    	redirect_to "/pathway-search/"
-		end
-	end
-
 end
