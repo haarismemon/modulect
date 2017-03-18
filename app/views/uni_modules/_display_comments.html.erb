@@ -219,18 +219,34 @@
 </style>
 
 <script>
+  selected_rating = 0;
+
   $('ul[class="star-rating"] li').on('click', function () {
       $('ul[class="star-rating"] li').removeClass('active');
       $('ul[class="star-rating"] li').removeClass('secondary-active');
       $(this).addClass('active');
       $(this).prevAll().addClass('secondary-active');
+
+      selected_rating = $(this).attr('id');
   });
 
   $('ul[class="star-rating"]').hover(function () {
-      $('ul[class="star-rating"] li').removeClass('active');
-      $('ul[class="star-rating"] li').removeClass('secondary-active');
-      $(this).addClass('active-hover');
-      $(this).prevAll().addClass('secondary-active-hover');
+      $('ul[class="star-rating"] li').hover(function () {
+          $('ul[class="star-rating"] li').removeClass('active');
+          $('ul[class="star-rating"] li').removeClass('secondary-active');
+          $(this).addClass('active-hover');
+          $(this).prevAll().addClass('secondary-active-hover');
+      }, function () {
+          $('ul[class="star-rating"] li').removeClass('active-hover');
+          $('ul[class="star-rating"] li').removeClass('secondary-active-hover');
+//          $(this).addClass('active-hover');
+          $(this).prevAll().addClass('secondary-active-hover');
+      })
+  }, function () {
+      $('ul[class="star-rating"] li').removeClass('active-hover');
+      $('ul[class="star-rating"] li').removeClass('secondary-active-hover');
+      $('ul[class="star-rating"] li#' + selected_rating).addClass('active');
+      $('ul[class="star-rating"] li#'+ selected_rating).prevAll().addClass('secondary-active');
   })
 </script>
 
