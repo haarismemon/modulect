@@ -11,5 +11,9 @@ module Admin
 		def edit
 			@pathway = Pathway.find_by(id: params[:id])
 		end
+
+		
+
+
 	end
 end

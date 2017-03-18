@@ -117,6 +117,7 @@ Rails.application.routes.draw do
   post 'application/save_pathway'
   post 'application/save_course_pathway'
   post 'application/delete_course_pathway'
+  post 'application/update_course_pathway'
   post 'application/delete_pathway'
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'

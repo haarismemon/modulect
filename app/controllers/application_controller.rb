@@ -45,6 +45,16 @@ class ApplicationController < ActionController::Base
     course.pathways << Pathway.create(name: pathway_name, data: pathway_data, year: pathway_year, course_id: pathway_course)
   end
 
+  def update_course_pathway
+      pathway = Pathway.find_by(id: params[:id])
+      pathway.name = params[:name]
+      pathway.year = params[:year]
+      pathway.course_id = params[:course_id]
+      pathway.data = params[:data]
+      pathway.save
+      render json: pathway
+  end
+
   def delete_course_pathway
     pathway = Pathway.find_by_id(params[:pathway_id])
     pathway.destroy
@@ -75,6 +85,5 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-
 
 end
