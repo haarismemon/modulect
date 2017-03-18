@@ -126,7 +126,12 @@
       <% end %>
     </div>
 <% else %>
+    
+    <% if !app_settings.disable_new_reviews %>
     <p>Be the first to review this module!</p>
+    <% else %>
+    <p>No reviews</p>
+    <% end %>
 <% end %>
 <hr>
 
@@ -138,6 +143,7 @@
             <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
           </div>
       <% elsif logged_in? %>
+      <% if !app_settings.disable_new_reviews %>
           <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn ">Add a Review</a>
           <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
             <h3>Add a Review</h3>
@@ -175,8 +181,11 @@
                   <%= f.submit 'Add Review', class:'btn' %>
                 </p>
             <% end %>
+            <% end %>
       <% else %>
+      <% if !app_settings.disable_new_reviews %>
           <p>You must be logged in to add a review.</p>
+      <% end %>
       <%end%>
       </div>
   <% end %>

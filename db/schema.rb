@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314233915) do
+ActiveRecord::Schema.define(version: 20170318173709) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20170314233915) do
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
     t.decimal  "tag_percentage_match",   default: "60.0"
+    t.boolean  "disable_new_reviews",    default: false
+    t.boolean  "disable_all_reviews",    default: false
     t.index ["singleton_guard"], name: "index_app_settings_on_singleton_guard", unique: true
   end
 
