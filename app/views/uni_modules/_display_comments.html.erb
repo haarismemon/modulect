@@ -86,7 +86,6 @@
 
       <label id="display-comments-number">Displaying comments</label>
     </div>
-
     <div id="comments-section">
       <% for i in 1..num_pages %>
           <div id="page-div-<%= i %>">
@@ -103,7 +102,8 @@
                               <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                           <% end %><p></p>
                           <p><%= comment.body %></p>
-                          <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong> <%= comment.created_at != comment.updated_at ? '(Edited)' : '' %></p>
+                          <p><strong><%= comment.user.full_name %></strong><%= get_course_and_year(comment.user, " ,")%></p>
+                          <p style="font-size:12px;"><%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong> <%= comment.created_at != comment.updated_at ? '(Edited)' : '' %></p>
                         </td>
                         <td id="helpful-td" align="right">
                           <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
