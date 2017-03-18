@@ -106,7 +106,7 @@
                           <p style="font-size:12px;"><%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong> <%= comment.created_at != comment.updated_at ? '(Edited)' : '' %></p>
                         </td>
                         <td id="helpful-td" align="right">
-                          <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
+                        <span style="font-size:14px;margin-top:15px;" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></span>
                           <% if logged_in? %>
                               <% if comment.liked_users.include?(current_user) %>
                                   <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>" title="Mark as helpful/unhelpful"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
@@ -115,7 +115,10 @@
                               <% end %>
                           <% else %>
                               <button class="btn btn-disabled helpful" id="helpful-btn-disabled" title="To mark a review as helpful, you must be logged in."><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-                          <% end %>
+                          <% end %>                         
+
+                          </p>
+                          </p>
                         </td>
                         <hr>
                       </colgroup>
