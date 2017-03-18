@@ -10,10 +10,13 @@ Rails.application.routes.draw do
     patch '/uni_modules' => 'uni_modules#create'
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
+
+    # GENERAL
     get 'upload', to: 'upload#upload'
     get 'analytics', to: 'analytics#analytics'
+    get 'module_reviews', to: 'module_reviews#message'
 
-
+    # APP SETTINGS
     put '/app_settings' => 'app_settings#update'
     patch '/app_settings' => 'app_settings#update'
     match 'settings' => 'app_settings#edit', :defaults => {:id => 1}, via: [:get]
