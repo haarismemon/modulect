@@ -8,6 +8,22 @@
   </div>
 </header>
 <% @course.pathways.each do |pathway| %>
-	<%= pathway.name %><br/>
+	<div class = "panel panel-default">
+    	<div class = "panel-heading">
+        	<h3><span class="glyphicon glyphicon-pushpin-sm"></span><%= pathway.name %></h3>
+        </div>
+        <div class = "panel-body">
+        	<h4>Optional modules:</h4>
+        	<ul>
+            	<% pathway.get_module_list.each do |uni_module| %>
+            		<li><%= " - <b>#{uni_module.code}</b> #{uni_module.name}".html_safe %></li>
+            	<% end %>
+            </ul>
+            <div align="right">
+	           	<a id="edit-pathway" href="#" class="btn btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i><span>&nbsp;&nbsp;Edit</span></a>
+	           	<a id="delete-pathway" href="#" class="btn btn-xs" style="background-color:#f44336; box-shadow:0 3px #ce2a1e;"><i class="fa fa-trash" aria-hidden="true"></i><span>&nbsp;&nbsp;Delete</span></a>
+           	</div>
+		</div>
+	</div>
 <% end %>
- <a id="new-course" class="button" href="<%= new_pathway_admin_course_pathway_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Pathway</a>
+<a id="new-course" class="button" href="<%= new_pathway_admin_course_pathway_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Pathway</a>
