@@ -7,15 +7,21 @@ Rails.application.routes.draw do
     resources :faculties
     resources :groups
     resources :uni_modules
+    patch '/uni_modules' => 'uni_modules#create'
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
+
+    # GENERAL
     get 'upload', to: 'upload#upload'
     get 'analytics', to: 'analytics#analytics'
+    get 'module_reviews', to: 'module_reviews#message'
 
-
+    # APP SETTINGS
     put '/app_settings' => 'app_settings#update'
     patch '/app_settings' => 'app_settings#update'
     match 'settings' => 'app_settings#edit', :defaults => {:id => 1}, via: [:get]
+
+    post '/reset_modulect', to: 'base#reset_modulect'
    
     # BULK ACTIONS
     post '/courses/bulk_delete', to: 'courses#bulk_delete'
@@ -34,8 +40,8 @@ Rails.application.routes.draw do
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
 
-    patch '/uni_modules' => 'uni_modules#create'
-
+    # RESET MODULECT
+    post '/reset_modulect', to: 'base#reset_modulect'
 
     root to: "dashboard#index"
   end
