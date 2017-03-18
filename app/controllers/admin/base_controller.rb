@@ -1,4 +1,7 @@
 module Admin
+  include SessionsHelper
+  include ApplicationHelper
+  include AdminHelper
 
 	class Admin::BaseController < ApplicationController
 	before_action :authenticate_admin
@@ -84,3 +87,4 @@ module Admin
 
 	end
 end
+
