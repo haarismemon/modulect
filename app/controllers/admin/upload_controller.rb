@@ -29,15 +29,17 @@ module Admin
 
       else # Validation checks passed, continue with upload
         # Reads each row of the uploaded csv file
+        # Creates records for corresponding resource
         parsed_csv.each do |row|
-          # Creates records for corresponding resource
+          new_record = row.to_hash
+          # When uploading departments, specify faculty name instead of id
           if session[:resource_name] == 'departments'
-            row_hash = row.to_hash
-            # faculty_id = Faculty.find_by_name(row_hash['faculty_name'])
-            faculty_id = Faculty('Natural and Mathematical Sciences')
-            logger.debug("88888888888888888888#{faculty_id}")
+            # Lookup a faculty with matching name and retrieve it's ID
+            new_record['faculty_id'] = Faculty.where(:name => row.to_hash['faculty_name']).first.id
+            # Remove the faculty name attribute from row hash
+            new_record = new_record.except('faculty_name')
           end
-          session[:resource_name].to_s.classify.constantize.create!(row.to_hash)
+          session[:resource_name].to_s.classify.constantize.create!(new_record)
         end
 
         flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
@@ -53,9 +55,9 @@ module Admin
       resource = nil
 
       # Verify that the resource with the corresponding name exists
-      %w(courses uni_modules departments faculties).each do |administrate_resource|
-        if administrate_resource.to_s == resource_name
-          resource = administrate_resource
+      %w(courses uni_modules departments faculties).each do |verify_resource|
+        if verify_resource.to_s == resource_name
+          resource = verify_resource
         end
       end
 
