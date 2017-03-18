@@ -41,8 +41,14 @@
                });
             </script>
             <% else %>
-            <form action="/login" method="get">
+            <form action="/login" method="get" style="display:inline-block;">
                <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="left" title="To save modules, you must be logged in."><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
+               </button>
+            </form>
+            <% end %>
+            <% if !app_settings.disable_all_reviews && !logged_in? %>
+             <form action="/login" method="get" style="display:inline-block;">
+               <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="left" title="To review modules, you must be logged in." style="width: 170px"><span><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</span>
                </button>
             </form>
             <% end %>
