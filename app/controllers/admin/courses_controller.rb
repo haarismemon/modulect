@@ -124,7 +124,7 @@ module Admin
             course.year_structures.each do |year_structure|
               Group.where(year_structure_id: year_structure.id).destroy_all
             end
-            YearStructure.where(course_id: @course.id).destroy_all
+            YearStructure.where(course_id: course.id).destroy_all
             course.destroy
           end
       end
