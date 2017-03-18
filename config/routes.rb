@@ -105,6 +105,7 @@ Rails.application.routes.draw do
   resources :uni_modules, only: [:show] do
     resources :comments
   end
+  get 'admin/uni_modules/:id/comments', to: 'admin/uni_modules#comments', as: 'admin_comment'
 
 
   # AJAX

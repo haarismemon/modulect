@@ -1,0 +1,18 @@
+<header class="header index-header-area">
+  <h1 id="page-title">Comments</h1>
+</header>
+<table>
+  <tr>
+    <td>User</td>
+    <td>Body</td>
+    <td>Rating</td>
+  </tr>
+  <% @uni_module.comments.each do |comment| %>
+      <tr>
+        <% user_id = User.find(comment.user_id)%>
+        <td><%= user_id.first_name %> <%=user_id.last_name %></td>
+        <td><%= comment.body%></td>
+        <td><%= comment.rating%></td>
+      </tr>
+  <%end%>
+</table>
