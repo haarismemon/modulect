@@ -45,6 +45,12 @@ class ApplicationController < ActionController::Base
     course.pathways << Pathway.create(name: pathway_name, data: pathway_data, year: pathway_year, course_id: pathway_course)
   end
 
+  def delete_course_pathway
+    pathway = Pathway.find_by_id(params[:pathway_id])
+    pathway.destroy
+    render json: pathway
+  end
+
   # delete pathway from user's favourites
   def delete_pathway
     pathway = Pathway.find(params[:pathway_par])
