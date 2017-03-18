@@ -7,10 +7,17 @@
   </div>
 </header>
 
-<div id="main-container">
+<div>
+	<input type="text" class="form-control" id="save-name" placeholder="Name your Pathway" required/>
 </div>
 
 
+<div id="main-container">
+</div>
+
+<div>
+	<button type="submit" class="btn btn-lg" id="save">Save Pathway</button>
+</div>
 
 <script type="text/javascript">
 var data = '<%=raw (@course.to_json(
@@ -21,9 +28,7 @@ var optional_modules_per_year = [];
 var selected_ids = [];
 updateOptionalModules(); 
 updateSelectedModules();
-
-console.log(optional_modules_per_year);
-console.log(selected_ids);
+generateView();
 
 function updateOptionalModules(){
 // Go through each year structure
@@ -57,31 +62,32 @@ function toggle(year, group, module){
 	if(selected_ids[year][group].includes(mod.id)){
 		console.log("removed " + mod.name);
 		selected_ids[year][group].splice(selected_ids[year][group].indexOf(mod.id),1);		
-		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-li fa fa-square-o');
+		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-lg fa fa-square-o');
 	}else{
 		console.log("added " + mod.name);
 		selected_ids[year][group].push(mod.id);
-		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-li fa fa-check-square-o');
+		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-lg fa fa-check-square-o');
 	}
 }
 
-out = "";
-for(y=0; y<optional_modules_per_year.length; y++){
-	out+="<h3>Year " + (y+1) + "</h3>";
-	for(g=0; g<optional_modules_per_year[y].length; g++){
-		out+="<b>" + optional_modules_per_year[y][g].name + "</b><br/>";
-		out+='<ul class="fa-ul">';
-		for(m=0; m<optional_modules_per_year[y][g].uni_modules.length; m++){
-			out+='<li id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-li fa fa-square-o"></i>';
-			out+=optional_modules_per_year[y][g].uni_modules[m].name;
-			out+='</li>'
+function generateView(){
+	out = "";
+	for(y=0; y<optional_modules_per_year.length; y++){
+		out+="<h3>Year " + (y+1) + "</h3>";
+		for(g=0; g<optional_modules_per_year[y].length; g++){
+			out+="<b>" + optional_modules_per_year[y][g].name + "</b><br/>";
+			out+='<ul class="list-group">';
+			for(m=0; m<optional_modules_per_year[y][g].uni_modules.length; m++){
+				out+='<li class ="list-group-item" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
+				out+=optional_modules_per_year[y][g].uni_modules[m].name;
+				out+='</li>'
+			}
+			out+='</ul>';
 		}
-		out+='</ul>';
 	}
+	document.getElementById("main-container").innerHTML = out;
 }
-document.getElementById("main-container").innerHTML = out;
-
-function updateView(){
+function savePathway(){
 
 }
 
