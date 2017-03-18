@@ -156,7 +156,7 @@ module Admin
       else 
         # Failed to update
         # If save fails, redisplay the form so user can fix problems
-        if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty
+        if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty?
           @uni_module.errors[:base] << "Module must belong to at least one department."
         end
         if !params[:uni_module][:interest_tags].present? || params[:uni_module][:interest_tags].empty?
