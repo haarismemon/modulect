@@ -41,5 +41,13 @@ module Admin
 		end
 	end
 
+	
+      def reset_modulect
+        password_received = params[:dwp]
+        flash[:success] = "Successfully reset modulect " + password_received
+        redirect_to admin_path
+      end
+
+
 	end
 end

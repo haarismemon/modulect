@@ -155,7 +155,7 @@ Save settings</button>
    <div class="row field-unit field-unit--checkbox is_offline" >
       <div class="col-xs-12">
          <div class="field-unit__label">
-            <label ">This action is irreversible, and deletes all
+            <p>This action is irreversible, and deletes all
             <ul style="list-style: square">
             <li>courses</li>
             <li>departments</li>
@@ -166,11 +166,77 @@ Save settings</button>
             <li>analytics</li>
             <li>any associated settings</li>
             </ul>
-            </label>
+            </p>
          </div>
          <div class="field-unit__field" style="margin-top:20px;">
-            <a href="javascript:void()" class="btn red-btn">Reset Modulect ></a>
+
+            <a id="reset-modulect-link" class="btn red-btn" style="cursor:pointer;">Reset Modulect</a>
+
          </div>
       </div>
    </div>
 </div>
+
+
+  <script>
+$(document).ready(function() {
+    $("#reset-modulect-link").click(function(event) {
+
+      bootbox.prompt({
+   title: "Password confirmation",
+              size: "medium",
+              closeButton: false,
+    inputType: 'password',
+    buttons: {
+                  confirm: {
+                      label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                      className: 'btn-success'
+                  },
+                  cancel: {
+                      label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                      className: 'red-btn pull-left'
+                  }
+              },
+    callback: function (result) {
+        if(result != null){
+
+
+
+ $.ajax({
+                          type: "POST",
+                          url: "<%= admin_reset_modulect_path %>",
+                          context: document.body,
+                          data: {
+                              dwp: result
+                          },
+                          success() {
+                            bootbox.alert({
+                                title: "Completed bulk deletion",
+                                size: "medium",
+                                closeButton: false,
+                                message: "The bulk action has been applied. Some modules may not have been deleted because they are linked to courses."
+                            })
+                        }
+
+                      })
+
+
+
+
+
+
+
+
+
+
+
+        }
+    }
+});
+
+
+});
+
+
+});
+</script>
