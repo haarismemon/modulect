@@ -131,9 +131,13 @@
 <% else %>
     
     <% if !app_settings.disable_new_reviews %>
-    <p>Be the first to review this module!</p>
+      <% if !module_comments.empty? %>
+             <p>No one else has reviewed this module.</p>
+      <% else %>
+            <p>Be the first to review this module!</p>
+      <% end %>
     <% else %>
-    <p>No reviews</p>
+      <p>No new reviews available</p>
     <% end %>
 <% end %>
 <hr>
@@ -345,9 +349,6 @@
     cursor: pointer;
   }
 
-  #page-links {
-    margin-left: 20px;
-  }
 
   .star-rating {
     color: #2ab27b;
@@ -427,7 +428,7 @@
         last_comment = current_page * num_comments_per_page;
       }
 
-      display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
+      display_text = "Displaying comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
       $("label#display-comments-number").html(display_text);
     }
   };
