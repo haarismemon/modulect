@@ -81,6 +81,69 @@ module Admin
 
   	def create
       @uni_module = UniModule.new(uni_module_params)
+      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.update_attributes(uni_module_params)
+        @uni_module.departments.clear()
+        departments = params[:uni_module][:department_ids].split(',')
+        user_dept = Department.find(current_user.department_id).name
+        if !(departments.include? user_dept)
+          # If user does not include their own department in the department list.
+          @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+          return
+        end
+        departments.each do |dept|
+          chosen_dept = Department.find_by_name(dept)
+          @uni_module.departments << chosen_dept
+        end
+
+        @uni_module.uni_modules.clear()
+        required = params[:uni_module][:required].split(',')
+        required.each do |mod|
+          chosen_mod = UniModule.find_by_name(mod)
+          @uni_module.uni_modules << chosen_mod
+        end
+
+        @uni_module.tags.clear()
+
+        career_tags = params[:uni_module][:career_tags].split(',')
+        career_tags.each do |tag|
+          chosen_tag = Tag.find_by_name(tag)
+          # Add the career tag association
+          if chosen_tag.present?
+            @uni_module.tags << chosen_tag
+          else
+            # If tag does not already exist then create a new tag
+            new_tag = Tag.new(name: tag, type: "CareerTag")
+            @uni_module.tags << new_tag
+          end
+        end
+
+        interest_tags = params[:uni_module][:interest_tags].split(',')
+        interest_tags.each do |tag|
+          chosen_tag = Tag.find_by_name(tag)
+           # Add the interest tag association
+          if chosen_tag.present?
+            @uni_module.tags << chosen_tag
+          else
+            # If tag does not already exist then create a new tag
+            new_tag = Tag.new(name: tag, type: "InterestTag")
+            @uni_module.tags << new_tag
+          end
+        end
+      else
+        # If save fails, redisplay the form so user can fix problems
+        if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty?
+          @uni_module.errors[:base] << "Module must belong to at least one department."
+        end
+        if !params[:uni_module][:interest_tags].present? || params[:uni_module][:interest_tags].empty?
+          @uni_module.errors[:base] << "Module must have at least one interest tag."
+        end
+        if !params[:uni_module][:career_tags].present? || params[:uni_module][:career_tags].empty?
+          @uni_module.errors[:base] << "Module must have at least one career tag."
+        end
+        # If save fails, redisplay the form so user can fix problems
+        render(:new)
+      end
+
       if @uni_module.save
         # If save succeeds, redirect to the index action
 
@@ -112,6 +175,12 @@ module Admin
       if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.update_attributes(uni_module_params)
         @uni_module.departments.clear()
         departments = params[:uni_module][:department_ids].split(',')
+        user_dept = Department.find(current_user.department_id).name
+        if !(departments.include? user_dept)
+          # If user does not include their own department in the department list.
+          @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+          return
+        end
         departments.each do |dept|
           chosen_dept = Department.find_by_name(dept)
           @uni_module.departments << chosen_dept
@@ -130,7 +199,7 @@ module Admin
         career_tags.each do |tag|
           chosen_tag = Tag.find_by_name(tag)
           # Add the career tag association
-          if(chosen_tag.present?)
+          if chosen_tag.present? 
             @uni_module.tags << chosen_tag
           else
             # If tag does not already exist then create a new tag
@@ -143,7 +212,7 @@ module Admin
         interest_tags.each do |tag|
           chosen_tag = Tag.find_by_name(tag)
            # Add the interest tag association
-          if(chosen_tag.present?)
+          if chosen_tag.present?
             @uni_module.tags << chosen_tag
           else
             # If tag does not already exist then create a new tag
