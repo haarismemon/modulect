@@ -139,8 +139,7 @@
           </div>
       <% elsif logged_in? %>
           <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn ">Add a Review</a>
-          <!--<div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">-->
-          <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box">
+          <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
             <h3>Add a Review</h3>
 
             <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
@@ -631,7 +630,7 @@
         $("input[name='comment[rating]']").val([5]);
     });
 
-//    $("#comment-creation-box").hide();
+    $("#comment-creation-box").hide();
     var openCommentCreation = function(){
         $("#comment-creation-box").slideToggle("fast");
         $("#comment-creation-link").text($(".comment-creation-link").text()==open_comment_creation?"Close box":open_comment_creation);;
