@@ -98,7 +98,7 @@ module Admin
           @interestTags = interest_tags
           @required = required
           # Redisplay the form so user can fix problems
-          render(:new) and return
+          render('admin/uni_modules/new') and return
         end
         departments.each do |dept|
           chosen_dept = Department.find_by_name(dept)
@@ -139,6 +139,7 @@ module Admin
 
         # If save succeeds, redirect to the index action
         flash[:success] = "Succesfully created module"
+        p "herererererer"
         redirect_to(admin_uni_modules_path)
       else
         # If save fails, redisplay the form so user can fix problems
@@ -156,7 +157,7 @@ module Admin
         @interestTags = []
         @required = []
         # If save fails, redisplay the form so user can fix problems
-        render(:new)
+        render('admin/uni_modules/new')
       end
 
   	end
