@@ -82,13 +82,23 @@ module Admin
   	def create
       @uni_module = UniModule.new(uni_module_params)
       if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty? && @uni_module.save
-        @uni_module.departments.clear()
+        
         departments = params[:uni_module][:department_ids].split(',')
+        required = params[:uni_module][:required].split(',')
+        career_tags = params[:uni_module][:career_tags].split(',')
+        interest_tags = params[:uni_module][:interest_tags].split(',')
+
+        @uni_module.departments.clear()
         user_dept = Department.find(current_user.department_id).name
         if !(departments.include? user_dept)
           # If user does not include their own department in the department list.
           @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
-          return
+          @departments = departments
+          @careerTags = career_tags
+          @interestTags = interest_tags
+          @required = required
+          # Redisplay the form so user can fix problems
+          render(:new) and return
         end
         departments.each do |dept|
           chosen_dept = Department.find_by_name(dept)
@@ -96,7 +106,6 @@ module Admin
         end
 
         @uni_module.uni_modules.clear()
-        required = params[:uni_module][:required].split(',')
         required.each do |mod|
           chosen_mod = UniModule.find_by_name(mod)
           @uni_module.uni_modules << chosen_mod
@@ -104,7 +113,6 @@ module Admin
 
         @uni_module.tags.clear()
 
-        career_tags = params[:uni_module][:career_tags].split(',')
         career_tags.each do |tag|
           chosen_tag = Tag.find_by_name(tag)
           # Add the career tag association
@@ -117,7 +125,6 @@ module Admin
           end
         end
 
-        interest_tags = params[:uni_module][:interest_tags].split(',')
         interest_tags.each do |tag|
           chosen_tag = Tag.find_by_name(tag)
            # Add the interest tag association
@@ -131,9 +138,8 @@ module Admin
         end
 
         # If save succeeds, redirect to the index action
-        tag_clean_up
         flash[:success] = "Succesfully created module"
-        redirect_to(edit_admin_uni_module_path(@uni_module))
+        redirect_to(admin_uni_modules_path)
       else
         # If save fails, redisplay the form so user can fix problems
         if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty?
@@ -177,6 +183,12 @@ module Admin
         if !(departments.include? user_dept)
           # If user does not include their own department in the department list.
           @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+          @departments = @uni_module.departments.pluck(:name)
+          @careerTags = @uni_module.career_tags.pluck(:name)
+          @interestTags = @uni_module.interest_tags.pluck(:name)
+          @required = @uni_module.uni_modules.pluck(:name)
+          # Redisplay the form so user can fix problems
+          render(:edit)
           return
         end
         departments.each do |dept|
