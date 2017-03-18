@@ -34,6 +34,9 @@ Rails.application.routes.draw do
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
 
+    patch '/uni_modules' => 'uni_modules#create'
+
+
     root to: "dashboard#index"
   end
 
@@ -113,6 +116,9 @@ Rails.application.routes.draw do
   post 'application/save_module'
   post 'application/save_pathway'
   post 'application/delete_pathway'
+
+  get 'application/rating_for_module'
+  
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
   post 'comments/like'
@@ -126,7 +132,6 @@ Rails.application.routes.draw do
   match "/500", :to => "errors#internal_server_error", :via => :all
 
   # OPEN CALAIS
-  get 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
   post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
 
 end

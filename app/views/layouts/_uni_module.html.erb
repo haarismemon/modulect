@@ -167,8 +167,12 @@
   <div class="row" style="margin-left:0px;">
     <div class="col-md-4" style="margin-bottom:15px;">
       <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods and dates</h5>
-      <p><%= size_check uni_module.assessment_methods %></p>
-      <p><%= size_check uni_module.assessment_dates %></p>
+      <% if uni_module.assessment_methods.nil? && uni_module.assessment_dates.nil? || (!uni_module.assessment_methods.nil? && !uni_module.assessment_dates.nil? && uni_module.assessment_methods.size == 0 && uni_module.assessment_dates.size == 0 ) %>
+         <p>No data available</p>
+      <% else %>
+         <p><%= uni_module.assessment_methods %></p>
+         <p><%= uni_module.assessment_dates %></p>
+      <% end %>
     </div>
     <div class="col-md-4" style="margin-bottom:15px;">
       <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
@@ -226,4 +230,5 @@
       });
 
       <% end %>
+
   </script>

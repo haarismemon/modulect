@@ -1,27 +1,20 @@
+<!--
+Forms a nested group form with year structure edit form.
+This is used by cacoon gem.
+-->
 <div class="nested-fields">
-  <div class="field">
-    <%= f.label :name, placeholder: 'i.e: Semester 1' %>
-    <%= f.text_field :name, class: "nested-field-name" %>
 
-    <%= f.label :min_credits, 'Minimum credits' %>
-    <%= f.number_field :min_credits, class: "nested-field-min-credits" %>
+  <!--renders attributes partial for group-->
+  <%= render "admin/application/course-partials/group_form_fields",
+             :f => f,
+             :year_structure => YearStructure.find(params[:id]) %>
 
-    <%= f.label :max_credits, 'Maximum credits' %>
-    <%= f.number_field :max_credits, class: "nested-field-max-credits" %>
-
-    <%= f.label :uni_modules %>
-    <div id="select-modules">
-      <%= f.select :uni_module_ids, possible_uni_modules_for_new_group.collect {|x| [x.to_s, x.id]}, {},
-      :multiple => true, class: 'selectize' %>
-    </div>
-
-    <p>
-      <%= f.check_box :compulsory, class: "nested-field-checkbox" %>
-      <%= f.label "All Modules Compulsory" %>
-    </p>
-  </div>
-
-  <div class="remove-field">
+  <!--button to remove form-->
+  <div class="remove-field" style="margin: 0px;">
     <%= link_to_remove_association "Remove Module Group", f %>
   </div>
+
+  <!--line seperation-->
+  <div class="page-header additional-info" style="margin: 0px;margin-bottom:20px;"></div>
+
 </div>

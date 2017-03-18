@@ -126,7 +126,11 @@
       <% end %>
     </div>
 <% else %>
-    <p>Be the first to review this module!</p>
+      <% if !module_comments.empty? %>
+          <p>No one else has reviewed this module.</p>
+      <% else %>
+          <p>Be the first to review this module!</p>
+      <% end %>
 <% end %>
 <hr>
 
@@ -143,14 +147,31 @@
             <h3>Add a Review</h3>
 
             <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
-                <p id="rating-area">
+                <div id="rating-area">
                   <%= f.label :rating %>
-                  <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
-                  <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
-                  <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
-                  <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
-                  <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
-                </p>
+                  <ul class="star-rating">
+                    <li id="1">
+                      <label for="comment_rating_1"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 1 %>
+                    </li>
+                    <li id="2">
+                      <label for="comment_rating_2"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 2 %>
+                    </li>
+                    <li id="3">
+                      <label for="comment_rating_3"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 3 %>
+                    </li>
+                    <li id="4">
+                      <label for="comment_rating_4"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 4 %>
+                    </li>
+                    <li id="5">
+                      <label for="comment_rating_5"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 5, :checked => true %>
+                    </li>
+                  </ul>
+                </div>
                 <p id="review-area">
                   <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true %>
                 </p>
@@ -164,6 +185,77 @@
       </div>
   <% end %>
 </div>
+
+<style>
+  ul.star-rating {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+    /*margin: 0;*/
+    display: inline-block;
+  }
+
+  ul.star-rating li {
+    list-style-type: none;
+    display: inline-block;
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #2ab27b;
+  }
+
+  ul.star-rating li:hover {
+    color: #2ab27b;
+  }
+
+  ul.star-rating li.active, ul.star-rating li.secondary-active {
+    color: #2ab27b;
+  }
+
+  ul.star-rating li.active-hover, ul.star-rating li.secondary-active-hover {
+    color: #2ab27b;
+  }
+
+  ul.star-rating li input[type="radio"] {
+    display: none;
+  }
+
+  .edit-rating {
+    margin-right: 3px;
+  }
+
+</style>
+
+<script>
+  selected_rating = 0;
+
+  $('ul.star-rating li').on('click', function () {
+      $('ul.star-rating li').removeClass('active');
+      $('ul.star-rating li').removeClass('secondary-active');
+      $(this).addClass('active');
+      $(this).prevAll().addClass('secondary-active');
+
+      selected_rating = $(this).attr('id');
+  });
+
+  $('ul.star-rating').hover(function () {
+      $('ul.star-rating li').hover(function () {
+          $('ul.star-rating li').removeClass('active');
+          $('ul.star-rating li').removeClass('secondary-active');
+          $(this).addClass('active-hover');
+          $(this).prevAll().addClass('secondary-active-hover');
+      }, function () {
+          $('ul.star-rating li').removeClass('active-hover');
+          $('ul.star-rating li').removeClass('secondary-active-hover');
+//          $(this).addClass('active-hover');
+          $(this).prevAll().addClass('secondary-active-hover');
+      })
+  }, function () {
+      $('ul.star-rating li').removeClass('active-hover');
+      $('ul.star-rating li').removeClass('secondary-active-hover');
+      $('ul.star-rating li#' + selected_rating).addClass('active');
+      $('ul.star-rating li#'+ selected_rating).prevAll().addClass('secondary-active');
+  })
+</script>
 
 <style>
   #delete-td {
@@ -214,14 +306,14 @@
   }
 
   .helpful {
-    background: dodgerblue;
-    box-shadow: 0px 3px 0px 0px deepskyblue;
+    background: #45bbc8;
+    box-shadow: 0px 3px 0px 0px lightskyblue;
     width: 81px;
   }
 
   .helpful:focus {
-    background: dodgerblue;
-    box-shadow: 0px 3px 0px 0px deepskyblue;
+    background: #45bbc8;
+    box-shadow: 0px 3px 0px 0px lightskyblue;
     width: 81px;
   }
 
@@ -435,16 +527,21 @@
 
       $("#comment-entry-" + comment_id).html("<div>" +
           "<h3 style=\"margin-left: 10px;\">Edit a Review</h3>" +
-          "<form id=\"edit-form\"><tr>" +
-          "<label style=\"margin-left: 10px;\">Rating</label>" +
-          "<div style=\"margin-left: 10px; display: inline-block\">" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /> <label for=\"rating1\">2</label>" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /> <label for=\"rating1\">3</label>" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /> <label for=\"rating1\">4</label>" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/> <label for=\"rating1\">5</label>  </div>" +
+          "<form id=\"edit-form\">" +
+          "<tr>" +
+              "<label style=\"margin-left: 10px;\">Rating</label>" +
+              "<div style=\"margin-left: 10px; display: inline-block\">" +
+                  "<ul class=\"star-rating\">" +
+                      "<li id=\"1\" class=\"edit-rating\"><label for=\"rating1\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /></li>" +
+                      "<li id=\"2\" class=\"edit-rating\"><label for=\"rating2\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /></li>" +
+                      "<li id=\"3\" class=\"edit-rating\"><label for=\"rating3\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /></li>" +
+                      "<li id=\"4\" class=\"edit-rating\"><label for=\"rating4\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /></li>" +
+                      "<li id=\"5\" class=\"edit-rating\"><label for=\"rating1\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/></li>" +
+                  "</ul>" +
+              "</div>" +
           "</tr>" +
-          "<tr><textarea autofocus id=\"edit-text-area\" style=\"margin-left: 10px; margin-right: 10px; margin-bottom: 15px\"></textarea>" +
+          "<tr>" +
+          "<textarea autofocus id=\"edit-text-area\" style=\"margin-left: 10px; margin-right: 10px; margin-bottom: 15px\"></textarea>" +
           "<a class=\"btn submit-btn\" id=\"submit-btn\">Edit</a>" +
           "</form>" +
           "</div>");
@@ -485,6 +582,38 @@
               $("#updated-time").text(" <%= '(Edited)' %>");
           <% end%>
       });
+
+      selected_rating = <%= rating %>;
+      $('ul.star-rating li#' + <%= rating %>).addClass('active');
+      $('ul.star-rating li#'+ <%= rating %>).prevAll().addClass('secondary-active');
+
+      $('ul.star-rating li').on('click', function () {
+          $('ul.star-rating li').removeClass('active');
+          $('ul.star-rating li').removeClass('secondary-active');
+          $(this).addClass('active');
+          $(this).prevAll().addClass('secondary-active');
+
+          selected_rating = $(this).attr('id');
+      });
+
+      $('ul.star-rating').hover(function () {
+          $('ul.star-rating li').hover(function () {
+              $('ul.star-rating li').removeClass('active');
+              $('ul.star-rating li').removeClass('secondary-active');
+              $(this).addClass('active-hover');
+              $(this).prevAll().addClass('secondary-active-hover');
+          }, function () {
+              $('ul.star-rating li').removeClass('active-hover');
+              $('ul.star-rating li').removeClass('secondary-active-hover');
+//          $(this).addClass('active-hover');
+              $(this).prevAll().addClass('secondary-active-hover');
+          })
+      }, function () {
+          $('ul.star-rating li').removeClass('active-hover');
+          $('ul.star-rating li').removeClass('secondary-active-hover');
+          $('ul.star-rating li#' + selected_rating).addClass('active');
+          $('ul.star-rating li#'+ selected_rating).prevAll().addClass('secondary-active');
+      })
   });
 
     $(".delete-btn").click(function () {

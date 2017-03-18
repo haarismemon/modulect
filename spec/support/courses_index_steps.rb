@@ -47,6 +47,10 @@ module CoursesIndexSteps
     assert_text Course.last.name
   end
 
+  def i_should_see_an_update_success_flash
+    assert_text "updated"
+  end
+
   def i_should_be_on_the_edit_page_of_the_new_course
     expect(page).to have_current_path(edit_admin_course_path(Course.last))
   end

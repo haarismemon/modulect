@@ -99,6 +99,11 @@ module Admin
     def destroy
       @course = Course.find(params[:id])
 
+      @course.year_structures.each do |year_structure|
+        Group.where(year_structure_id: year_structure.id).destroy_all
+      end
+      YearStructure.where(course_id: @course.id).destroy_all
+
       @course.users.each do |user|
         user.update_attribute("course_id", nil)
       end
@@ -116,6 +121,10 @@ module Admin
       course_ids.each do |id|
         course = Course.find(id.to_i)
           if !course.nil?
+            course.year_structures.each do |year_structure|
+              Group.where(year_structure_id: year_structure.id).destroy_all
+            end
+            YearStructure.where(course_id: course.id).destroy_all
             course.destroy
           end
       end
@@ -129,7 +138,6 @@ module Admin
       deep_clone_courses_with_ids(course_ids_string)
       head :no_content
     end
-
 
 
     private
