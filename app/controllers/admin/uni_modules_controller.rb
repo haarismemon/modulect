@@ -86,7 +86,7 @@ module Admin
 
         tag_clean_up
         flash[:success] = "Succesfully created module"
-        redirect_to(admin_uni_modules_path)
+        redirect_to(edit_admin_uni_module_path(@uni_module))
       else
         # If save fails, redisplay the form so user can fix problems
         render(:new)
