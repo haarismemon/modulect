@@ -62,7 +62,7 @@ module Admin
       # Update the object
       if @notice.update_attributes(notice_params)
         # If save succeeds, redirect to the index action
-        "The notice has successfuly been created "+@notice.broadcast ? "and is currently live." : ""
+        "The notice has successfuly been created "+(@notice.broadcast ? "and is currently live." : "")
         redirect_to(edit_admin_notice_path) and return
       else
         # If save fails, redisplay the form so user can fix problems
@@ -82,14 +82,14 @@ module Admin
     end
 
     def bulk_delete
-      faculties_ids_string = params[:ids]
-      faculty_ids = eval(faculties_ids_string)
+      notices_ids_string = params[:ids]
+      notices_ids = eval(notices_ids_string)
 
-      faculty_ids.each do |id|
-        faculty = Notice.find(id.to_i)
+      notices_ids.each do |id|
+        notice = Notice.find(id.to_i)
 
-        if !faculty.nil?
-          faculty.destroy
+        if !notice.nil?
+          notice.destroy
         end
 
       end
@@ -98,10 +98,10 @@ module Admin
     end
 
     def clone
-      faculties_ids_string = params[:ids]
-      faculty_ids = eval(faculties_ids_string)
+      notices_ids_string = params[:ids]
+      notices_id = eval(notices_ids_string)
 
-      faculty_ids.each do |id|
+      notices_id.each do |id|
         notice = Notice.find(id.to_i)
 
         if !notice.nil?
