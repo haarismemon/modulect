@@ -126,7 +126,11 @@
       <% end %>
     </div>
 <% else %>
-    <p>Be the first to review this module!</p>
+      <% if !module_comments.empty? %>
+          <p>No one else has reviewed this module.</p>
+      <% else %>
+          <p>Be the first to review this module!</p>
+      <% end %>
 <% end %>
 <hr>
 
