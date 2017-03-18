@@ -43,4 +43,20 @@ module PathwaySearchHelper
     end
   end 
 
+  # adds a tuple pair to the database when two modules are selected in the same pathway
+  def add_to_pathway_search_log(first_mod_id, second_mod_id, department_id, course_id)
+    # Tuples are arranged with the module with the lower id being first
+    mod_a = -1
+    mod_b = -1
+    if first_mod_id < second_mod_id
+      mod_a = first_mod_id
+      mod_b = second_mod_id
+    else 
+      mod_a = second_mod_id
+      mod_b = first_mod_id
+    end
+    # Check if there is an existing tuple for this pair
+    
+
+
 end
