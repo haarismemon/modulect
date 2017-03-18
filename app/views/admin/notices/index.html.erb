@@ -33,7 +33,7 @@
 </style>
 <% if @notices.size > 0 %>
     <div class="table-responsive">
-      <table aria-labelledby="page-title" class="collection-data table">
+      <table aria-labelledby="page-title" class="collection-data table" width="100%">
         <thead>
         <tr class="table-header-fields">
           <td style="width:20px;">
@@ -60,7 +60,7 @@
                 </div>
               </td>
               <td class="cell-data cell-data--string"><%= notice.title %></td>
-              <td class="cell-data cell-data--string"><%= notice.notice_body.html_safe %></td>
+              <td class="cell-data cell-data--string" style=><%= notice.notice_body.html_safe %></td>
               <td class="cell-data cell-data--string"><%= notice.broadcast.to_s %></td>
               <td class="no-link">
                 <div class="col-md-3">

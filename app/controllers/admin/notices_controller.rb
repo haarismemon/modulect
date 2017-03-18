@@ -62,7 +62,7 @@ module Admin
       # Update the object
       if @notice.update_attributes(notice_params)
         # If save succeeds, redirect to the index action
-        "The notice has successfuly been created "+(@notice.broadcast ? "and is currently live." : "")
+        flash[:success] = "The notice has successfuly been created "+(@notice.broadcast ? "and is currently live." : "")
         redirect_to(edit_admin_notice_path) and return
       else
         # If save fails, redisplay the form so user can fix problems

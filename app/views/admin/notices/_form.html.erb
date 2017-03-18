@@ -18,7 +18,7 @@ see partial fields for additional documentation
 <!--name field-->
 <%= render path_of_field_store+"string_form_field", :f => f,
            :name => :title,
-           :label => :header %>
+           :label => :notice_title %>
 
 
 
@@ -26,35 +26,28 @@ see partial fields for additional documentation
 <%= render path_of_field_store+"textarea_form_field", :f => f,
            :name => :notice_body,
            :label => "Notice description",
-           :tooltip => "The body of text defined here, is what will be shown to every student in this department in their home page." %>
+           :tooltip => "The body of text defined here is what will be shown to every student in this department on their home page" %>
 
 
-<div class="row field-unit field-unit--string">
+<div class="row field-unit field-unit--date">
   <div class="col-xs-12">
     <div class="field-unit__field">
       <div class='col-md-6' style="padding: 0px">
-        <label for="broadcast"> Start live date
+        <label for="live-date"> Start live date
           <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
-             title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+             title="The start date which this notice will appear and become active. If date entered is prior or the same to current date, then notice will be active immediately">[<i class="fa fa-question" aria-hidden="true"></i>]
           </a>
         </label>
-        <div class='input-group date' id='datetimepicker6'>
-          <%= f.text_field :live_date %>
-
-          <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+        <%= f.date_field :live_date %>
         </div>
       </div>
       <div class='col-md-6'>
-        <label for="broadcast"> Expire date
+        <label for="end-date"> Expire date
           <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
-             title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+             title="The date in which this notice will no longer be displayed and active. This is optional and if no input is entered, then the notice will never expire">[<i class="fa fa-question" aria-hidden="true"></i>]
           </a>
         </label>
-        <div class='input-group date' id='datetimepicker7'>
-          <%= f.text_field :end_date %>
-          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        <%= f.date_field :end_date %>
         </div>
       </div>
     </div>
@@ -64,7 +57,8 @@ see partial fields for additional documentation
 
 <!--url field-->
 <%= render path_of_field_store+"string_form_field", :f => f,
-           :name => :optional_link %>
+           :name => :optional_link,
+           :tooltip => "This is displayed to the user along side the notice as a button" %>
 
 
 
@@ -74,14 +68,14 @@ see partial fields for additional documentation
       <%= f.check_box :broadcast, {style: "margin-right: 4px"} %>
       <label for="broadcast" style="margin-right: 50px"> Broadcast?
         <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
-           title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+           title="If broadcast is set to true, then the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
         </a>
       </label>
 
       <%= f.check_box :auto_delete, {style: "margin-right: 4px"} %>
       <label for="broadcast"> Automatically delete this notice at expiry date?
         <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
-           title="If broadcast is set to true, the notice will be active and live">[<i class="fa fa-question" aria-hidden="true"></i>]
+           title="Auto-delete the notice from the database when the expiry date is reached, to prevent build-up of data">[<i class="fa fa-question" aria-hidden="true"></i>]
         </a>
       </label>
     </div>
@@ -92,21 +86,6 @@ see partial fields for additional documentation
 
 
 
-
-<script type="text/javascript">
-    $(function () {
-        $('#datetimepicker6').datetimepicker();
-        $('#datetimepicker7').datetimepicker({
-            useCurrent: false //Important! See issue #1075
-        });
-        $("#datetimepicker6").on("dp.change", function (e) {
-            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-        });
-        $("#datetimepicker7").on("dp.change", function (e) {
-            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-        });
-    });
-</script>
 
 <!--submit button-->
 <div class="form-actions">
@@ -121,3 +100,4 @@ see partial fields for additional documentation
         intializeSelectize()
     });
 </script>
+
