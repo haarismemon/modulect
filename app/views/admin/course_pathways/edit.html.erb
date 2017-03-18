@@ -1,0 +1,14 @@
+<% provide :title, "Edit #{Course.find(params[:id]).name}" %>
+<% provide :submit_button_text, 'Update' %>
+
+
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+    <%= render(:partial => 'admin/application/edit_toolbox_buttons',
+               :locals => {:object => Course.find(params[:id]),
+                           :name_of_file=>Course.find(params[:id]).name.to_s,
+                           :blacklist_attributes=>"",:entity_attributes=>"",
+                           :has_many_attributes=>["uni_modules"]})%>
+  </div>
+</header>
