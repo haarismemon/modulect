@@ -16,6 +16,7 @@ module Admin
         flash[:success] = "Successfully updated."
         redirect_to admin_course_path(@year_structure.course)
       else
+        @year_structure.reload
         render 'edit'
       end
     end
