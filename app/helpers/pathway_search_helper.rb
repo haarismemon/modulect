@@ -56,7 +56,13 @@ module PathwaySearchHelper
       mod_b = first_mod_id
     end
     # Check if there is an existing tuple for this pair
-    existing_logs = PathwaySearchLog.
-
+    existing_log = PathwaySearchLog.select{|log| log.first_mod_id == mod_a && log.second_mod_id == mod_b && log.course_id == course_id && log.created_at.to_date == Time.now.to_date}
+    if existing_log.size > 0
+      desired_log = existing_log.first
+      desired_log.update_attribute("counter", desired_log.counter + 1)
+    else
+      # Create a new tuple if one does not exist
+      PathwaySearchLog.create(:first_mod_id => mod_a, :second_mod_id => mod_b, :counter => 1)
+    end
 
 end
