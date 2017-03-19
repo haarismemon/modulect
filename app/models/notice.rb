@@ -1,12 +1,13 @@
 class Notice < ApplicationRecord
   require 'uri'
 
+
   # belongs to a department
-  belongs_to :department
+  belongs_to :department, :optional => true
 
   # every object must validate presence of title
   # and notice body fields before saving
-  validates :title, presence: true
+  validates :header, presence: true
   validates :notice_body, presence: true
   validates :live_date, presence: true
 
@@ -22,8 +23,8 @@ class Notice < ApplicationRecord
   # sets default value for auto_delete attribute to true
   default_value_for :auto_delete, true
 
-  validate 'end_date_can_not_be_before_current_date'
-  validate 'end_date_can_not_be_before_the_live_date'
+  validate 'end_date_can_not_be_before_current_date'.to_s
+  validate 'end_date_can_not_be_before_the_live_date'.to_s
 
   # validation to check end date is not before the current date
   def end_date_can_not_be_before_current_date

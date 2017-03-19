@@ -5,12 +5,13 @@ module Admin
     def index
       # checks current user status
       if current_user.user_level == "super_admin_access"
-        # if super admin only display global ntoices
+        # if super admin only display global notices
         @notices = Notice.all.where(:department_id => nil)
       else
         # if department admin only display department notices
         @notices = Notice.all.where(:department_id => [@current_user.department_id, nil])
       end
+      auto_delete_notices
 
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
@@ -134,6 +135,15 @@ module Admin
       @notice = Notice.find(params[:id])
       redirect_to admin_path unless (current_user.department_id == @notice.department_id )
 
+    end
+
+    # deletes notices which are past their expiry date
+    def auto_delete_notices
+      @notices.each { |obj|
+        if obj.auto_delete && !obj.end_date.nil? && obj.end_date.past?
+          obj.destroy
+        end
+      }
     end
 
 

@@ -18,7 +18,8 @@ see partial fields for additional documentation
 <!--name field-->
 <%= render path_of_field_store+"string_form_field", :f => f,
            :name => :header,
-           :label => :notice_header %>
+           :label => :notice_header,
+           :tooltip => "The header must be medium sized in length providing a descriptive overview of notice" %>
 
 
 
@@ -35,7 +36,7 @@ see partial fields for additional documentation
       <div class='col-md-6' style="padding: 0px">
         <label for="live-date"> Start live date
           <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
-             title="The start date which this notice will appear and become active. If date entered is prior or the same to current date, then notice will be active immediately">[<i class="fa fa-question" aria-hidden="true"></i>]
+             title="The start date which this notice will appear and become active.The notice goes live at the start of the day specified. If date entered is prior or the same to current date, then notice will be active immediately">[<i class="fa fa-question" aria-hidden="true"></i>]
           </a>
         </label>
         <%= f.date_field :live_date %>
@@ -44,7 +45,7 @@ see partial fields for additional documentation
       <div class='col-md-6'>
         <label for="end-date"> Expire date
           <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
-             title="The date in which this notice will no longer be displayed and active. This is optional and if no input is entered, then the notice will never expire">[<i class="fa fa-question" aria-hidden="true"></i>]
+             title="The date in which this notice will no longer be displayed and active.The notice will expire at the end of the day specified. This is optional and if no input is entered, then the notice will never expire">[<i class="fa fa-question" aria-hidden="true"></i>]
           </a>
         </label>
         <%= f.date_field :end_date %>

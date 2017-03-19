@@ -1,0 +1,260 @@
+<!--
+Notice board render
+Main parts: contains a condition which will only produces notice list if @notices(collection) is not empty.
+Iterates through collection producing a list item within a unordered list. This list item is the notice.
+To stylize the notice board the css and js for it is either below or directly attributed to the element
+-->
+<div class="col-md-12 login-card" style="margin: 20px 0px 10px 0px; padding-left: 40px; padding-bottom: 30px; ">
+  <!--header-->
+  <div class="row">
+    <!--title of card-->
+    <h1>Notice board</h1>
+    <!--checks if notices collection is empty-->
+    <% if @notices.empty? %>
+        <!--if it is render this message-->
+        <h4 style="margin: 20px 0px">Stay posted here for key events and happenings around you from your department</h4>
+    <% else %>
+        <!--sub-header of card-->
+        <h4 style="margin-top: 20px">Get the latest information about key events and happenings around you from your
+          department </h4>
+        </div>
+        <!--fixed container size if notices are greater than 4-->
+        <% to_set_min_height = @notices.size>4 ? "min-height: 358.5px;" : "" %>
+        <!--this list itself-->
+        <div id="notice-list" style="<%= to_set_min_height %>">
+          <ul>
+            <% index = 0 %>
+            <!--iterate through producing a list item for each-->
+            <% @notices.where(department_id: nil).reorder("live_date DESC,created_at DESC").each do |notice| %>
+                <%= render "search/notice_item", notice: notice, index: index %>
+                <% index = index + 1 %>
+            <% end %>
+            <!--iterate through producing a list item for each-->
+            <% @notices.where.not(department_id: nil).reorder("live_date DESC,created_at DESC").each do |notice| %>
+                <%= render "search/notice_item", notice: notice, index: index %>
+                <% index = index + 1 %>
+
+            <% end %>
+
+          </ul>
+        </div>
+
+        <!--pagination buttons-->
+        <nav aria-label="Page navigation " class="notice-pagination">
+          <ul class="pagination justify-content-center ">
+            <!--intially hide previous button-->
+            <a class="btn" id="previous-button" style="opacity: 0">Previous</a>
+            <!--determines whether to hide next button depending on how many notices are-->
+            <a class="btn" id="next-button" style="opacity: <%= @notices.size > 4 ? 1 : 0 %>">View more</a>
+          </ul>
+        </nav>
+
+        </div>
+    <% end %>
+
+    <style>
+      *,
+      *:before,
+      *:after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      #notice-list {
+        width: 100%;
+        margin: 0 auto;
+        display: table;
+      }
+
+      #notice-list ul {
+        padding: 0;
+        margin: 20px 0;
+        color: #555308;
+      }
+
+      #notice-list ul > li {
+        list-style: none;
+        border-top: 1px solid #e7e7e7;
+        display: block;
+        padding: 15px;
+        overflow: hidden;
+      }
+
+      #notice-list ul:last-child {
+        border-bottom: 1px solid #eaeaea;
+      }
+
+      #notice-list ul > li:hover {
+        background: #f9f9f9;
+      }
+
+      .vertical-expand {
+        display: block;
+        text-decoration: none;
+        color: #555;
+        cursor: pointer;
+      }
+
+      #notice-list h2 {
+        padding: 0;
+        margin: 0;
+        font-size: 17px;
+        font-weight: 400;
+      }
+
+      #notice-list span {
+        font-size: 14px;
+      }
+
+      #right {
+        display: table;
+      }
+
+      #body {
+        display: table-cell;
+        margin-top: 40px;
+        width: 80%;
+        font-size: 15px;
+      }
+
+      .text-body {
+        margin: 10px 0 10px 0px;
+        display: none;
+        line-height: 22px;
+      }
+
+      .text-body span {
+        margin: 0;
+      }
+
+      .expand-button {
+        margin-top: 12px;
+        margin-left: 20px;
+        width: 10px;
+        height: 100%;
+        float: right;
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      .notice-pagination {
+        text-align: center;
+      }
+
+      .special {
+        box-shadow: none;
+        text-transform: none;
+      }
+
+      .notice-pagination #next-button, .notice-pagination #previous-button {
+        padding: 4px 6px 4px 6px;
+        text-transform: capitalize;
+      }
+
+    </style>
+
+
+    <script>
+        //expand notice on click
+        $(function () {
+            $(".vertical-expand").on("click", function () {
+                //toggle down all notices
+                toggleAllBoxesDown($(this));
+                //toggle up the clicked notice
+                $(this).next().slideToggle(200);
+                // change symbol of notice
+                $expandItem = $(this).find("#expand-notice-trigger");
+                if ($expandItem.text() == "+") {
+                    $expandItem.text("-");
+                } else {
+                    $expandItem.text("+");
+                }
+            });
+        });
+
+        //function to toggle down all notices
+        function toggleAllBoxesDown(current) {
+            for (var i = page * 4; i < (page * 4) + 4; ++i) {
+                var $item = $("#item" + i)
+                if ($item.find("#expand-notice-trigger").text() == "-") {
+                    if (!$.contains($item.get(0), current.get(0))) {
+                        $item.find(" .vertical-expand").next().slideToggle(200);
+                        $item.find("#expand-notice-trigger").text("+")
+                    }
+                }
+            }
+        }
+
+        //page count
+        var page = 0;
+        //total amount of notices
+        var notice_size = <%= @notices.size %>;
+        $(function () {
+            //pagination next button
+            $(".notice-pagination #next-button").on("click", function () {
+                if (notice_size > (page + 1) * 4) {
+                    //toggle down all notices
+                    toggleAllBoxesDown($(this));
+                    //find index of top notice
+                    var item_pointer = page * 4;
+                    //make next 4 appear and previous 4 disappear
+                    for (var i = item_pointer; i < item_pointer + 4; ++i) {
+                        $("#item" + i).css("display", "none");
+                    }
+
+                    for (var j = item_pointer + 4; j < item_pointer + 8; ++j) {
+                        $("#item" + j).css("display", "block");
+                    }
+                    //iterate page
+                    page++;
+                    //checks if end of buffer is reached
+                    if (notice_size <= ((page + 1) * 4)) {
+                        $(this).css("opacity", "0");
+                        $(this).css("cursor", "default");
+                    }
+                    //checks if page is greater than 0 and if so make pagination previous button appear
+                    if (page > 0) {
+                        $(".notice-pagination #previous-button").css("opacity", "1");
+                        $(".notice-pagination #previous-button").css("cursor", "pointer");
+
+                    }
+                }
+            });
+        });
+
+        $(function () {
+            $(".notice-pagination #previous-button").on("click", function () {
+                //pagination previous button
+                if (page > 0) {
+                    //toggle all notices down
+                    toggleAllBoxesDown($(this));
+                    //current top notice
+                    var item_pointer = page * 4;
+                    // iterate through on current page and make each notice disappear
+                    for (var i = item_pointer; i < item_pointer + 4; ++i) {
+                        $("#item" + i).css("display", "none");
+                    }
+                    //iterate through on previous page and make each notice appear
+                    for (var j = item_pointer - 4; j < item_pointer; ++j) {
+                        $("#item" + j).css("display", "block");
+                    }
+                    //decrement page
+                    page--;
+                    //check if page is 0, if so make previous button disappear
+                    if (page == 0) {
+                        $(this).css("opacity", "0");
+                        $(this).css("cursor", "default");
+                    }
+                    //checks whether next button should appear or not
+                    if (notice_size > (page + 1) * 4) {
+                        $(".notice-pagination #next-button").css("opacity", "1");
+                        $(".notice-pagination #next-button").css("cursor", "pointer");
+
+                    }
+                }
+            });
+        });
+
+
+    </script>
