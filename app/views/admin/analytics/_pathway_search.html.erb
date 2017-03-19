@@ -98,7 +98,7 @@
     </div>
     <div class="col-md-6">
       <div class="side-right">
-        <select class="selectpicker" id="pathway-graph-selector" onchange="changeChart()">
+        <select class="selectpicker" id="pathway-graph-selector">
           <option value="vBar">Vertical Bar chart</option>
           <option value="hBar">Horizontal Bar chart</option>
           <option value="pie">Pie chart</option>
@@ -110,25 +110,4 @@
     </div>
   </div>
 </div>
-<script>
-
-  function changeChart() {
-    var select = document.getElementById("pathway-graph-selector");
-    var selected = select.options[select.selectedIndex].value;
-
-    target = document.getElementById("table-area");
-    target.innerHTML = "";
-
-    if(selected == "vBar") {
-      //render partial
-    }
-    else if(selected == "hBar") {
-      //render partial
-    }
-    else if(selected == "pie") {
-      //render partial
-    } else {
-    }
-  }
-</script>
 
