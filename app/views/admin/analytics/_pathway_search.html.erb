@@ -112,6 +112,7 @@
   </div>
 </div>
 <script>
+
   function changeChart() {
     var select = document.getElementById("pathway-graph-selector");
     var selected = select.options[select.selectedIndex].value;
@@ -125,7 +126,7 @@
     else if(selected == "pie") {
       //render partial
     } else {
-      //render partial
+      <%= render "_table", input_hash: get_modules_chosen_with(@uni_module, @course, 1, @time_period, Time.now, "most", 5) %>
     }
   }
 

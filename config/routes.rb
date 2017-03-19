@@ -95,6 +95,8 @@ Rails.application.routes.draw do
   post 'pathway-search/decrement_pathway_search_log', to: 'pathway_search#decrement_pathway_search_log'
   # Pathway search analytics
   get '/*all/update_modules', to: 'admin/analytics#update_modules', defaults: { format: 'js' }
+  get '/*all/update_selected_module', to: 'admin/analytics#update_selected_module', defaults: { format: 'js' }
+  get '/*all/update_selected_department', to: 'admin/analytics#update_selected_department', defaults: { format: 'js' }
 
 
   # Career search

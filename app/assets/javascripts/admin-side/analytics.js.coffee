@@ -18,3 +18,11 @@ $ ->
         data: {
           module_id: $("#modules_select option:selected").val()
         }
+
+$ ->
+  $(document).on 'change', '#departments_select', (evt) ->
+      $.ajax 'update_selected_department',
+        type: 'GET'
+        data: {
+          module_id: $("#departments_select option:selected").val()
+        }

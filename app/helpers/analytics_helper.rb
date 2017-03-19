@@ -344,7 +344,7 @@ module AnalyticsHelper
 	end
 
 	# get modules most frequently chosen with a selected module
-	def get_modules_chosen_with(uni_module_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_modules_chosen_with(uni_module_id, department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
 		pathway_search_log_first_data = PathwaySearchLog.where("first_mod_id = ?", uni_module_id)
