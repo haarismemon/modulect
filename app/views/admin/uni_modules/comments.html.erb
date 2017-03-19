@@ -136,7 +136,7 @@ function showComment(comment, user_first, user_last) {
             title: "Delete selected confirmation",
             size: "medium",
             closeButton: false,
-            message: "Are you sure you want delete the selected modules?",
+            message: "Are you sure you want delete the selected reviews?",
             buttons: {
               confirm: {
                 label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
@@ -156,11 +156,11 @@ function showComment(comment, user_first, user_last) {
                 var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
                   return $(this).val();
                 }).get(); // <----
-                //console.log(checkboxValues);
+                console.log(checkboxValues);
 
                 $.ajax({
                   type: "POST",
-                  url: "<%= admin_uni_modules_bulk_delete_path %>",
+                  url: "<%= admin_uni_modules_bulk_delete_comments_path %>",
                   context: document.body,
                   data: {
                     ids: JSON.stringify(checkboxValues)
@@ -171,7 +171,7 @@ function showComment(comment, user_first, user_last) {
                       title: "Completed bulk deletion",
                       size: "medium",
                       closeButton: false,
-                      message: "The bulk action has been applied. Some modules may not have been deleted because they are linked to courses.",
+                      message: "The bulk action has been applied",
                       callback: function() {
                         location.reload();
                       }
