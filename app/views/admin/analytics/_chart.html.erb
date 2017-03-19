@@ -1,0 +1,72 @@
+<% if input_hash.size != 0 %>
+  <canvas id="chart<%= chart_name %>" width="50" height="30"></canvas>
+  <script>
+   var ctxa = document.getElementById("chart<%= chart_name %>");
+   var myChart = new Chart(ctxa,{
+    type: "<%= type %>",
+    data: {
+    <% if chart_name != "Device Usage" && chart_name != "Users Logged In"%>
+      labels: <%= raw input_hash.map{|h| h.first[:name]}.to_json %>,
+    <% else %>
+      labels: <%= raw input_hash.map{|h| h.first}.to_json %>,
+    <% end %>
+      datasets: [
+        {
+          data: <%= raw input_hash.map{|h| h.second}.to_json %>,
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ],
+        hoverBackgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ]
+      }
+    ]
+    },
+    options: {
+      <% if type != "pie" %>
+      legend: {
+        display: false
+      },
+      <% end %>
+      animation:{
+        animateScale:true
+      },
+      <% if type == "bar" %>
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero:true,
+            userCallback: function(label, index, labels) {
+              // no decimals
+              if (Math.floor(label) === label) {
+                return label;
+              }
+            },
+          }
+        }]
+      }
+      <% elsif type == "horizontalBar" %>
+      scales: {
+        xAxes: [{
+          ticks: {
+            beginAtZero:true,
+            userCallback: function(label, index, labels) {
+              // no decimals
+              if (Math.floor(label) === label) {
+                return label;
+              }
+            },
+          }
+        }]
+      }
+      <% end %>
+    }
+    });
+  </script>
+<% else %>
+  <h4>No data available right now for <%= chart_name %></h4>
+<% end %>

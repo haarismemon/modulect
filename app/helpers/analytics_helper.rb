@@ -22,7 +22,7 @@ module AnalyticsHelper
 	# if "any", return all
 	def get_uni_modules(department_id, course_id)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil? && course_id != "any" && is_number?(course_id) && !Course.find(course_id.to_i).nil?
-			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i)) && uni_module.courses.include?(Course.find(course_id.to_i))}
+			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i)) && check_mod_in_course(uni_module.id, course_id) }
 		elsif department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i))}
 		else
@@ -30,6 +30,19 @@ module AnalyticsHelper
 		end
 		uni_modules
 	end
+
+  # check that a module is part of a course
+  def check_mod_in_course(uni_module_id, course_id)
+    course = Course.find(course_id)
+    course.year_structures.each do |year|
+      year.groups.each do |group|
+        if group.uni_modules.include?(UniModule.find(uni_module_id))
+          return true
+        end
+      end
+    end
+    return false
+  end
 
 	# sort, filter and format the resulting dataset
 	def format_ouput_data(input_hash, sort_by, number_to_show)
@@ -253,33 +266,8 @@ module AnalyticsHelper
 
 	end
 
-	# most/least active users by number of saves
-	def get_active_user_by_saves(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
-		users_data = Hash.new
-		users = get_users(department_id)
-
-		users.each do |user|
-			if user.uni_modules.size > 0
-				user.uni_modules.each do |uni_module|
-					if date_check(amount_time, time_period, from_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at)
-
-						if users_data.key?(user)
-							users_data[user] += 1
-						else
-							users_data[user] = 1
-						end	
-					end
-				end
-			end
-		end
-
-
-		format_ouput_data(users_data, sort_by, number_to_show)
-
-	end
-
-	# most/least active users by number of searches
-	def get_active_user_by_comments(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	# most/least active users by number of saved
+	def get_active_user(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		users_data = Hash.new
 		users = get_users(department_id)
 
@@ -326,7 +314,7 @@ module AnalyticsHelper
 		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
 
-	# most/least clicked tags
+	# most/least clicked modules
 	def get_visited_modules(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
@@ -342,6 +330,36 @@ module AnalyticsHelper
 
 		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
+
+	# get modules most frequently chosen with a selected module
+	def get_modules_chosen_with(uni_module_id, department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
+		uni_modules_data = Hash.new
+		uni_modules = get_uni_modules(department_id, course_id)
+		pathway_search_log_first_data = PathwaySearchLog.where("first_mod_id = ?", uni_module_id)
+		pathway_search_log_second_data = PathwaySearchLog.where("second_mod_id = ?", uni_module_id)
+    pathway_search_log_first_data.each do |log|
+      if UniModule.find(log.second_mod_id)
+        uni_module = UniModule.find(log.second_mod_id)
+        if date_check(amount_time, time_period, from_date, log.created_at)
+          uni_modules_data[uni_module] = log.counter
+        end
+      end
+    end
+
+    pathway_search_log_second_data.each do |log|
+      if UniModule.find(log.first_mod_id)
+        uni_module = UniModule.find(log.first_mod_id)
+        if date_check(amount_time, time_period, from_date, log.created_at)
+          uni_modules_data[uni_module] = log.counter
+        end
+      end
+    end
+
+    format_ouput_data(uni_modules_data, sort_by, number_to_show)
+
+    p format_ouput_data(uni_modules_data, sort_by, number_to_show)
+
+  end
 
 	# most/least clicked (trending) tags
 	def get_clicked_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
@@ -520,6 +538,17 @@ module AnalyticsHelper
 
 		total_visitors
 	end
+
+  def get_login_analytics(department_id, amount_time, time_period, from_date)
+    data = Hash.new
+    logged_in = get_number_logged_in_users(department_id, amount_time, time_period, from_date)
+    not_logged_in = get_number_visitors(department_id, amount_time, time_period, from_date) - logged_in
+
+    data["Logged In"] = logged_in
+    data["Not Logged In"] = not_logged_in
+
+    data
+  end
 
 	# get device usage
 	def get_device_usage(department_id, amount_time, time_period, from_date)

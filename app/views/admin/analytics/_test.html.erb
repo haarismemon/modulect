@@ -28,18 +28,6 @@
          <% end %>
          <br />
          <br />
-         most active users by saving<br />
-         <% get_active_user_by_saves(@department,1,@time_period,Time.now,"most", 10).each do |user, count| %>
-         <%= user.first_name  + " " + count.to_s %><br />
-         <% end %>
-         <br />
-         <br />
-         most active users by comments<br />
-         <% get_active_user_by_comments(@department,1,@time_period,Time.now,"most", 10).each do |user, count| %>
-         <%= user.first_name  + " " + count.to_s %><br />
-         <% end %>
-         <br />
-         <br />
          number of visitors<br />
          <%= get_number_visitors(@department,1, @time_period, Time.now) %>
          <br />
