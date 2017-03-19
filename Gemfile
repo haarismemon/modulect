@@ -56,6 +56,7 @@ group :test do
   gem 'selenium-webdriver', '3.3.0'
   gem 'database_cleaner'
   gem 'rails-controller-testing'
+  gem 'simplecov'
 end
 
 group :production do
