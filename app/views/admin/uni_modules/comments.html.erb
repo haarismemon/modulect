@@ -1,6 +1,17 @@
+<% if request.query_parameters["search"].present?%>
+    <% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Module Reviews') %>
+<% else %>
+    <% provide(:title, 'Module Reviews') %>
+<% end %>
 <header class="header index-header-area">
   <h1 id="page-title"><%= @uni_module.name %> Reviews</h1>
+
 </header>
+
+
+<% if @uni_module.comments.size > 0 %>
+
+
 <table>
   <thead>
   <tr>
@@ -24,3 +35,8 @@
   <%end%>
 </table>
 
+<% elsif request.query_parameters["search"].present?%>
+    <h4 style="margin-bottom:30px;">Unfortunately, we couldn't find any modules related to your search query.</h4>
+<% else %>
+    <h4 style="margin-bottom:30px;">No reviews found</h4>
+<% end %>
