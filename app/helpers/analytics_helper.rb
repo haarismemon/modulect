@@ -339,7 +339,7 @@ module AnalyticsHelper
 		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
 
-	# most/least clicked tags
+	# most/least clicked modules
 	def get_visited_modules(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
 		uni_modules = get_uni_modules(department_id, course_id)
