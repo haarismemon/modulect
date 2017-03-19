@@ -343,6 +343,35 @@ module AnalyticsHelper
 		format_ouput_data(uni_modules_data, sort_by, number_to_show)
 	end
 
+	# get modules most frequently chosen with a selected module
+	def get_modules_chosen_with(uni_module_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
+		uni_modules_data = Hash.new
+		uni_modules = get_uni_modules(department_id, course_id)
+		pathway_search_log_first_data = PathwaySearchLog.where("first_mod_id = ?", uni_module_id)
+		pathway_search_log_second_data = PathwaySearchLog.where("second_mod_id = ?", uni_module_id)
+
+    pathway_search_log_first_data.each do |log|
+      if UniModule.find(log.second_mod_id)
+        uni_module = UniModule.find(log.second_mod_id)
+        if date_check(amount_time, time_period, from_date, log.created_at)
+          uni_modules_data[uni_module] = log.counter
+        end
+      end
+    end
+
+    pathway_search_log_second_data.each do |log|
+      if UniModule.find(log.first_mod_id)
+        uni_module = UniModule.find(log.first_mod_id)
+        if date_check(amount_time, time_period, from_date, log.created_at)
+          uni_modules_data[uni_module] = log.counter
+        end
+      end
+    end
+
+    format_ouput_data(uni_modules_data, sort_by, number_to_show
+
+  end
+
 	# most/least clicked (trending) tags
 	def get_clicked_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
