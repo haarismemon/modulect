@@ -30,7 +30,36 @@
       <% end %>
       animation:{
         animateScale:true
+      },
+      <% if type == "bar" %>
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero:true,
+            userCallback: function(label, index, labels) {
+              // no decimals
+              if (Math.floor(label) === label) {
+                return label;
+              }
+            },
+          }
+        }]
       }
+      <% elsif type == "horizontalBar" %>
+      scales: {
+        xAxes: [{
+          ticks: {
+            beginAtZero:true,
+            userCallback: function(label, index, labels) {
+              // no decimals
+              if (Math.floor(label) === label) {
+                return label;
+              }
+            },
+          }
+        }]
+      }
+      <% end %>
     }
     });
 </script>
