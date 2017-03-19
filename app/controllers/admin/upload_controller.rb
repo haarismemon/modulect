@@ -60,6 +60,24 @@ module Admin
               end
             end
 
+          elsif session[:resource_name] == 'courses'
+            # Add departments attribute to create and/or link departments to this course
+            # Create the Course
+            created_course = Course.create!(new_record.except('departments'))
+            # Transform string of departments into array of departments
+            departments_s = new_record['departments']
+            departments_s = departments_s.gsub('; ', ';')
+            departments_a = departments_s.split(';')
+            # For every entered department
+            departments_a.each do |dept_name|
+              # Look for a department with the name
+              department_found = Department.find_by_name(dept_name)
+              unless department_found.nil?
+                # Add the found department to the departments the course belongs to
+                created_course.departments << department_found
+              end
+            end
+
           else session[:resource_name].to_s.classify.constantize.create!(new_record)
           end
         end
