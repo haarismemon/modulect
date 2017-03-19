@@ -16,23 +16,33 @@ module Admin
 				@department = current_user.department_id.to_s
         @courses = Department.find(current_user.department_id).courses
         @uni_modules = {}
-			elsif params[:search].present? && current_user.user_level == "super_admin_access"
-        		@deparments_list = Department.all.select { |department| department.name.downcase.include?(params[:search].downcase) }
-        		if @deparments_list.size == 1
-        			@department = @deparments_list.first.id.to_s
-        			flash[:success] = "Succesfully found " + Department.find(@department.to_i).name
-        		elsif @deparments_list.size > 1
-        			flash[:error] = "Your query resulted in too many deparments. Please be more specific"
-        			@department = "any"
-        		else 
-        			flash[:error] = "No departments found"
-        			@department = "any"
-        		end
-			elsif params[:department].present? && Department.exists?(params[:department].to_i) && current_user.user_level == "super_admin_access"
-				@department = params[:department]
-			elsif current_user.user_level == "super_admin_access"
-				@department = "any"
-			end
+      elsif current_user.user_level == "super_admin_access"
+        @faculties = Faculty.all
+        @departments = {} # Note this is used for the pathway search drop downs
+        @courses = {}
+        @uni_modules = {}
+  			if params[:search].present? && current_user.user_level == "super_admin_access"
+          @faculties = Faculty.all
+          @departments = {} # Note this is used for the pathway search drop downs
+          @courses = {}
+          @uni_modules = {}
+      		@deparments_list = Department.all.select { |department| department.name.downcase.include?(params[:search].downcase) }
+      		if @deparments_list.size == 1
+      			@department = @deparments_list.first.id.to_s
+      			flash[:success] = "Succesfully found " + Department.find(@department.to_i).name
+      		elsif @deparments_list.size > 1
+      			flash[:error] = "Your query resulted in too many deparments. Please be more specific"
+      			@department = "any"
+      		else 
+      			flash[:error] = "No departments found"
+      			@department = "any"
+      		end
+  			elsif params[:department].present? && Department.exists?(params[:department].to_i) && current_user.user_level == "super_admin_access"
+  				@department = params[:department]
+  			elsif current_user.user_level == "super_admin_access"
+  				@department = "any"
+  			end
+      end
 
 			if params[:course].present? && Course.exists?(params[:course].to_i)
 				@course = Course.find(params[:course].to_i)
