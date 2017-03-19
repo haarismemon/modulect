@@ -1,6 +1,6 @@
-<h2> <%= get_modules_chosen_with(6, 1, 1, 1, "month", Time.now, "most", 5) %> </h2>
-
-<p> <%= @uni_module.id %> </p>
-<p> <%= @department %> </p>
-<p> <%= @course.id %> </p>
-<p> <%= @time_period %> </p>
+<h4>Frequently chosen with <%= @uni_module.name %></h4>
+<ol class="trending-list">
+	<% input_hash.each do |input| %>
+		<li><%= input.first.name %></li>
+	<% end %>
+</ol>

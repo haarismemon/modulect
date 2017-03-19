@@ -1,1 +1,1 @@
-$("#table_area").empty().append("<%= escape_javascript(render "table") %>")
+$("#table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_modules_chosen_with(@uni_module.id, @department, @course.id, 1, @time_period, Time.now, "most", 5)) %>")
