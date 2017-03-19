@@ -34,9 +34,6 @@ Rails.application.routes.draw do
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
 
-    # Pathway search analytics
-    get '/admin/analytics/update_modules', to: 'analytics#update_modules', defaults: { format: 'js' }
-
     root to: "dashboard#index"
   end
 
@@ -96,6 +93,8 @@ Rails.application.routes.draw do
   get 'pathway-search/view_results'
   post 'pathway-search/increment_pathway_search_log', to: 'pathway_search#increment_pathway_search_log'
   post 'pathway-search/decrement_pathway_search_log', to: 'pathway_search#decrement_pathway_search_log'
+  # Pathway search analytics
+  get '/*all/update_modules', to: 'admin/analytics#update_modules', defaults: { format: 'js' }
 
 
   # Career search

@@ -70,10 +70,9 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-12 login-card subox-card">
+  <div class="col-md-12 login-card">
   <h2 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="View modules students are likely to pick based on other modules.">Popular combinations</a></h2>
   <% if current_user.user_level == "department_admin_access" %>
-  <div class="side-right">
     <div class="form-group">
       <label>Select a course</label>
       <%= select_tag(:course, options_for_select(@courses.collect {|course|
@@ -84,5 +83,5 @@
       <%= select_tag(:course, options_for_select(@uni_modules.collect {|uni_module|
            [uni_module.name.titlize, uni_module.id]}, 0), {:include_blank => true, :class => 'form-control', :id => "modules_analytics_select", :autocomplete => "off"  , :required => true }) %>
     </div>
-  </div>
   <% end %>
+</div>
