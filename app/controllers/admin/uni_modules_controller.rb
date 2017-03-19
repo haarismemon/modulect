@@ -268,6 +268,8 @@ module Admin
     def comments
       @uni_module = UniModule.find(params[:id])
       @comments = @uni_module.comments
+      @per_page = 20
+       @comments = Kaminari.paginate_array(@comments).page(params[:page]).per(@per_page)
     end
 
     private
