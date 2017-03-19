@@ -16,11 +16,13 @@ module Admin
 				@department = current_user.department_id.to_s
         @courses = Department.find(current_user.department_id).courses
         @uni_modules = {}
+        @uni_module = {}
       elsif current_user.user_level == "super_admin_access"
         @faculties = Faculty.all
         @departments = {} # Note this is used for the pathway search drop downs
         @courses = {}
         @uni_modules = {}
+        @uni_module = {}
   			if params[:search].present? && current_user.user_level == "super_admin_access"
           @faculties = Faculty.all
           @departments = {} # Note this is used for the pathway search drop downs
@@ -67,6 +69,11 @@ module Admin
       respond_to do |format|
         format.js
       end
+    end
+
+    # update the value of the module selected
+    def update_selected_module
+      @uni_module = UniModule.find(params[:module_id])
     end
 		
 	end
