@@ -60,7 +60,7 @@ module Admin
               end
             end
 
-          elsif session[:resource_name] == 'courses' || 'uni_modules'
+          elsif session[:resource_name] == 'courses' || session[:resource_name] == 'uni_modules'
             # Add departments attribute to create and/or link departments to this course/module
             # Create the Course/Module
             created_resource = session[:resource_name].to_s.classify.constantize.create!(new_record.except('departments'))
@@ -115,9 +115,15 @@ module Admin
       session[:resource_header] = resource_header
 
       # Add specific association attributes
-      # Add additional header attribute for the departments of the faculty
-      if resource.to_s == 'faculties' || 'courses' || 'uni_modules'
+      # Add additional header attribute for the departments of the faculty/courses
+      if resource.to_s == 'faculties' || resource.to_s == 'courses'
         resource_header << 'departments'
+      end
+
+      if resource.to_s == 'uni_modules'
+        # Add attribute for departments and prerequisite_modules
+        resource_header << 'departments'
+        resource_header << 'prerequisite_modules'
       end
 
       # Replace faculty_id attribute with faculty_name for departments
