@@ -1,5 +1,4 @@
 <% if input_hash.size != 0 %>
-  <h4>Frequently chosen with <%= @uni_module.name %></h4>
   <ol class="trending-list">
   	<% input_hash.each do |input| %>
   		<li><%= input.first.name %></li>
