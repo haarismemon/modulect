@@ -19,6 +19,18 @@ $ ->
         data: {
           module_id: $("#modules_select option:selected").val()
           course_id: $("#courses_select option:selected").val()
+          chart_type: $("#pathway-graph-selector option:selected").val()
+        }
+
+$ ->
+  $(document).on 'change', '#pathway-graph-selector', (evt) ->
+      $.ajax 'update_selected_module',
+        type: 'GET'
+        dataType: 'script'
+        data: {
+          module_id: $("#modules_select option:selected").val()
+          course_id: $("#courses_select option:selected").val()
+          chart_type: $("#pathway-graph-selector option:selected").val()
         }
 
 $ ->

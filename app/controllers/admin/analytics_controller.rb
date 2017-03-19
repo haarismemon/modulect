@@ -73,6 +73,7 @@ module Admin
     def update_selected_module
       @uni_module = UniModule.find(params[:module_id])
       @course = Course.find(params[:course_id])
+      @chart_type = params[:chart_type]
       respond_to do |format|
         format.js
       end
