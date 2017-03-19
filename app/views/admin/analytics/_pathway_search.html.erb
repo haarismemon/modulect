@@ -98,22 +98,34 @@
     </div>
     <div class="col-md-6">
       <div class="side-right">
-        <select class="selectpicker" id="pathway-graph-selector">
-          <option>Vertical Bar chart</option>
-          <option>Horizontal Bar chart</option>
-          <option>Pie chart</option>
-          <option selected="selected">Table</option>
+        <select class="selectpicker" id="pathway-graph-selector" onchange="changeChart()">
+          <option value="vBar">Vertical Bar chart</option>
+          <option value="hBar">Horizontal Bar chart</option>
+          <option value="pie">Pie chart</option>
+          <option value="table" selected="selected">Table</option>
         </select>
       </div>
       <div class="col-md-12">
-        <ol class="trending-list">
-          <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-          <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
-          <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-          <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
-          <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-        </ol>
+
+
     </div>
   </div>
 </div>
+<script>
+  function changeChart() {
+    var select = document.getElementById("pathway-graph-selector");
+    var selected = select.options[select.selectedIndex].value;
+
+    if(selected == "vBar") {
+      //render partial
+    }
+    else if(selected == "hBar") {
+      //render partial
+    }
+    else if(selected == "pie") {
+      //render partial
+    } else {
+      //render partial
+    }
+  }
 
