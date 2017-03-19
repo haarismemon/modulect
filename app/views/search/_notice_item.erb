@@ -1,0 +1,33 @@
+<!--
+Render which produces a list item within a unordered list. This list item is the notice.
+-->
+<% initial_state = index>3 ? "display: none;" : "display: block;" %>
+<li id="item<%= index %>" style="<%= initial_state %>">
+  <!--header with sub-header of notice-->
+  <a class="vertical-expand">
+    <!--+ button-->
+    <div class="expand-button" id="expand-notice-trigger">+</div>
+    <!--notice header-->
+    <div>
+      <h2 style="margin-bottom: 10px"><%= notice.header %></h2>
+      <!--notice sub-header-->
+      <span><%= notice.department.nil? ? "General Announcement" : "Department of "+notice.department.name.to_s %></span>
+    </div>
+  </a>
+
+  <!--body of text when notice is expanded-->
+  <div class="text-body" style="margin-top: 20px">
+
+    <div id="right" style="width:100%;height:100%;padding-left:20px;">
+      <div id="body">
+        <div><span><%= notice.notice_body.html_safe %></span>
+          <br/>
+          <!--checks if optional link has been provided. if it has render link with href-->
+          <% if notice.optional_link.present? %>
+              <a href="<%= notice.optional_link %>" class="btn special">View More Info</a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

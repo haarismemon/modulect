@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :departments
     resources :faculties
     resources :groups
+    resources :notices
     resources :uni_modules
     patch '/uni_modules' => 'uni_modules#create'
     resources :users, except: [:show] # adding to fix dropdowns
@@ -40,6 +41,8 @@ Rails.application.routes.draw do
     post '/users/make_student_user', to: 'users#make_student_user'
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
+    post '/notices/bulk_delete', to: 'notices#bulk_delete'
+    post '/notices/clone', to: 'notices#clone'
 
     # RESET MODULECT
     post '/reset_modulect', to: 'base#reset_modulect'

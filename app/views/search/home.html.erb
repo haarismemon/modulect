@@ -119,5 +119,13 @@
 </div>
 </div>
 </div>
-</div>
-</div>
+         <% if @current_user && @current_user.department_id.present? %>
+             <%= render "search/notice_board" %>
+         <% end %>
+       </div>
+
+
+      </div>
+
+
+
