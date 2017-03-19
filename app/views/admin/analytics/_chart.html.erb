@@ -5,7 +5,7 @@
    var myChart = new Chart(ctxa,{
     type: "<%= type %>",
     data: {
-    <% if chart_name != "Device Usage" %>
+    <% if chart_name != "Device Usage" && chart_name != "Users Logged In"%>
       labels: <%= raw input_hash.map{|h| h.first[:name]}.to_json %>,
     <% else %>
       labels: <%= raw input_hash.map{|h| h.first}.to_json %>,

@@ -266,33 +266,8 @@ module AnalyticsHelper
 
 	end
 
-	# most/least active users by number of saves
-	def get_active_user_by_saves(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
-		users_data = Hash.new
-		users = get_users(department_id)
-
-		users.each do |user|
-			if user.uni_modules.size > 0
-				user.uni_modules.each do |uni_module|
-					if date_check(amount_time, time_period, from_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at)
-
-						if users_data.key?(user)
-							users_data[user] += 1
-						else
-							users_data[user] = 1
-						end	
-					end
-				end
-			end
-		end
-
-
-		format_ouput_data(users_data, sort_by, number_to_show)
-
-	end
-
-	# most/least active users by number of searches
-	def get_active_user_by_comments(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	# most/least active users by number of saved
+	def get_active_user(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		users_data = Hash.new
 		users = get_users(department_id)
 
@@ -563,6 +538,17 @@ module AnalyticsHelper
 
 		total_visitors
 	end
+
+  def get_login_analytics(department_id, amount_time, time_period, from_date)
+    data = Hash.new
+    logged_in = get_number_logged_in_users(department_id, amount_time, time_period, from_date)
+    not_logged_in = get_number_visitors(department_id, amount_time, time_period, from_date) - logged_in
+
+    data["Logged In"] = logged_in
+    data["Not Logged In"] = not_logged_in
+
+    data
+  end
 
 	# get device usage
 	def get_device_usage(department_id, amount_time, time_period, from_date)

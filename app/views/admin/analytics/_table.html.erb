@@ -1,7 +1,7 @@
 <% if input_hash.size != 0 %>
   <ol class="trending-list">
   	<% input_hash.each do |input| %>
-      <% if chart_name != "Device Usage" %>
+      <% if chart_name != "Device Usage" && chart_name != "Users Logged In" %>
   		  <li><%= input.first.name %></li>
       <% else %>
         <li><%= input.first %></li>
