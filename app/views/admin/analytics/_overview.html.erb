@@ -265,81 +265,41 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-         <div class="col-md-12 login-card subox-card">
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <h4>Most active courses</h4>
-            <canvas id="myHBarChart" width="50" height="30"></canvas>
-            <script>
-               var ctxa = document.getElementById("myHBarChart");
-               // For a pie chart
-               var myPieChart = new Chart(ctxa,{
-                   type: 'horizontalBar',
-                   data: {
-                   labels: [
-                       "Red",
-                       "Blue",
-                       "Yellow"
-                   ],
-                   datasets: [
-                       {
-                           data: [300, 50, 100],
-                           backgroundColor: [
-                               "#FF6384",
-                               "#36A2EB",
-                               "#FFCE56"
-                           ],
-                           hoverBackgroundColor: [
-                               "#FF6384",
-                               "#36A2EB",
-                               "#FFCE56"
-                           ]
-                       }]
-               },
-                   options: {
-                       animation:{
-                           animateScale:true
-                       }
-                   }
-               });
-            </script>
-         </div>
-      </div>
-   </div>
-   <div class="row">
       <div class="col-md-4" >
-         <div class="col-md-12 login-card subox-card">
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <h4>Most active departments</h4>
-            <ol class="trending-list">
-               <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-               <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
-               <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-               <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
-               <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-            </ol>
-            <div class="expand-link">
-               <a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
-            </div>
-         </div>
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="active-courses-selector">
+              <option value="vBar" selected="selected">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most active course cohorts using modulect in the time period selected.">Most Active Courses</a></h4>
+          <div class="col-md-12" id="active_courses_table_area">
+          </div>
+        </div>
       </div>
-   </div>
+    </div>
+    <% if current_user.user_level == "super_admin_access" %>
+    <div class="row">
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="active-departments-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most active department cohorts using modulect in the time period selected.">Most Active Department</a></h4>
+          <div class="col-md-12" id="active_departments_table_area">
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
 </div>
 <script>
   
@@ -527,5 +487,51 @@
   });
 
   drawLoggedIn();
+
+  function drawActiveCourses() {
+    var chartType = $("#active-courses-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), chart_name: "Most Active Courses") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Active Courses") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Active Courses") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Active Courses") %>").html_safe;
+    }
+  }
+
+  $("#active-courses-selector").on('change', function() {
+    drawActiveCourses();
+  });
+
+  drawActiveCourses();
+
+  function drawActiveDepartments() {
+    var chartType = $("#active-departments-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), chart_name: "Most Active Department") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Active Department") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Active Department") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Active Department") %>").html_safe;
+    }
+  }
+
+  $("#active-departments-selector").on('change', function() {
+    drawActiveDepartments();
+  });
+
+  drawActiveDepartments();
 
 </script>
