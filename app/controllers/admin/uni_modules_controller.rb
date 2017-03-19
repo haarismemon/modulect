@@ -283,7 +283,7 @@ module Admin
 
 
       else
-        @comments = @comments.order('rating ASC').page(params[:page]).per(@per_page)
+        @comments = @comments.order('created_at ASC').page(params[:page]).per(@per_page)
       end
 
 
