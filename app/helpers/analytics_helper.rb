@@ -368,7 +368,7 @@ module AnalyticsHelper
       end
     end
 
-    format_ouput_data(uni_modules_data, sort_by, number_to_show
+    format_ouput_data(uni_modules_data, sort_by, number_to_show)
 
   end
 
