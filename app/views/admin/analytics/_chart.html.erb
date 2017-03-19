@@ -1,10 +1,10 @@
 <% if input_hash.size != 0 %>
-  <canvas id="chart<%=@uni_module.id%>" width="50" height="30"></canvas>
+  <canvas id="chart<%= chart_name %>" width="50" height="30"></canvas>
 <% else %>
-  <h4>No data available right now for <%= @uni_module.name %></h4>
+  <h4>No data available right now for <%= chart_name %></h4>
 <% end %>
 <script>
-   var ctxa = document.getElementById("chart<%=@uni_module.id%>");
+   var ctxa = document.getElementById("chart<%= chart_name %>");
    var myPieChart = new Chart(ctxa,{
     type: "<%= type %>",
     data: {

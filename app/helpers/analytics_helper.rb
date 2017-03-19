@@ -362,7 +362,6 @@ module AnalyticsHelper
 		uni_modules = get_uni_modules(department_id, course_id)
 		pathway_search_log_first_data = PathwaySearchLog.where("first_mod_id = ?", uni_module_id)
 		pathway_search_log_second_data = PathwaySearchLog.where("second_mod_id = ?", uni_module_id)
-    p "here"
     pathway_search_log_first_data.each do |log|
       if UniModule.find(log.second_mod_id)
         uni_module = UniModule.find(log.second_mod_id)
