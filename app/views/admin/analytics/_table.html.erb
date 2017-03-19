@@ -4,7 +4,7 @@
       <% if chart_name != "Device Usage" && chart_name != "Users Logged In" && chart_name != "Most Active Students" %>
   		  <li><%= input.first.name %></li>
       <% elsif chart_name == "Most Active Students" %>
-        <li><%= input.first.first_name input.first.last_name %></li>
+        <li><%= "#{input.first.first_name} #{input.first.last_name}" %></li>
       <% else %>
         <li><%= input.first %></li>
       <% end %>
