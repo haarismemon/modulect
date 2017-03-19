@@ -63,7 +63,7 @@ module Admin
           elsif session[:resource_name] == 'courses' || session[:resource_name] == 'uni_modules'
             # Add departments attribute to create and/or link departments to this course/module
             # Create the Course/Module
-            created_resource = session[:resource_name].to_s.classify.constantize.create!(new_record.except('departments'))
+            created_resource = session[:resource_name].to_s.classify.constantize.create!(new_record.except('departments', 'prerequisite_modules'))
             # Transform string of departments into array of departments
             departments_s = new_record['departments']
             departments_s = departments_s.gsub('; ', ';')
@@ -78,7 +78,23 @@ module Admin
               end
             end
 
-          else session[:resource_name].to_s.classify.constantize.create!(new_record)
+            # If resource is modules then check for prerequisite modules
+            if session[:resource_name] == 'uni_modules'
+              # Transform string of modules into array
+              pre_req_modules = new_record['prerequisite_modules']
+              pre_req_modules = pre_req_modules.gsub('; ', ';')
+              pre_req_modules = pre_req_modules.split(';')
+              pre_req_modules.each do |module_name|
+                module_found = UniModule.find_by_name(module_name)
+                unless module_found.nil?
+                  # Add the found module to this modules prerequisites
+                  created_resource.uni_modules << module_found
+                end
+              end
+            end
+
+          else
+            session[:resource_name].to_s.classify.constantize.create!(new_record)
           end
         end
 
