@@ -36,6 +36,10 @@ module Admin
          @departments = @departments.order('name ASC').page(params[:page]).per(@per_page)
       end
 
+      if @departments.size == 0 && params[:page].present? && params[:page] != "1"
+        redirect_to admin_departments_path
+      end
+
       if current_user.user_level == "super_admin_access"
 
 
@@ -177,9 +181,5 @@ module Admin
          redirect_to admin_path unless current_user.user_level == "super_admin_access"
 
       end
-
-      
-
-
   end
 end
