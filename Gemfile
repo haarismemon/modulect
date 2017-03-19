@@ -45,7 +45,6 @@ group :development do
   gem 'guard-rspec', require: false
   gem "better_errors"
   gem "binding_of_caller"
-  gem "pry-rails"
 end
 
 group :test do

@@ -29,7 +29,7 @@
             </button>
             <% end %>
             <% if !app_settings.disable_all_reviews %>
-            <a href="#module_review" class="btn btn-lg btn-small" id="review-module" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</a>
+            <a href="#module_review" class="btn btn-lg btn-small" id="review-module" style="width: 120px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review</a>
             <% end %>
             <script>
                $("button#save-<%= @uni_module.code%>").on("click", function(){
@@ -86,7 +86,7 @@
 
 <style>
     /*#rating-area input[type=radio] {display:inline-block;}*/
-    #sort-comments { float: right}
+    #sort-comments { float: right;margin-bottom: 20px;}
     #review-area textarea {width: 100%; height: 100%;padding-top:10px;font-size:16px;padding-left:10px;}
     #edit-text-area{padding-top:10px;font-size:16px;padding-left:10px;}
     #module-review-card {

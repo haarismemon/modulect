@@ -1,4 +1,4 @@
-<label>Average Module Rating: </label><% updated_comments.empty? ? average_rating = 0 : average_rating = module_average_rating(@uni_module) %>
+<label class="mobile-block">Average Module Rating: </label><% updated_comments.empty? ? average_rating = 0 : average_rating = module_average_rating(@uni_module) %>
 <% number_of_stars = 0 %>
 <% for i in 1..(average_rating.floor) %>
     <i class="fa fa-star star-rating" aria-hidden="true"></i>
@@ -26,9 +26,8 @@
         <% module_comments.each do |comment| %>
           <% rating = comment.rating%>
           <div id="comment-entry-<%=comment.id%>">
-            <table width="100%" border="0">
-              <colgroup>
-                <td>
+            <div class="row">
+            <div class="col-md-12">
                   <% created_at = comment.created_at %>
                   <% edited_at = comment.updated_at %>
                   <% for i in 1..comment.rating %>
@@ -36,20 +35,27 @@
                   <% end %>
                   <% for j in 1..(5 - comment.rating) %>
                       <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
-                  <% end %><p></p>
-                  <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
+                  <% end %>
+                  </div>
+                  </div>
+              <div class="row">
+              <div class="col-md-8">
+                  <p></p>
+                  <p class="comment-text" id="comment-body-<%=comment.id%>"><%= comment.body %></p>
                   <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime('%d %B %Y at %H:%M %p')%></strong> <%= created_at != edited_at ? '(edited)' : '' %></p>
-                </td>
+               </div>
+              <div class="col-md-4 text-right">
                 <% if logged_in? %>
-                    <td id="edit-td" align="center">
+                    <span id="edit-td">
                       <button class="btn edit-btn" id="edit-btn-<%= comment.id %>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
-                    </td>
-                    <td id="delete-td" align="right">
+                    </span>
+                    <span id="delete-td">
                         <button class="btn delete-btn delete red-btn" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-                    </td>
+                    </span>
                 <% end %>
-              </colgroup>
-            </table>
+
+                  </div>
+                  </div>
           </div>
           <hr>
         <% end %>
@@ -92,7 +98,7 @@
             <% page_comments_group = grouped_comments[i - 1] %>
             <% page_comments_group.each do |comment|
               unless comment.nil? %>
-                    <table width="100%" border="0">
+                    <table width="100%" border="0" style="table-layout:fixed;">
                       <colgroup>
                         <td>
                           <% for i in 1..comment.rating %>
@@ -101,7 +107,7 @@
                           <% for j in 1..(5 - comment.rating) %>
                               <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                           <% end %><p></p>
-                          <p><%= comment.body %></p>
+                          <p class="comment-text"><%= comment.body %></p>
                           <p><strong><%= comment.user.full_name %></strong><%= get_course_and_year(comment.user, " ,")%></p>
                           <p style="font-size:12px;"><%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong> <%= comment.created_at != comment.updated_at ? '(Edited)' : '' %></p>
                         </td>
@@ -150,7 +156,7 @@
           </div>
       <% elsif logged_in? %>
       <% if !app_settings.disable_new_reviews %>
-          <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn ">Add a Review</a>
+          <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn "><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add a Review</a>
           <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
             <h3>Add a Review</h3>
 
@@ -273,6 +279,12 @@
 </script>
 
 <style>
+
+  .comment-text{
+    overflow: auto;
+  }
+
+
   #delete-td {
     width: 1%;
     padding-left: 0px;
