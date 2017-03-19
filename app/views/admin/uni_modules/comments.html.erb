@@ -48,7 +48,8 @@
               <input type="checkbox" name="check_all" id="check_all" value="true" class="toggle-bulk" /><label for="check_all"><span></span></label>
             </div>
           </td>
-          <th class="cell-label cell-label--string cell-label--false" scope="col">Review Created at</th>
+          <% sorting_columns = {"created_at" => "Review created at"} %>
+           <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: false, per_page: @per_page, dept_filter_id: @dept_filter_id} %>
           <th class="cell-label cell-label--string cell-label--false" scope="col">User Edited?</th>
           <th class="cell-label cell-label--string cell-label--false" scope="col">Reviewer</th>
           <th class="cell-label cell-label--string cell-label--false" scope="col">User type</th>
@@ -156,7 +157,7 @@ function showComment(comment, user_first, user_last) {
                 var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
                   return $(this).val();
                 }).get(); // <----
-                console.log(checkboxValues);
+                //console.log(checkboxValues);
 
                 $.ajax({
                   type: "POST",

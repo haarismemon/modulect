@@ -268,8 +268,25 @@ module Admin
     def comments
       @uni_module = UniModule.find(params[:id])
       @comments = @uni_module.comments
-      @per_page = 20
-       @comments = Kaminari.paginate_array(@comments).page(params[:page]).per(@per_page)
+
+      if params[:per_page].present? && params[:per_page].to_i > 0
+        @per_page = params[:per_page].to_i
+      else
+        @per_page = 20
+      end
+
+      if params[:sortby].present? && params[:order].present? && !params[:search].present?
+        @sort_by = params[:sortby]
+        @order = params[:order]
+        @comments = sort(Comment, @comments, @sort_by, @order, @per_page, "created_at")
+        @comments = Kaminari.paginate_array(@comments).page(params[:page]).per(@per_page)
+
+
+      else
+        @comments = @comments.order('rating ASC').page(params[:page]).per(@per_page)
+      end
+
+
     end
 
     def bulk_delete_comments
