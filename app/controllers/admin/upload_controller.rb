@@ -116,7 +116,7 @@ module Admin
 
       # Add specific association attributes
       # Add additional header attribute for the departments of the faculty
-      if resource.to_s == 'faculties' || 'courses'
+      if resource.to_s == 'faculties' || 'courses' || 'uni_modules'
         resource_header << 'departments'
       end
 
