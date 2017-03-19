@@ -28,30 +28,40 @@ module Admin
         flash[:error] = 'Upload Failed: Please ensure the CSV header matches the template file'
 
       else # Validation checks passed, continue with upload
-        # Reads each row of the uploaded csv file
-        # Creates records for corresponding resource
+        # Create records each row of the uploaded csv file
         parsed_csv.each do |row|
           new_record = row.to_hash
           # When uploading departments, specify faculty name instead of id
           if session[:resource_name] == 'departments'
             # Lookup a faculty with matching name and retrieve it's ID
-            new_record['faculty_id'] = Faculty.where(:name => row.to_hash['faculty_name']).first.id
+            new_record['faculty_id'] = Faculty.where(name: row.to_hash['faculty_name']).first.id
             # Remove the faculty name attribute from row hash
             new_record = new_record.except('faculty_name')
+            Department.create!(new_record)
 
           elsif session[:resource_name] == 'faculties'
             # Faculties upload: Add departments attribute to create and/or link departments to the faculty
-            # Retrieve departments field from record
-            departments_s = new_record['departments']
-            logger.debug("&&&&&&&&&&&&&& #{departments_s}")
-            # Normalise separators by removing whitespace
-            departments_s = departments_s.gsub!('; ', ';')
-            logger.debug("^^^^^^^^^^^^^ #{departments_s}")
+            # Create the faculty
+            created_faculty = Faculty.create!(new_record.except('departments'))
             # Transform string of departments into array of departments
+            departments_s = new_record['departments']
+            departments_s = departments_s.gsub('; ', ';')
             departments_a = departments_s.split(';')
-            logger.debug("[[[[[[]]]]]]]] #{departments_a}")
+            # For every entered department
+            departments_a.each do |dept_name|
+              # Look for a department with the name
+              department_found = Department.find_by_name(dept_name)
+              if department_found.nil?
+                # Create and link department with the this faculty
+                Department.create!(name: dept_name, faculty_id: created_faculty.id)
+              else
+                # Link department with this faculty
+                department_found.update!(faculty_id: created_faculty.id)
+              end
+            end
+
+          else session[:resource_name].to_s.classify.constantize.create!(new_record)
           end
-          # session[:resource_name].to_s.classify.constantize.create!(new_record)
         end
 
         flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
