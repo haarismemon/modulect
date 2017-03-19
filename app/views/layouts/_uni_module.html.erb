@@ -31,8 +31,8 @@
               <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong></p>
             </td>
             <% if logged_in? %>
-                <td id="delete-td" align="right">
-                  <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>" style="text-transform: none"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                <td id="delete-td" align="right" style="padding-right: 0px;">
+                  <button class="btn delete-btn delete red-btn" id="delete-btn-<%= comment.id %>" style="text-transform: none"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                 </td>
             <% end %>
           </colgroup>
@@ -72,9 +72,14 @@
                 </button>
             <% end %>
 
+
+
+
+            <% if !app_settings.disable_all_reviews %>
             <button class="btn btn-lg btn-small" id="review-module-<%= uni_module.id %>" style="width: 170px">
               <i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module
             </button>
+            <% end %>
 
             <script>
                 $("button#save-<%= uni_module.code%>").on("click", function () {
@@ -93,12 +98,18 @@
 
             </script>
         <% else %>
-            <form action="/login" method="get">
+            <form action="/login" method="get" style="display:inline-block;">
               <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip" data-placement="right" title="To save modules, you must be logged in." id="save-<%= uni_module.code %>">
                 <span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
               </button>
             </form>
         <% end %>
+         <% if !app_settings.disable_all_reviews && !logged_in? %>
+             <form action="/login" method="get" style="display:inline-block;">
+               <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="right" title="To review modules, you must be logged in." style="width: 170px"><span><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</span>
+               </button>
+            </form>
+            <% end %>
         <a style="cursor:pointer;float:right;margin-right:10px;margin-top:5px;" data-toggle="collapse" data-target="#result-<%= uni_module.code %>-more" class="more-info-link">More
           info <i class="fa fa-angle-down" aria-hidden="true"></i></a>
       </div>
@@ -131,7 +142,7 @@
   <% end %>
   </div>
   <% if type == "show" %>
-      <div id="result-<%= uni_module.code %>-more" style="margin-left:-15px;margin-top:20px;">
+      <div id="result-<%= uni_module.code %>-more" style="margin-left:-15px;margin-top:30px;">
   <% else %>
       <div id="result-<%= uni_module.code %>-more" class="collapse" style="margin-left:-15px;margin-top:20px;">
   <% end %>
@@ -167,8 +178,12 @@
   <div class="row" style="margin-left:0px;">
     <div class="col-md-4" style="margin-bottom:15px;">
       <h5><i class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;Assessment methods and dates</h5>
-      <p><%= size_check uni_module.assessment_methods %></p>
-      <p><%= size_check uni_module.assessment_dates %></p>
+      <% if uni_module.assessment_methods.nil? && uni_module.assessment_dates.nil? || (!uni_module.assessment_methods.nil? && !uni_module.assessment_dates.nil? && uni_module.assessment_methods.size == 0 && uni_module.assessment_dates.size == 0 ) %>
+         <p>No data available</p>
+      <% else %>
+         <p><%= uni_module.assessment_methods %></p>
+         <p><%= uni_module.assessment_dates %></p>
+      <% end %>
     </div>
     <div class="col-md-4" style="margin-bottom:15px;">
       <h5><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;Exam:Coursework ratio</h5>
@@ -226,4 +241,5 @@
       });
 
       <% end %>
+
   </script>

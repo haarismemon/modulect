@@ -1,20 +1,9 @@
-require 'support/wait_for_ajax'
-require 'support/selectize_select'
 require 'support/course_form_filler'
+require 'support/bulk_actions_steps'
 
 module CoursesIndexSteps
-  include SelectizeSelect
   include CourseFormFiller
-  include WaitForAjax
-
-  def select_first_course
-    find("#check_individual[value='1']").set(true)
-  end
-
-  def select_clone_action
-    find("#bulk-actions").click
-    find("#clone-all").click
-  end
+  include BulkActionsSteps
 
   def select_edit_action
     find(".action-edit").click
@@ -24,18 +13,7 @@ module CoursesIndexSteps
     click_button "Update"
   end
 
-  def select_delete_action
-    find("#bulk-actions").click
-    find("#delete-all").click
-  end
-
-  def confirm_action
-    wait_for_ajax
-    click_button("Proceed")
-    click_button("OK")
-  end
-
-  def i_should_be_back_on_the_index_page
+  def i_should_be_on_the_courses_index_page
     expect(page).to have_current_path(admin_courses_path)
   end
 
@@ -45,6 +23,10 @@ module CoursesIndexSteps
 
   def i_should_see_the_name_of_the_new_course
     assert_text Course.last.name
+  end
+
+  def i_should_see_an_update_success_flash
+    assert_text "updated"
   end
 
   def i_should_be_on_the_edit_page_of_the_new_course
