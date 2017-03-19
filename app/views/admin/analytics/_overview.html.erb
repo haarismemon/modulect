@@ -198,29 +198,23 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-         <div class="col-md-12 login-card subox-card">
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <h4>Top x reviewed modules</h4>
-            <ol class="trending-list">
-               <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-               <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
-               <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-               <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
-               <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-            </ol>
-            <div class="expand-link">
-               <a href="#">Expand  <i class="fa fa-caret-down" aria-hidden="true"></i></a>
-            </div>
-         </div>
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="reviewed-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most reviewed modules in the time period selected.">Top Reviewed Modules</a></h4>
+          <div class="col-md-12" id="reviewed_module_table_area">
+          </div>
+          <div class="expand-link">
+             <a data-toggle="tab" href="#modules" class="go-to-modules">More info ></a>
+          </div>
+        </div>
       </div>
       <div class="col-md-4">
          <div class="col-md-12 login-card subox-card">
@@ -511,5 +505,28 @@
   });
 
   drawDeviceUsage();
+
+  function drawReviewedModules() {
+    var chartType = $("#reviewed-module-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Top Reviewed Modules") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Top Reviewed Modules") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Top Reviewed Modules") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Top Reviewed Modules") %>").html_safe;
+    }
+  }
+
+  $("#reviewed-module-selector").on('change', function() {
+    drawReviewedModules();
+  });
+
+  drawReviewedModules();
 
 </script>
