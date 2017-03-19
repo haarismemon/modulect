@@ -181,79 +181,22 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-         <div class="col-md-12 login-card subox-card">
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <h4>Most saved modules</h4>
-            <ol class="trending-list">
-               <li>Software engineering <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-               <li>Maths <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
-               <li>Developer <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-               <li>Cyber security <i class="fa fa-caret-down red" aria-hidden="true"></i></li>
-               <li>Banking <i class="fa fa-caret-up green" aria-hidden="true"></i></li>
-            </ol>
-            <div class="expand-link">
-               <a data-toggle="tab" href="#modules" class="go-to-modules">Show more ></a>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="row">
+    </div>
+    <div class="row">
       <div class="col-md-4" >
-         <div class="col-md-12 login-card subox-card">
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <h4>Device usage</h4>
-            <canvas id="myPieChart" width="50" height="30"></canvas>
-            <script>
-               var ctxa = document.getElementById("myPieChart");
-               // For a pie chart
-               var myPieChart = new Chart(ctxa,{
-                   type: 'pie',
-                   data: {
-                   labels: [
-                       "iPhone",
-                       "Android device",
-                       "Windows 10"
-                   ],
-                   datasets: [
-                       {
-                           data: [300, 50, 100],
-                           backgroundColor: [
-                               "#FF6384",
-                               "#36A2EB",
-                               "#FFCE56"
-                           ],
-                           hoverBackgroundColor: [
-                               "#FF6384",
-                               "#36A2EB",
-                               "#FFCE56"
-                           ]
-                       }]
-               },
-                   options: {
-                       animation:{
-                           animateScale:true
-                       }
-                   }
-               });
-            </script>
-         </div>
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="device-usage-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie" selected="selected">Pie chart</option>
+              <option value="table">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Shows the most used device/OS modulect was accessed on.">Device Usage</a></h4>
+          <div class="col-md-12" id="device_usage_table_area">
+          </div>
+        </div>
       </div>
       <div class="col-md-4">
          <div class="col-md-12 login-card subox-card">
@@ -545,5 +488,28 @@
   });
 
   drawSavedModules();
+
+  function drawDeviceUsage() {
+    var chartType = $("#device-usage-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_device_usage(@department, 1, @time_period, Time.now), chart_name: "Device Usage") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "bar", chart_name: "Device Usage") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "horizontalBar", chart_name: "Device Usage") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "pie", chart_name: "Device Usage") %>").html_safe;
+    }
+  }
+
+  $("#device-usage-selector").on('change', function() {
+    drawDeviceUsage();
+  });
+
+  drawDeviceUsage();
 
 </script>

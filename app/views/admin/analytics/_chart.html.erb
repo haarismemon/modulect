@@ -1,17 +1,18 @@
 <% if input_hash.size != 0 %>
   <canvas id="chart<%= chart_name %>" width="50" height="30"></canvas>
-<% else %>
-  <h4>No data available right now for <%= chart_name %></h4>
-<% end %>
-<script>
+  <script>
    var ctxa = document.getElementById("chart<%= chart_name %>");
    var myChart = new Chart(ctxa,{
     type: "<%= type %>",
     data: {
-    labels: <%= raw input_hash.map{|h| h.first[:name]}.to_json %>,
-    datasets: [
-      {
-        data: <%= raw input_hash.map{|h| h.second}.to_json %>,
+    <% if chart_name != "Device Usage" %>
+      labels: <%= raw input_hash.map{|h| h.first[:name]}.to_json %>,
+    <% else %>
+      labels: <%= raw input_hash.map{|h| h.first}.to_json %>,
+    <% end %>
+      datasets: [
+        {
+          data: <%= raw input_hash.map{|h| h.second}.to_json %>,
         backgroundColor: [
           "#FF6384",
           "#36A2EB",
@@ -65,4 +66,7 @@
       <% end %>
     }
     });
-</script>
+  </script>
+<% else %>
+  <h4>No data available right now for <%= chart_name %></h4>
+<% end %>
