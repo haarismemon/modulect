@@ -105,7 +105,7 @@
           <option value="table" selected="selected">Table</option>
         </select>
       </div>
-      <div class="col-md-12" id="table-area">
+      <div class="col-md-12" id="table_area">
       </div>
     </div>
   </div>
@@ -128,12 +128,6 @@
     else if(selected == "pie") {
       //render partial
     } else {
-      <%= input_hash = get_modules_chosen_with(@uni_module, @department, @course, 1, @time_period, Time.now, "most", 5) %>
-      target += "<ol class=\"trending-list\">";
-                  <% input_hash.each do |input| %>
-                    target += "<li><%= input.name %> </li>";
-                  <% end %>
-                  target += "<ol>";
     }
   }
 </script>

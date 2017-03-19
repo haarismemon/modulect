@@ -1,0 +1,1 @@
+$("#table_area").empty().append("<%= escape_javascript(render "table") %>")

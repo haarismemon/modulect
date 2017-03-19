@@ -370,6 +370,8 @@ module AnalyticsHelper
 
     format_ouput_data(uni_modules_data, sort_by, number_to_show)
 
+    p format_ouput_data(uni_modules_data, sort_by, number_to_show)
+
   end
 
 	# most/least clicked (trending) tags

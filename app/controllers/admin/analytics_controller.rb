@@ -4,6 +4,8 @@ module Admin
 		include AnalyticsHelper
 		include SessionsHelper
 
+    before_filter :analytics
+
 		def analytics
 			@possible_times = ["day","week","month","year", "all_time"]
 			if params[:time].present? && @possible_times.include?(params[:time])
@@ -70,6 +72,10 @@ module Admin
     # update the value of the module selected
     def update_selected_module
       @uni_module = UniModule.find(params[:module_id])
+      @course = Course.find(params[:course_id])
+      respond_to do |format|
+        format.js
+      end
     end
 
     # update the value of the department selected

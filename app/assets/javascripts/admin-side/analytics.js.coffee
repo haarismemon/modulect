@@ -15,8 +15,10 @@ $ ->
   $(document).on 'change', '#modules_select', (evt) ->
       $.ajax 'update_selected_module',
         type: 'GET'
+        dataType: 'script'
         data: {
           module_id: $("#modules_select option:selected").val()
+          course_id: $("#courses_select option:selected").val()
         }
 
 $ ->
