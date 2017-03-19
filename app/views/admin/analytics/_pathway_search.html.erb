@@ -105,9 +105,8 @@
           <option value="table" selected="selected">Table</option>
         </select>
       </div>
-      <div class="col-md-12">
-
-
+      <div class="col-md-12" id="table-area">
+      </div>
     </div>
   </div>
 </div>
@@ -116,6 +115,9 @@
   function changeChart() {
     var select = document.getElementById("pathway-graph-selector");
     var selected = select.options[select.selectedIndex].value;
+
+    target = document.getElementById("table-area");
+    target.innerHTML = "";
 
     if(selected == "vBar") {
       //render partial
@@ -126,7 +128,13 @@
     else if(selected == "pie") {
       //render partial
     } else {
-      <%= render "_table", input_hash: get_modules_chosen_with(@uni_module, @course, 1, @time_period, Time.now, "most", 5) %>
+      <%= input_hash = get_modules_chosen_with(@uni_module, @department, @course, 1, @time_period, Time.now, "most", 5) %>
+      target += "<ol class=\"trending-list\">";
+                  <% input_hash.each do |input| %>
+                    target += "<li><%= input.name %> </li>";
+                  <% end %>
+                  target += "<ol>";
     }
   }
+</script>
 
