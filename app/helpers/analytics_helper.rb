@@ -22,7 +22,7 @@ module AnalyticsHelper
 	# if "any", return all
 	def get_uni_modules(department_id, course_id)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil? && course_id != "any" && is_number?(course_id) && !Course.find(course_id.to_i).nil?
-			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i)) && uni_module.courses.include?(Course.find(course_id.to_i))}
+			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i)) && check_mod_in_course(uni_module.id, course_id) }
 		elsif department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i))}
 		else
@@ -30,6 +30,19 @@ module AnalyticsHelper
 		end
 		uni_modules
 	end
+
+  # check that a module is part of a course
+  def check_mod_in_course(uni_module_id, course_id)
+    course = Course.find(course_id)
+    course.year_structures.each do |year|
+      year.groups.each do |group|
+        if group.uni_modules.include?(UniModule.find(uni_module_id))
+          return true
+        end
+      end
+    end
+    return false
+  end
 
 	# sort, filter and format the resulting dataset
 	def format_ouput_data(input_hash, sort_by, number_to_show)
@@ -349,7 +362,7 @@ module AnalyticsHelper
 		uni_modules = get_uni_modules(department_id, course_id)
 		pathway_search_log_first_data = PathwaySearchLog.where("first_mod_id = ?", uni_module_id)
 		pathway_search_log_second_data = PathwaySearchLog.where("second_mod_id = ?", uni_module_id)
-
+    p "here"
     pathway_search_log_first_data.each do |log|
       if UniModule.find(log.second_mod_id)
         uni_module = UniModule.find(log.second_mod_id)
