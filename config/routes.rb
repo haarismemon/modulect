@@ -34,6 +34,9 @@ Rails.application.routes.draw do
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
 
+    # Pathway search analytics
+    get '/admin/analytics/update_modules', to: 'analytics#update_modules', defaults: { format: 'js' }
+
     root to: "dashboard#index"
   end
 

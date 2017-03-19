@@ -14,6 +14,8 @@ module Admin
 
 			if current_user.user_level == "department_admin_access"
 				@department = current_user.department_id.to_s
+        @courses = Department.find(current_user.department_id).courses
+        @uni_modules = {}
 			elsif params[:search].present? && current_user.user_level == "super_admin_access"
         		@deparments_list = Department.all.select { |department| department.name.downcase.include?(params[:search].downcase) }
         		if @deparments_list.size == 1
@@ -40,6 +42,22 @@ module Admin
 
 			
 		end
+
+    # Change the value of the modules dropdown if course changes
+    def update_modules
+      @course = Course.find(params[:course_id])
+      @uni_modules = []
+      @course.year_structures.each do |year|
+        year.groups.each do |group|
+          group.uni_modules.each do |mod|
+            @uni_modules << mod
+          end
+        end
+      end
+      respond_to do |format|
+        format.js
+      end
+    end
 		
 	end
 end
