@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170317184228) do
+ActiveRecord::Schema.define(version: 20170318221948) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 20170317184228) do
   end
 
   create_table "notices", force: :cascade do |t|
-    t.string   "title"
+    t.string "header"
     t.integer  "department_id"
     t.string   "notice_body"
     t.date     "live_date"

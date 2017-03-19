@@ -20,16 +20,16 @@ module Admin
 
       if params[:search].present?
         @search_query = params[:search]
-        @notices = @notices.select { |notice| notice.title.downcase.include?(params[:search].downcase) }.sort_by { |notice| notice[:title] }
+        @notices = @notices.select { |notice| notice.header.downcase.include?(params[:search].downcase) }.sort_by { |notice| notice[:header] }
         @notices = Kaminari.paginate_array(@notices).page(params[:page]).per(@per_page)
 
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
-        @notices = sort(Notice, @notices, @sort_by, @order, @per_page, "title")
+        @notices = sort(Notice, @notices, @sort_by, @order, @per_page, "header")
         @notices = Kaminari.paginate_array(@notices).page(params[:page]).per(@per_page)
       else
-        @notices = @notices.order('title ASC').page(params[:page]).per(@per_page)
+        @notices = @notices.order('header ASC').page(params[:page]).per(@per_page)
       end
 
     end
@@ -87,7 +87,7 @@ module Admin
       @notice.destroy
       flash[:success] = "notice has been deleted successfully."
       #redirect to action which displays all notices
-      redirect_to(admin_noticvves_path)
+      redirect_to(admin_notices_path)
     end
 
     def bulk_delete
@@ -115,7 +115,7 @@ module Admin
 
         if !notice.nil?
           cloned = notice.dup
-          cloned.update_attribute("title", cloned.title + "-CLONE")
+          cloned.update_attribute("header", cloned.header + "-CLONE")
         end
 
       end
@@ -127,7 +127,7 @@ module Admin
 
     def notice_params
       #!add params that want to be recognized by this application
-      params.require(:notice).permit(:title, :notice_body, :live_date, :end_date, :broadcast, :optional_link, :auto_delete)
+      params.require(:notice).permit(:header, :notice_body, :live_date, :end_date, :broadcast, :optional_link, :auto_delete)
     end
 
     def verify_correct_access

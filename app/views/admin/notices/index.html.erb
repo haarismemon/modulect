@@ -41,7 +41,7 @@
               <input type="checkbox" name="check_all" id="check_all" value="true" class="toggle-bulk"/><label for="check_all"><span></span></label>
             </div>
           </td>
-          <% sorting_columns = {"title" => "Title", "notice_body" => "Body"} %>
+          <% sorting_columns = {"header" => "Header", "notice_body" => "Body"} %>
           <% if request.query_parameters["search"].present? %>
               <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: true, per_page: @per_page} %>
           <% else %>
@@ -60,7 +60,7 @@
                   <input type="checkbox" name="check_action[]" id="check_individual" value="<%= notice.id %>" class="toggle-bulk"/><label for="check_individual"><span></span></label>
                 </div>
               </td>
-              <td class="cell-data cell-data--string" style="white-space: normal"><%= notice.title %></td>
+              <td class="cell-data cell-data--string" style="white-space: normal"><%= notice.header %></td>
               <td class="cell-data cell-data--string" style="white-space: normal"><%= notice.notice_body.html_safe %></td>
               <td class="cell-data cell-data--string"><%= notice.broadcast ? "Active" : "Offline" %></td>
               <td class="cell-data cell-data--string"><%= notice.end_date ? notice.end_date.to_s : "None" %></td>
