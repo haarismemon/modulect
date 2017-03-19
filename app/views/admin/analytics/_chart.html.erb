@@ -5,7 +5,7 @@
 <% end %>
 <script>
    var ctxa = document.getElementById("chart<%= chart_name %>");
-   var myPieChart = new Chart(ctxa,{
+   var myChart = new Chart(ctxa,{
     type: "<%= type %>",
     data: {
     labels: <%= raw input_hash.map{|h| h.first[:name]}.to_json %>,

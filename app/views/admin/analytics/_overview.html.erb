@@ -130,20 +130,18 @@
       <div class="col-md-4" >
         <div class="col-md-12 login-card subox-card">
           <div class="side-right">
-            <div class="side-right">
-              <select class="selectpicker" id="trending-tag-selector">
-                <option value="vBar">Vertical Bar chart</option>
-                <option value="hBar">Horizontal Bar chart</option>
-                <option value="pie">Pie chart</option>
-                <option value="table" selected="selected">Table</option>
-              </select>
-            </div>
-            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Trending tags</a></h4>
+            <select class="selectpicker" id="trending-tag-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
           </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Trending tags</a></h4>
           <div class="col-md-12" id="trending_tag_table_area">
           </div>
           <div class="expand-link">
-             <a data-toggle="tab" href="#tags" class="go-to-tags">Show more ></a>
+             <a data-toggle="tab" href="#tags" class="go-to-tags">More info ></a>
           </div>
         </div>
       </div>
@@ -473,18 +471,20 @@
     if(chartType == "table") {
       $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), chart_name: "Trending Tags") %>").html_safe;
     }
-    else if(chartType == "vbar") {
+    else if(chartType == "vBar") {
       $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Trending Tags") %>").html_safe;
     }
-    else if(chartType == "hbar") {
+    else if(chartType == "hBar") {
       $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Trending Tags") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#trending-tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Trending Tags") %>").html_safe;
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Trending Tags") %>").html_safe;
     }
   }
 
-  $("#trending-tag-selector").change(drawTrendingTags());
+  $("#trending-tag-selector").on('change', function() {
+    drawTrendingTags();
+  });
 
   drawTrendingTags();
 
