@@ -1,5 +1,9 @@
-<h4>Frequently chosen with <%= @uni_module.name %></h4>
-<canvas id="chart<%=@uni_module.id%>" width="50" height="30"></canvas>
+<% if input_hash.size != 0 %>
+  <h4>Frequently chosen with <%= @uni_module.name %></h4>
+  <canvas id="chart<%=@uni_module.id%>" width="50" height="30"></canvas>
+<% else %>
+  <h4>No data available right now for <%= @uni_module.name %></h4>
+<% end %>
 <script>
    var ctxa = document.getElementById("chart<%=@uni_module.id%>");
    var myPieChart = new Chart(ctxa,{
