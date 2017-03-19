@@ -1,6 +1,6 @@
 module Admin
   class UniModulesController < Admin::BaseController
-    before_action :verify_correct_department, only: [:update, :edit, :destroy]
+    before_action :verify_correct_department, only: [:update, :edit, :destroy, :comments]
 
     def show
       redirect_to edit_admin_uni_module_path(params[:id])
