@@ -353,6 +353,12 @@ module Admin
           end
         end
         if !is_used_somewhere
+          logs = TagLog.all.where(:tag_id => tag.id)
+            if logs.size >0
+              logs.each do |log|
+                log.destroy
+              end
+           end
           tag.destroy
         end
       end
