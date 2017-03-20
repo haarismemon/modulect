@@ -11,6 +11,11 @@ Rails.application.routes.draw do
     patch '/uni_modules' => 'uni_modules#create'
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
+    resources :course_pathways  do
+      member do
+        get :new_pathway
+      end
+    end
 
     # GENERAL
     get 'upload', to: 'upload#upload'
@@ -104,7 +109,12 @@ Rails.application.routes.draw do
   get 'pathway-search/begin'
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
-  get 'pathway-search/view_results_test'
+  post 'pathway-search/increment_pathway_search_log', to: 'pathway_search#increment_pathway_search_log'
+  post 'pathway-search/decrement_pathway_search_log', to: 'pathway_search#decrement_pathway_search_log'
+  # Pathway search analytics
+  get '/*all/update_modules', to: 'admin/analytics#update_modules', defaults: { format: 'js' }
+  get '/*all/update_selected_module', to: 'admin/analytics#update_selected_module', defaults: { format: 'js' }
+  get '/*all/update_selected_department', to: 'admin/analytics#update_selected_department', defaults: { format: 'js' }
 
 
   # Career search
@@ -125,6 +135,9 @@ Rails.application.routes.draw do
   # Save pathways and modules, and create tags used in ajax
   post 'application/save_module'
   post 'application/save_pathway'
+  post 'application/save_course_pathway'
+  post 'application/delete_course_pathway'
+  post 'application/update_course_pathway'
   post 'application/delete_pathway'
 
   get 'application/rating_for_module'

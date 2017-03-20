@@ -1,0 +1,537 @@
+<div class="row" >
+   <div class="col-md-12  login-card header-card" style="">
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;
+            <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+            <%= get_number_visitors(@department, 1, @time_period, Time.now) %>
+         </div>
+         <% if @time_period != "all_time" %>
+         <% percentage_difference_total_users = 
+            percentage_difference(get_number_visitors(@department, 1, @time_period, Time.now), get_number_visitors(@department, 1, @time_period, get_start_desired_period(1,@time_period, Time.now)))
+            %>
+         <div class="percentage-change <%= colour(percentage_difference_total_users)%>">
+            <% if percentage_difference_total_users != 0 %>
+            <i class="fa fa-caret-<%= indicator(percentage_difference_total_users)%>" aria-hidden="true"></i>
+            <% end %> <%= percentage_difference_total_users %>% from previous <%= @time_period.titleize.downcase%>
+         </div>
+         <% end %>
+      </div>
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+            <%= get_number_quick_searches(@department, 1, @time_period, Time.now) %>
+         </div>
+         <% if @time_period != "all_time" %>
+         <% percentage_difference_total_quick_searches = 
+            percentage_difference(get_number_quick_searches(@department, 1, @time_period, Time.now), get_number_quick_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            %>
+         <div class="percentage-change <%= colour(percentage_difference_total_quick_searches)%>">
+            <% if percentage_difference_total_quick_searches != 0 %>
+            <i class="fa fa-caret-<%= indicator(percentage_difference_total_quick_searches)%>" aria-hidden="true"></i>
+            <% end %> <%= percentage_difference_total_quick_searches %>% from previous <%= @time_period.titleize.downcase%>
+         </div>
+         <% end %>
+      </div>
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+            <%= get_number_pathway_searches(@department, 1, @time_period, Time.now) %>
+         </div>
+         <% if @time_period != "all_time" %>
+         <% percentage_difference_total_pathway_searches = 
+            percentage_difference(get_number_pathway_searches(@department, 1, @time_period, Time.now), get_number_pathway_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            %>
+         <div class="percentage-change <%= colour(percentage_difference_total_pathway_searches)%>">
+            <% if percentage_difference_total_pathway_searches != 0 %>
+            <i class="fa fa-caret-<%= indicator(percentage_difference_total_pathway_searches)%>" aria-hidden="true"></i>
+            <% end %> <%= percentage_difference_total_pathway_searches %>% from previous <%= @time_period.titleize.downcase%>
+         </div>
+         <% end %>
+      </div>
+      <div class="col-md-3 header-item last">
+         <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+            <%= get_number_career_searches(@department, 1, @time_period, Time.now) %>
+         </div>
+         <% if @time_period != "all_time" %>
+         <% percentage_difference_total_career_searches = 
+            percentage_difference(get_number_career_searches(@department, 1, @time_period, Time.now), get_number_career_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            %>
+         <div class="percentage-change <%= colour(percentage_difference_total_career_searches)%>">
+            <% if percentage_difference_total_career_searches != 0 %>
+            <i class="fa fa-caret-<%= indicator(percentage_difference_total_career_searches)%>" aria-hidden="true"></i>
+            <% end %> <%= percentage_difference_total_career_searches %>% from previous <%= @time_period.titleize.downcase%>
+         </div>
+         <% end %>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col-md-12 login-card">
+      <h4 class="small-header" style="margin-bottom:20px;">Comparison of number of searches <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></h4>
+      <canvas id="overview-main-chart" width="400" height="120"></canvas>
+      <script>
+         var ctx = document.getElementById("overview-main-chart");
+         
+         var searchData = {
+         labels : <%= get_list_of_time_periods(@time_period).to_json.html_safe %>,
+         datasets : [
+         {
+         label : "# number of quick searches",
+         data : <%= attach_search_log_data_to_time_period(get_search_lists(@department, "quick", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
+         borderColor : "rgba(217,83,79,1)",
+         backgroundColor : "rgba(217,83,79,0.1)"
+         },
+         {
+         label : "# number of pathway searches",
+         data : <%= attach_search_log_data_to_time_period(get_search_lists(@department, "pathway", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
+         borderColor : "rgba(42,178,123,1)",
+         backgroundColor : "rgba(42,178,123,0.1)",
+         },
+         {
+         label : "# number of career searches",
+         data : <%= attach_search_log_data_to_time_period(get_search_lists(@department, "career", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
+         borderColor : "rgba(2,148,214,1)",
+         backgroundColor: "rgba(42,148,214,0.1)"
+         }
+         
+         ]
+         };
+         var mainSearchChart = new Chart(ctx, {
+             type: 'line',
+             data: searchData,
+             options: {
+                 scales: {
+                     yAxes: [{
+                         ticks: {
+                             beginAtZero:true,
+                             userCallback: function(label, index, labels) {
+                             // no decimals
+                             if (Math.floor(label) === label) {
+                                 return label;
+                             }
+
+                          },
+                         }
+                     }]
+                 }
+             }
+         });
+         
+      </script>
+   </div>
+
+   <div class="row">
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="trending-tag-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected tags in the time period selected.">Trending Tags</a></h4>
+          <div class="col-md-12" id="trending_tag_table_area">
+          </div>
+          <div class="expand-link">
+             <a data-toggle="tab" href="#tags" class="go-to-tags">More info ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="trending-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected modules in the time period selected.">Trending Modules</a></h4>
+          <div class="col-md-12" id="trending_module_table_area">
+          </div>
+          <div class="expand-link">
+             <a data-toggle="tab" href="#modules" class="go-to-modules">More info ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="saved-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar" selected="selected">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most saved modules in the time period selected.">Most Saved Modules</a></h4>
+          <div class="col-md-12" id="saved_module_table_area">
+          </div>
+          <div class="expand-link">
+             <a data-toggle="tab" href="#modules" class="go-to-modules">More info ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="device-usage-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie" selected="selected">Pie chart</option>
+              <option value="table">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Shows the most used device/OS modulect was accessed on.">Device Usage</a></h4>
+          <div class="col-md-12" id="device_usage_table_area">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="reviewed-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most reviewed modules in the time period selected.">Top Reviewed Modules</a></h4>
+          <div class="col-md-12" id="reviewed_module_table_area">
+          </div>
+          <div class="expand-link">
+             <a data-toggle="tab" href="#modules" class="go-to-modules">More info ></a>
+          </div>
+        </div>
+      </div>
+       <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="rated-module-selector">
+              <option value="vBar" selected="selected">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most highly rated modules in the time period selected.">Top Rated Modules</a></h4>
+          <div class="col-md-12" id="rated_module_table_area">
+          </div>
+          <div class="expand-link">
+             <a data-toggle="tab" href="#modules" class="go-to-modules">More info ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="active-students-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most active student using modulect in the time period selected.">Most Active Students</a></h4>
+          <div class="col-md-12" id="active_students_table_area">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="login-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie" selected="selected">Pie chart</option>
+            </select>
+          </div>
+          <h4 class="small-header"><a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of users of modulect logged in versus those who are not.">Users Logged In</a></h4>
+          <div class="col-md-12" id="login_table_area">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="active-courses-selector">
+              <option value="vBar" selected="selected">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most active course cohorts using modulect in the time period selected.">Most Active Courses</a></h4>
+          <div class="col-md-12" id="active_courses_table_area">
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if current_user.user_level == "super_admin_access" %>
+    <div class="row">
+      <div class="col-md-4" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="active-departments-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most active department cohorts using modulect in the time period selected.">Most Active Department</a></h4>
+          <div class="col-md-12" id="active_departments_table_area">
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+</div>
+<script>
+  
+
+  function drawTrendingTags() {
+    var chartType = $("#trending-tag-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), chart_name: "Trending Tags") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Trending Tags") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Trending Tags") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Trending Tags") %>").html_safe;
+    }
+  }
+
+  $("#trending-tag-selector").on('change', function() {
+    drawTrendingTags();
+  });
+
+  drawTrendingTags();
+
+  function drawTrendingModules() {
+    var chartType = $("#trending-module-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_visited_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Trending Modules") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Trending Modules") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Trending Modules") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Trending Modules") %>").html_safe;
+    }
+  }
+
+  $("#trending-module-selector").on('change', function() {
+    drawTrendingModules();
+  });
+
+  drawTrendingModules();
+
+  function drawSavedModules() {
+    var chartType = $("#saved-module-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_saved_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Most Saved Modules") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Saved Modules") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Saved Modules") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Saved Modules") %>").html_safe;
+    }
+  }
+
+  $("#saved-module-selector").on('change', function() {
+    drawSavedModules();
+  });
+
+  drawSavedModules();
+
+  function drawDeviceUsage() {
+    var chartType = $("#device-usage-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_device_usage(@department, 1, @time_period, Time.now), chart_name: "Device Usage") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "bar", chart_name: "Device Usage") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "horizontalBar", chart_name: "Device Usage") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "pie", chart_name: "Device Usage") %>").html_safe;
+    }
+  }
+
+  $("#device-usage-selector").on('change', function() {
+    drawDeviceUsage();
+  });
+
+  drawDeviceUsage();
+
+  function drawReviewedModules() {
+    var chartType = $("#reviewed-module-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Top Reviewed Modules") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Top Reviewed Modules") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Top Reviewed Modules") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Top Reviewed Modules") %>").html_safe;
+    }
+  }
+
+  $("#reviewed-module-selector").on('change', function() {
+    drawReviewedModules();
+  });
+
+  drawReviewedModules();
+
+  function drawRatedModules() {
+    var chartType = $("#rated-module-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_rating_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Top Rated Modules") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_rating_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Top Rated Modules") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_rating_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Top Rated Modules") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_rating_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Top Rated Modules") %>").html_safe;
+    }
+  }
+
+  $("#rated-module-selector").on('change', function() {
+    drawRatedModules();
+  });
+
+  drawRatedModules();
+
+  function drawActiveStudents() {
+    var chartType = $("#active-students-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#active_students_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_user(@department, 1, @time_period, Time.now, "most", 5), chart_name: "Most Active Students") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_user(@department, 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Active Students") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_user(@department, 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Active Students") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_user(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Active Students") %>").html_safe;
+    }
+  }
+
+  $("#active-students-selector").on('change', function() {
+    drawActiveStudents();
+  });
+
+  drawActiveStudents();
+
+  function drawLoggedIn() {
+    var chartType = $("#login-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#login_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_login_analytics(@department, 1, @time_period, Time.now), chart_name: "Users Logged In") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_login_analytics(@department, 1, @time_period, Time.now), type: "bar", chart_name: "Users Logged In") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_login_analytics(@department, 1, @time_period, Time.now), type: "horizontalBar", chart_name: "Users Logged In") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_login_analytics(@department, 1, @time_period, Time.now), type: "pie", chart_name: "Users Logged In") %>").html_safe;
+    }
+  }
+
+  $("#login-selector").on('change', function() {
+    drawLoggedIn();
+  });
+
+  drawLoggedIn();
+
+  function drawActiveCourses() {
+    var chartType = $("#active-courses-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), chart_name: "Most Active Courses") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Active Courses") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Active Courses") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Active Courses") %>").html_safe;
+    }
+  }
+
+  $("#active-courses-selector").on('change', function() {
+    drawActiveCourses();
+  });
+
+  drawActiveCourses();
+
+  function drawActiveDepartments() {
+    var chartType = $("#active-departments-selector option:selected").val();
+
+    if(chartType == "table") {
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), chart_name: "Most Active Department") %>").html_safe;
+    }
+    else if(chartType == "vBar") {
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Active Department") %>").html_safe;
+    }
+    else if(chartType == "hBar") {
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Active Department") %>").html_safe;
+    }
+    else if(chartType == "pie") {
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Active Department") %>").html_safe;
+    }
+  }
+
+  $("#active-departments-selector").on('change', function() {
+    drawActiveDepartments();
+  });
+
+  drawActiveDepartments();
+
+</script>

@@ -43,4 +43,50 @@ module PathwaySearchHelper
     end
   end 
 
+  # adds or increments the counter of a tuple pair to the database when two modules are selected in the same pathway
+  def add_to_pathway_search_log(first_mod_id, second_mod_id, course_id)
+    # Tuples are arranged with the module with the lower id being first
+    mod_a = -1
+    mod_b = -1
+    if first_mod_id < second_mod_id
+      mod_a = first_mod_id
+      mod_b = second_mod_id
+    else 
+      mod_a = second_mod_id
+      mod_b = first_mod_id
+    end
+    # Check if there is an existing tuple for this pair
+    existing_log = PathwaySearchLog.select{|log| log.first_mod_id == mod_a.to_i && log.second_mod_id == mod_b.to_i && log.course_id == course_id.to_i && log.created_at.to_date == Time.now.to_date}
+    if existing_log.size > 0
+      desired_log = existing_log.first
+      desired_log.update_attribute("counter", desired_log.counter + 1)
+    else
+      # Create a new tuple if one does not exist
+      PathwaySearchLog.create(:first_mod_id => mod_a, :second_mod_id => mod_b, :course_id => course_id, :counter => 1)
+    end
+  end
+
+  # decrements the counter of a tuple pair to the database when two modules are selected in the same pathway
+  def remove_from_pathway_search_log(first_mod_id, second_mod_id, course_id)
+    # Tuples are arranged with the module with the lower id being first
+    mod_a = -1
+    mod_b = -1
+    if first_mod_id < second_mod_id
+      mod_a = first_mod_id
+      mod_b = second_mod_id
+    else 
+      mod_a = second_mod_id
+      mod_b = first_mod_id
+    end
+    # Check if there is an existing tuple for this pair
+    existing_log = PathwaySearchLog.select{|log| log.first_mod_id == mod_a.to_i && log.second_mod_id == mod_b.to_i && log.course_id == course_id.to_i && log.created_at.to_date == Time.now.to_date}
+    if existing_log.size > 0
+      desired_log = existing_log.first
+      desired_log.update_attribute("counter", desired_log.counter - 1)
+    else
+      # Do nothing as the pair does not exist.
+    end
+  end
+
+
 end

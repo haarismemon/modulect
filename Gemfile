@@ -26,6 +26,8 @@ gem 'cocoon'
 gem 'selectize-rails'
 gem 'kaminari'
 gem 'tinymce-rails',          '~> 4.3'
+gem 'device_detector'
+
 
 group :development, :test do
   gem 'sqlite3'

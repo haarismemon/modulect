@@ -230,6 +230,27 @@ module Admin
       end
 
       if can_delete
+        @uni_module.comments.each do |comment|
+          comment.destroy
+        end
+        logs = UniModuleLog.all.where(:uni_module_id => @uni_module.id)
+          if logs.size >0
+            logs.each do |log|
+               log.destroy
+            end
+          end
+        pflogs = PathwaySearchLog.all.where(:first_mod_id => @uni_module.id)
+          if pflogs.size >0
+            pflogs.each do |log|
+                pflogs.destroy
+            end
+          end        
+        pslogs = PathwaySearchLog.all.where(:second_mod_id => @uni_module.id)
+          if pslogs.size >0
+            pslogs.each do |log|
+                pslogs.destroy
+            end
+          end    
         @uni_module.destroy
         tag_clean_up
         flash[:success] = "Module successfully deleted"
@@ -257,6 +278,27 @@ module Admin
             end
           end
           if can_delete
+            uni_module.comments.each do |comment|
+              logs = UniModuleLog.all.where(:uni_module_id => uni_module.id)
+              if logs.size >0
+                logs.each do |log|
+                  log.destroy
+                end
+              end
+              pflogs = PathwaySearchLog.all.where(:first_mod_id => @uni_module.id)
+              if pflogs.size >0
+                pflogs.each do |log|
+                    pflogs.destroy
+                end
+              end        
+            pslogs = PathwaySearchLog.all.where(:second_mod_id => @uni_module.id)
+              if pslogs.size >0
+                pslogs.each do |log|
+                    pslogs.destroy
+                end
+              end   
+              comment.destroy
+            end
             uni_module.destroy
           end
 
@@ -335,6 +377,12 @@ module Admin
           end
         end
         if !is_used_somewhere
+          logs = TagLog.all.where(:tag_id => tag.id)
+            if logs.size >0
+              logs.each do |log|
+                log.destroy
+              end
+           end
           tag.destroy
         end
       end

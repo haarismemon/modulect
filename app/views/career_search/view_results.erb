@@ -1,4 +1,7 @@
 <% provide(:title, 'Potential Careers - Career Search') %>
+<% if request.query_parameters["sl"].present? &&  request.query_parameters["sl"] == "true"%>
+  <% add_to_search_log("career") %>
+<% end %>
 <% if logged_in? %>
 <% @year_of_study = current_user.year_of_study %>
 <% @course = current_user.course_id %>
