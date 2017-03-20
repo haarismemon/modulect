@@ -109,6 +109,7 @@ module Admin
         @department.users.each do |user|
           user.update_attribute("department_id", nil)
         end
+        
         @department.destroy
         flash[:success] = @department.name+" has been deleted successfully."
       else

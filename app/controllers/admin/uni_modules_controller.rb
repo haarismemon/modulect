@@ -239,6 +239,20 @@ module Admin
                log.destroy
             end
           end
+        pflogs = pathway_search_logs.all.where(:first_mod_id => @uni_module.id)
+          if pflogs.size >0
+            pflogs.each do |log|
+                pflogs.destroy
+            end
+          end
+        end
+        pslogs = pathway_search_logs.all.where(:second_mod_id => @uni_module.id)
+          if pslogs.size >0
+            pslogs.each do |log|
+                pslogs.destroy
+            end
+          end
+        end
         @uni_module.destroy
         tag_clean_up
         flash[:success] = "Module successfully deleted"
@@ -273,6 +287,20 @@ module Admin
                   log.destroy
                 end
               end
+              pflogs = pathway_search_logs.all.where(:first_mod_id => @uni_module.id)
+              if pflogs.size >0
+                pflogs.each do |log|
+                    pflogs.destroy
+                end
+              end
+            end
+            pslogs = pathway_search_logs.all.where(:second_mod_id => @uni_module.id)
+              if pslogs.size >0
+                pslogs.each do |log|
+                    pslogs.destroy
+                end
+              end
+            end
               comment.destroy
             end
             uni_module.destroy
