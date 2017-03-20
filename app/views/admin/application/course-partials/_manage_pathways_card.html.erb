@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-md-12 login-card">
+    <div class="icon-row"><i class="fa fa-list-ul" aria-hidden="true"></i></div>
+      <h3>Course Pathways</h3>
+      <h5 style="margin-top: 20px">
+        Pathways: <%= @course.pathways.count %>
+      </h5>
+    <div style="margin-top: 30px;padding-left:0px">
+        <%= link_to("Manage", admin_course_pathway_path(@course.id), id: 'manage-pathways', class: 'btn btn-lg') %>
+    </div>
+  </div>
+</div>
