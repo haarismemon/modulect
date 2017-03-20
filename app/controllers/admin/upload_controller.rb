@@ -105,8 +105,15 @@ module Admin
 
           elsif session[:resource_name] == 'faculties'
             # Faculties upload: Add departments attribute to create and/or link departments to the faculty
-            # Create the faculty
-            created_faculty = Faculty.create!(new_record.except('departments'))
+            faculty_entry = nil
+            # Check whether to update a faculty or create a new one
+            if Faculty.find_by_name(new_record['name']).nil?
+              # Create a new faculty
+              faculty_entry = Faculty.create!(new_record.except('departments'))
+            else
+              # Retrieve the existing faculty
+              faculty_entry = Faculty.find_by_name(new_record['name'])
+            end
             # Transform string of departments into array of departments
             departments_s = new_record['departments']
             departments_s = departments_s.gsub('; ', ';')
@@ -117,10 +124,10 @@ module Admin
               department_found = Department.find_by_name(dept_name)
               if department_found.nil?
                 # Create and link department with the this faculty
-                Department.create!(name: dept_name, faculty_id: created_faculty.id)
+                Department.create!(name: dept_name, faculty_id: faculty_entry.id)
               else
                 # Link department with this faculty
-                department_found.update!(faculty_id: created_faculty.id)
+                department_found.update!(faculty_id: faculty_entry.id)
               end
             end
 
