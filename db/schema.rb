@@ -81,19 +81,19 @@ ActiveRecord::Schema.define(version: 20170319043317) do
   create_table "groups", force: :cascade do |t|
     t.string   "name"
     t.integer  "year_structure_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.boolean  "compulsory"
-    t.integer  "min_credits"
-    t.integer  "max_credits"
+    t.integer  "min_credits",       default: 0
+    t.integer  "max_credits",       default: 120
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
   end
 
   create_table "groups_uni_modules", id: false, force: :cascade do |t|
     t.integer "group_id",      null: false
     t.integer "uni_module_id", null: false
-    t.index ["group_id", "uni_module_id"], name: "index_groups_uni_modules_on_group_id_and_uni_module_id"
-    t.index ["uni_module_id", "group_id"], name: "index_groups_uni_modules_on_uni_module_id_and_group_id"
+    t.index ["group_id", "uni_module_id"], name: "index_Groups_UniModules_on_group_id_and_uni_module_id"
+    t.index ["uni_module_id", "group_id"], name: "index_Groups_UniModules_on_uni_module_id_and_group_id"
   end
 
   create_table "notices", force: :cascade do |t|
@@ -109,6 +109,25 @@ ActiveRecord::Schema.define(version: 20170319043317) do
     t.datetime "updated_at",    null: false
   end
 
+  create_table "optional_modules_groups", force: :cascade do |t|
+    t.string   "course_id"
+    t.string   "credits_limit"
+    t.integer  "year_structure_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["year_structure_id"], name: "index_optional_modules_groups_on_year_structure_id"
+  end
+
+  create_table "optional_modules_groups_uni_modules", id: false, force: :cascade do |t|
+    t.integer "optional_modules_group_id", null: false
+    t.integer "uni_module_id",             null: false
+  end
+
+  create_table "optional_modules_groups_year_structures", id: false, force: :cascade do |t|
+    t.integer "optional_modules_group_id", null: false
+    t.integer "year_structure_id",         null: false
+  end
+
   create_table "pathways", force: :cascade do |t|
     t.string   "name",       default: "Pathway"
     t.string   "data"
@@ -117,6 +136,24 @@ ActiveRecord::Schema.define(version: 20170319043317) do
     t.datetime "updated_at",                     null: false
     t.integer  "year"
     t.integer  "course_id"
+  end
+
+  create_table "required_modules_groups", force: :cascade do |t|
+    t.string   "course_id"
+    t.integer  "year_structure_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["year_structure_id"], name: "index_required_modules_groups_on_year_structure_id"
+  end
+
+  create_table "required_modules_groups_uni_modules", id: false, force: :cascade do |t|
+    t.integer "required_modules_group_id", null: false
+    t.integer "uni_module_id",             null: false
+  end
+
+  create_table "required_modules_groups_year_structures", id: false, force: :cascade do |t|
+    t.integer "required_modules_group_id", null: false
+    t.integer "year_structure_id",         null: false
   end
 
   create_table "tags", force: :cascade do |t|

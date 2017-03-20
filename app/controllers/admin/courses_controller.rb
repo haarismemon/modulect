@@ -4,6 +4,9 @@ module Admin
 
     before_action :verify_correct_department, only: [:update, :edit, :destroy]
 
+    def course_pathways
+      @course = Course.find_by(id: params[:id])
+    end
     def show
       redirect_to edit_admin_course_path(params[:id])
     end

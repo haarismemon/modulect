@@ -6,7 +6,8 @@ class Course < ApplicationRecord
 
   # There cannot be two entries with same name and year.
   validates :name, uniqueness: { scope: [:year] }
-
+  # Recommended pathways
+  has_many :pathways
   has_and_belongs_to_many :departments
 
   has_many :year_structures, dependent: :delete_all

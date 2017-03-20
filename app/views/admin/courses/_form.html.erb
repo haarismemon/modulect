@@ -9,6 +9,27 @@
         <%= render 'admin/application/course-partials/year_structures_set' %>
     <% end %>
 
+    <div class="col-md-12 text-center">
+      <div class="col-md-12 login-card">
+        <div class="col-md-12">
+          <div class="icon-row"><i class="fa fa-list-ul" aria-hidden="true"></i></div>
+          <div>
+            <h3>Course Pathways</h3>
+            <h5 style="margin-top: 20px">
+              Pathways: <%= @course.pathways.count %>
+            </h5>
+          </div>
+          <div>
+            <div style="margin-top: 30px;padding-left:0px">
+              <div class="form-group">
+                <a id="manage-pathways" href="<%= admin_course_pathway_path(@course.id) %>" class="btn btn-lg"><span>Manage</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!--renders attributes-->
     <% path_of_field_store = "admin/application/fields/" %>
