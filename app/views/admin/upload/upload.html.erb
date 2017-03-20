@@ -25,8 +25,11 @@
 
 <div id="upload-instructions" class="col-lg-12 login-card">
   <h3 style="margin-bottom: 20px;">Begin Upload</h3>
-  <h4>As an admin, you can upload multiple entries for a single resource via a CSV file.</h4>
-  <h4>For example, you may want to add 10 new users to the system and doing so individually could become quite
+  <% if current_user.user_level == 'super_admin_access' %>
+    <h4>As a super admin, you can upload <strong>Modules, Courses, Departments and Faculties</strong> via a CSV file.</h4>
+  <% else %>
+      <h4>As a Department admin, you can upload <strong>Modules and Courses</strong> via a CSV file.</h4>
+  <% end %>
   <h4>To begin uploading simply click the button below:</h4>
   <div class="form-entry text-center" style="margin-top: 20px;">
     <a id="upload-start" class="btn btn-lg">Start ></a>
