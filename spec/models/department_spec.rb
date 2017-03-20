@@ -77,7 +77,6 @@ RSpec.describe Department, type: :model do
     CSV.parse(csv_content).each do |line|
       expect(line).to include departments[i].name
       expect(line).to include departments[i].faculty.to_s
-
       i += 1
     end
   end

@@ -154,6 +154,12 @@ RSpec.describe Course, type: :model do
     end
   end
 
+  describe "#to_s" do
+    it "returns the name" do
+      expect(course.to_s).to eq course.name
+    end
+  end
+
   describe ".to_csv" do
     let (:csv_content) { Course.to_csv }
     let (:csv_header) { "Name,Description,Year\n" }
@@ -174,17 +180,11 @@ RSpec.describe Course, type: :model do
     csv_content.slice! csv_header
     i = 0
     CSV.parse(csv_content) do |line|
-      expect(line).to include courses[i].name
-      expect(line).to include courses[i].description
-      expect(line).to include courses[i].year.to_s
-
+      course = courses[i]
+      expect(line).to include course.name
+      expect(line).to include course.description
+      expect(line).to include course.year.to_s
       i += 1
-    end
-  end
-
-  describe "#to_s" do
-    it "returns the name" do
-      expect(course.to_s).to eq course.name
     end
   end
 end

@@ -406,12 +406,12 @@ RSpec.describe User, type: :model do
     csv_content.slice!(csv_header)
     i = 0
     CSV.parse(csv_content).each do |line|
-      expect(line).to include users[i].first_name
-      expect(line).to include users[i].last_name
-      expect(line).to include users[i].faculty.to_s
-      expect(line).to include users[i].course.to_s
-      expect(line).to include users[i].department.to_s
-
+      user = users[i]
+      expect(line).to include user.first_name
+      expect(line).to include user.last_name
+      expect(line).to include user.faculty.to_s
+      expect(line).to include user.course.to_s
+      expect(line).to include user.department.to_s
       i += 1
     end
   end
