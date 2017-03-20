@@ -36,6 +36,10 @@ module Admin
          @departments = @departments.order('name ASC').page(params[:page]).per(@per_page)
       end
 
+      if @departments.size == 0 && params[:page].present? && params[:page] != "1"
+        redirect_to admin_departments_path
+      end
+
       if current_user.user_level == "super_admin_access"
 
 
@@ -105,6 +109,14 @@ module Admin
         @department.users.each do |user|
           user.update_attribute("department_id", nil)
         end
+
+        PathwaySearchLog.where(department_id: @department.id).destroy_all
+        Notice.where(department_id: @department.id).destroy_all
+        SearchLog.where(department_id: @department.id).destroy_all
+        TagLog.where(department_id: @department.id).destroy_all
+        UniModuleLog.where(department_id: @department.id).destroy_all
+        VisitorLog.where(department_id: @department.id).destroy_all
+
         @department.destroy
         flash[:success] = @department.name+" has been deleted successfully."
       else
@@ -126,6 +138,12 @@ module Admin
              department.users.each do |user|
                 user.update_attribute("department_id", nil)
             end
+            PathwaySearchLog.where(department_id: department.id).destroy_all
+            Notice.where(department_id: department.id).destroy_all
+            SearchLog.where(department_id: department.id).destroy_all
+            TagLog.where(department_id: department.id).destroy_all
+            UniModuleLog.where(department_id: department.id).destroy_all
+            VisitorLog.where(department_id: department.id).destroy_all
             department.destroy
           end
         
@@ -142,8 +160,12 @@ module Admin
         department = Department.find(id.to_i)
         
           if !department.nil?
-            cloned = department.dup
-            cloned.update_attribute("name", cloned.name + "-CLONE")
+            if Department.exists?(name: department.name + "-CLONE")
+              flash[:error] = "Some records have already been cloned and cannot be recloned."
+            else
+              cloned = department.dup
+              cloned.update_attribute("name", cloned.name + "-CLONE")
+            end
           end
         
       end
@@ -173,9 +195,5 @@ module Admin
          redirect_to admin_path unless current_user.user_level == "super_admin_access"
 
       end
-
-      
-
-
   end
 end

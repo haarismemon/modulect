@@ -6,7 +6,8 @@ class Course < ApplicationRecord
 
   # There cannot be two entries with same name and year.
   validates :name, uniqueness: { scope: [:year] }
-
+  # Recommended pathways
+  has_many :pathways
   has_and_belongs_to_many :departments
 
   has_many :year_structures, dependent: :delete_all
@@ -56,13 +57,18 @@ class Course < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w{name description year}
+    attributes = %w{name description year duration_in_years}
     headers = Array.new
-    attributes.each{|att| headers.push att.capitalize}
+    attributes.each{|att| headers.push att}
+    headers.push 'departments'
     CSV.generate(headers:true)do |csv|
       csv << headers
       all.each do |course|
-        csv << course.attributes.values_at(*attributes)
+        department_names = ' '
+        course.departments.pluck(:name).each{|department| department_names += department + '; ' }
+        department_names.chop!.chop!
+        department_names[0] = ''
+        csv << course.attributes.values_at(*attributes) + [*department_names]
       end
     end
   end

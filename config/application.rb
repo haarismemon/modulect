@@ -18,6 +18,7 @@ module ProjectRun
     config.exceptions_app = self.routes
 
     # Use pry as default console
+=begin
     console do
       require "pry"
       config.console = Pry
@@ -28,5 +29,8 @@ module ProjectRun
       require "rails/console/helpers"
       TOPLEVEL_BINDING.eval('self').extend ::Rails::ConsoleMethods
     end
-  end
+
+=end
+
+  end    
 end

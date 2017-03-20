@@ -1,4 +1,4 @@
-<label>Average Module Rating: </label><% updated_comments.empty? ? average_rating = 0 : average_rating = module_average_rating(@uni_module) %>
+<label class="mobile-block">Average Module Rating: </label><% updated_comments.empty? ? average_rating = 0 : average_rating = module_average_rating(@uni_module) %>
 <% number_of_stars = 0 %>
 <% for i in 1..(average_rating.floor) %>
     <i class="fa fa-star star-rating" aria-hidden="true"></i>
@@ -26,9 +26,8 @@
         <% module_comments.each do |comment| %>
           <% rating = comment.rating%>
           <div id="comment-entry-<%=comment.id%>">
-            <table width="100%" border="0">
-              <colgroup>
-                <td>
+            <div class="row">
+            <div class="col-md-12">
                   <% created_at = comment.created_at %>
                   <% edited_at = comment.updated_at %>
                   <% for i in 1..comment.rating %>
@@ -36,20 +35,27 @@
                   <% end %>
                   <% for j in 1..(5 - comment.rating) %>
                       <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
-                  <% end %><p></p>
-                  <p id="comment-body-<%=comment.id%>"><%= comment.body %></p>
-                  <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime('%d %B %Y at %H:%M %p')%></strong> <%= created_at != edited_at ? '(Edited)' : '' %></p>
-                </td>
+                  <% end %>
+                  </div>
+                  </div>
+              <div class="row">
+              <div class="col-md-8">
+                  <p></p>
+                  <p class="comment-text" id="comment-body-<%=comment.id%>"><%= comment.body %></p>
+                  <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime('%d %B %Y at %H:%M %p')%></strong> <%= created_at != edited_at ? '(edited)' : '' %></p>
+               </div>
+              <div class="col-md-4 text-right">
                 <% if logged_in? %>
-                    <td id="edit-td" align="center">
+                    <span id="edit-td">
                       <button class="btn edit-btn" id="edit-btn-<%= comment.id %>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
-                    </td>
-                    <td id="delete-td" align="right">
-                        <button class="btn delete-btn delete" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-                    </td>
+                    </span>
+                    <span id="delete-td">
+                        <button class="btn delete-btn delete red-btn" id="delete-btn-<%= comment.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                    </span>
                 <% end %>
-              </colgroup>
-            </table>
+
+                  </div>
+                  </div>
           </div>
           <hr>
         <% end %>
@@ -84,16 +90,15 @@
           <br>
       <% end %>
 
-      <label id="display-comments-number">Displaying comments</label>
+      <label id="display-comments-number" style="margin-top:10px;">Displaying comments</label>
     </div>
-
     <div id="comments-section">
       <% for i in 1..num_pages %>
           <div id="page-div-<%= i %>">
             <% page_comments_group = grouped_comments[i - 1] %>
             <% page_comments_group.each do |comment|
               unless comment.nil? %>
-                    <table width="100%" border="0">
+                    <table width="100%" border="0" style="table-layout:fixed;">
                       <colgroup>
                         <td>
                           <% for i in 1..comment.rating %>
@@ -102,20 +107,24 @@
                           <% for j in 1..(5 - comment.rating) %>
                               <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
                           <% end %><p></p>
-                          <p><%= comment.body %></p>
-                          <p><strong><%= comment.user.full_name %>, <%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong> <%= comment.created_at != comment.updated_at ? '(Edited)' : '' %></p>
+                          <p class="comment-text"><%= comment.body %></p>
+                          <p><strong><%= comment.user.full_name %></strong><%= get_course_and_year(comment.user, " ,")%></p>
+                          <p style="font-size:12px;"><%= comment.created_at.strftime("%d %B %Y at %H:%M %p") %></strong> <%= comment.created_at != comment.updated_at ? '(Edited)' : '' %></p>
                         </td>
                         <td id="helpful-td" align="right">
-                          <label class="helpful-label" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></label>
+                        <span style="font-size:14px;margin-top:15px;" id="helpful-label-<%= comment.id %>"><%= comment.liked_users.length %></span>
                           <% if logged_in? %>
                               <% if comment.liked_users.include?(current_user) %>
-                                  <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>">Helpful</button>
+                                  <button class="btn helpful-btn helpful" id="helpful-btn-<%= comment.id %>" title="Mark as helpful/unhelpful"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
                               <% else %>
-                                  <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>">Helpful?</button>
+                                  <button class="btn helpful-btn not-helpful" id="helpful-btn-<%= comment.id %>" title="Mark as helpful/unhelpful"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
                               <% end %>
                           <% else %>
-                              <button class="btn btn-disabled" id="helpful-btn-disabled" data-toggle="tooltip" data-placement="right" title="To like a comment, you must be logged in.">Helpful?</button>
-                          <% end %>
+                              <button class="btn btn-disabled helpful" id="helpful-btn-disabled" title="To mark a review as helpful, you must be logged in."><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                          <% end %>                         
+
+                          </p>
+                          </p>
                         </td>
                         <hr>
                       </colgroup>
@@ -126,7 +135,15 @@
       <% end %>
     </div>
 <% else %>
-    <p>Be the first to review this module!</p>
+    <% if !app_settings.disable_new_reviews %>
+      <% if !module_comments.empty? %>
+             <p>No one else has reviewed this module.</p>
+      <% else %>
+            <p>Be the first to review this module!</p>
+      <% end %>
+    <% else %>
+      <p>No new reviews available</p>
+    <% end %>
 <% end %>
 <hr>
 
@@ -135,37 +152,139 @@
       <% if logged_in? && Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }.size > 0 %>
           <div id="review-made">
             <p>You have already made a review for this module.</p>
-            <a href="#module_review" class="btn" id="your-review-btn" style="text-transform: none">See your Review</a>
+            <a href="#module_review" class="btn" id="your-review-btn" style="margin-top:10px;text-transform: none"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;See your review</a>
           </div>
       <% elsif logged_in? %>
-          <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn ">Add a Review</a>
+      <% if !app_settings.disable_new_reviews %>
+          <a onclick="openCommentCreation()" id="comment-creation-link" class="comment-creation-link btn "><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add a Review</a>
           <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
             <h3>Add a Review</h3>
 
             <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
-                <p id="rating-area">
+                <div id="rating-area">
                   <%= f.label :rating %>
-                  <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
-                  <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
-                  <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
-                  <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
-                  <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
-                </p>
+                  <ul class="star-rating">
+                    <li id="1">
+                      <label for="comment_rating_1"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 1 %>
+                    </li>
+                    <li id="2">
+                      <label for="comment_rating_2"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 2 %>
+                    </li>
+                    <li id="3">
+                      <label for="comment_rating_3"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 3 %>
+                    </li>
+                    <li id="4">
+                      <label for="comment_rating_4"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 4 %>
+                    </li>
+                    <li id="5">
+                      <label for="comment_rating_5"><i class="fa fa-star input-star" aria-hidden="true"></i></label>
+                      <%= f.radio_button :rating, 5, :checked => true %>
+                    </li>
+                  </ul>
+                </div>
                 <p id="review-area">
-                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true %>
+                  <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10", :autofocus => true, :class => "form-control" %>
                 </p>
                 <p id="submit-area">
                   <%= f.submit 'Add Review', class:'btn' %>
                 </p>
             <% end %>
+            <% end %>
       <% else %>
+      <% if !app_settings.disable_new_reviews %>
           <p>You must be logged in to add a review.</p>
+      <% end %>
       <%end%>
       </div>
   <% end %>
 </div>
 
 <style>
+  ul.star-rating {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+    /*margin: 0;*/
+    display: inline-block;
+  }
+
+  ul.star-rating li {
+    list-style-type: none;
+    display: inline-block;
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #2ab27b;
+    cursor: pointer;
+  }
+
+  ul.star-rating li i{
+    cursor: pointer;}
+
+  ul.star-rating li:hover {
+    color: #2ab27b;
+  }
+
+  ul.star-rating li.active, ul.star-rating li.secondary-active {
+    color: #2ab27b;
+  }
+
+  ul.star-rating li.active-hover, ul.star-rating li.secondary-active-hover {
+    color: #2ab27b;
+  }
+
+  ul.star-rating li input[type="radio"] {
+    display: none;
+  }
+
+  .edit-rating {
+    margin-right: 3px;
+  }
+
+</style>
+
+<script>
+  selected_rating = 0;
+
+  $('ul.star-rating li').on('click', function () {
+      $('ul.star-rating li').removeClass('active');
+      $('ul.star-rating li').removeClass('secondary-active');
+      $(this).addClass('active');
+      $(this).prevAll().addClass('secondary-active');
+
+      selected_rating = $(this).attr('id');
+  });
+
+  $('ul.star-rating').hover(function () {
+      $('ul.star-rating li').hover(function () {
+          $('ul.star-rating li').removeClass('active');
+          $('ul.star-rating li').removeClass('secondary-active');
+          $(this).addClass('active-hover');
+          $(this).prevAll().addClass('secondary-active-hover');
+      }, function () {
+          $('ul.star-rating li').removeClass('active-hover');
+          $('ul.star-rating li').removeClass('secondary-active-hover');
+//          $(this).addClass('active-hover');
+          $(this).prevAll().addClass('secondary-active-hover');
+      })
+  }, function () {
+      $('ul.star-rating li').removeClass('active-hover');
+      $('ul.star-rating li').removeClass('secondary-active-hover');
+      $('ul.star-rating li#' + selected_rating).addClass('active');
+      $('ul.star-rating li#'+ selected_rating).prevAll().addClass('secondary-active');
+  })
+</script>
+
+<style>
+
+  .comment-text{
+    overflow: auto;
+  }
+
+
   #delete-td {
     width: 1%;
     padding-left: 0px;
@@ -202,26 +321,18 @@
   }
 
   .not-helpful {
-    background: #2ab27b;
-    box-shadow: 0px 3px 0px 0px #228e62;
     width: 81px;
   }
 
   .not-helpful:focus {
-    background: #2ab27b;
-    box-shadow: 0px 3px 0px 0px #228e62;
     width: 81px;
   }
 
   .helpful {
-    background: dodgerblue;
-    box-shadow: 0px 3px 0px 0px deepskyblue;
     width: 81px;
   }
 
   .helpful:focus {
-    background: dodgerblue;
-    box-shadow: 0px 3px 0px 0px deepskyblue;
     width: 81px;
   }
 
@@ -249,9 +360,6 @@
     cursor: pointer;
   }
 
-  #page-links {
-    margin-left: 20px;
-  }
 
   .star-rating {
     color: #2ab27b;
@@ -331,7 +439,7 @@
         last_comment = current_page * num_comments_per_page;
       }
 
-      display_text = "Display comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
+      display_text = "Displaying comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
       $("label#display-comments-number").html(display_text);
     }
   };
@@ -415,12 +523,12 @@
       success: function (data) {
         label.html(data.like_count);
         if (data.helpful == true) {
-          button.html("Helpful");
+          button.html("<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
           button.removeClass("not-helpful");
           button.addClass("helpful")
         }
         else if (data.helpful == false) {
-          button.html("Helpful?");
+          button.html("<i class='fa fa-thumbs-o-up' aria-hidden='true'></i>");
           button.removeClass("helpful");
           button.addClass("not-helpful")
         }
@@ -435,17 +543,22 @@
 
       $("#comment-entry-" + comment_id).html("<div>" +
           "<h3 style=\"margin-left: 10px;\">Edit a Review</h3>" +
-          "<form id=\"edit-form\"><tr>" +
-          "<label style=\"margin-left: 10px;\">Rating</label>" +
-          "<div style=\"margin-left: 10px; display: inline-block\">" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /> <label for=\"rating1\">1</label>" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /> <label for=\"rating1\">2</label>" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /> <label for=\"rating1\">3</label>" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /> <label for=\"rating1\">4</label>" +
-          "<input style=\"display:inline-block\" type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/> <label for=\"rating1\">5</label>  </div>" +
+          "<form id=\"edit-form\">" +
+          "<tr>" +
+              "<label style=\"margin-left: 10px;\">Rating</label>" +
+              "<div style=\"margin-left: 10px; display: inline-block\">" +
+                  "<ul class=\"star-rating\">" +
+                      "<li id=\"1\" class=\"edit-rating\"><label for=\"rating1\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating1\" value=\"1\" /></li>" +
+                      "<li id=\"2\" class=\"edit-rating\"><label for=\"rating2\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating2\" value=\"2\" /></li>" +
+                      "<li id=\"3\" class=\"edit-rating\"><label for=\"rating3\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating3\" value=\"3\" /></li>" +
+                      "<li id=\"4\" class=\"edit-rating\"><label for=\"rating4\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating4\" value=\"4\" /></li>" +
+                      "<li id=\"5\" class=\"edit-rating\"><label for=\"rating1\"><i class=\"fa fa-star input-star\" aria-hidden=\"true\"></i></label><input type=\"radio\" name=\"rating\" id=\"rating5\" value=\"5\" checked/></li>" +
+                  "</ul>" +
+              "</div>" +
           "</tr>" +
-          "<tr><textarea autofocus id=\"edit-text-area\" style=\"margin-left: 10px; margin-right: 10px; margin-bottom: 15px\"></textarea>" +
-          "<a class=\"btn submit-btn\" id=\"submit-btn\">Edit</a>" +
+          "<tr>" +
+          "<textarea autofocus class=\"form-control\" id=\"edit-text-area\" style=\"margin-left: 10px; margin-right: 10px; margin-bottom: 15px\"></textarea>" +
+          "<a class=\"btn submit-btn\" id=\"submit-btn\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Save edits</a>" +
           "</form>" +
           "</div>");
 
@@ -482,9 +595,41 @@
           });
 
           <% if(created_at != edited_at)%>
-              $("#updated-time").text(" <%= '(Edited)' %>");
+              $("#updated-time").text(" <%= '(edited)' %>");
           <% end%>
       });
+
+      selected_rating = <%= rating %>;
+      $('ul.star-rating li#' + <%= rating %>).addClass('active');
+      $('ul.star-rating li#'+ <%= rating %>).prevAll().addClass('secondary-active');
+
+      $('ul.star-rating li').on('click', function () {
+          $('ul.star-rating li').removeClass('active');
+          $('ul.star-rating li').removeClass('secondary-active');
+          $(this).addClass('active');
+          $(this).prevAll().addClass('secondary-active');
+
+          selected_rating = $(this).attr('id');
+      });
+
+      $('ul.star-rating').hover(function () {
+          $('ul.star-rating li').hover(function () {
+              $('ul.star-rating li').removeClass('active');
+              $('ul.star-rating li').removeClass('secondary-active');
+              $(this).addClass('active-hover');
+              $(this).prevAll().addClass('secondary-active-hover');
+          }, function () {
+              $('ul.star-rating li').removeClass('active-hover');
+              $('ul.star-rating li').removeClass('secondary-active-hover');
+//          $(this).addClass('active-hover');
+              $(this).prevAll().addClass('secondary-active-hover');
+          })
+      }, function () {
+          $('ul.star-rating li').removeClass('active-hover');
+          $('ul.star-rating li').removeClass('secondary-active-hover');
+          $('ul.star-rating li#' + selected_rating).addClass('active');
+          $('ul.star-rating li#'+ selected_rating).prevAll().addClass('secondary-active');
+      })
   });
 
     $(".delete-btn").click(function () {

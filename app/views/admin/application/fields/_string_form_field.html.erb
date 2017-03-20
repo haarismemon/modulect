@@ -12,33 +12,26 @@
 
 -->
 
-<!--sees if label passed into render, if not, just assign the name of field to label by default-->
 <% label = name if local_assigns[:label].nil? %>
-<!--sees if placeholder passed into render, if not, just assign empty string as placeholder-->
 <% placeholder = "" if local_assigns[:placeholder].nil? %>
-<!--sees if tooltip passed into render, if not, just assign nil-->
 <% tooltip = nil if local_assigns[:tooltip].nil? %>
-<!--sees if any additional options are passed into render, if not, just assign to empty hash-->
 <% options = {} if local_assigns[:options].nil? %>
 
-<!--form field-->
-<div class="row field-unit field-unit--string <%=name.to_s%>" >
+<div class="row field-unit field-unit--string <%= name.to_s %>" >
   <div class="col-xs-12">
     <div class="field-unit__label">
-      <!--creates label from label local-->
-      <label for="<%= name.to_s%>"><%= label.to_s.titleize %>
-        <!--checks if tooltip is present and if so render it with its message-->
+      <%= f.label name, label.to_s.titleize %>
         <% if tooltip.present?%>
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
                title="<%= tooltip.to_s %>">[<i class="fa fa-question" aria-hidden="true"></i>]
             </a>
-        <%end%>
+        <% end %>
       </label>
     </div>
     <!--element part-->
     <div class="field-unit__field">
       <!--text area-->
-      <%= f.text_field name,placeholder: placeholder,options: options %>
+      <%= f.text_field name, placeholder: placeholder, options: options %>
     </div>
   </div>
 </div>

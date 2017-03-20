@@ -1,0 +1,114 @@
+<div class="row" >
+  <div class="col-md-12  login-card header-card" style="">
+    <div class="col-md-6 header-item">
+      <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+      </div>
+      <div class="main-figure">
+        <%= get_number_pathway_searches(@department, 1, @time_period, Time.now) %>
+      </div>
+      <% if @time_period != "all_time" %>
+      <% percentage_difference_total_pathway_searches = percentage_difference(get_number_pathway_searches(@department, 1, @time_period, Time.now), get_number_pathway_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now))) %>
+      <div class="percentage-change <%= colour(percentage_difference_total_pathway_searches)%>">
+        <% if percentage_difference_total_pathway_searches != 0 %>
+          <i class="fa fa-caret-<%= indicator(percentage_difference_total_pathway_searches)%>" aria-hidden="true"></i>
+        <% end %> <%= percentage_difference_total_pathway_searches %>% from previous <%= @time_period.titleize.downcase%>
+      </div>
+      <% end %>
+    </div>
+    <div class="col-md-6 header-item">
+      <div class="small-header"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;
+        <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The tag which was most searched for">Most searched (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+      </div>
+      <div class="main-figure">
+        <% most_searched_tag = get_top_size_check_analytics(get_clicked_tags(@department,1,@time_period,Time.now,"most", 1)) %>
+        <%= get_top_module_name(most_searched_tag) %>
+      </div>
+      <div class="percentage-change">
+        across any type of search
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 login-card">
+    <h4 class="small-header" style="margin-bottom:20px;">Number of pathway searches <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></h4>
+    <canvas id="pathway-search-main-chart" width="400" height="120"></canvas>
+    <script>
+      var ctx = document.getElementById("pathway-search-main-chart");
+
+      var searchData = {
+        labels : <%= get_list_of_time_periods(@time_period).to_json.html_safe %>,
+        datasets : [
+          {
+            label : "# number of pathway searches",
+            data : <%= attach_search_log_data_to_time_period(get_search_lists(@department, "pathway", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
+            borderColor : "rgba(217,83,79,1)",
+            backgroundColor : "rgba(217,83,79,0.1)"
+          }
+        ]
+      };
+      var mainSearchChart = new Chart(ctx, {
+        type: 'line',
+        data: searchData,
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true,
+                userCallback: function(label, index, labels) {
+                  // no decimals
+                  if (Math.floor(label) === label) {
+                    return label;
+                  }
+                },
+              }
+            }]
+          }
+        }
+      });
+    </script>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 login-card subox-card">
+    <h2 class="small-header"><i class="fa fa-link" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="View modules students are likely to pick based on other modules.">Modules frequently chosen together</a></h2>
+    <div class="col-md-6">
+      <% if current_user.user_level == "super_admin_access" %>
+        <div class="form-group">
+          <label>Select a faculty</label>
+          <%= select_tag(:faculty_id, options_for_select(@faculties.collect { |faculty|
+          [faculty.name.titleize, faculty.id]}, 0), {:include_blank => true, :class => 'form-control', :id => "faculties_select", :autocomplete => "off"  , :required => true  }) %>
+        </div>
+        <div class="form-group">
+          <label>Select a department</label>
+          <%= select_tag(:department_id, options_for_select(@departments.collect { |department|
+        [department.name.titleize, department.id] }, 0), {:include_blank => true, :class => 'form-control', :id => "departments_select", :autocomplete => "off"  , :required => true }) %>
+        </div>
+      <% end %>
+      <div class="form-group">
+        <label>Select a course</label>
+        <%= select_tag(:course, options_for_select(@courses.collect {|course|
+             [course.name + " (from " + course.year.to_s+")", course.id]}, 0), {:include_blank => true, :class => 'form-control', :id => "courses_select", :autocomplete => "off"  , :required => true }) %>
+      </div>
+      <div class="form-group">
+        <label>Select a module</label>
+        <%= select_tag(:module, options_for_select(@uni_modules.collect {|uni_module|
+             [uni_module.name.titlize, uni_module.id]}, 0), {:include_blank => true, :class => 'form-control', :id => "modules_select", :autocomplete => "off"  , :required => true }) %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="side-right">
+        <select class="selectpicker" id="pathway-graph-selector">
+          <option value="vBar">V-Bar chart</option>
+          <option value="hBar">H-Bar chart</option>
+          <option value="pie">Pie chart</option>
+          <option value="table" selected="selected">Table</option>
+        </select>
+      </div>
+      <div class="col-md-12" id="table_area">
+      <h4>Select a module to see the most popular modules chosen with this module.</h4>
+      </div>
+    </div>
+  </div>
+</div>
+

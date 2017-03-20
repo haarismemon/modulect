@@ -26,7 +26,8 @@ gem 'cocoon'
 gem 'selectize-rails'
 gem 'kaminari'
 gem 'tinymce-rails',          '~> 4.3'
-gem 'pry'
+gem 'device_detector'
+
 
 group :development, :test do
   gem 'sqlite3'
@@ -56,6 +57,7 @@ group :test do
   gem 'selenium-webdriver', '3.3.0'
   gem 'database_cleaner'
   gem 'rails-controller-testing'
+  gem 'simplecov'
 end
 
 group :production do

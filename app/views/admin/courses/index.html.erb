@@ -5,13 +5,13 @@
 <% end %>
 
 <header class="header index-header-area">
-   <h1 id="page-title">
+   <h1 id="page-title"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;
    <%if request.query_parameters["dept"] && Department.exists?(@dept_filter_id) %>
      <%= Department.find(@dept_filter_id).name %>
    <% end %>
    Courses</h1>
    <div class="header__actions">
-      <div class="col-md-12">
+      <div class="col-md-12" style="padding-right: 0px;">
          <% if @courses.size > 0 %>
          <% if current_user.user_level == "super_admin_access" %>
          <div class="btn-group">

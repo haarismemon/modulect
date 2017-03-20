@@ -15,7 +15,7 @@ comma. This is so it can be passed to javascript, to be used.
 
 
 <header class="header">
-  <h1 ><%= content_for(:title) %></h1>
+  <h1 class="header__heading"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;<%= content_for(:title) %></h1>
   <div class="header__actions">
     <!--toolbox-->
     <%= render(:partial => 'admin/application/edit_toolbox_buttons',
@@ -29,7 +29,6 @@ comma. This is so it can be passed to javascript, to be used.
                 admin_courses_path, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
   </div>
 </header>
-
 
 <!--render of fields which relate to a course's attributes-->
 <%= render 'form',:action =>"Update" %>

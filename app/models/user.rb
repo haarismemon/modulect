@@ -7,7 +7,8 @@ class User < ApplicationRecord
   before_create :create_activation_digest
 
   # A user has many saved modules.
-  has_and_belongs_to_many :uni_modules
+  has_many :saved_modules
+  has_many :uni_modules, through: :saved_modules
   # A user has many pathways
   has_many :pathways
   # A user makes many comments
@@ -91,6 +92,10 @@ class User < ApplicationRecord
     digest = send("#{attribute}_digest")
     return digest != nil &&
            BCrypt::Password.new(digest).is_password?(authentication_token)
+  end
+
+  def is_password?(password)
+    BCrypt::Password.new(self.password_digest) == password
   end
 
   # Reset a student user's attributes

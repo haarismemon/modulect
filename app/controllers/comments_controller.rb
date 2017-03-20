@@ -90,6 +90,11 @@ class CommentsController < ApplicationController
 
   end
 
+  def destroy
+    comment = Comment.find(params[:id]).destroy
+    redirect_to admin_comment_path(comment.uni_module)
+  end
+
   private
     def comment_params
       if logged_in?
