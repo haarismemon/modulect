@@ -133,7 +133,7 @@ module Admin
 
           elsif session[:resource_name] == 'courses'
             # Add departments attribute to create and/or link departments to this course
-            # Lookup if Course already exists
+            # Lookup if Course already exists: Course is unique by name + year combo
             created_course = Course.find_by(name: new_record['name'], year: new_record['year'])
             if created_course.nil?
               # Create the Course
@@ -158,8 +158,25 @@ module Admin
 
           elsif session[:resource_name] == 'uni_modules'
             # Add departments attribute to create and/or link departments to this module
-            # Create the Module
-            created_module = UniModule.create!(new_record.except('departments', 'prerequisite_modules', 'career_tags', 'interest_tags'))
+            # Lookup if Module already exists: Module is unique by Code
+            created_module = UniModule.find_by_code(new_record['code'])
+            if created_module.nil?
+              # Create the Module
+              logger.debug('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MODULE CREATED')
+              created_module = UniModule.create!(new_record.except(
+                  'departments',
+                  'prerequisite_modules',
+                  'career_tags',
+                  'interest_tags'))
+            else
+              logger.debug('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MODULE UPDATED')
+              # Update the existing Module
+              created_module.update(new_record.except(
+                  'departments',
+                  'prerequisite_modules',
+                  'career_tags',
+                  'interest_tags'))
+            end
             # Transform string of departments into array of departments
             departments_s = new_record['departments']
             departments_s = departments_s.gsub('; ', ';')
