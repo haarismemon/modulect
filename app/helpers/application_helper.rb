@@ -225,7 +225,7 @@ module ApplicationHelper
     end
 
     average = total / comments.length
-    average.round
+		((average)*2).round / 2.0
   end
 
 
@@ -234,6 +234,11 @@ module ApplicationHelper
     AppSetting.instance
   end
 
+  def get_course_and_year(user, prestring)
+  	if user.year_of_study.present? && !user.course_id.nil?
+  		", " + user.year_of_study.ordinalize + " year " + Course.find(user.course_id).name
+  	end
+  end
 
   private
   # determines what the link needs to be to redirect back to faculty form

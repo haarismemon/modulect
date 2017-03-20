@@ -93,6 +93,10 @@ class User < ApplicationRecord
            BCrypt::Password.new(digest).is_password?(authentication_token)
   end
 
+  def is_password?(password)
+    BCrypt::Password.new(self.password_digest) == password
+  end
+
   # Reset a student user's attributes
   def reset
     update_attributes(year_of_study: nil,

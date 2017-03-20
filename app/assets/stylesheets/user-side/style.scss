@@ -162,10 +162,10 @@ select.form-control{
 .flash-alert-success, .alert-success {
     border-left-color: #2ab27b;
 }
-.flash-alert-success i, .alert-success i {
-    color: #2ab27b;
-    margin-right: 8px;
-}
+//.flash-alert-success i, .alert-success i {
+//    color: #2ab27b;
+//    margin-right: 8px;
+//}
 
 
 .flash-alert-notice, .alert-notice {
@@ -817,6 +817,8 @@ th, td {
     margin-top:15px;
 }
 
+.mobile-block{display:inline-block}
+
 @media only screen and (max-width: 560px) {
     #footer-logo {
         width: 120px;
@@ -889,4 +891,6 @@ th, td {
     .career-row{
         margin-top:0px;
     }
+
+    .mobile-block{display:block;}
 }

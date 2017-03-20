@@ -29,6 +29,10 @@ module Admin
        @faculties = @faculties.order('name ASC').page(params[:page]).per(@per_page)
       end
 
+      if @faculties.size == 0 && params[:page].present? && params[:page] != "1"
+        redirect_to admin_faculties_path
+      end
+
      
       if current_user.user_level == "super_admin_access"
 
@@ -162,8 +166,12 @@ module Admin
         faculty = Faculty.find(id.to_i)
         
           if !faculty.nil?
-            cloned = faculty.dup
-            cloned.update_attribute("name", cloned.name + "-CLONE")
+            if Faculty.exists?(name: faculty.name + "-CLONE")
+              flash[:error] = "Some records have already been cloned and cannot be recloned."
+            else
+              cloned = faculty.dup
+              cloned.update_attribute("name", cloned.name + "-CLONE")
+            end
           end
         
       end

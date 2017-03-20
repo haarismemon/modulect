@@ -36,6 +36,10 @@ module Admin
          @departments = @departments.order('name ASC').page(params[:page]).per(@per_page)
       end
 
+      if @departments.size == 0 && params[:page].present? && params[:page] != "1"
+        redirect_to admin_departments_path
+      end
+
       if current_user.user_level == "super_admin_access"
 
 
@@ -142,8 +146,12 @@ module Admin
         department = Department.find(id.to_i)
         
           if !department.nil?
-            cloned = department.dup
-            cloned.update_attribute("name", cloned.name + "-CLONE")
+            if Department.exists?(name: department.name + "-CLONE")
+              flash[:error] = "Some records have already been cloned and cannot be recloned."
+            else
+              cloned = department.dup
+              cloned.update_attribute("name", cloned.name + "-CLONE")
+            end
           end
         
       end
@@ -173,9 +181,5 @@ module Admin
          redirect_to admin_path unless current_user.user_level == "super_admin_access"
 
       end
-
-      
-
-
   end
 end
