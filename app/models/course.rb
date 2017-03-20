@@ -65,7 +65,10 @@ class Course < ApplicationRecord
       all.each do |course|
         department_names = ' '
         course.departments.pluck(:name).each{|department| department_names += department + '; ' }
-        department_names.chop!.chop!
+        department_names.chop!
+            if department_names!=''
+                  department_names.chop!
+            end
         department_names[0] = ''
         csv << course.attributes.values_at(*attributes) + [*department_names]
       end
