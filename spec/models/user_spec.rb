@@ -394,7 +394,7 @@ RSpec.describe User, type: :model do
     let (:csv_content) { User.to_csv }
     let (:csv_header) { "First Name,Last Name,Faculty,Course,Department\n" }
 
-    it "displays all saved users" do
+    it "outputs all saved users" do
       expect(csv_content).to include csv_header
       test_csv_attributes_for_all_users
     end

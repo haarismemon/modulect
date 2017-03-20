@@ -162,7 +162,7 @@ RSpec.describe Course, type: :model do
       course.save
     end
 
-    it "displays all saved users" do
+    it "outputs all saved courses" do
       expect(csv_content).to include csv_header
       test_csv_attributes_for_all_courses
     end

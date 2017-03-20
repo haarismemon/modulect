@@ -159,10 +159,10 @@ class User < ApplicationRecord
 
   def self.to_csv
     base_attributes = %w{first_name last_name}
-    csv_headers = ['First Name', 'Last Name', 'Faculty', 'Course', 'Department']
+    csv_header = ['First Name', 'Last Name', 'Faculty', 'Course', 'Department']
 
     CSV.generate(headers:true) do |csv|
-      csv << csv_headers.each { |att| att.titleize }
+      csv << csv_header.each { |att| att.titleize }
       all.each do |user|
         to_append = user.attributes.values_at(*base_attributes)
 
