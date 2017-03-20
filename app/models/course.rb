@@ -56,13 +56,18 @@ class Course < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w{name description year duration_in_years departments}
+    attributes = %w{name description year duration_in_years}
     headers = Array.new
     attributes.each{|att| headers.push att}
+    headers.push 'departments'
     CSV.generate(headers:true)do |csv|
       csv << headers
       all.each do |course|
-        csv << course.attributes.values_at(*attributes)
+        department_names = ' '
+        course.departments.pluck(:name).each{|department| department_names += department + '; ' }
+        department_names.chop!.chop!
+        department_names[0] = ''
+        csv << course.attributes.values_at(*attributes) + [*department_names]
       end
     end
   end
