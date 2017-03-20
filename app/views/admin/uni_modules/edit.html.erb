@@ -2,7 +2,7 @@
 <header class="header">
   <h1 class="header__heading"><i class="fa fa-pencil-square" aria-hidden="true"></i>&nbsp;&nbsp;Edit <%= @uni_module.name %> </h1>
   <div class="header__actions">
-  <%= link_to "<i class='fa fa-external-link' aria-hidden='true' style='padding: 1px'></i>&nbsp;&nbsp;View Module".html_safe, @uni_module, target: :blank, method: :get, class: "button tool-box" %>
+  <%= link_to "<i class='fa fa-external-link' aria-hidden='true' style='padding: 1px'></i>&nbsp;&nbsp;View Module".html_safe, @uni_module, target: :blank, method: :get, class: "button tool-box", style: "height:36px;" %>
     <%= render(:partial =>
                    'admin/application/edit_toolbox_buttons',
                :locals => {:object => UniModule.find(params[:id]),
