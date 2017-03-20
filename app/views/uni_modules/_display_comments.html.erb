@@ -126,6 +126,18 @@
                           </p>
                           </p>
                         </td>
+                        <td id="report-td" align="right">
+                          <% if logged_in? %>
+                              <% if comment.reported == true %>
+                                  <button class="btn helpful-btn reported" id="report-btn-<%= comment.id %>" title="Review reported"><i class="fa fa-flag" aria-hidden="true"></i></button>
+                              <% else %>
+                                  <button class="btn helpful-btn not-reported" id="report-btn-<%= comment.id %>" title="Review not reported"><i class="fa fa-flag-o" aria-hidden="true"></i></button>
+                              <% end %>
+                          <% else %>
+                              <button class="btn btn-disabled not-reported" id="reported-btn-disabled" title="To report a review, you must be logged in."><i class="fa fa-flag-o" aria-hidden="true"></i></button>
+                          <% end %>
+
+                        </td>
                         <hr>
                       </colgroup>
                     </table>
@@ -302,12 +314,23 @@
     padding-right: 0px;
   }
 
+  #report-td {
+    width: 5%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
   [id^=helpful-btn] {
     text-transform: none;
     margin-left: 10px;
   }
 
   [id^=edit-btn] {
+    text-transform: none;
+    margin-left: 10px;
+  }
+
+  [id^=report-btn] {
     text-transform: none;
     margin-left: 10px;
   }
@@ -420,123 +443,123 @@
         $("#last-page").show();
     };
 
-  move_to_last_page = function () {
-    move_to_page(num_pages);
+    move_to_last_page = function () {
+      move_to_page(num_pages);
 
-    $("#first-page").show();
-    $("#prev-page").show();
-    $("#next-page").hide();
-    $("#last-page").hide();
-  };
-
-  update_display_comments_number = function () {
-    if ($("#comments-section div").length > 0) {
-      current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
-      first_comment = ((current_page - 1) * num_comments_per_page) + 1;
-      if (current_page == num_pages) {
-        last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1);
-      } else {
-        last_comment = current_page * num_comments_per_page;
-      }
-
-      display_text = "Displaying comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
-      $("label#display-comments-number").html(display_text);
-    }
-  };
-
-  move_to_first_page();
-  update_display_comments_number();
-
-  $("#first-page").on("click", function () {
-    move_to_first_page();
-    update_display_comments_number();
-  });
-
-  $("#last-page").on("click", function () {
-    move_to_last_page();
-    update_display_comments_number();
-  });
-
-  $("#next-page").on("click", function () {
-    current_page_div_id = $("#comments-section div:visible").first().attr('id');
-    next_page = parseInt(current_page_div_id.replace("page-div-", "")) + 1;
-
-    if(next_page == num_pages) {
-      move_to_last_page();
-    }
-    else {
-      move_to_page(next_page)
-    }
-
-    update_display_comments_number();
-  });
-
-  $("#prev-page").on("click", function () {
-    current_page_div_id = $("#comments-section div:visible").first().attr('id');
-    prev_page = parseInt(current_page_div_id.replace("page-div-", "")) - 1;
-
-    if(prev_page == 1) {
-      move_to_first_page();
-    }
-    else {
-      move_to_page(prev_page)
-    }
-
-    update_display_comments_number();
-  });
-
-  $("a[id^=page-link]").on("click", function (event) {
-
-    $("#first-page").show();
-    $("#prev-page").show();
-    $("#next-page").show();
-    $("#last-page").show();
-
-    page_link_id = event.target.id;
-    page_number = parseInt(page_link_id.replace("page-link-", ""));
-
-    if(page_number == 1) {
-      $("#first-page").hide();
-      $("#prev-page").hide();
-    }
-    else if(page_number == num_pages) {
+      $("#first-page").show();
+      $("#prev-page").show();
       $("#next-page").hide();
       $("#last-page").hide();
-    }
+    };
 
-    move_to_page(page_number);
-    update_display_comments_number();
-  });
-
-  //on click method for the helpful button, makes a ajax post request
-  $(".helpful-btn").on("click", function (event) {
-    button_id = event.target.id;
-    comment_id = parseInt(button_id.replace("helpful-btn-", ""));
-    button = $("#helpful-btn-" + comment_id);
-    label = $("#helpful-label-" + comment_id);
-
-    $.ajax({
-      type: "POST",
-      url: "<%= comments_like_path %>",
-      data: { comment_id: comment_id },
-      context: document.body,
-      success: function (data) {
-        label.html(data.like_count);
-        if (data.helpful == true) {
-          button.html("<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
-          button.removeClass("not-helpful");
-          button.addClass("helpful")
+    update_display_comments_number = function () {
+      if ($("#comments-section div").length > 0) {
+        current_page = parseInt(($("#comments-section div:visible").first().attr('id')).replace("page-div-", ""));
+        first_comment = ((current_page - 1) * num_comments_per_page) + 1;
+        if (current_page == num_pages) {
+          last_comment = first_comment + ($("#page-div-" + current_page + " table").length - 1);
+        } else {
+          last_comment = current_page * num_comments_per_page;
         }
-        else if (data.helpful == false) {
-          button.html("<i class='fa fa-thumbs-o-up' aria-hidden='true'></i>");
-          button.removeClass("helpful");
-          button.addClass("not-helpful")
-        }
+
+        display_text = "Displaying comments " + first_comment + " - " + last_comment + " of " + <%= filter_comments.length %>;
+        $("label#display-comments-number").html(display_text);
       }
-    });
-  });
+    };
 
-  $("[id^=edit-btn]").on("click", function (event) {
+    move_to_first_page();
+    update_display_comments_number();
+
+    $("#first-page").on("click", function () {
+      move_to_first_page();
+      update_display_comments_number();
+    });
+
+    $("#last-page").on("click", function () {
+      move_to_last_page();
+      update_display_comments_number();
+    });
+
+    $("#next-page").on("click", function () {
+      current_page_div_id = $("#comments-section div:visible").first().attr('id');
+      next_page = parseInt(current_page_div_id.replace("page-div-", "")) + 1;
+
+      if(next_page == num_pages) {
+        move_to_last_page();
+      }
+      else {
+        move_to_page(next_page)
+      }
+
+      update_display_comments_number();
+    });
+
+    $("#prev-page").on("click", function () {
+      current_page_div_id = $("#comments-section div:visible").first().attr('id');
+      prev_page = parseInt(current_page_div_id.replace("page-div-", "")) - 1;
+
+      if(prev_page == 1) {
+        move_to_first_page();
+      }
+      else {
+        move_to_page(prev_page)
+      }
+
+      update_display_comments_number();
+    });
+
+    $("a[id^=page-link]").on("click", function (event) {
+
+      $("#first-page").show();
+      $("#prev-page").show();
+      $("#next-page").show();
+      $("#last-page").show();
+
+      page_link_id = event.target.id;
+      page_number = parseInt(page_link_id.replace("page-link-", ""));
+
+      if(page_number == 1) {
+        $("#first-page").hide();
+        $("#prev-page").hide();
+      }
+      else if(page_number == num_pages) {
+        $("#next-page").hide();
+        $("#last-page").hide();
+      }
+
+      move_to_page(page_number);
+      update_display_comments_number();
+    });
+
+    //on click method for the helpful button, makes a ajax post request
+    $(".helpful-btn").on("click", function (event) {
+      button_id = event.target.id;
+      comment_id = parseInt(button_id.replace("helpful-btn-", ""));
+      button = $("#helpful-btn-" + comment_id);
+      label = $("#helpful-label-" + comment_id);
+
+      $.ajax({
+        type: "POST",
+        url: "<%= comments_like_path %>",
+        data: { comment_id: comment_id },
+        context: document.body,
+        success: function (data) {
+          label.html(data.like_count);
+          if (data.helpful == true) {
+            button.html("<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
+            button.removeClass("not-helpful");
+            button.addClass("helpful")
+          }
+          else if (data.helpful == false) {
+            button.html("<i class='fa fa-thumbs-o-up' aria-hidden='true'></i>");
+            button.removeClass("helpful");
+            button.addClass("not-helpful")
+          }
+        }
+      });
+    });
+
+    $("[id^=edit-btn]").on("click", function (event) {
       button_id = event.target.id;
       comment_id = parseInt(button_id.replace("edit-btn-",""));
       text = $("#comment-body-" + comment_id).text().trim();
