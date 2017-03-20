@@ -29,10 +29,10 @@ class SearchController < ApplicationController
 
   def retrieve_notices
     if current_user.nil? || current_user.department_id.nil?
-      # if user doesn't have a department, equate notices to nil
-      @notices = nil
+      # if user doesn't have a department, retrieve global notices
+      @notices = Notice.all.where(:department_id => nil).where(:broadcast => true).where(['live_date<= ?', DateTime.now])
     else
-      # if user has a department , display notices
+      # if user has a department , display local notices
       @notices = Notice.all.where(:department_id => [@current_user.department_id, nil]).where(:broadcast => true).where(['live_date<= ?', DateTime.now])
       auto_delete_notices
     end
