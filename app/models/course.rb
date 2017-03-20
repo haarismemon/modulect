@@ -56,9 +56,9 @@ class Course < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w{name description year}
+    attributes = %w{name description year duration_in_years departments}
     headers = Array.new
-    attributes.each{|att| headers.push att.capitalize}
+    attributes.each{|att| headers.push att}
     CSV.generate(headers:true)do |csv|
       csv << headers
       all.each do |course|

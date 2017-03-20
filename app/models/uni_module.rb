@@ -164,10 +164,10 @@ class UniModule < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w{name code description lecturers pass_rate assessment_methods semester credits exam_percentage coursework_percentage more_info_link interest_tags career_tags}
+    attributes = %w{name code description lecturers pass_rate assessment_methods semester credits exam_percentage coursework_percentage more_info_link assessment_dates departments prerequisite_modules }
     caps = []
-    attributes.each{|att| caps.push att.titleize.capitalize}
-    %w(career_tags interest_tags).each{|att| caps.push att.titleize.capitalize}
+    attributes.each{|att| caps.push att}
+    %w(career_tags interest_tags).each{|att| caps.push att}
     CSV.generate(headers:true)do |csv|
       csv << caps
       all.each do |uni_module|
