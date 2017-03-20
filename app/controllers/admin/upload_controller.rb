@@ -131,10 +131,10 @@ module Admin
               end
             end
 
-          elsif session[:resource_name] == 'courses' || session[:resource_name] == 'uni_modules'
-            # Add departments attribute to create and/or link departments to this course/module
-            # Create the Course/Module
-            created_resource = session[:resource_name].to_s.classify.constantize.create!(new_record.except('departments', 'prerequisite_modules', 'career_tags', 'interest_tags'))
+          elsif session[:resource_name] == 'courses'
+            # Add departments attribute to create and/or link departments to this course
+            # Create the Course
+            created_course = Course.create!(new_record.except('departments'))
             # Transform string of departments into array of departments
             departments_s = new_record['departments']
             departments_s = departments_s.gsub('; ', ';')
@@ -144,58 +144,72 @@ module Admin
               # Look for a department with the name
               department_found = Department.find_by_name(dept_name)
               unless department_found.nil?
-                # Add the found department to the departments the course/module belongs to
-                created_resource.departments << department_found
+                # Add the found department to the departments the course belongs to
+                created_course.departments << department_found
               end
             end
 
-            # If resource is modules then
-            if session[:resource_name] == 'uni_modules'
-              # Add prerequisite modules
-              # Transform string of modules into array
-              pre_req_modules = new_record['prerequisite_modules']
-              pre_req_modules = pre_req_modules.gsub('; ', ';')
-              pre_req_modules = pre_req_modules.split(';')
-              pre_req_modules.each do |module_name|
-                module_found = UniModule.find_by_name(module_name)
-                unless module_found.nil?
-                  # Add the found module to this modules prerequisites
-                  created_resource.uni_modules << module_found
-                end
+          elsif session[:resource_name] == 'uni_modules'
+            # Add departments attribute to create and/or link departments to this module
+            # Create the Module
+            created_module = UniModule.create!(new_record.except('departments', 'prerequisite_modules', 'career_tags', 'interest_tags'))
+            # Transform string of departments into array of departments
+            departments_s = new_record['departments']
+            departments_s = departments_s.gsub('; ', ';')
+            departments_a = departments_s.split(';')
+            # For every entered department
+            departments_a.each do |dept_name|
+              # Look for a department with the name
+              department_found = Department.find_by_name(dept_name)
+              unless department_found.nil?
+                # Add the found department to the departments the module belongs to
+                created_module.departments << department_found
               end
+            end
 
-              # Add career_tags
-              career_tags = new_record['career_tags']
-              career_tags = career_tags.gsub('; ', ';')
-              career_tags = career_tags.split(';')
-              career_tags.each do |career_tag_name|
-                # Lookup if tag with same name exists already
-                career_tag_found = CareerTag.find_by(name: career_tag_name, type: 'CareerTag')
-                if career_tag_found.nil?
-                  # Create new tag and add to this module
-                  created_resource.add_tag(CareerTag.create!(name: career_tag_name, type: 'CareerTag'))
-                else
-                  # Already exists, so add to this module
-                  created_resource.add_tag(career_tag_found)
-                end
+            # Add prerequisite modules
+            # Transform string of modules into array
+            pre_req_modules = new_record['prerequisite_modules']
+            pre_req_modules = pre_req_modules.gsub('; ', ';')
+            pre_req_modules = pre_req_modules.split(';')
+            pre_req_modules.each do |module_name|
+              module_found = UniModule.find_by_name(module_name)
+              unless module_found.nil?
+                # Add the found module to this modules prerequisites
+                created_module.uni_modules << module_found
               end
+            end
 
-              # Add interest_tags
-              interest_tags = new_record['interest_tags']
-              interest_tags = interest_tags.gsub('; ', ';')
-              interest_tags = interest_tags.split(';')
-              interest_tags.each do |interest_tag_name|
-                # Lookup if tag with same name exists already
-                interest_tag_found = InterestTag.find_by(name: interest_tag_name, type: 'InterestTag')
-                if interest_tag_found.nil?
-                  # Create new tag and add to this module
-                  created_resource.add_tag(InterestTag.create!(name: interest_tag_name, type: 'InterestTag'))
-                else
-                  # Already exists, so add to this module
-                  created_resource.add_tag(interest_tag_found)
-                end
+            # Add career_tags
+            career_tags = new_record['career_tags']
+            career_tags = career_tags.gsub('; ', ';')
+            career_tags = career_tags.split(';')
+            career_tags.each do |career_tag_name|
+              # Lookup if tag with same name exists already
+              career_tag_found = CareerTag.find_by(name: career_tag_name, type: 'CareerTag')
+              if career_tag_found.nil?
+                # Create new tag and add to this module
+                created_module.add_tag(CareerTag.create!(name: career_tag_name, type: 'CareerTag'))
+              else
+                # Already exists, so add to this module
+                created_module.add_tag(career_tag_found)
               end
+            end
 
+            # Add interest_tags
+            interest_tags = new_record['interest_tags']
+            interest_tags = interest_tags.gsub('; ', ';')
+            interest_tags = interest_tags.split(';')
+            interest_tags.each do |interest_tag_name|
+              # Lookup if tag with same name exists already
+              interest_tag_found = InterestTag.find_by(name: interest_tag_name, type: 'InterestTag')
+              if interest_tag_found.nil?
+                # Create new tag and add to this module
+                created_module.add_tag(InterestTag.create!(name: interest_tag_name, type: 'InterestTag'))
+              else
+                # Already exists, so add to this module
+                created_module.add_tag(interest_tag_found)
+              end
             end
 
           else
