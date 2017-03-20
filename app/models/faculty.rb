@@ -11,7 +11,11 @@ class Faculty < ApplicationRecord
       all.each do |faculty|
         deptNames = ''
         Department.where(:faculty_id => faculty.id).each { |dept| deptNames += dept.name + '; '}
-        deptNames.chop!.chop!
+        deptNames.chop!
+        if deptNames!=''
+          deptNames.chop!
+        end
+
         csv << faculty.attributes.values_at(*attributes) + [*deptNames]
       end
     end
