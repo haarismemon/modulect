@@ -109,7 +109,14 @@ module Admin
         @department.users.each do |user|
           user.update_attribute("department_id", nil)
         end
-        
+
+        PathwaySearchLog.where(department_id: @department.id).destroy_all
+        Notice.where(department_id: @department.id).destroy_all
+        SearchLog.where(department_id: @department.id).destroy_all
+        TagLog.where(department_id: @department.id).destroy_all
+        UniModuleLog.where(department_id: @department.id).destroy_all
+        VisitorLog.where(department_id: @department.id).destroy_all
+
         @department.destroy
         flash[:success] = @department.name+" has been deleted successfully."
       else
@@ -131,6 +138,12 @@ module Admin
              department.users.each do |user|
                 user.update_attribute("department_id", nil)
             end
+            PathwaySearchLog.where(department_id: department.id).destroy_all
+            Notice.where(department_id: department.id).destroy_all
+            SearchLog.where(department_id: department.id).destroy_all
+            TagLog.where(department_id: department.id).destroy_all
+            UniModuleLog.where(department_id: department.id).destroy_all
+            VisitorLog.where(department_id: department.id).destroy_all
             department.destroy
           end
         
