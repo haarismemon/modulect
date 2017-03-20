@@ -76,9 +76,19 @@
               <td class="cell-data cell-data--string"><%= uni_module.code %></td>
               <td class="cell-data cell-data--string"><%= make_semester_nice uni_module.semester %></td>
               <td class="no-link">
+                <%  count = 0
+                    uni_module.comments.each do |comment|
+                      count = count + comment.reported_users.length
+                    end %>
+
                 <div class="col-md-3"><a class="action-edit" href="<%= edit_admin_uni_module_path(uni_module) %>"><i class="fa fa-pencil" aria-hidden="true" ></i>&nbsp;&nbspEdit</a></div>
                 <div class="col-md-3"><%= link_to "<i class='fa fa-external-link' aria-hidden='true'></i> View".html_safe, uni_module, method: :get, target: :blank %></div>
-                <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews".html_safe, admin_comment_path(uni_module), method: :get %></div>
+                <% if count == 0 %>
+                    <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews".html_safe, admin_comment_path(uni_module), method: :get %></div>
+                <% else %>
+                    <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews <i style='color: #c77067;' class='fa fa-flag' aria-hidden='true'></i>".html_safe, admin_comment_path(uni_module), method: :get %></div>
+                <% end %>
+
                 <div class="col-md-3"><%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_uni_module_path(uni_module), method: :delete,
                                                   data: { confirm: "Are you sure you want to delete this module?" } , class: "table__action--destroy" %></div>
               </td>
