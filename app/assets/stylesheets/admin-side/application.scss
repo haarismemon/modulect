@@ -69,10 +69,11 @@ button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type=
     color: #fff;
     text-decoration:none;
 }
-.btn:active, button:active, input[type="button"]:active, input[type="reset"]:active, input[type="submit"]:active, .button:active {
+.btn:active, button:active, input[type="button"]:active, input[type="reset"]:active, input[type="submit"]:active, .button:active, button:disabled:hover {
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
+button:focus {outline:0;}
 .red-btn {
     background: #c55252;
     box-shadow: 0px 3px 0px 0px #502b2b;
