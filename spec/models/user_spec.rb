@@ -123,6 +123,20 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#is_password?" do
+    context "when passed the correct password" do
+      it "evaluates to true" do
+        expect(user.is_password?('password')).to eq true
+      end
+    end
+
+    context "when passed the wrong password" do
+      it "evaluates to false" do
+        expect(user.is_password?('invalid')).to eq false
+      end
+    end
+  end
+
   describe "#valid?" do
 
     context "when all fields are valid" do
@@ -373,7 +387,9 @@ RSpec.describe User, type: :model do
   end
 
   describe ".to_csv" do
-    let! (:user1) { create(:user) }
+    let! (:course) { create(:course) }
+    let! (:department) { create(:department) }
+    let! (:user1) { create(:user, faculty: department.faculty, course: course, department: department) }
     let! (:user2) { create(:user, first_name: "John", last_name: "Sonmez", email: "john.sonmez@kcl.ac.uk") }
     let (:csv_content) { User.to_csv }
 
@@ -388,9 +404,9 @@ RSpec.describe User, type: :model do
     User.all.each do |user|
       expect(csv_content).to include user.first_name
       expect(csv_content).to include user.last_name
-      expect(csv_content).to include(user.faculty_id || "N/A")
-      expect(csv_content).to include(user.course_id || "N/A")
-      expect(csv_content).to include(user.department_id || "N/A")
+      expect(csv_content).to include(user.faculty.to_s || "N/A")
+      expect(csv_content).to include(user.course.to_s || "N/A")
+      expect(csv_content).to include(user.department.to_s || "N/A")
     end
   end
 end

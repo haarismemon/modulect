@@ -48,4 +48,10 @@ RSpec.describe Department, type: :model do
       end
     end
   end
+
+  describe "#to_s" do
+    it "returns the name" do
+      expect(department.to_s).to eq department.name
+    end
+  end
 end

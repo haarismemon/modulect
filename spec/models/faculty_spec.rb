@@ -33,4 +33,9 @@ RSpec.describe Faculty, type: :model do
     end
   end
 
+  describe "#to_s" do
+    it "returns the name" do
+      expect(faculty.to_s).to eq faculty.name
+    end
+  end
 end

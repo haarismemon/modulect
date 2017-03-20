@@ -117,7 +117,7 @@ RSpec.describe Course, type: :model do
     end
   end
 
-  describe "cascading delete" do
+  describe "#destroy" do
    
     before do
       course.save
@@ -128,6 +128,12 @@ RSpec.describe Course, type: :model do
       expect(YearStructure.count).not_to eq 0
       course.destroy
       expect(YearStructure.count).to eq 0
+    end
+  end
+
+  describe "#to_s" do
+    it "returns the name" do
+      expect(course.to_s).to eq course.name
     end
   end
 end
