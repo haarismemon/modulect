@@ -32,7 +32,7 @@ To stylize the notice board the css and js for it is either below or directly at
                 <%= render "search/notice_item", notice: notice, index: index %>
                 <% index = index + 1 %>
             <% end %>
-            <% if current_user.user_level != "super_admin_access" %>
+            <% if logged_in? && current_user.user_level != "super_admin_access" %>
             <!--iterate through producing a list item for each-->
             <% @notices.where.not(department_id: nil).reorder("live_date DESC,created_at DESC").each do |notice| %>
                 <%= render "search/notice_item", notice: notice, index: index %>
