@@ -1,8 +1,6 @@
 require 'rails_helper'
-require 'support/csv_final_attribute_separator'
 
 RSpec.describe User, type: :model do
-  include CsvFinalAttributeSeparator
 
   let(:user) { build(:user) }
 
