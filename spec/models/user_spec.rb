@@ -326,4 +326,71 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "activate" do
+    before do
+      user.update_attributes(activated: false, activated_at: nil)
+    end
+
+    it "sets the activated columns" do
+      user.activate
+      expect(user.activated?).to eq true
+      expect(user.activated_at).not_to be_nil
+    end
+  end
+
+  describe "#create_reset_digest" do
+    before do
+      user.save
+      user.create_reset_digest
+    end
+
+    it "sets the reset_digest and reset_sent_at" do
+      expect(user.reset_digest).not_to be_nil
+      expect(user.reset_sent_at).not_to be_nil
+    end
+  end
+
+  describe "#password_reset_expired?" do
+    before do
+      user.save
+      user.create_reset_digest
+    end
+
+    context "when the reset request has just been made" do
+      it "evaluates to false" do
+        expect(user.password_reset_expired?).to eq false
+      end
+    end
+
+    context "when the reset digest is older than 2 hours" do
+      before do
+        user.update_attributes(reset_sent_at: 3.hours.ago)
+      end
+      it "evaluates to true" do
+        expect(user.password_reset_expired?).to eq true
+      end
+    end
+  end
+
+  describe ".to_csv" do
+    let! (:user1) { create(:user) }
+    let! (:user2) { create(:user, first_name: "John", last_name: "Sonmez", email: "john.sonmez@kcl.ac.uk") }
+    let (:csv_content) { User.to_csv }
+
+    it "displays all saved users" do
+      expect(csv_content).to include "First Name,Last Name,Faculty,Course,Department"
+      test_csv_attributes_for_all_users
+    end
+  end
+
+  private
+  def test_csv_attributes_for_all_users
+    User.all.each do |user|
+      expect(csv_content).to include user.first_name
+      expect(csv_content).to include user.last_name
+      expect(csv_content).to include(user.faculty_id || "N/A")
+      expect(csv_content).to include(user.course_id || "N/A")
+      expect(csv_content).to include(user.department_id || "N/A")
+    end
+  end
 end
