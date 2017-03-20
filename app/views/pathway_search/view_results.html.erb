@@ -792,10 +792,9 @@
         for(i = 0; i < selected_ids[year][g].length; ++i) {
           callIncrementLog(module_id, selected_ids[year][g][i]);
         }
+      }
       selected_ids[year][group].push(this_module.id);
       updateUI();
-      console.log(selected_ids);
-      console.log("!!!!!!!!!!!!!!!!!!!!!");
     }
     
     //Tell the user they can now save again
