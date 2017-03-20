@@ -168,6 +168,22 @@ module Admin
                 end
               end
 
+              # Add interest_tags
+              interest_tags = new_record['interest_tags']
+              interest_tags = interest_tags.gsub('; ', ';')
+              interest_tags = interest_tags.split(';')
+              interest_tags.each do |interest_tag_name|
+                # Lookup if tag with same name exists already
+                interest_tag_found = InterestTag.find_by(name: interest_tag_name, type: 'InterestTag')
+                if interest_tag_found.nil?
+                  # Create new tag and add to this module
+                  created_resource.add_tag(InterestTag.create!(name: interest_tag_name, type: 'InterestTag'))
+                else
+                  # Already exists, so add to this module
+                  created_resource.add_tag(interest_tag_found)
+                end
+              end
+
             end
 
           else
