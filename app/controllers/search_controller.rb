@@ -32,15 +32,15 @@ class SearchController < ApplicationController
       # if user doesn't have a department, retrieve global notices
       @notices = Notice.all.where(:department_id => nil).where(:broadcast => true).where(['live_date<= ?', DateTime.now])
     else
+      auto_delete_notices
       # if user has a department , display local notices
       @notices = Notice.all.where(:department_id => [@current_user.department_id, nil]).where(:broadcast => true).where(['live_date<= ?', DateTime.now])
-      auto_delete_notices
     end
   end
 
   # deletes notices which are past their expiry date
   def auto_delete_notices
-    @notices.each { |obj|
+    Notice.all.where(:department_id => [@current_user.department_id, nil]).each { |obj|
       if obj.auto_delete && !obj.end_date.nil? && obj.end_date.past?
         obj.destroy
       end
