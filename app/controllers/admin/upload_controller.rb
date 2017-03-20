@@ -133,8 +133,15 @@ module Admin
 
           elsif session[:resource_name] == 'courses'
             # Add departments attribute to create and/or link departments to this course
-            # Create the Course
-            created_course = Course.create!(new_record.except('departments'))
+            # Lookup if Course already exists
+            created_course = Course.find_by(name: new_record['name'], year: new_record['year'])
+            if created_course.nil?
+              # Create the Course
+              created_course = Course.create!(new_record.except('departments'))
+            else
+              # Update the existing Course
+              created_course.update(new_record.except('departments'))
+            end
             # Transform string of departments into array of departments
             departments_s = new_record['departments']
             departments_s = departments_s.gsub('; ', ';')
