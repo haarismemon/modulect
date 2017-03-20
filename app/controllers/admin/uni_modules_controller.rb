@@ -230,6 +230,15 @@ module Admin
       end
 
       if can_delete
+        @uni_module.comments.each do |comment|
+          comment.destroy
+        end
+        logs = UniModuleLog.all.where(:uni_module_id => @uni_module.id)
+          if logs.size >0
+            logs.each do |log|
+               log.destroy
+            end
+          end
         @uni_module.destroy
         tag_clean_up
         flash[:success] = "Module successfully deleted"
@@ -257,6 +266,15 @@ module Admin
             end
           end
           if can_delete
+            uni_module.comments.each do |comment|
+              logs = UniModuleLog.all.where(:uni_module_id => uni_module.id)
+              if logs.size >0
+                logs.each do |log|
+                  log.destroy
+                end
+              end
+              comment.destroy
+            end
             uni_module.destroy
           end
 
