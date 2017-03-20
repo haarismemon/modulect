@@ -44,6 +44,10 @@
             <td class="no-link checkboxes">
                <div class="checkbox" style="margin:0px;display:inline-block;">
                   <input type="checkbox" name="check_action[]" id="check_individual" value="<%= comment.id %>" class="toggle-bulk" /><label for="check_individual"><span></span></label>
+                 <% if comment.reported_users.length > 0 %>
+                     <div style="display: inline-block;"><i style='color: #c77067;' class='fa fa-flag' aria-hidden='true'></i></div>
+                 <% end %>
+
                </div>
             </td>
             <td class="cell-data cell-data--string"><%= comment.created_at.strftime("%d %B %Y at %H:%M %p")%></td>
