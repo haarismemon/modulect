@@ -99,10 +99,10 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:comment_id])
 
     if @comment.reported
-      @comment.reported = false
+      @comment.update_attributes(reported: false)
       reported = false
     else
-      @comment.reported = true
+      @comment.update_attributes(reported: true)
       reported = true
     end
 
