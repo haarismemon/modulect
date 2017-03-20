@@ -24,7 +24,7 @@ Render which produces a list item within a unordered list. This list item is the
           <br/>
           <!--checks if optional link has been provided. if it has render link with href-->
           <% if notice.optional_link.present? %>
-              <a href="<%= notice.optional_link %>" class="btn special">View More Info</a>
+              <a href="<%= notice.optional_link %>" target="_blank" class="btn btn btn-lg btn-small">More info ></a>
           <% end %>
         </div>
       </div>
