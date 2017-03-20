@@ -7,7 +7,8 @@ class User < ApplicationRecord
   before_create :create_activation_digest
 
   # A user has many saved modules.
-  has_and_belongs_to_many :uni_modules
+  has_many :saved_modules
+  has_many :uni_modules, through: :saved_modules
   # A user has many pathways
   has_many :pathways
   # A user makes many comments
@@ -165,17 +166,17 @@ class User < ApplicationRecord
       all.each do |user|
         to_append = user.attributes.values_at(*attributes)
         if user.faculty.nil?
-          to_append.push 'N/A'
+          to_append.push ''
         else
           to_append.push user.faculty.name
         end
         if user.course.nil?
-          to_append.push 'N/A'
+          to_append.push ''
         else
           to_append.push user.course.name
         end
         if user.department.nil?
-          to_append.push 'N/A'
+          to_append.push ''
         else
           to_append.push user.department.name
         end

@@ -1,0 +1,2 @@
+class UniModuleLog < ApplicationRecord
+end

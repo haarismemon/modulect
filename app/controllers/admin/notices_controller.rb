@@ -6,10 +6,10 @@ module Admin
       # checks current user status
       if current_user.user_level == "super_admin_access"
         # if super admin only display global notices
-        @notices = Notice.all.where(:department_id => nil)
+        @notices = Notice.all
       else
         # if department admin only display department notices
-        @notices = Notice.all.where(:department_id => [@current_user.department_id, nil])
+        @notices = Notice.all.where(:department_id => [@current_user.department_id])
       end
       auto_delete_notices
 

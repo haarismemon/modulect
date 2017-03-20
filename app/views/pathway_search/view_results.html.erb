@@ -1,4 +1,7 @@
 <% provide(:title, 'Pathway Results') %>
+<% if request.query_parameters["sl"].present? && request.query_parameters["sl"] == "true"%>
+  <% add_to_search_log("pathway") %>
+<% end %>
 <style>
  @media print {
   .navbar, .no-print, footer, .no-print * {display:none; !important}
@@ -784,6 +787,12 @@
     } else {
       console.log(year + " " + group);
       console.log(selected_ids[year][group]);
+      // Increment every tuple of the selected modules
+      for(g = 0; g < selected_ids[year].length; ++g) {
+        for(i = 0; i < selected_ids[year][g].length; ++i) {
+          callIncrementLog(module_id, selected_ids[year][g][i]);
+        }
+      }
       selected_ids[year][group].push(this_module.id);
       updateUI();
     }
@@ -798,10 +807,40 @@
   function deselectModule(year, group, moduleId) {
     indexToDelete = selected_ids[year][group].indexOf(moduleId);
     if(indexToDelete > -1) {
-      console.log("herererer");
       selected_ids[year][group].splice(index, 1);
     }
+    // Decrement every tuple of the selected modules
+    for(g = 0; g < selected_ids[year].length; ++g) {
+      for(i = 0; i < selected_ids[year][g].length; ++i) {
+        callDecrementLog(moduleId, selected_ids[year][g][i]);
+      }
+    }
     updateUI();
+  }
+
+  function callIncrementLog(firstMod, secondMod) {
+    console.log("IIIDDDD: " + <%= @course %>);
+    $.ajax({
+      url: '<%= pathway_search_increment_pathway_search_log_path %>',
+      type: 'POST',
+      data: {
+        first_mod_id: firstMod,
+        second_mod_id: secondMod,
+        course_id: <%= @course %>
+      }
+    });
+  }
+
+  function callDecrementLog(firstMod, secondMod) {
+    $.ajax({
+      url: '<%= pathway_search_decrement_pathway_search_log_path %>',
+      type: 'POST',
+      data: {
+        first_mod_id: firstMod,
+        second_mod_id: secondMod,
+        course_id: <%= @course %>
+      }
+    });
   }
 
   function updateData(){

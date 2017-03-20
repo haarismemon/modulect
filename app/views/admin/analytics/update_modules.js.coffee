@@ -1,0 +1,1 @@
+$("#modules_select").empty().append("<option> </option>").append("<%= escape_javascript(render(:partial => @uni_modules)) %>")

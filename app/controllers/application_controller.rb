@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   include SessionsHelper
   before_action :store_location
+  before_action :log_visit
 
   # Confirms a logged in user.
   def logged_in_user
@@ -34,6 +35,31 @@ class ApplicationController < ActionController::Base
     pathway_year = params[:year]
     pathway_course = params[:course]
     current_user.pathways << Pathway.create(name: pathway_name, data: pathway_data, year: pathway_year, course_id: pathway_course)
+  end
+
+  def save_course_pathway
+    course = Course.find_by(id: params[:course])
+    pathway_name = params[:name]
+    pathway_data = params[:data]
+    pathway_year = params[:year]
+    pathway_course = params[:course]
+    course.pathways << Pathway.create(name: pathway_name, data: pathway_data, year: pathway_year, course_id: pathway_course)
+  end
+
+  def update_course_pathway
+      pathway = Pathway.find_by(id: params[:id])
+      pathway.name = params[:name]
+      pathway.year = params[:year]
+      pathway.course_id = params[:course_id]
+      pathway.data = params[:data]
+      pathway.save
+      render json: pathway
+  end
+
+  def delete_course_pathway
+    pathway = Pathway.find_by_id(params[:pathway_id])
+    pathway.destroy
+    render json: pathway
   end
 
   # delete pathway from user's favourites
@@ -67,5 +93,27 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def log_visit
+    session_id = request.session_options[:id]
+    client = DeviceDetector.new(request.env["HTTP_USER_AGENT"])
+    client_os = client.os_name 
+    if !VisitorLog.find_by_session_id(session_id)
+      VisitorLog.create(:session_id => session_id, :logged_in => false, :device_type => client_os)
+    end
+
+    if VisitorLog.find_by_session_id(session_id)
+      log = VisitorLog.find_by_session_id(session_id)
+      if !log.logged_in && logged_in?
+        log.update_attribute("logged_in", true)
+        log.save
+      end
+
+      if logged_in? && current_user.department_id.present? && log.department_id.nil?
+        log.update_attribute("department_id", current_user.department_id)
+        log.save
+      end
+    end
+
+  end
 
 end
