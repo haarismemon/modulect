@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320202347) do
+ActiveRecord::Schema.define(version: 20170320220927) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -28,11 +28,10 @@ ActiveRecord::Schema.define(version: 20170320202347) do
   create_table "comments", force: :cascade do |t|
     t.text     "body"
     t.integer  "uni_module_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "rating"
     t.integer  "user_id"
-    t.boolean  "reported",      default: false
     t.index ["uni_module_id"], name: "index_comments_on_uni_module_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -128,6 +127,12 @@ ActiveRecord::Schema.define(version: 20170320202347) do
     t.datetime "updated_at",                     null: false
     t.integer  "year"
     t.integer  "course_id"
+  end
+
+  create_table "reported_comments_users", id: false, force: :cascade do |t|
+    t.integer "comment_id"
+    t.integer "user_id"
+    t.index ["comment_id", "user_id"], name: "index_reported_comments_users_on_comment_id_and_user_id"
   end
 
   create_table "saved_modules", force: :cascade do |t|
