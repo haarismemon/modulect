@@ -115,6 +115,13 @@ module Admin
         user.update_attribute("course_id", nil)
       end
 
+      plogs = PathwaySearchLog.all.where(:course_id => @course.id)
+          if pslogs.size >0
+            pslogs.each do |log|
+                pslogs.destroy
+            end
+          end  
+
       @course.destroy
       flash[:success] =  @course.name + " was deleted successfully."
       redirect_to(admin_courses_path)
@@ -132,6 +139,12 @@ module Admin
               Group.where(year_structure_id: year_structure.id).destroy_all
             end
             YearStructure.where(course_id: course.id).destroy_all
+             plogs = PathwaySearchLog.all.where(:course_id => @course.id)
+              if pslogs.size >0
+                pslogs.each do |log|
+                    pslogs.destroy
+                end
+              end 
             course.destroy
           end
       end
