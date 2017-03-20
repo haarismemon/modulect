@@ -1,5 +1,5 @@
 <!--
-  A text area component.
+  A number field component.
   Extend accordingly. If locals want to be added to partial, deal with the case if local isn't provided as seen below
   to prevent code from being broken anywhere else.
 
@@ -7,7 +7,7 @@
  javascript and css
 
  Classes it contains:
- Type of components (i.e field-unit--textarea)
+ Type of components (i.e field-unit--number)
  Name of component (i.e department)
 
 -->
@@ -22,24 +22,26 @@
 <% options = {} if local_assigns[:options].nil? %>
 
 <!--form field-->
-<div class="row field-unit field-unit--textarea <%= name.to_s %>" >
+<div class="row field-unit field-unit--number <%=name.to_s%>" >
   <div class="col-xs-12">
+    <!--creates label from label local-->
     <div class="field-unit__label">
-        <!--creates label from label local-->
-        <label for="<%= name.to_s%>"><%= label.to_s.titleize %>
-            <!--checks if tooltip is present and if so render it with its message-->
-            <% if tooltip.present?%>
-              <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
-                 title="<%= tooltip.to_s %>">[<i class="fa fa-question" aria-hidden="true"></i>]
-              </a>
-            <%end%>
-        </label>
+      <%= f.label name, label.to_s.titleize %>
+        <!--checks if tooltip is present and if so render it with its message-->
+        <% if tooltip.present?%>
+            <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
+               title="<%= tooltip.to_s %>">[<i class="fa fa-question" aria-hidden="true"></i>]
+            </a>
+        <%end%>
+      </label>
     </div>
     <!--element part-->
     <div class="field-unit__field">
-      <!--text area-->
-      <%= f.text_area name,placeholder: placeholder,:class =>"tinymce", options: options %>
-      <%= tinymce %>
+      <!--number field-->
+      <%= f.number_field name, placeholder: placeholder, options: options %>
     </div>
   </div>
 </div>
+
+
+

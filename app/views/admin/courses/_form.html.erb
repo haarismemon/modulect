@@ -14,7 +14,7 @@
     <% path_of_field_store = "admin/application/fields/" %>
 
     <!--name field-->
-    <%= render path_of_field_store+"string_form_field", :f => f,
+    <%= render path_of_field_store + "string_form_field", :f => f,
                :name => :name %>
 
     <!--course's departments field-->
@@ -31,7 +31,7 @@
     </div>
 
     <!--renders beginning field year -->
-    <%= render path_of_field_store+"number_form_field", :f => f,
+    <%= render path_of_field_store + "number_form_field", :f => f,
                :name => :year,
                :label => "Beginning year",
                :tooltip => "The beginning year of the university teaching the course. If the course ready existed prior,
@@ -40,7 +40,7 @@
 
 
     <!--renders description field -->
-    <%= render path_of_field_store+"textarea_form_field", :f => f,
+    <%= render path_of_field_store + "textarea_form_field", :f => f,
                :name => :description,
                :tooltip => "Introduction explaining what this course is,
                 and why students might be intrested in taking it." %>
@@ -71,7 +71,6 @@
     </div>
 
 <% end %>
-
 
 <script>
     //intialize selectize plugin for select fields
