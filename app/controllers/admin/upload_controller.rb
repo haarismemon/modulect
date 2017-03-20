@@ -96,7 +96,12 @@ module Admin
             new_record['faculty_id'] = Faculty.where(name: row.to_hash['faculty_name']).first.id
             # Remove the faculty name attribute from row hash
             new_record = new_record.except('faculty_name')
-            Department.create!(new_record)
+            # Check whether to update a department or create a new one
+            if Department.find_by_name(new_record['name']).nil?
+              Department.create!(new_record)
+            else
+              Department.update(new_record)
+            end
 
           elsif session[:resource_name] == 'faculties'
             # Faculties upload: Add departments attribute to create and/or link departments to the faculty
