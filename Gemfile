@@ -27,7 +27,7 @@ gem 'selectize-rails'
 gem 'kaminari'
 gem 'tinymce-rails',          '~> 4.3'
 gem 'device_detector'
-gem 'pry'
+
 
 group :development, :test do
   gem 'sqlite3'

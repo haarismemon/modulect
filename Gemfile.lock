@@ -312,7 +312,6 @@ DEPENDENCIES
   kaminari
   listen (~> 3.0.5)
   pg (= 0.18.4)
-  pry
   puma (~> 3.0)
   rails (~> 5.0.1)
   rails-controller-testing

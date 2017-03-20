@@ -39,7 +39,7 @@ module SessionsHelper
 
 	def current_user_last_login_time
 		cached_last_login_time = session[:last_login_time] 
-		if cached_last_login_time.nil? || cached_last_login_time.size == 0
+		if cached_last_login_time.nil?
 			"Never"
 		else
 			DateTime.parse(session[:last_login_time]).strftime("%d %B %Y at %H:%M %p")
