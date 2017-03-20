@@ -4,6 +4,9 @@ module Admin
 
     before_action :verify_correct_department, only: [:update, :edit, :destroy]
 
+    def course_pathways
+      @course = Course.find_by(id: params[:id])
+    end
     def show
       redirect_to edit_admin_course_path(params[:id])
     end
@@ -40,6 +43,10 @@ module Admin
 
       else
          @courses = @courses.order('name ASC').page(params[:page]).per(@per_page)
+      end
+
+      if @courses.size == 0 && params[:page].present? && params[:page] != "1"
+        redirect_to admin_courses_path
       end
 
       @courses_to_export = @courses

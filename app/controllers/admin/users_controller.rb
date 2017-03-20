@@ -36,7 +36,9 @@ module Admin
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
       end
 
-
+      if @users.size == 0 && params[:page].present? && params[:page] != "1"
+        redirect_to admin_users_path
+      end
 
       @users_to_export = @users
       if params[:export].present?

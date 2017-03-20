@@ -173,9 +173,8 @@ class UniModule < ApplicationRecord
       all.each do |uni_module|
         career_tag_names = ' '
         interest_tag_names = ' '
-        uni_module.career_tags.pluck(:name).each{|tag| career_tag_names += tag + ', ' }
-        uni_module.interest_tags.pluck(:name).each{|tag| interest_tag_names += tag + ', ' }
-        # uni_module.career_tags.where(:name => uni_module.name).each { |tag| tagNames += tag.name + ', '}
+        uni_module.career_tags.pluck(:name).each{|tag| career_tag_names += tag + '; ' }
+        uni_module.interest_tags.pluck(:name).each{|tag| interest_tag_names += tag + '; ' }
         career_tag_names.chop!.chop!
         interest_tag_names.chop!.chop!
         career_tag_names[0] = ''

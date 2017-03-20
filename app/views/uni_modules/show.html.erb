@@ -29,7 +29,9 @@
             <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
             </button>
             <% end %>
-            <a href="#module_review" class="btn btn-lg btn-small" id="review-module" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</a>
+            <% if !app_settings.disable_all_reviews %>
+            <a href="#module_review" class="btn btn-lg btn-small" id="review-module" style="width: 120px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review</a>
+            <% end %>
             <script>
                $("button#save-<%= @uni_module.code%>").on("click", function(){
                    $.ajax({
@@ -40,8 +42,14 @@
                });
             </script>
             <% else %>
-            <form action="/login" method="get">
+            <form action="/login" method="get" style="display:inline-block;">
                <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="left" title="To save modules, you must be logged in."><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
+               </button>
+            </form>
+            <% end %>
+            <% if !app_settings.disable_all_reviews && !logged_in? %>
+             <form action="/login" method="get" style="display:inline-block;">
+               <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="left" title="To review modules, you must be logged in." style="width: 170px"><span><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</span>
                </button>
             </form>
             <% end %>
@@ -49,6 +57,7 @@
       </div>
       <%= render partial: 'layouts/uni_module', locals: {uni_module: @uni_module, tags_matched: "", tags_searched_for: "", type: "show"}  %>
 
+      <% if !app_settings.disable_all_reviews %>
      <a name="module_review" id="module_review" class="anchor"></a>
       <div class="col-md-12 login-card res-card">
          <div class="row">
@@ -56,8 +65,8 @@
               <h2>Module Reviews</h2>
 
               <div id="sort-comments">
-                <label>Sort by: </label>
-                <select id="sort-by-name" name="sort-by-name">
+                <label>Sort by:&nbsp;&nbsp;</label>
+                <select class="selectpicker" id="sort-by-name" name="sort-by-name">
                   <option value="created_at">Created at</option>
                   <option value="rating">Rating</option>
                 </select>
@@ -70,23 +79,21 @@
             </div>
          </div>
       </div>
+      <% end %>
+
    </div>
-</div>
 </div>
 </div>
 
 <style>
     /*#rating-area input[type=radio] {display:inline-block;}*/
-    #sort-comments { float: right}
-    #review-area textarea {width: 100%; height: 100%}
-
+    #sort-comments { float: right;margin-bottom: 20px;}
+    #review-area textarea {width: 100%; height: 100%;padding-top:10px;font-size:16px;padding-left:10px;}
+    #edit-text-area{padding-top:10px;font-size:16px;padding-left:10px;}
     #module-review-card {
       width: 100%;
     }
 
-    #comment-creation {
-      margin-left: 20px;
-    }
 </style>
 
 <script>
