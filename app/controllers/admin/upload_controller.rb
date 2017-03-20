@@ -122,7 +122,7 @@ module Admin
           elsif session[:resource_name] == 'courses' || session[:resource_name] == 'uni_modules'
             # Add departments attribute to create and/or link departments to this course/module
             # Create the Course/Module
-            created_resource = session[:resource_name].to_s.classify.constantize.create!(new_record.except('departments', 'prerequisite_modules'))
+            created_resource = session[:resource_name].to_s.classify.constantize.create!(new_record.except('departments', 'prerequisite_modules', 'career_tags', 'interest_tags'))
             # Transform string of departments into array of departments
             departments_s = new_record['departments']
             departments_s = departments_s.gsub('; ', ';')
@@ -137,8 +137,9 @@ module Admin
               end
             end
 
-            # If resource is modules then check for prerequisite modules
+            # If resource is modules then
             if session[:resource_name] == 'uni_modules'
+              # Add prerequisite modules
               # Transform string of modules into array
               pre_req_modules = new_record['prerequisite_modules']
               pre_req_modules = pre_req_modules.gsub('; ', ';')
@@ -150,6 +151,23 @@ module Admin
                   created_resource.uni_modules << module_found
                 end
               end
+
+              # Add career_tags
+              career_tags = new_record['career_tags']
+              career_tags = career_tags.gsub('; ', ';')
+              career_tags = career_tags.split(';')
+              career_tags.each do |career_tag_name|
+                # Lookup if tag with same name exists already
+                career_tag_found = CareerTag.find_by(name: career_tag_name, type: 'CareerTag')
+                if career_tag_found.nil?
+                  # Create new tag and add to this module
+                  created_resource.add_tag(CareerTag.create!(name: career_tag_name, type: 'CareerTag'))
+                else
+                  # Already exists, so add to this module
+                  created_resource.add_tag(career_tag_found)
+                end
+              end
+
             end
 
           else
