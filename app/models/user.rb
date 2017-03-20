@@ -15,8 +15,6 @@ class User < ApplicationRecord
   has_many :comments
   # A user likes many comments
   has_and_belongs_to_many :liked_comments, class_name: 'Comment'
-  # A user can report many comments
-  has_and_belongs_to_many :reported_comments, class_name: 'Comment', join_table: 'reported_comments_users'
 
   # do not remove the , optional: true
   belongs_to :faculty, optional: true
