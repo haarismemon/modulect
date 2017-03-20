@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Course, type: :model do
 
-  let(:course) { build(:course) }
+  let (:course) { build(:course) }
 
   describe "#valid?" do
 
@@ -116,9 +116,32 @@ RSpec.describe Course, type: :model do
       end
     end
   end
+  
+  describe "#all_year_structures_defined?" do
+    let! (:year_structure) { create(:year_structure) }
+    
+    before do
+      course.save
+      course.year_structures << year_structure
+    end
+
+    context "when there is a year structure with no groups" do
+      it "evaluates to false" do
+        expect(course.all_year_structures_defined?).to eq false
+      end
+    end
+
+    context "when all year structures have at least one module" do
+      before do
+        create(:group, year_structure: year_structure, name: "Semester 2")
+      end
+      it "evaluates to true" do
+        expect(course.all_year_structures_defined?).to eq true
+      end
+    end
+  end
 
   describe "#destroy" do
-   
     before do
       course.save
       create(:year_structure, course: course)
@@ -128,6 +151,34 @@ RSpec.describe Course, type: :model do
       expect(YearStructure.count).not_to eq 0
       course.destroy
       expect(YearStructure.count).to eq 0
+    end
+  end
+
+  describe ".to_csv" do
+    let (:csv_content) { Course.to_csv }
+    let (:csv_header) { "Name,Description,Year\n" }
+
+    before do
+      course.save
+    end
+
+    it "displays all saved users" do
+      expect(csv_content).to include csv_header
+      test_csv_attributes_for_all_courses
+    end
+  end
+
+  private
+  def test_csv_attributes_for_all_courses
+    courses = Course.all
+    csv_content.slice! csv_header
+    i = 0
+    CSV.parse(csv_content) do |line|
+      expect(line).to include courses[i].name
+      expect(line).to include courses[i].description
+      expect(line).to include courses[i].year.to_s
+
+      i += 1
     end
   end
 

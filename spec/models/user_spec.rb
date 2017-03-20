@@ -1,6 +1,8 @@
 require 'rails_helper'
+require 'support/csv_final_attribute_separator'
 
 RSpec.describe User, type: :model do
+  include CsvFinalAttributeSeparator
 
   let(:user) { build(:user) }
 
@@ -392,21 +394,27 @@ RSpec.describe User, type: :model do
     let! (:user1) { create(:user, faculty: department.faculty, course: course, department: department) }
     let! (:user2) { create(:user, first_name: "John", last_name: "Sonmez", email: "john.sonmez@kcl.ac.uk") }
     let (:csv_content) { User.to_csv }
+    let (:csv_header) { "First Name,Last Name,Faculty,Course,Department\n" }
 
     it "displays all saved users" do
-      expect(csv_content).to include "First Name,Last Name,Faculty,Course,Department"
+      expect(csv_content).to include csv_header
       test_csv_attributes_for_all_users
     end
   end
 
   private
   def test_csv_attributes_for_all_users
-    User.all.each do |user|
-      expect(csv_content).to include user.first_name
-      expect(csv_content).to include user.last_name
-      expect(csv_content).to include(user.faculty.to_s || "N/A")
-      expect(csv_content).to include(user.course.to_s || "N/A")
-      expect(csv_content).to include(user.department.to_s || "N/A")
+    users = User.all
+    csv_content.slice!(csv_header)
+    i = 0
+    CSV.parse(csv_content).each do |line|
+      expect(line).to include users[i].first_name
+      expect(line).to include users[i].last_name
+      expect(line).to include users[i].faculty.to_s
+      expect(line).to include users[i].course.to_s
+      expect(line).to include users[i].department.to_s
+
+      i += 1
     end
   end
 end
