@@ -285,7 +285,9 @@ module ApplicationHelper
   		desired_log.update_attribute("counter", desired_log.counter + 1)
   	else
   		TagLog.create(:tag_id => incoming_tag_id, :counter => 1)
-
+	end
+  end
+  
   def get_course_and_year(user, prestring)
   	if user.year_of_study.present? && !user.course_id.nil?
   		", " + user.year_of_study.ordinalize + " year " + Course.find(user.course_id).name
@@ -302,8 +304,5 @@ module ApplicationHelper
       #redirect back to new form
       link_to 'Back', new_admin_faculty_path, class: "button"
     end
-  end
-end
-
   end
 end
