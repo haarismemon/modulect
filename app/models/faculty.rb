@@ -7,7 +7,7 @@ class Faculty < ApplicationRecord
   def self.to_csv
     attributes = %w{name}
     CSV.generate(headers:true)do |csv|
-      csv << %w(Name Departments)
+      csv << %w(name departments)
       all.each do |faculty|
         deptNames = ''
         Department.where(:faculty_id => faculty.id).each { |dept| deptNames += dept.name + '; '}
