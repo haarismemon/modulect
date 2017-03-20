@@ -129,9 +129,9 @@
                         <td id="report-td" align="right">
                           <% if logged_in? %>
                               <% if comment.reported == true %>
-                                  <button class="btn helpful-btn reported" id="report-btn-<%= comment.id %>" title="Review reported"><i class="fa fa-flag" aria-hidden="true"></i></button>
+                                  <button class="btn report-btn reported" id="report-btn-<%= comment.id %>" title="Review reported"><i class="fa fa-flag" aria-hidden="true"></i></button>
                               <% else %>
-                                  <button class="btn helpful-btn not-reported" id="report-btn-<%= comment.id %>" title="Review not reported"><i class="fa fa-flag-o" aria-hidden="true"></i></button>
+                                  <button class="btn report-btn not-reported" id="report-btn-<%= comment.id %>" title="Review not reported"><i class="fa fa-flag-o" aria-hidden="true"></i></button>
                               <% end %>
                           <% else %>
                               <button class="btn btn-disabled not-reported" id="reported-btn-disabled" title="To report a review, you must be logged in."><i class="fa fa-flag-o" aria-hidden="true"></i></button>
@@ -557,6 +557,20 @@
           }
         }
       });
+    });
+
+    //on click method for the helpful button, makes a ajax post request
+    $(".report-btn").on("click", function (event) {
+        button = $(this);
+        button_id = event.target.id;
+        comment_id = parseInt(button_id.replace("report-btn-", ""));
+
+        $.ajax({
+            type: "POST",
+            url: "<%= comments_report_path %>",
+            data: { comment_id: comment_id },
+            context: document.body,
+        });
     });
 
     $("[id^=edit-btn]").on("click", function (event) {
