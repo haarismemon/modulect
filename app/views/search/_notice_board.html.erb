@@ -15,8 +15,11 @@ To stylize the notice board the css and js for it is either below or directly at
         <h4 style="margin: 20px 0px">Stay posted here for key events and happenings around you from your department</h4>
     <% else %>
         <!--sub-header of card-->
-        <h4 style="margin-top: 20px">Get the latest information about key events and happenings around you from your
-          department </h4>
+        <h4 style="margin-top: 20px">Get the latest information about key events
+          <%= if @current_user&&@current_user.department_id.present? then
+                'and happenings around you from your
+          department'
+              end %> </h4>
         </div>
         <!--fixed container size if notices are greater than 4-->
         <% to_set_min_height = @notices.size>4 ? "min-height: 358.5px;" : "" %>
