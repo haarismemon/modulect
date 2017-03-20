@@ -73,7 +73,7 @@
   <div id="upload-step-3" class="col-lg-12 login-card" style="margin-bottom: 20px; display: none;">
     <h3>Step 3: Upload data</h3>
     <div class="form-entry text-center" style="margin-top: 20px;">
-      <%= form_tag("/admin/upload/upload_csv", method: "post", multipart: true) do %>
+      <%= form_tag('/admin/upload/upload_csv', method: 'post', multipart: true) do %>
           <%= file_field_tag :csv_upload, id: 'csv-upload', onchange: 'validate_file_extension(this.value);', required: true, accept: 'text/csv' %>
           <%= submit_tag 'Upload', id: 'upload-3-next', class: 'btn btn-md' %>
       <% end %>
@@ -115,7 +115,7 @@
 
         $("#upload-2-next").on("click", function () {
             $("#upload-step-3").show();
-
+            $("#upload-help").show();
             var resource_name = $("select#upload-resource").val();
             $("form.button_to").attr("action", "/admin/download?resource_choice=" + resource_name)
         });
