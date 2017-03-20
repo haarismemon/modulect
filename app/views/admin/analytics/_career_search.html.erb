@@ -1,0 +1,134 @@
+<div class="row" >
+   <div class="col-md-12  login-card header-card" style="">
+      <div class="col-md-6 header-item">
+         <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+            <%= get_number_career_searches(@department, 1, @time_period, Time.now) %>
+         </div>
+         <% if @time_period != "all_time" %>
+         <% percentage_difference_total_career_searches = 
+            percentage_difference(get_number_career_searches(@department, 1, @time_period, Time.now), get_number_career_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            %>
+         <div class="percentage-change <%= colour(percentage_difference_total_career_searches)%>">
+            <% if percentage_difference_total_career_searches != 0 %>
+            <i class="fa fa-caret-<%= indicator(percentage_difference_total_career_searches)%>" aria-hidden="true"></i>
+            <% end %> <%= percentage_difference_total_career_searches %>% from previous <%= @time_period.titleize.downcase%>
+         </div>
+         <% end %>
+      </div>
+
+
+       
+
+
+
+
+
+      <div class="col-md-6 header-item last">
+         <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;
+            <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The career which was most searched for">Top career of <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></a>
+         </div>
+         <div class="main-figure">
+         <% most_searched_tag = get_top_size_check_analytics(get_clicked_career_tags(@department,1,@time_period,Time.now,"most", 1)) %>
+            <%= get_top_module_name(most_searched_tag) %>
+         </div>
+         <div class="percentage-change">
+            across any type of search
+         </div>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col-md-12 login-card">
+      <h4 class="small-header" style="margin-bottom:20px;">Number of career searches <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></h4>
+      <canvas id="career-search-main-chart" width="400" height="120"></canvas>
+      <script>
+         var ctx = document.getElementById("career-search-main-chart");
+         
+         var searchData = {
+         labels : <%= get_list_of_time_periods(@time_period).to_json.html_safe %>,
+         datasets : [
+         {
+         label : "# number of career searches",
+         data : <%= attach_search_log_data_to_time_period(get_search_lists(@department, "career", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
+         borderColor : "rgba(217,83,79,1)",
+         backgroundColor : "rgba(217,83,79,0.1)"
+         }
+         
+         ]
+         };
+         var mainSearchChart = new Chart(ctx, {
+             type: 'line',
+             data: searchData,
+             options: {
+                 scales: {
+                     yAxes: [{
+                         ticks: {
+                             beginAtZero:true,
+                             userCallback: function(label, index, labels) {
+		                     // no decimals
+		                     if (Math.floor(label) === label) {
+		                         return label;
+		                     }
+
+		                 	},
+                         }
+                     }]
+                 }
+             }
+         });
+         
+      </script>
+   </div>
+
+
+
+
+   </div>
+
+
+<% most_clicked_career_tags = get_clicked_career_tags(@department,1,@time_period,Time.now,"most", 10) %>
+
+   <div class="row">
+
+         <div class="col-md-12 login-card subox-card">
+         <% if most_clicked_career_tags.size != 0 %>
+            <div class="side-right">
+               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
+                  <option value="500" >Area chart</option>
+                  <option value="500" >Bar chart</option>
+                  <option value="50" >Line chart</option>
+                  <option value="250" >Pie chart</option>
+                  <option value="10" selected="selected">Table</option>
+               </select>
+            </div>
+            <% end %>
+         
+            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Careers currently trending on Modulect">Trending careers</a></h4>
+            <% if most_clicked_career_tags.size == 0 %>
+	            No data avaiable right now. Please try again later.
+            <% else %>
+	            <ol class="trending-list">
+	            <% most_clicked_career_tags.each do |tag, counter| %>
+	            	<li><%= tag.name %></li>
+	            <% end %>
+	            </ol>
+	            <div class="expand-link">
+	               <a data-toggle="tab" href="#tags" class="go-to-tags">Show more ></a>
+	            </div>
+            <% end %>
+            	
+         </div>
+
+
+      
+
+
+
+   </div>
+
+
+
+
+

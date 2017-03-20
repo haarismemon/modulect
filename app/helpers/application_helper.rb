@@ -234,6 +234,58 @@ module ApplicationHelper
     AppSetting.instance
   end
 
+  def add_to_search_log(type)
+  	logs = SearchLog.select{|log| log.search_type == type && log.created_at.hour == Time.now.hour}
+
+  	if logs.size > 0
+  		updated_some_log = false
+  		logs.each do |log|
+
+  			if (log.department_id.present? && logged_in? && current_user.department_id.present? && current_user.department_id == log.department_id) || !logged_in?
+
+	  			log.update_attribute("counter", log.counter + 1)
+	  			log.save
+	  			updated_some_log = true
+	  			break
+	  		elsif logged_in? && !current_user.department_id.present?	
+	  			log.update_attribute("counter", log.counter + 1)
+	  			updated_some_log = true
+	  			break
+	  		end
+
+  		end
+
+  		if !updated_some_log
+  			if logged_in? && current_user.department_id.present?
+  				SearchLog.create(:search_type => type, :counter => 1, :department_id => current_user.department_id)
+  			end
+  		end
+
+  	else
+  		SearchLog.create(:search_type => type, :counter => 1)
+	end
+
+  end
+
+  def add_to_uni_module_log(incoming_uni_module_id)
+  	logs = UniModuleLog.select{|log| log.uni_module_id == incoming_uni_module_id && log.created_at.to_date == Time.now.to_date}
+  	if logs.size > 0
+  		desired_log = logs.first
+  		desired_log.update_attribute("counter", desired_log.counter + 1)
+  	else
+  		UniModuleLog.create(:uni_module_id => incoming_uni_module_id, :counter => 1)
+  	end
+
+  end
+
+  def add_to_tag_log(incoming_tag_id)
+  	logs = TagLog.select{|log| log.tag_id == incoming_tag_id && log.created_at.to_date == Time.now.to_date}
+  	if logs.size > 0
+  		desired_log = logs.first
+  		desired_log.update_attribute("counter", desired_log.counter + 1)
+  	else
+  		TagLog.create(:tag_id => incoming_tag_id, :counter => 1)
+
   def get_course_and_year(user, prestring)
   	if user.year_of_study.present? && !user.course_id.nil?
   		", " + user.year_of_study.ordinalize + " year " + Course.find(user.course_id).name

@@ -1,0 +1,2 @@
+class VisitorLog < ApplicationRecord
+end
