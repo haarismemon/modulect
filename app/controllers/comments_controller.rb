@@ -112,6 +112,14 @@ class CommentsController < ApplicationController
 
   end
 
+  def unflag
+    @comment = Comment.find(params[:comment_id])
+
+    @comment.reported_users.clear
+
+    redirect_to admin_comment_path(@comment.uni_module)
+  end
+
   private
     def comment_params
       if logged_in?

@@ -55,7 +55,6 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
   end
 
-
   # GENERAL
   root 'search#home'
   get '/about', to: 'static_pages#about'
@@ -148,7 +147,7 @@ Rails.application.routes.draw do
   post 'comments/edit'
   post 'comments/delete'
   delete 'comments/destroy'
-  post 'comments/report'
+  post 'comments/unflag'
 
 
   # ERROR PAGES
