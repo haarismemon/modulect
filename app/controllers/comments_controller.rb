@@ -97,12 +97,13 @@ class CommentsController < ApplicationController
 
   def report
     @comment = Comment.find(params[:comment_id])
+    @user = User.find(current_user.id)
 
-    if @comment.reported
-      @comment.update_attributes(reported: false)
+    if @comment.reported_users.include? @user
+      @comment.reported_users.delete @user
       reported = false
     else
-      @comment.update_attributes(reported: true)
+      @comment.reported_users << @user
       reported = true
     end
 

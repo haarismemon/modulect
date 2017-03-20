@@ -128,7 +128,7 @@
                         </td>
                         <td id="report-td" align="right">
                           <% if logged_in? %>
-                              <% if comment.reported %>
+                              <% if comment.reported_users.include?(current_user) %>
                                   <button class="btn report-btn reported" id="report-btn-<%= comment.id %>" title="Mark as reported/unreported"><i class="fa fa-flag" aria-hidden="true"></i></button>
                               <% else %>
                                   <button class="btn report-btn not-reported" id="report-btn-<%= comment.id %>" title="Mark as reported/unreported"><i class="fa fa-flag-o" aria-hidden="true"></i></button>
