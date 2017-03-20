@@ -41,8 +41,10 @@
         <select id="upload-resource" class="form-control" style="font-size: 14px; padding: 6px 12px">
           <option value="uni_modules">Modules</option>
           <option value="courses">Courses</option>
-          <option value="departments">Departments</option>
-          <option value="faculties">Faculties</option>
+          <% if current_user.user_level == 'super_admin_access' %>
+            <option value="departments">Departments</option>
+            <option value="faculties">Faculties</option>
+          <% end %>
         </select>
       </div>
       <div class="form-entry text-center" style="margin-top: 20px;">
