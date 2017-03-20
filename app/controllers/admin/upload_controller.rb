@@ -39,10 +39,10 @@ module Admin
 
       if resource.to_s == 'uni_modules'
         # Add attribute for departments, prerequisite_modules and tags
-        resource_header << 'departments'
         resource_header << 'prerequisite_modules'
         resource_header << 'career_tags'
         resource_header << 'interest_tags'
+        resource_header << 'departments'
       end
 
       # Replace faculty_id attribute with faculty_name for departments
