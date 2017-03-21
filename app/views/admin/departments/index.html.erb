@@ -15,7 +15,7 @@
          <% if @departments.size > 0 %>
       <% if current_user.user_level == "super_admin_access" %>
          <div class="btn-group">
-            <button style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Faculty filter  <span class="caret"></span>
+            <button style="height: 36px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Faculty filter  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu scrollable-submenu">
                <li> <%= link_to ("View All"), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0  ), method: :get %></li>
@@ -26,7 +26,7 @@
             </div>
             <% end %>
          <div class="btn-group">
-            <button style="height: 34px;" id="bulk-actions" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
+            <button style="height: 36px;" id="bulk-actions" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                <li> <a id="clone-all" style="cursor:pointer;"><i class='fa fa-clone' aria-hidden='true'></i>&nbsp;&nbsp;Clone selected</a>

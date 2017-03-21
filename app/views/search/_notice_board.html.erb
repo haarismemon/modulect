@@ -15,8 +15,11 @@ To stylize the notice board the css and js for it is either below or directly at
         <h4 style="margin: 20px 0px">Stay posted here for key events and happenings around you from your department</h4>
     <% else %>
         <!--sub-header of card-->
-        <h4 style="margin-top: 20px">Get the latest information about key events and happenings around you from your
-          department </h4>
+        <h4 style="margin-top: 20px">Get the latest information about key events
+          <%= if @current_user&&@current_user.department_id.present? then
+                'and happenings around you from your
+          department'
+              end %> </h4>
         </div>
         <!--fixed container size if notices are greater than 4-->
         <% to_set_min_height = @notices.size>4 ? "min-height: 358.5px;" : "" %>
@@ -29,11 +32,13 @@ To stylize the notice board the css and js for it is either below or directly at
                 <%= render "search/notice_item", notice: notice, index: index %>
                 <% index = index + 1 %>
             <% end %>
+            <% if logged_in? && current_user.user_level != "super_admin_access" %>
             <!--iterate through producing a list item for each-->
             <% @notices.where.not(department_id: nil).reorder("live_date DESC,created_at DESC").each do |notice| %>
                 <%= render "search/notice_item", notice: notice, index: index %>
                 <% index = index + 1 %>
 
+            <% end %>
             <% end %>
 
           </ul>
@@ -43,9 +48,9 @@ To stylize the notice board the css and js for it is either below or directly at
         <nav aria-label="Page navigation " class="notice-pagination">
           <ul class="pagination justify-content-center ">
             <!--intially hide previous button-->
-            <a class="btn" id="previous-button" style="opacity: 0">Previous</a>
+            <a class="btn" id="previous-button" style="opacity: 0">< Previous</a>
             <!--determines whether to hide next button depending on how many notices are-->
-            <a class="btn btn btn-lg btn-small" id="next-button" style="opacity: <%= @notices.size > 4 ? 1 : 0 %>">View more ></a>
+            <a class="btn" id="next-button" style="opacity: <%= @notices.size > 4 ? 1 : 0 %>">View more ></a>
           </ul>
         </nav>
 

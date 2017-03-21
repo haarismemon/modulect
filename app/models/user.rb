@@ -168,17 +168,17 @@ class User < ApplicationRecord
       all.each do |user|
         to_append = user.attributes.values_at(*attributes)
         if user.faculty.nil?
-          to_append.push 'N/A'
+          to_append.push ''
         else
           to_append.push user.faculty.name
         end
         if user.course.nil?
-          to_append.push 'N/A'
+          to_append.push ''
         else
           to_append.push user.course.name
         end
         if user.department.nil?
-          to_append.push 'N/A'
+          to_append.push ''
         else
           to_append.push user.department.name
         end

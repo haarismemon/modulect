@@ -26,9 +26,15 @@ comma. This is so it can be passed to javascript, to be used.
                  :back_button => false })%>
     <!--back button-->
     <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-                admin_courses_path, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
+                admin_courses_path, class: "button tool-box" %>
   </div>
 </header>
 
-<!--render of fields which relate to a course's attributes-->
-<%= render 'form',:action =>"Update" %>
+<%= render 'admin/application/course-partials/year_structures_set' %>
+
+<%= render 'admin/application/course-partials/manage_pathways_card' %>
+
+<!-- render of fields which relate to a course's attributes-->
+<%= render 'form', :action =>"Update" %>
+
+

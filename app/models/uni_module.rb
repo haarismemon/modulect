@@ -177,12 +177,21 @@ class UniModule < ApplicationRecord
         uni_module.career_tags.pluck(:name).each{|tag| career_tag_names += tag + '; ' }
         uni_module.interest_tags.pluck(:name).each{|tag| interest_tag_names += tag + '; ' }
         uni_module.departments.pluck(:name).each{|department| department_names += department + '; ' }
-        career_tag_names.chop!.chop!
-        interest_tag_names.chop!.chop!
-        department_names.chop!.chop!
-        career_tag_names[0] = ''
-        interest_tag_names[0] = ''
-        department_names[0] = ''
+        career_tag_names.chop!
+        if career_tag_names!=''
+          career_tag_names.chop!
+          career_tag_names[0] = ''
+        end
+        interest_tag_names.chop!
+        if interest_tag_names!=''
+          interest_tag_names.chop!
+          interest_tag_names[0] = ''
+        end
+        department_names.chop!
+        if department_names!=''
+          department_names.chop!
+          department_names[0] = ''
+        end
         to_add = uni_module.attributes.values_at(*attributes) + [*career_tag_names] + [*interest_tag_names] + [*department_names]
         csv << to_add
       end
