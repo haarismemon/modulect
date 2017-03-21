@@ -1,4 +1,4 @@
-<!--
+<%#
   A number field component.
 
  The block contains a set of classes which can be used,  to reference fields in
@@ -21,16 +21,16 @@
   to prevent code from being broken anywhere else.
 -->
 
-<!--sees if renders have been passed into render, if not, just assign defaults to each-->
+<%#sees if renders have been passed into render, if not, just assign defaults to each %>
 <% label = name if local_assigns[:label].nil? %>
 <% placeholder = "" if local_assigns[:placeholder].nil? %>
 <% tooltip = nil if local_assigns[:tooltip].nil? %>
 <% options = {} if local_assigns[:options].nil? %>
 
-<!--form field-->
+<%#form field %>
 <div class="row field-unit field-unit--number <%=name.to_s%>" >
   <div class="col-xs-12">
-    <!--label-->
+    <%#label %>
     <div class="field-unit__label">
       <%= f.label name, label.to_s.titleize %>
 
@@ -43,7 +43,7 @@
       </label>
     </div>
     <div class="field-unit__field">
-      <!--number field-->
+      <%#number field %>
       <%= f.number_field name, placeholder: placeholder, options: options %>
 
     </div>

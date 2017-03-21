@@ -1,4 +1,4 @@
-<!--
+<%#
   Renders toolbox button
   defines a set of locals:
   :object => The object itself
@@ -9,12 +9,12 @@
   :back_button => defines whether or not you want to render a back button with partial {format : boolean}
 
   Can easily be modified by adding more options in drop down.
--->
+%>
 
-<!--assign back-button to true by default to render back button in this partial, unless specified otherwise-->
+<%# assign back-button to true by default to render back button in this partial, unless specified otherwise %>
 <% back_button = true if local_assigns[:back_button].nil? %>
 <div class="btn-group">
-  <!--button drop down-->
+  <%# button drop down %>
   <button style="height: 36px; outline: none; padding-bottom:4px"
           class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin toolbox"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -23,16 +23,16 @@
   </button>
 
   <ul class="dropdown-menu scrollable-submenu" style="padding: 0px;">
-    <!--print form-->
+    <%# print form %>
     <li><a onclick="openPrintForm('<%= blacklist_attributes%>','<%=entity_attributes%>')"
     ><i class="fa fa-print" aria-hidden="true" style='margin-right: 2px'></i> Print data</a>
     </li>
-    <!--export to html-->
+    <%# export to html %>
     <li>
       <a onclick="exportToHTML('<%= blacklist_attributes%>','<%=entity_attributes%>')"><i class='fa fa-download' aria-hidden='true' style='margin-right:2px'></i></span>
         Export as simple data</a>
     </li>
-    <!--generate pdf from form's data-->
+    <%# generate pdf from form's data %>
     <li>
       <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')">
         <i class="fa fa-file-pdf-o" aria-hidden="true" style="margin-right: 2px;"></i>Download As PDF</a>
@@ -42,12 +42,12 @@
 </div>
 
 <% if back_button %>
-<!--back button-->
+<%# back button %>
 <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
             :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
 <% end%>
 
-<!--styling of toolbox dropdown-->
+<%# styling of toolbox dropdown %>
 <style>
   .scrollable-submenu {
     padding: 10px;

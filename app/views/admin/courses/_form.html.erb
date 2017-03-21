@@ -1,4 +1,4 @@
-<!-- Renders a complete form for course which is displayed within edit and new course form
+<%#  Renders a complete form for course which is displayed within edit and new course form
 
 Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
 Also contains render which iterates through the course year_structures and makes a card for each.
@@ -6,12 +6,12 @@ A form with several field partials within which allows for the manipulation of @
 Also contains a link to allow for the creation of pathways.
 
 To modify this file access the partials within
--->
+%>
 
 <%= form_for [:admin, @course] do |f| %>
 
 
-    <!--error message-->
+    <%# error message %>
     <%= error_messages_for(f.object) %>
 
     <% if action == "Update" %>
@@ -19,7 +19,7 @@ To modify this file access the partials within
     <% end %>
 
     <% if Course.exists?(@course) %>
-        <!--pathway card -->
+        <%# pathway card  %>
         <label style="font-size: 19px;margin: 20px 0px;"> Modify the pre-defined pathways for this course
           <a class="help-tooltip" style="font-size:14px" data-toggle="tooltip" data-placement="right"
              title="Pathways are admin-defined pools of optional modules for associated careers and matchings. It is to be used by the student as a indicator of what modules to pick. ">
@@ -53,12 +53,12 @@ To modify this file access the partials within
     <% path_of_field_store = "admin/application/fields/" %>
 
 
-    <!--name field-->
+    <%# name field %>
     <%= render path_of_field_store + "string_form_field", :f => f,
                :name => :name %>
 
 
-    <!--course's departments field-->
+    <%# course's departments field %>
     <div class="row field-unit  departments">
       <div class="col-xs-12">
         <div class="field-unit__label">
@@ -71,7 +71,7 @@ To modify this file access the partials within
       </div>
     </div>
 
-    <!--beginning field year -->
+    <%# beginning field year  %>
     <%= render path_of_field_store + "number_form_field", :f => f,
                :name => :year,
                :label => "Beginning year",
@@ -80,14 +80,14 @@ To modify this file access the partials within
                :options => {default: Date.current.year} %>
 
 
-    <!--description field -->
+    <%# description field  %>
     <%= render path_of_field_store + "textarea_form_field", :f => f,
                :name => :description,
                :tooltip => "Introduction explaining what this course is,
                 and why students might be intrested in taking it." %>
 
 
-    <!--duration in years field -->
+    <%# duration in years field  %>
     <div class="col-xs-12">
       <div class="row field-unit duration_in_years">
         <div class="field-unit__label">
@@ -104,7 +104,7 @@ To modify this file access the partials within
       </div>
     </div>
 
-    <!--submit button-->
+    <%# submit button %>
     <div class="form-actions">
       <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %>
         Course

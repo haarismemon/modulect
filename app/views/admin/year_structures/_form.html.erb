@@ -1,21 +1,21 @@
-<!-- Renders a complete form of year_structure form which is displayed within edit year structure form
+<%#  Renders a complete form of year_structure form which is displayed within edit year structure form
 
 Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
 Also contains render which iterates through the year structure groups and makes a card for each.
 Also contains a partial which contains form to allow for the creation of groups within year_structure
 
 To modify this file access the partials within
--->
+%>
 
 <%= form_for @year_structure, url: admin_year_structure_path(@year_structure) do |f| %>
 
-    <!--errors message-->
+    <%# errors message %>
     <%= error_messages_for(f.object) %>
 
-    <!--group cards-->
+    <%# group cards %>
     <%= render 'admin/application/course-partials/groups_set' %>
 
-    <!--nested group form-->
+    <%# nested group form %>
     <% f.fields_for :groups do |group| %>
         <%= render "admin/application/course-partials/group_form_fields",
                    :f => group, :year_structure => YearStructure.find(params[:id]) %>

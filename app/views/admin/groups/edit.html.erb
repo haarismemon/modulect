@@ -1,8 +1,8 @@
-<!-- A template for editing a group
+<%#  A template for editing a group
 Contains  render which contains fields which corresponds to a particular course's(@course) attributes
 
 To modify this file access the partials within
--->
+%>
 
 <% provide :title, "Edit Group" %>
 <% provide :submit_button_text, 'Update' %>
@@ -22,5 +22,5 @@ To modify this file access the partials within
   </div>
 </header>
 
-<!--form render-->
+<%# form render %>
 <%= render 'form', :action => "Update" %>

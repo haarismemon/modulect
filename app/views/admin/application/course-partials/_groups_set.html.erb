@@ -1,9 +1,9 @@
-<!--
+<%#
 Renders space to display and print a box for each group that exists in the current year structure being
  displayed in edit
 
  for modification to how group cards are displayed, it can done within the for loop below.
- -->
+%>
 <div id="landing" style="margin-left:10px;">
   <div class="row field-unit groups" style="margin-top:20px;">
     <div class="col-xs-12" style="padding-left: 10px">
@@ -20,7 +20,7 @@ Renders space to display and print a box for each group that exists in the curre
         <div id="landing" style="margin-left:10px;">
           <div class="row" style="margin-top:20px;">
 
-            <!--iterate through each group and produce a card for it-->
+            <%# iterate through each group and produce a card for it %>
             <% @year_structure.groups.each do |group| %>
                 <div class="col-md-4 text-center" style="padding-left: 0px; margin-bottom:0px;">
                   <div class="col-md-12 login-card">
@@ -57,8 +57,7 @@ Renders space to display and print a box for each group that exists in the curre
 </div>
 
 <style>
-  <!--
-  css for the remove button-- >
+  <%# css for the remove button %>
   #remove-group-button {
     color: rgb(12, 8, 8);
     cursor: pointer;
