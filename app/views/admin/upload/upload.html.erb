@@ -125,6 +125,26 @@
           </tr>
           </tbody>
         </table>
+        <table id="upload-table-courses" aria-labelledby="page-title" class="collection-data table" style="display: none;">
+          <thead>
+          <tr class="table-header-fields">
+            <th scope="col">name</th>
+            <th scope="col">description</th>
+            <th scope="col">year</th>
+            <th scope="col">duration_in_years</th>
+            <th scope="col">departments</th>
+          </tr>
+          </thead>
+          <tbody id="data-area">
+          <tr>
+            <td>My Course 1</td>
+            <td>I like learning</td>
+            <td>2020</td>
+            <td>3</td>
+            <td>Dept 1; Dept 2; Other Dept 1</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
       <br>
       <a id="upload-help-close">Close</a>
@@ -189,6 +209,16 @@
         $("#upload-help-close").on("click", function () {
             $("#upload-help-content").hide();
             $("#upload-help-toggle").show();
+        });
+
+        $("#upload-help-modules-link").on("click", function () {
+            $("#upload-table-courses").hide();
+            $("#upload-table-modules").show();
+        });
+
+        $("#upload-help-courses-link").on("click", function () {
+            $("#upload-table-modules").hide();
+            $("#upload-table-courses").show();
         });
 
         $("select#upload-resource").change(function () {
