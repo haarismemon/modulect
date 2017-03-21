@@ -112,28 +112,33 @@ module Admin
           elsif session[:resource_name] == 'faculties'
             # Faculties upload: Add departments attribute to create and/or link departments to the faculty
             faculty_entry = nil
-            # Check whether to update a faculty or create a new one
-            if Faculty.find_by_name(new_record['name']).nil?
-              # Create a new faculty
-              faculty_entry = Faculty.create!(new_record.except('departments'))
+            # Check that name is not blank
+            if new_record['name'].nil?
+              flash[:error] = 'Creation failed: Name cannot be left blank'
             else
-              # Retrieve the existing faculty
-              faculty_entry = Faculty.find_by_name(new_record['name'])
-            end
-            # Transform string of departments into array of departments
-            departments_s = new_record['departments']
-            departments_s = departments_s.gsub('; ', ';')
-            departments_a = departments_s.split(';')
-            # For every entered department
-            departments_a.each do |dept_name|
-              # Look for a department with the name
-              department_found = Department.find_by_name(dept_name)
-              if department_found.nil?
-                # Create and link department with the this faculty
-                Department.create!(name: dept_name, faculty_id: faculty_entry.id)
+              # Check whether to update a faculty or create a new one
+              if Faculty.find_by_name(new_record['name']).nil?
+                # Create a new faculty
+                faculty_entry = Faculty.create(new_record.except('departments'))
               else
-                # Link department with this faculty
-                department_found.update!(faculty_id: faculty_entry.id)
+                # Retrieve the existing faculty
+                faculty_entry = Faculty.find_by_name(new_record['name'])
+              end
+              # Transform string of departments into array of departments
+              departments_s = new_record['departments']
+              departments_s = departments_s.gsub('; ', ';')
+              departments_a = departments_s.split(';')
+              # For every entered department
+              departments_a.each do |dept_name|
+                # Look for a department with the name
+                department_found = Department.find_by_name(dept_name)
+                if department_found.nil?
+                  # Create and link department with the this faculty
+                  Department.create(name: dept_name, faculty_id: faculty_entry.id)
+                else
+                  # Link department with this faculty
+                  department_found.update(faculty_id: faculty_entry.id)
+                end
               end
             end
 
