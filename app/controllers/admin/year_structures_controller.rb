@@ -37,8 +37,8 @@ module Admin
     end
 
     def year_structure_params
-      params.require(:year_structure).permit(:year_of_study,
-        groups_attributes: [:id, :name, :max_credits,:min_credits, :compulsory, uni_module_ids: []])
+      params.require(:year_structure).permit(:year_of_study, :year_credits,
+        groups_attributes: [:id, :name, :max_credits, :min_credits, :compulsory, uni_module_ids: []])
     end
   end
 end
