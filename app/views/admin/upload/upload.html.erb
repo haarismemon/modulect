@@ -68,15 +68,62 @@
     <a id="upload-help-toggle">Click here for help on how to fill out the CSV</a>
     <div id="upload-help-content" class="text-center" style="margin-top: 20px; display: none;">
       <p>Here's an example of what a valid CSV might look like:</p>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link active" id="upload-help-modules-link">Modules</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="upload-help-courses-link">Courses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="upload-help-departments-link">Departments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="upload-help-faculties-link">Faculties</a>
+        </li>
+      </ul>
       <div class="table-responsive">
-        <table id="upload-help-table" aria-labelledby="page-title" class="collection-data table">
+        <table id="upload-table-modules" aria-labelledby="page-title" class="collection-data table">
           <thead>
           <tr class="table-header-fields">
-            <% session[:resource_header].each do |attribute_name| %>
-                <th scope="col"><%= attribute_name %></th>
-            <% end %>
+            <th scope="col">name</th>
+            <th scope="col">code</th>
+            <th scope="col">description</th>
+            <th scope="col">lecturers</th>
+            <th scope="col">pass_rate</th>
+            <th scope="col">assessment_methods</th>
+            <th scope="col">semester</th>
+            <th scope="col">credits</th>
+            <th scope="col">exam_percentage</th>
+            <th scope="col">coursework_percentage</th>
+            <th scope="col">more_info_link</th>
+            <th scope="col">assessment_dates</th>
+            <th scope="col">prerequisite_modules</th>
+            <th scope="col">career_tags</th>
+            <th scope="col">interest_tags</th>
+            <th scope="col">departments</th>
           </tr>
           </thead>
+          <tbody id="data-area">
+          <tr>
+            <td>My Module 1</td>
+            <td>12345678</td>
+            <td>My Description 1</td>
+            <td>Recursive Husky</td>
+            <td>40</td>
+            <td>None :)</td>
+            <td>1</td>
+            <td>15</td>
+            <td>40</td>
+            <td>60</td>
+            <td>somemadeuplink1.com</td>
+            <td>June</td>
+            <td>Other Module 1; Other Module 2</td>
+            <td>Career 1; Career 2; Career 3</td>
+            <td>Interest 1; Interest 2; Interest 3</td>
+            <td>Dept 1; Dept 2; Dept 3</td>
+          </tr>
+          </tbody>
         </table>
       </div>
       <br>
