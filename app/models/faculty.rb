@@ -4,6 +4,7 @@ class Faculty < ApplicationRecord
   has_many :users
   has_many :departments
 
+  # CSV export, loops over the faculty record obtaining the individual columns from the database
   def self.to_csv
     attributes = %w{name}
     CSV.generate(headers:true)do |csv|

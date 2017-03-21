@@ -96,6 +96,7 @@ class User < ApplicationRecord
            BCrypt::Password.new(digest).is_password?(authentication_token)
   end
 
+  # Verifies a user's password is correct and used in "Reset Modulect" in the settings
   def is_password?(password)
     BCrypt::Password.new(self.password_digest) == password
   end
