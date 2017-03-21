@@ -238,6 +238,8 @@ module AnalyticsHelper
 			end
 		end
 
+		SavedModule
+
 
 		format_ouput_data(users_data, sort_by, number_to_show)
 
