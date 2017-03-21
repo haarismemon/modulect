@@ -6,7 +6,7 @@ The fields are produced with in form render
 
 
 <header class="header">
-  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <h1 class="header__heading"><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;<%= content_for(:title) %></h1>
   <div class="header__actions">
     <%#quit button%>
     <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, admin_notices_path, class: "button" %>

@@ -147,7 +147,12 @@
         //equals zero. If so start a new line by creating a new table row and add current item's name.
         // If not just add the item's name
         if (0 <<%=index%> && <%=index%>% lineBreak == 0) {
+            <% begin %>
             html = appendTo(html, "</td> </tr><tr> <td> <%= item.name %>")
+            <% rescue %>
+            html = appendTo(html, "</td> </tr><tr> <td> -")
+            <% end %>
+
         }
         else if (<%=index==0%>) {
             html = appendTo(html, "<%= item.name %>");
