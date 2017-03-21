@@ -7,12 +7,12 @@ module BulkActionsSteps
     find("#check_individual[value='1']").set(true)
   end
 
-  def select_clone_action
+  def select_bulk_clone
     find("#bulk-actions").click
     find("#clone-all").click
   end
 
-  def select_delete_action
+  def select_bulk_delete
     find("#bulk-actions").click
     find("#delete-all").click
   end
@@ -21,5 +21,10 @@ module BulkActionsSteps
     wait_for_ajax
     click_button("Proceed")
     click_button("OK")
+  end
+
+  def confirm_bulk_delete
+    wait_for_ajax
+    click_button("Proceed")
   end
 end

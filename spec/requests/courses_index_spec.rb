@@ -19,18 +19,29 @@ feature "Admin visiting index page of courses", :js => true do
 
   scenario "can clone a course" do
     select_first_checkbox
-    select_clone_action
+    select_bulk_clone
     confirm_action
     i_should_be_on_the_courses_index_page
     i_should_see_a_clone_of(course)
   end
 
-  scenario "can delete a course" do
-    select_first_checkbox
-    select_delete_action
-    confirm_action
-    i_should_be_on_the_courses_index_page
-    i_should_not_see(course)
+  context "can delete a course" do
+    scenario "by 'Delete' link press" do
+      click_delete_link
+      wait_for_ajax
+      confirm_bulk_delete
+      i_should_be_on_the_courses_index_page
+      i_should_not_see(course)
+    end
+
+    scenario "by bulk delete" do
+      select_first_checkbox
+      select_bulk_delete
+      wait_for_ajax
+      confirm_bulk_delete
+      i_should_be_on_the_courses_index_page
+      i_should_not_see(course)
+    end
   end
 
   scenario "can edit a course" do
