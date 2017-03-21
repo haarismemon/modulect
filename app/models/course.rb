@@ -44,8 +44,8 @@ class Course < ApplicationRecord
   end
 
   def all_year_structures_defined?
-    self.year_structures.each do |year_structure|
-      if !year_structure.groups_existent?
+    self.year_structures.each_with_index do |year_structure, index|
+      if !year_structure.groups_existent? && index < self.duration_in_years
         return false
       end
     end

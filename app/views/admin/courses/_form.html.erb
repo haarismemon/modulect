@@ -62,7 +62,7 @@ To modify this file access the partials within
                 is given to this course.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
         </div>
         <div class="field-unit__field">
-          <%= f.select(:duration_in_years, options_for_select(1..9, @course.duration_in_years),
+          <%= f.select(:duration_in_years, options_for_select(1..YearStructure.max_year_of_study, @course.duration_in_years),
                        {:include_blank => true}, {:class => 'selectize'}) %>
         </div>
       </div>
