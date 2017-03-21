@@ -12,6 +12,25 @@ RSpec.describe Course, type: :model do
       end
     end
 
+    context "when duration_in_years is less than 1" do
+      before do
+        course.duration_in_years = 0
+      end
+      it "evaluates to false" do
+        expect(course.valid?).to eq false
+      end
+    end
+
+    context "when duration_in_years is greater than YearStructure.max_year_of_study" do
+      before do
+        course.duration_in_years = YearStructure.max_year_of_study + 1
+      end
+
+      it "evaluates to false" do
+        expect(course.valid?).to eq false
+      end
+    end
+
     context "when name is present" do
       it "evaluates to true" do
         expect(course.valid?).to eq true
