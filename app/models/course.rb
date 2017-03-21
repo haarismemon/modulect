@@ -8,6 +8,7 @@ class Course < ApplicationRecord
   validates :name, uniqueness: { scope: [:year] }
   # Recommended pathways
   has_many :pathways
+  has_many :suggested_pathways
   has_and_belongs_to_many :departments
 
   has_many :year_structures, dependent: :delete_all

@@ -1,20 +1,20 @@
-<!--
-Forms a nested group form with year structure edit form.
+<%#
+Forms a nested group form within year structure edit form.
 This is used by cacoon gem.
--->
+%>
 <div class="nested-fields">
 
-  <!--renders attributes partial for group-->
+  <%#renders attributes partial for group %>
   <%= render "admin/application/course-partials/group_form_fields",
              :f => f,
              :year_structure => YearStructure.find(params[:id]) %>
 
-  <!--button to remove form-->
-  <div class="remove-field" style="margin: 0px;">
-    <%= link_to_remove_association "Remove Module Group", f %>
+  <%#button to remove form %>
+  <div style="margin: 0px;">
+    <%= link_to_remove_association "- Remove Module Group", f %>
   </div>
 
-  <!--line seperation-->
+  <%#line seperation %>
   <div class="page-header additional-info" style="margin: 0px;margin-bottom:20px;"></div>
 
 </div>

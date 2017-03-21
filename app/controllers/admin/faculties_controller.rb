@@ -70,7 +70,7 @@ module Admin
       @faculty = Faculty.new(faculty_params)
       if @faculty.save
         # If save succeeds, redirect to the index action
-        flash[:success] = "Succesfully created faculty"
+        flash[:success] = "Succesfully created " + @faculty.name
         redirect_to(admin_faculties_path)
       else
         # If save fails, redisplay the form so user can fix problems
@@ -112,10 +112,10 @@ module Admin
           user.update_attribute("faculty_id", nil)
         end
         @faculty.destroy
-        flash[:success] = "Faculty successfully deleted"
+        flash[:success] = "Succesfully deleted " + @faculty.name
         redirect_to admin_faculties_path
       else 
-        flash[:error] = "Faculty contains departments, can't delete"
+        flash[:error] = "Faculty contains departments. You must first either unlink or delete those departments."
         redirect_to admin_faculties_path
       end
     end

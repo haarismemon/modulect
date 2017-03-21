@@ -1,0 +1,13 @@
+<div class="row" style="margin-bottom:20px;">
+  <div class="col-md-12 login-card">
+    <div class="icon-row"><i class="fa fa-list-ul" aria-hidden="true"></i></div>
+      <h3>Suggested Course Pathways</h3>
+      <h4 style="margin-top: 20px">
+        Pathways: <%= @course.suggested_pathways.count %>
+      </h5>
+    <p>Use this tool to create suggested pathways which users can choose from.</p>
+    <div style="margin-top: 30px;padding-left:0px">
+        <%= link_to("Manage >", admin_course_pathway_path(@course.id), id: 'manage-pathways', class: 'btn btn-lg') %>
+    </div>
+  </div>
+</div>

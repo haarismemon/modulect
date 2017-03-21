@@ -1,3 +1,10 @@
+<style>
+@media (max-width: 1286px) {
+  #data-area .no-link .col-md-3 {
+    float:none;
+  }
+}
+</style>
 <% if request.query_parameters["search"].present? %>
     <% provide(:title, "\"" + request.query_parameters["search"] +"\"" + ' - Notices') %>
 <% else %>
@@ -9,7 +16,7 @@
     <div class="col-md-12">
       <% if @notices.size > 0 %>
           <div class="btn-group">
-            <button style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button style="height: 36px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">

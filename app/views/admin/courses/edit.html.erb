@@ -1,14 +1,8 @@
-<!-- A template for editing a course
+<%# A template for editing a course
 Contains its year structures in the format of cards
-Also contains fields which corresponds to a particular course's attributes
-
-
-Toolbox partial takes several locals. Each helps in specifying format of how a form is exported for this type form.
-Can easily be adjusted to preference. I.e to remove a attribute from resulting export, add to the attribute name
-to the blacklist_attributes string.
-Note: Both blacklist and entity attributes are strings when each attribute is separated by
-comma. This is so it can be passed to javascript, to be used.
--->
+Also contains render which contains fields which corresponds to a particular course's attributes
+For information on how toolbox works and what each local does, see the tool box render
+%>
 
 <% provide :title, "Edit #{Course.find(params[:id]).name}" %>
 <% provide :submit_button_text, 'Update' %>
@@ -17,18 +11,25 @@ comma. This is so it can be passed to javascript, to be used.
 <header class="header">
   <h1 class="header__heading"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;<%= content_for(:title) %></h1>
   <div class="header__actions">
-    <!--toolbox-->
+    <%#toolbox%>
     <%= render(:partial => 'admin/application/edit_toolbox_buttons',
                :locals => {:object => Course.find(params[:id]),
                            :name_of_file=>Course.find(params[:id]).name.to_s,
                            :blacklist_attributes=>"",:entity_attributes=>"",
                            :has_many_attributes=>["uni_modules"],
                  :back_button => false })%>
-    <!--back button-->
+    <%#back button%>
     <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-                admin_courses_path, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
+                admin_courses_path, class: "button tool-box" %>
   </div>
 </header>
 
-<!--render of fields which relate to a course's attributes-->
-<%= render 'form',:action =>"Update" %>
+<%#render of fields which relate to a course's attributes%>
+<%= render 'admin/application/course-partials/year_structures_set' %>
+
+<%= render 'admin/application/course-partials/manage_pathways_card' %>
+
+<!-- render of fields which relate to a course's attributes-->
+<%= render 'form', :action =>"Update" %>
+
+

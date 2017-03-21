@@ -1,15 +1,23 @@
+<%#  Renders a complete form for group which is displayed within edit
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+A form with several field partials within which allows for the manipulation of @group object.
+
+To modify this file access the partials within
+%>
+
 <%= form_for [:admin, @group] do |f| %>
 
-  <%= error_messages_for(f.object) %>
+    <%= error_messages_for(f.object) %>
 
-  <%= render "admin/application/course-partials/group_form_fields", :f => f ,
-             :year_structure => Group.find(params[:id]).year_structure %>
+    <%= render "admin/application/course-partials/group_form_fields", :f => f ,
+               :year_structure => Group.find(params[:id]).year_structure %>
 
-  <div class="form-actions" style="margin-top:30px">
-    <button type="submit" name="commit" >
-      <i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> group
-    </button>
-  </div>
+    <div class="form-actions" style="margin-top:30px">
+      <button type="submit" name="commit" >
+        <i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> group
+      </button>
+    </div>
 <% end %>
 
 <script>

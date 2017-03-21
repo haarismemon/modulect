@@ -1,11 +1,11 @@
-<!-- Renders a form which is displayed in both the edit year structure form and edit group form
+<%# Renders a form which is displayed in both the edit year structure form and edit group form
 
 note: renders of fields belong in in admin/application/fields. For some fields there exists no partials
 because of such fields being such rare instances. If you require a field to adapted, copy the partial over replacing the render
 statement .
 
 see partial fields for additional documentation
--->
+%>
 
 <% path_of_field_store = "admin/application/fields/" %>
 
@@ -36,7 +36,7 @@ see partial fields for additional documentation
 
 <div class="row field-unit compulsory">
   <div class="col-xs-12">
-    <div class="field-unit__label">
+    <div class="field-unit__label checkbox">
       <%= f.check_box :compulsory, {style: "margin-right: 4px"} %>
       <label> Make all modules in this group compulsory? </label>
     </div>
