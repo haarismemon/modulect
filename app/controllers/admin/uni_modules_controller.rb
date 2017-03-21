@@ -87,7 +87,7 @@ module Admin
       @uni_module = UniModule.new(uni_module_params)
       if @uni_module.save
         # If save succeeds, redirect to the index action
-        flash[:success] = "Succesfully created " @uni_module.name
+        flash[:success] = "Succesfully created " + @uni_module.name
         redirect_to(admin_uni_modules_path)
       else
         # If save fails, redisplay the form so user can fix problems
