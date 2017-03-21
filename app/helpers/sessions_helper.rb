@@ -37,6 +37,7 @@ module SessionsHelper
 		end
 	end
 
+	# gets the last login time of the current user from the session cache or db
 	def current_user_last_login_time
 		cached_last_login_time = session[:last_login_time] 
 		if cached_last_login_time.nil?
@@ -46,6 +47,7 @@ module SessionsHelper
 		end
 	end
 
+	# checks whether the current user is an admin
 	def admin_user
 		current_user && (current_user.user_level == "super_admin_access" || current_user.user_level == "department_admin_access")
 	end
@@ -68,11 +70,13 @@ module SessionsHelper
 		user == current_user
 	end
 
+	# simple redirection function
 	def redirect_back_or(default)
 		redirect_to(session[:forwarding_url] || default)
 		session.delete(:forwarding_url)
 	end
 
+	# stores location for the redirect upon login
 	def store_location
 		session[:forwarding_url] = request.original_url if request.get?
 	end
