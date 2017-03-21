@@ -307,22 +307,15 @@ module AnalyticsHelper
   end
 
 	# most/least clicked (trending) tags
-	def get_clicked_tags(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show, type_of_tag)
-		
-		all_uni_modules = uni_modules
+	def get_clicked_tags(tags, amount_time, time_period, from_date, sort_by, number_to_show, type_of_tag)
+		all_tags = tags
 
-		all_tags = []
-		all_uni_modules.each do |uni_module|
-			if type_of_tag == "any"
-				all_tags.concat uni_module.tags
-			elsif type_of_tag == "career"
-				all_tags.concat uni_module.career_tags
-			elsif type_of_tag == "interest"
-				all_tags.concat uni_module.interest_tags
-			end
-				
+		if type_of_tag == "career"
+			all_tags = all_tags.select{|tag| tag.type == "CareerTag"}
+		elsif  type_of_tag == "interest"
+			all_tags = all_tags.select{|tag| tag.type == "InterestTag"}
 		end
-		all_tags = all_tags.uniq{|tag| tag.id}
+		
 
 		tags_data = Hash.new
 		TagLog.all.each do |log|
@@ -606,7 +599,7 @@ module AnalyticsHelper
 	end
 
 	# department is the id, first two things are arrays
-	def get_all_data(all_uni_modules, all_users, department, time_period)
+	def get_all_data(all_uni_modules, all_users, all_tags, department, time_period)
 		all_data = Hash.new
 
 		all_data["number_of_visitors"] = get_number_visitors(department, 1, time_period, Time.now) 
@@ -625,7 +618,7 @@ module AnalyticsHelper
 		all_data["percentage_difference_number_of_career_searches"] = percentage_difference(all_data["number_of_career_searches"], get_number_career_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
 		
 		# clicked tags
-		all_data["clicked_tags"] = get_clicked_tags(all_uni_modules, 1, time_period, Time.now, "most", 20, "any")
+		all_data["clicked_tags"] = get_clicked_tags(all_tags, 1, time_period, Time.now, "most", 20, "any")
 
 		# most visited modules
 		all_data["visited_modules"] = get_visited_modules(all_uni_modules, 1, time_period, Time.now, "most", 20)
@@ -656,10 +649,10 @@ module AnalyticsHelper
 
 
 		# clicked career tags
-		all_data["clicked_career_tags"] = get_clicked_tags(all_uni_modules, 1, time_period, Time.now, "most", 20, "career")
+		all_data["clicked_career_tags"] = get_clicked_tags(all_tags, 1, time_period, Time.now, "most", 20, "career")
 
 		# clicked interest tags
-		all_data["clicked_interest_tags"] = get_clicked_tags(all_uni_modules, 1, time_period, Time.now, "most", 20, "interest")
+		all_data["clicked_interest_tags"] = get_clicked_tags(all_tags, 1, time_period, Time.now, "most", 20, "interest")
 
 
 		all_data
