@@ -13,7 +13,6 @@ To modify this file access the partials within
 
     <%# error message %>
     <%= error_messages_for(f.object) %>
-
     <% if action == "Update" %>
         <%= render 'admin/application/course-partials/year_structures_set' %>
     <% end %>
@@ -30,9 +29,9 @@ To modify this file access the partials within
             <div class="col-md-12">
               <div class="icon-row"><i class="fa fa-list-ul" aria-hidden="true"></i></div>
               <div>
-                <h3>Course Pathways</h3>
+                <h3>Suggested Course Pathways</h3>
                 <h5 style="margin-top: 20px">
-                  Pathways: <%= @course.pathways.count %>
+                  Suggested Pathways: <%= @course.pathways.count %>
                 </h5>
               </div>
               <div>
@@ -48,7 +47,6 @@ To modify this file access the partials within
         <label class="col-md-12" style="font-size: 19px;margin: 20px 0px; padding-left: 0px"> Modify course
           structure</label>
     <% end %>
-
 
     <% path_of_field_store = "admin/application/fields/" %>
 

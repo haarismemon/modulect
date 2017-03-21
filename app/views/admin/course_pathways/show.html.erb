@@ -1,18 +1,20 @@
-<% provide :title, "#{Course.find(params[:id]).name} Pathways" %>
+<% provide :title, "#{Course.find(params[:id]).name} Suggested Pathways" %>
 <% provide :submit_button_text, 'Update' %>
 
 
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
+  <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+            :back, class: "button tool-box" %>
   </div>
 </header>
-<% @course.pathways.each do |pathway| %>
-	<div class = "panel panel-default">
-    	<div class = "panel-heading">
+<% @course.suggested_pathways.each do |pathway| %>
+	<div class = "col-md-12 login-card" style="text-align: left;margin-bottom: 20px;">
+    	<div>
         	<h3><span class="glyphicon glyphicon-pushpin-sm"></span><%= pathway.name %></h3>
         </div>
-        <div class = "panel-body">
+        <div>
         	<h4>Optional modules:</h4>
         	<ul>
             	<% pathway.get_module_list.each do |uni_module| %>
@@ -20,8 +22,8 @@
             	<% end %>
             </ul>
             <div align="right">
-	           	<a id="edit-pathway" href="<%= edit_admin_course_pathway_path(id: pathway.id) %>" class="btn btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i><span>&nbsp;&nbsp;Edit</span></a>
-	           	<a id="delete-pathway" href="#" class="btn btn-xs" style="background-color:#f44336; box-shadow:0 3px #ce2a1e;" onclick="deletePathway(<%= pathway.id %>)"><i class="fa fa-trash" aria-hidden="true"></i><span>&nbsp;&nbsp;Delete</span></a>
+	           	<a id="edit-pathway" href="<%= edit_admin_course_pathway_path(id: pathway.id) %>" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i><span>&nbsp;&nbsp;Edit</span></a>
+	           	<a id="delete-pathway" href="#" class="btn red-btn" onclick="deletePathway(<%= pathway.id %>)"><i class="fa fa-trash" aria-hidden="true"></i><span>&nbsp;&nbsp;Delete</span></a>
            	</div>
 		</div>
 	</div>
@@ -31,16 +33,45 @@
 <script type="text/javascript">
 	
 function deletePathway(id){
-	console.log("destroying pathway " + id);
-	$.ajax({
-		    type: "POST",
-		    url: "<%= application_delete_course_pathway_path %>",
-		    data: {
-		    	pathway_id: id
-		    },
-		    success: function(result) {
-				window.location.reload();
-			}
-   		})
-}
+        bootbox.confirm({
+            title: "Delete pathwayconfirmation",
+            size: "medium",
+            closeButton: false,
+            message: "Are you sure you want delete this pathway?",
+            buttons: {
+                confirm: {
+                    label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                    className: 'red-btn pull-left'
+                }
+            },
+            callback: function(result) {
+
+                   if (result == true) {
+           
+                    $.ajax({
+                        type: "POST",
+                        context: document.body,
+                        url: "<%= application_delete_suggested_course_pathway_path %>",
+						data: {
+				    			pathway_id: id
+				    	},
+
+                        success() {
+                            window.location.reload();
+                        }
+                    })
+
+                } 
+
+
+            }
+        })
+    };
+
+
+
 </script>

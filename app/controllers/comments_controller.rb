@@ -95,6 +95,31 @@ class CommentsController < ApplicationController
     redirect_to admin_comment_path(comment.uni_module)
   end
 
+  def report
+    @comment = Comment.find(params[:comment_id])
+    @user = User.find(current_user.id)
+
+    if @comment.reported_users.include? @user
+      @comment.reported_users.delete @user
+      reported = false
+    else
+      @comment.reported_users << @user
+      reported = true
+    end
+
+    data = {reported: reported}
+    render json: data
+
+  end
+
+  def unflag
+    @comment = Comment.find(params[:comment_id])
+
+    @comment.reported_users.clear
+
+    redirect_to admin_comment_path(@comment.uni_module)
+  end
+
   private
     def comment_params
       if logged_in?

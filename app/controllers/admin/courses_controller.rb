@@ -80,7 +80,7 @@ module Admin
       @course = Course.new(course_params)
       if @course.save
         @course.create_year_structures
-        flash[:success] = @course.name+ " was created successfully. "
+        flash[:success] = "Successfully created " + @course.name
         redirect_to(edit_admin_course_path @course)
       else
         render('new')
@@ -96,7 +96,7 @@ module Admin
       duration_in_years_pre_update = @course.duration_in_years
       if @course.update_attributes course_params
         @course.update_year_structures(duration_in_years_pre_update)
-        flash[:success] = "#{@course.name} successfully updated."
+        flash[:success] = "Successfully updated #{@course.name}"
         redirect_to edit_admin_course_path(@course)
       else
         render 'edit'
@@ -123,7 +123,7 @@ module Admin
           end  
 
       @course.destroy
-      flash[:success] =  @course.name + " was deleted successfully."
+      flash[:success] =  "Successfully deleted " + @course.name
       redirect_to(admin_courses_path)
     end
 

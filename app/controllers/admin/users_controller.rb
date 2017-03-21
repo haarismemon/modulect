@@ -97,7 +97,7 @@ module Admin
       # Save the object
       if @user.save
         # If save succeeds, redirect to the index action
-        flash[:success] = "You have successfully created #{@user.full_name} and their privileges have been granted"
+        flash[:success] = "Successfully created #{@user.full_name} with the correct access levels"
         redirect_to(admin_users_path)
       else
         # If save fails, redisplay the form so user can fix problems
@@ -162,11 +162,11 @@ module Admin
 
       # if a request to a super admin requested, check that there will still be at least one super admin left by checking the incoming user level parameter
       if @user.user_level == "super_admin_access" && user_params[:user_level] != "super_admin_access" && get_num_super_admins == 1
-        flash[:error] = "For security, there must always be at least one super/system administrator"
+        flash[:error] = "For security, there must always be at least one super/system administrator."
         redirect_to(edit_admin_user_path) and return
         # if a department admin tries to delete all the department admins, then this stops them. a super admin can do as they please
       elsif current_user.user_level != "super_admin_access" && @user.user_level == "department_admin_access" && user_params[:user_level] != "department_admin_access" && get_num_dept_admins(current_user.department_id) == 1
-        flash[:error] = "There must be at least one Department Admin"
+        flash[:error] = "There must be at least one Department Administrator."
         redirect_to(edit_admin_user_path) and return
       else
         # Update the object
@@ -187,7 +187,7 @@ module Admin
       @user = User.find(params[:id])
 
       if @user.user_level == "super_admin_access" && get_num_super_admins == 1
-        flash[:error] = "For security, there must always be at least one super/system administrator"
+        flash[:error] = "For security, there must always be at least one super/system administrator."
         redirect_to(admin_users_path)
       elsif current_user.user_level != "super_admin_access" && @user.user_level == "department_admin_access" && @user.user_level == "department_admin_access" && get_num_dept_admins(current_user.department_id) == 1
         flash[:error] = "There must be at least one Department Admin"
@@ -195,7 +195,7 @@ module Admin
       else
         #delete tuple object from db
         @user.destroy
-        flash[:success] = @user.full_name+" has been deleted successfully."
+        flash[:success] = "Successfully deleted " + @user.full_name
         #redirect to action which displays all users
         redirect_to(admin_users_path)
       end

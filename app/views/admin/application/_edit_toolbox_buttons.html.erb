@@ -34,8 +34,8 @@
     </li>
     <%# generate pdf from form's data %>
     <li>
-      <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')">
-        <i class="fa fa-file-pdf-o" aria-hidden="true" style="margin-right: 2px;"></i>Download As PDF</a>
+      <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')"><i class="fa fa-file-pdf-o" aria-hidden="true" style="margin-right: 2px;"></i>
+        Download as PDF</a>
     </li>
 
   </ul>
@@ -43,9 +43,8 @@
 
 <% if back_button %>
 <%# back button %>
-<%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-            :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
-<% end%>
+<%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe, :back, class: "button tool-box" %>
+<%end%>
 
 <%# styling of toolbox dropdown %>
 <style>
