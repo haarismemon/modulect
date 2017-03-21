@@ -112,15 +112,12 @@ module AnalyticsHelper
 
 	# most/least reviewed modules
 
-
-
 	def get_review_modules_analytics(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
 
-		uni_modules.each do |uni_module|
-			uni_module.comments.each do |comment|
-				if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && date_check(amount_time, time_period, from_date, comment.created_at)
+		Comment.all.each do |comment|
+			if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && date_check(amount_time, time_period, from_date, comment.created_at)
 					uni_module = comment.uni_module
 					if uni_modules.include?(uni_module)
 						if uni_modules_data.key?(uni_module)
@@ -129,7 +126,6 @@ module AnalyticsHelper
 							uni_modules_data[uni_module] = 1
 						end
 					end
-				end
 			end
 		end
 		
@@ -141,17 +137,16 @@ module AnalyticsHelper
 
 		uni_modules_data = Hash.new
 					
-		uni_modules.each do |uni_module|
-			uni_module.comments.each do |comment|
+		Comment.all.each do |comment|
 			if User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access" && date_check(amount_time, time_period, from_date, comment.created_at)
-				if uni_modules.include?(uni_module)
-					if uni_modules_data.key?(uni_module)
-						uni_modules_data[uni_module] += comment.rating
+					uni_module = comment.uni_module
+					if uni_modules.include?(uni_module)
+						if uni_modules_data.key?(uni_module)
+							uni_modules_data[uni_module] += comment.rating
 						else
 							uni_modules_data[uni_module] = comment.rating
 						end
 					end
-				end
 			end
 		end
 			
