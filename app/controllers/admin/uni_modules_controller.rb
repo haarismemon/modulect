@@ -200,6 +200,7 @@ module Admin
 
     end
 
+    # tag generation using opencalais api
     def generate_tags
       uri = URI.parse("https://api.thomsonreuters.com/permid/calais")
       http = Net::HTTP.new(uri.host, uri.port)
@@ -222,6 +223,7 @@ module Admin
       render :json => http.request(request).body
     end
 
+    # destruction of uni modules only occurs if there are no courses (through groups) using the module. if not, all associated logs are deleted too
     def destroy
       @uni_module = UniModule.find(params[:id])
       can_delete = true
@@ -267,6 +269,7 @@ module Admin
 
     end
 
+    # similar to destroy action
     def bulk_delete
       module_ids_string = params[:ids]
       module_ids = eval(module_ids_string)
@@ -316,6 +319,7 @@ module Admin
 
     end
 
+    # handles the "index" action for a single module's comments
     def comments
       @uni_module = UniModule.find(params[:id])
       @comments = @uni_module.comments
@@ -340,6 +344,7 @@ module Admin
 
     end
 
+    # allows for bulk deletion of comments
     def bulk_delete_comments
      comment_ids_string = params[:ids]
       comment_ids = eval(comment_ids_string)
@@ -377,6 +382,7 @@ module Admin
       params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :assessment_dates, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
     end
 
+    # verify that the department is correct
     def verify_correct_department
       @uni_module = UniModule.find(params[:id])
 
@@ -385,6 +391,7 @@ module Admin
       end
     end
 
+    # delete any unused tags to keep the tag database as clean and up to date as possibl
     def tag_clean_up
       all_tags = Tag.all
       all_modules = UniModule.all
