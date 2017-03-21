@@ -250,13 +250,13 @@ module Admin
         pflogs = PathwaySearchLog.all.where(:first_mod_id => @uni_module.id)
           if pflogs.size >0
             pflogs.each do |log|
-                pflogs.destroy
+                log.destroy
             end
           end        
         pslogs = PathwaySearchLog.all.where(:second_mod_id => @uni_module.id)
           if pslogs.size >0
             pslogs.each do |log|
-                pslogs.destroy
+                log.destroy
             end
           end    
         @uni_module.destroy
