@@ -6,7 +6,9 @@ class UniModule < ApplicationRecord
   validates :credits, presence: true
 
   # A UniModule has been saved as a favourite by many users.
+  has_many :saved_modules
   has_many :users, through: :saved_modules
+
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :departments
   has_and_belongs_to_many :tags

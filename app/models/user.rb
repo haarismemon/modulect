@@ -161,27 +161,17 @@ class User < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w{first_name last_name}
-    csv_headers = ['First Name', 'Last Name', 'Faculty', 'Course', 'Department']
-    CSV.generate(headers:true)do |csv|
-      csv << csv_headers.each{|att|att.titleize}
+    base_attributes = %w{first_name last_name}
+    csv_header = ['First Name', 'Last Name', 'Faculty', 'Course', 'Department']
+
+    CSV.generate(headers:true) do |csv|
+      csv << csv_header.each { |att| att.titleize }
       all.each do |user|
-        to_append = user.attributes.values_at(*attributes)
-        if user.faculty.nil?
-          to_append.push ''
-        else
-          to_append.push user.faculty.name
-        end
-        if user.course.nil?
-          to_append.push ''
-        else
-          to_append.push user.course.name
-        end
-        if user.department.nil?
-          to_append.push ''
-        else
-          to_append.push user.department.name
-        end
+        to_append = user.attributes.values_at(*base_attributes)
+
+        to_append.push user.faculty.to_s
+        to_append.push user.course.to_s
+        to_append.push user.department.to_s
 
         csv << to_append
       end

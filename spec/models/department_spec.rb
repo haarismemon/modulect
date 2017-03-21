@@ -48,4 +48,36 @@ RSpec.describe Department, type: :model do
       end
     end
   end
+
+  describe "#to_s" do
+    it "returns the name" do
+      expect(department.to_s).to eq department.name
+    end
+  end
+
+  describe ".to_csv" do
+    let (:csv_content) { Department.to_csv }
+    let (:csv_header) { "name,faculty_name\n" }
+
+    before do
+      department.save
+    end
+
+    it "outputs all saved departments" do
+      expect(csv_content).to include csv_header
+      test_csv_attributes_for_all_departments
+    end
+  end
+
+  private
+  def test_csv_attributes_for_all_departments
+    departments = Department.all
+    csv_content.slice!(csv_header)
+    i = 0
+    CSV.parse(csv_content).each do |line|
+      expect(line).to include departments[i].name
+      expect(line).to include departments[i].faculty.to_s
+      i += 1
+    end
+  end
 end
