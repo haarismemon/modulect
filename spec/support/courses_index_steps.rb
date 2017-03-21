@@ -13,16 +13,25 @@ module CoursesIndexSteps
     click_button "Update"
   end
 
+  def click_delete_link
+    click_on "Delete"
+  end
+
+  def confirm_delete
+    wait_for_ajax
+    click_on "Proceed"
+  end
+
   def i_should_be_on_the_courses_index_page
     expect(page).to have_current_path(admin_courses_path)
   end
 
   def i_should_see_a_clone_of(course)
-    expect(page).to have_content("#{course.name}-CLONE")
+    expect(page).to have_content("#{course.to_s}-CLONE")
   end
 
   def i_should_see_the_name_of_the_new_course
-    assert_text Course.last.name
+    assert_text Course.last.to_s
   end
 
   def i_should_see_an_update_success_flash
@@ -34,7 +43,7 @@ module CoursesIndexSteps
   end
 
   def i_should_not_see(course)
-    expect(page).not_to have_content("#{course.name}")
+    expect(page).not_to have_content(course.to_s)
   end
 end
 

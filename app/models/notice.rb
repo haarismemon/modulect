@@ -1,7 +1,6 @@
 class Notice < ApplicationRecord
   require 'uri'
 
-
   # belongs to a department
   belongs_to :department, :optional => true
 
@@ -23,9 +22,10 @@ class Notice < ApplicationRecord
   # sets default value for auto_delete attribute to true
   default_value_for :auto_delete, true
 
-  validate 'end_date_can_not_be_before_current_date'.to_s
-  validate 'end_date_can_not_be_before_the_live_date'.to_s
+  validate :end_date_can_not_be_before_current_date
+  validate :end_date_can_not_be_before_the_live_date
 
+  private
   # validation to check end date is not before the current date
   def end_date_can_not_be_before_current_date
     if !end_date.nil? && end_date.past?
@@ -39,6 +39,5 @@ class Notice < ApplicationRecord
       errors.add(:expire_date, "is before the live start date")
     end
   end
-
 
 end

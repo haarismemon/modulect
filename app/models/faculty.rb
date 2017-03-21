@@ -16,9 +16,11 @@ class Faculty < ApplicationRecord
         if deptNames!=''
           deptNames.chop!
         end
-
-        csv << faculty.attributes.values_at(*attributes) + [*deptNames]
       end
     end
+  end
+
+  def to_s
+    name
   end
 end
