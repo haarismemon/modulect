@@ -206,8 +206,10 @@ module Admin
             end
 
             # Add prerequisite modules
-            parse_mult_association_string(new_record['prerequisite_modules']).each do |module_name|
-              module_found = UniModule.find_by_name(module_name)
+            parse_mult_association_string(new_record['prerequisite_modules']).each do |module_code|
+              # Lookup the module by unique code
+              module_found = UniModule.find_by_code(module_code)
+              # Link prereq to module unless prereq. module doesn't exist
               unless module_found.nil?
                 # Add the found module to this modules prerequisites
                 created_module.uni_modules << module_found
