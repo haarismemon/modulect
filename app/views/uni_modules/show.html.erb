@@ -11,7 +11,7 @@
    <div class="col-md-10 col-md-offset-1">
       <div class="row" style="margin-bottom:20px">
          <div class="col-md-6">
-            <a onclick="window.history.back();" class="btn btn-default navbar-btn" method="get">< Back</a>
+            <%= link_to '< Back', :back, :class=>"btn btn-default navbar-btn", method: :get %>
          </div>
          <div class="col-md-6 text-right">
             <% if logged_in? %>
