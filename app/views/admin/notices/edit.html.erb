@@ -1,18 +1,18 @@
-<!-- A template for editing a notice
+<%# A template for editing a notice
 Contains fields which corresponds to a particular course's attributes
 The fields are produced with in form render
--->
+%>
 <% content_for(:title) { "Edit Notice" } %>
 
 
 <header class="header">
-  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <h1 class="header__heading"><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;<%= content_for(:title) %></h1>
   <div class="header__actions">
-    <!--quit button-->
+    <%#quit button%>
     <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, admin_notices_path, class: "button" %>
   </div>
 </header>
-<!--form for editing notice-->
+<%#form for editing notice%>
 <%= form_for(@notice, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>
     <%= render "form", f: f,:action =>"Update"%>
 <% end %>

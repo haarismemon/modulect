@@ -164,20 +164,11 @@ module ApplicationHelper
 	end
 
 
-  # Creates redirect back button for department form only
-  def back_redirect_for_department(page)
-     if !form_valid?(page)
-      # redirects back to faculty form if initially came from there
-      determine_redirect_link_from_previous_state
-     else
-      #or just go back to last page like normal-->
-      link_to 'Back', :back, class: "button"
-     end
-  end
+
 
   # specifies whether current admin form has any errors
   def form_valid?(page)
-     (page.resource && page.resource.errors.size == 0)
+		(page && page.errors.size == 0)
   end
 
   def make_semester_nice(semester_number)
