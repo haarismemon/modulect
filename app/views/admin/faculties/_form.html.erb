@@ -1,6 +1,14 @@
-<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+<%#  Renders a complete form for faculty which is displayed within edit and new course form
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+A form with several field partials within which allows for the manipulation of @department object.
+
+To modify this file access the partials within
+%>
+
+<%# Helper which prints error message of current object if there is any on to screen(does nothing, if none) #>
 <%= error_messages_for(f.object) %>
-<!--renders attributes-->
+<%#renders attributes%>
 <div class="row field-unit field-unit--string name" >
    <div class="col-xs-12">
       <div class="field-unit__label">
