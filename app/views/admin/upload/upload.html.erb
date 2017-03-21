@@ -69,7 +69,7 @@
     <div id="upload-help-content" class="text-center" style="margin-top: 20px; display: none;">
       <p>Here's an example of what a valid CSV might look like:</p>
       <div class="table-responsive">
-        <table aria-labelledby="page-title" class="collection-data table">
+        <table id="upload-help-table" aria-labelledby="page-title" class="collection-data table">
           <thead>
           <tr class="table-header-fields">
             <% session[:resource_header].each do |attribute_name| %>
@@ -79,6 +79,8 @@
           </thead>
         </table>
       </div>
+      <br>
+      <a id="upload-help-close">Close</a>
     </div>
   </div>
 
@@ -134,11 +136,19 @@
 
         $("#upload-help-toggle").on("click", function () {
             $("#upload-help-content").show();
+            $("#upload-help-toggle").hide();
+        });
+
+        $("#upload-help-close").on("click", function () {
+            $("#upload-help-content").hide();
+            $("#upload-help-toggle").show();
         });
 
         $("select#upload-resource").change(function () {
             $("#upload-step-2").hide();
             $("#upload-step-3").hide();
+            $("#upload-help-content").hide();
+            $("#upload-help").hide();
         });
     });
 </script>
