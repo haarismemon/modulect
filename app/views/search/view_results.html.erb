@@ -1,3 +1,6 @@
+<%#
+   The results page of the quick search. After a user has chosen his/her preferred tags and modules they can then see the resulting modules. This page uses the uni_modules partial as described in other files to display module information.
+%>
 <% provide(:title, 'Search Results') %>
 <% if request.query_parameters["sl"].present? &&  request.query_parameters["sl"] == "true"%>
   <% add_to_search_log("quick") %>
