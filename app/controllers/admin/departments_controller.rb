@@ -114,7 +114,6 @@ module Admin
         Notice.where(department_id: @department.id).destroy_all
         SearchLog.where(department_id: @department.id).destroy_all
         TagLog.where(department_id: @department.id).destroy_all
-        UniModuleLog.where(department_id: @department.id).destroy_all
         VisitorLog.where(department_id: @department.id).destroy_all
 
         @department.destroy
@@ -123,7 +122,7 @@ module Admin
         flash[:error] = @department.name+" is linked to a course/module, first either move or delete those modules."
       end
       #redirect to action which displays all departments
-      redirect_back_or admin_departments_path
+      redirect_to admin_departments_path
     end
 
 
