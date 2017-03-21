@@ -3,6 +3,7 @@ class YearStructure < ApplicationRecord
   has_many :groups, dependent: :destroy
   validates :year_of_study, presence: true
   validates :course_id, presence: true
+  validates :year_credits, presence: true
   enum year_of_study: { first_year: 1, second_year: 2, third_year: 3,
                         fourth_year: 4, fifth_year: 5, sixth_year: 6,
                         seventh_year: 7 }
