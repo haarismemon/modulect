@@ -75,12 +75,14 @@
         <li class="nav-item">
           <a class="nav-link" id="upload-help-courses-link">Courses</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" id="upload-help-departments-link">Departments</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="upload-help-faculties-link">Faculties</a>
-        </li>
+        <% if current_user.user_level == 'super_admin_access' %>
+            <li class="nav-item">
+              <a class="nav-link" id="upload-help-departments-link">Departments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="upload-help-faculties-link">Faculties</a>
+            </li>
+        <% end %>
       </ul>
       <div id="upload-table-modules" class="table-responsive">
         <table aria-labelledby="page-title" class="collection-data table">
@@ -148,38 +150,40 @@
           </tbody>
         </table>
       </div>
-      <div id="upload-table-departments" class="table-responsive" style="display: none;">
-        <table aria-labelledby="page-title" class="collection-data table">
-          <thead>
-          <tr class="table-header-fields">
-            <th scope="col">name</th>
-            <th scope="col">faculty_name</th>
-          </tr>
-          </thead>
-          <tbody id="data-area">
-          <tr>
-            <td>My new Department</td>
-            <td>A Big Faculty</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div id="upload-table-faculties" class="table-responsive" style="display: none;">
-        <table aria-labelledby="page-title" class="collection-data table">
-          <thead>
-          <tr class="table-header-fields">
-            <th scope="col">name</th>
-            <th scope="col">departments</th>
-          </tr>
-          </thead>
-          <tbody id="data-area">
-          <tr>
-            <td>My new Faculty</td>
-            <td>Other Dept 1; A New Dept 1; Other Dept 5</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+      <% if current_user.user_level == 'super_admin_access' %>
+          <div id="upload-table-departments" class="table-responsive" style="display: none;">
+            <table aria-labelledby="page-title" class="collection-data table">
+              <thead>
+              <tr class="table-header-fields">
+                <th scope="col">name</th>
+                <th scope="col">faculty_name</th>
+              </tr>
+              </thead>
+              <tbody id="data-area">
+              <tr>
+                <td>My new Department</td>
+                <td>A Big Faculty</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="upload-table-faculties" class="table-responsive" style="display: none;">
+            <table aria-labelledby="page-title" class="collection-data table">
+              <thead>
+              <tr class="table-header-fields">
+                <th scope="col">name</th>
+                <th scope="col">departments</th>
+              </tr>
+              </thead>
+              <tbody id="data-area">
+              <tr>
+                <td>My new Faculty</td>
+                <td>Other Dept 1; A New Dept 1; Other Dept 5</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+      <% end %>
       <br>
       <a id="upload-help-close">Close</a>
     </div>
