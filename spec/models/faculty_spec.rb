@@ -46,6 +46,7 @@ RSpec.describe Faculty, type: :model do
 
     before do
       faculty.save
+      faculty.departments << department
     end
 
     it "outputs all saved courses" do
