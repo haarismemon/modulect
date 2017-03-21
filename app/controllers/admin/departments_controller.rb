@@ -73,7 +73,7 @@ module Admin
       # Save the object
       if @department.save
         # If save succeeds, redirect to the index action
-        flash[:success] = "You have successfully created #{@department.name}"
+        flash[:success] = "Succesfully created #{@department.name}"
         redirect_to(admin_departments_path)
       else
         # If save fails, redisplay the form so user can fix problems
@@ -117,9 +117,9 @@ module Admin
         VisitorLog.where(department_id: @department.id).destroy_all
 
         @department.destroy
-        flash[:success] = @department.name+" has been deleted successfully."
+        flash[:success] = "Successfully deleted " + @department.name
       else
-        flash[:error] = @department.name+" is linked to a course/module, first either move or delete those modules."
+        flash[:error] = @department.name+" is linked to a course/module. You must first either unlink or delete those modules."
       end
       #redirect to action which displays all departments
       redirect_to admin_departments_path

@@ -13,7 +13,7 @@ module Admin
           flash[:success] = "Successfully updated settings"
           redirect_to(admin_settings_path) and return
         else
-          flash[:error] = "Something went wrong"
+          flash[:error] = "Something went wrong. Please try again."
           render('admin/settings')
         end
       end

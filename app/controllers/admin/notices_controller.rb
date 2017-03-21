@@ -86,7 +86,7 @@ module Admin
 
       #delete tuple object from db
       @notice.destroy
-      flash[:success] = "notice has been deleted successfully."
+      flash[:success] = "Successfully deleted notice"
       #redirect to action which displays all notices
       redirect_to(admin_notices_path)
     end
