@@ -2,7 +2,7 @@ module Admin
   class AppSettingsController < Admin::BaseController
     before_action :verify_super_admin, only: [:destroy, :new, :create, :update, :edit, :index]
       
-      # Handles the global settings which can be set by the system admin
+      # Handles the global settings which can be set only by the system admin
 
       # default edit action
       def edit
