@@ -1,3 +1,6 @@
+<%#
+  This is a partial consistent with the rest of the admin area, displaying the time and department filters as well as back buttons whilst also catering for the main title.
+%>
 <header class="header">
    <h1 class="page-title"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Analytics <%if @department != "any" %><span style="font-size:16px;">for <%= Department.find(@department.to_i).name %></span><% end %>
    </h1>

@@ -1,3 +1,6 @@
+<%# 
+   Partial containing the search.
+%>
 <% if action_name == "index" && controller_name != "dashboard"  %>
 	<form class="search" action="<%= request.original_fullpath %>" method="get">
 	    <i class="fa fa-search" aria-hidden="true"></i>

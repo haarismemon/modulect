@@ -1,5 +1,8 @@
+<%# A template for editing a user
+Contains the relevant fields
+For information on how toolbox works and what each local does, see the tool box render
+%>
 <% content_for(:title) { "Edit #{@user.first_name} #{@user.last_name}" } %>
-
 
 <header class="header">
   <h1 class="header__heading"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;<%= content_for(:title) %></h1>

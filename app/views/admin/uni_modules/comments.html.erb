@@ -1,3 +1,8 @@
+<%#
+  Index which displays a collection of comments via @uni_module.comments instance variables and displays it in a table
+  Contains: a table which contain of set of columns with each representing an attribute.
+  The table is produced via a for loop which iterates through, producing a row for each tuple.
+%>
 <% provide(:title, @uni_module.name + " - " + ' Module Reviews') %>
 <header class="header index-header-area">
    <h1 id="page-title"><%= @uni_module.name %> Reviews</h1>

@@ -1,3 +1,6 @@
+<%#
+   This page is reslts stage of the pathway search whereby a user can see the resulting pathway options from their search.
+%>
 <% provide(:title, 'Pathway Results') %>
 <% if request.query_parameters["sl"].present? && request.query_parameters["sl"] == "true"%>
   <% add_to_search_log("pathway") %>
