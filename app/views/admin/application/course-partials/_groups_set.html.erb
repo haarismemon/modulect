@@ -1,23 +1,21 @@
-<!--renders space to display and print a box for each group that exists in the current year structure being
+<!--
+Renders space to display and print a box for each group that exists in the current year structure being
  displayed in edit
 
- ! for modification to how group cards are displayed, it can done within the for loop below.
+ for modification to how group cards are displayed, it can done within the for loop below.
  -->
 <div id="landing" style="margin-left:10px;">
   <div class="row field-unit groups" style="margin-top:20px;">
     <div class="col-xs-12" style="padding-left: 10px">
       <div class="field-unit__label">
 
-        <!--label of group cards belonging to this year structure-->
         <label style="font-size: 19px"> Groups belonging to this year structure
           <a class="help-tooltip" style="font-size:14px" data-toggle="tooltip" data-placement="right"
              title="Each year structure contains a set of groups where each contains modules i.e first term is a group. The students will pick modules for each group to satisfy required total credits. ">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
 
-        <!--case when year structure has no groups-->
         <%= @year_structure.groups.empty? ? " - None (add below and update)" : "" %>
       </div>
 
-      <!--card space reserved-->
       <div class="field-unit__field">
         <div id="landing" style="margin-left:10px;">
           <div class="row" style="margin-top:20px;">
@@ -27,14 +25,10 @@
                 <div class="col-md-4 text-center" style="padding-left: 0px; margin-bottom:0px;">
                   <div class="col-md-12 login-card">
                     <div class="col-md-12">
-                      <!--icon-->
                       <div class="icon-row"><i class="fa fa-graduation-cap" aria-hidden="true"></i></div>
                       <div>
-                        <!--group name-->
                         <h3><%= group.name %></h3>
-                        <!--if group has a credit value show it on the card-->
                         <% if !group.max_credits.nil? && !group.min_credits.nil? %>
-                            <!--if max and min credits are the same, just print the total credits -->
                             <h5 style="margin-top: 20px"> <%= group.max_credits.to_int==group.min_credits.to_int ? "Total credits: "+group.min_credits.to_s : "Min credits: #{ group.min_credits.to_s} |  Max credits: "+group.max_credits.to_s %></h5>
                         <% end %>
                       </div>
@@ -42,11 +36,9 @@
                         <div style="margin-top: 30px;padding-left:0px">
 
                           <div class="form-group">
-                            <!--edit button of group card-->
                             <a href="<%= edit_admin_group_path(group) %>" class="btn btn-lg" style="font-size: 15px; box-shadow:none"><span>Modify ></span></a>
                           </div>
 
-                          <!--delete button to remove group from year structure-->
                           <%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_group_path(group.id), method: :delete,
                                       data: {confirm: "Are you sure you want to delete this group?"}, class: "table__action--destroy" %>
 

@@ -1,199 +1,224 @@
-<% if request.query_parameters["search"].present?%>
-  <% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Courses') %>
+<!--
+  Index which displays a collection of courses via @courses instance variables and displays it in a table
+  Contains: a table which contain of set of columns with each representing an attribute.
+  The table is produced via a for loop which iterates through, producing a row for each tuple.
+-->
+
+<% if request.query_parameters["search"].present? %>
+    <% provide(:title, "\"" + request.query_parameters["search"] +"\"" + ' - Courses') %>
 <% else %>
-  <% provide(:title, 'Courses') %>
+    <% provide(:title, 'Courses') %>
 <% end %>
 
 <header class="header index-header-area">
-   <h1 id="page-title"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;
-   <%if request.query_parameters["dept"] && Department.exists?(@dept_filter_id) %>
-     <%= Department.find(@dept_filter_id).name %>
-   <% end %>
-   Courses</h1>
-   <div class="header__actions">
-      <div class="col-md-12" style="padding-right: 0px;">
-         <% if @courses.size > 0 %>
-         <% if current_user.user_level == "super_admin_access" %>
-         <div class="btn-group">
-            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter  <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu scrollable-submenu">
-              <li> <%= link_to ("View All"), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0  ), method: :get %></li>
-               <% Department.all.sort_by{|department| department[:name].downcase}.each do |department| %>
-                <li> <%= link_to (department.name.titleize), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => department.id, :search => @search_query  ), method: :get %></li>
-               <% end %>
-            </ul>
-            </div>
-            <% end %>
-         <div class="btn-group">
-            <button style="height: 34px;" id="bulk-actions" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
+  <h1 id="page-title"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;
+    <% if request.query_parameters["dept"] && Department.exists?(@dept_filter_id) %>
+        <%= Department.find(@dept_filter_id).name %>
+    <% end %>
+    Courses</h1>
+  <div class="header__actions">
+    <div class="col-md-12" style="padding-right: 0px;">
+
+      <% if @courses.size > 0 %>
+
+          <% if current_user.user_level == "super_admin_access" %>
+
+              <div class="btn-group">
+                <button style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu scrollable-submenu">
+                  <li> <%= link_to ("View All"), url_for(:sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0), method: :get %></li>
+                  <% Department.all.sort_by { |department| department[:name].downcase }.each do |department| %>
+                      <li> <%= link_to (department.name.titleize), url_for(:sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => department.id, :search => @search_query), method: :get %></li>
+                  <% end %>
+                </ul>
+              </div>
+
+          <% end %>
+
+
+          <div class="btn-group">
+
+            <button style="height: 34px;" id="bulk-actions" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-               <li> <a id="clone-all" style="cursor:pointer;"><i class='fa fa-clone' aria-hidden='true'></i>&nbsp;&nbsp;Clone selected</a>
-               <li> <a id="delete-all" style="cursor:pointer;"><i class='fa fa-trash' aria-hidden='true'></i>&nbsp;&nbsp;Delete selected</a>
-               <li> <a id="csv-export" style="cursor:pointer;"><i class='fa fa-download' aria-hidden='true'></i>&nbsp;&nbsp;Export to CSV</a>
-               </li>
+              <li><a id="clone-all" style="cursor:pointer;"><i class='fa fa-clone' aria-hidden='true'></i>&nbsp;&nbsp;Clone
+                selected</a>
+              <li><a id="delete-all" style="cursor:pointer;"><i class='fa fa-trash' aria-hidden='true'></i>&nbsp;&nbsp;Delete
+                selected</a>
+              <li><a id="csv-export" style="cursor:pointer;"><i class='fa fa-download' aria-hidden='true'></i>&nbsp;&nbsp;Export
+                to CSV</a>
+              </li>
             </ul>
+
           </div>
-         <% end %>
-         <a id="new-course" class="button" href="<%= new_admin_course_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New course</a>
-      </div>
-   </div>
+
+      <% end %>
+      <a id="new-course" class="button" href="<%= new_admin_course_path %>"><i aria-hidden='true' class='fa fa-plus'>
+      </i>&nbsp;&nbsp;New course</a>
+    </div>
+  </div>
 </header>
 <style>
-   .table-responsive .checkbox{margin:0px;}
+  .table-responsive .checkbox {
+    margin: 0px;
+  }
 </style>
+
 <% if @courses.size > 0 %>
-  <div class="table-responsive">
-     <table aria-labelledby="page-title" class="collection-data table">
+
+    <div class="table-responsive">
+      <table aria-labelledby="page-title" class="collection-data table">
         <thead>
-           <tr class="table-header-fields">
-              <td style="width:20px;">
-                 <div class="checkbox" style="margin:0px">
-                    <input type="checkbox" name="check_all" id="check_all" value="true" class="toggle-bulk" /><label for="check_all"><span></span></label>
-                 </div>
-              </td>
-              <% sorting_columns = {"name" => "Name", "year" => "Year"} %>
-              <% if request.query_parameters["search"].present?%>
+        <tr class="table-header-fields">
+          <td style="width:20px;">
+            <div class="checkbox" style="margin:0px">
+              <input type="checkbox" name="check_all" id="check_all" value="true" class="toggle-bulk"/><label for="check_all"><span></span></label>
+            </div>
+          </td>
+          <% sorting_columns = {"name" => "Name", "year" => "Year of creation"} %>
+          <% if request.query_parameters["search"].present? %>
               <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: true, per_page: @per_page, dept_filter_id: @dept_filter_id} %>
-              <% else %>
+          <% else %>
               <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: false, per_page: @per_page, dept_filter_id: @dept_filter_id} %>
-              <% end %>
-              <th class="cell-label cell-label--string cell-label--false" scope="col">Departments</th>
-              <th class="cell-label cell-label--string cell-label--false" scope="col">Available actions</th>
-           </tr>
+          <% end %>
+          <th class="cell-label cell-label--string cell-label--false" scope="col">Departments</th>
+          <th class="cell-label cell-label--string cell-label--false" scope="col">Available actions</th>
+        </tr>
         </thead>
         <tbody id="data-area">
-          <%= render @courses %>
+        <%= render @courses %>
         </tbody>
-     </table>
-     <%= paginate @courses %>
-  </div>
-<%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query, dept_filter_id: @dept_filter_id} %>
-<script>
-  $(document).ready(function() {
-      $("#delete-all").click(function(event) {
-          bootbox.confirm({
-              title: "Delete selected confirmation",
-              size: "medium",
-              closeButton: false,
-              message: "Are you sure you want delete the selected courses?",
-              buttons: {
-                  confirm: {
-                      label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
-                      className: 'btn-success'
-                  },
-                  cancel: {
-                      label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
-                      className: 'red-btn pull-left'
-                  }
-              },
-              callback: function(result) {
+      </table>
+      <%= paginate @courses %>
+    </div>
+    <%= render partial: "admin/layouts/per_page", locals: {sort_by: @sort_by, order: @order, per_page: @per_page, search_query: @search_query, dept_filter_id: @dept_filter_id} %>
 
-                  if (result == true) {
-                      event.preventDefault();
-                      var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
-                          return $(this).val();
-                      }).get(); // <----
-                      //console.log(checkboxValues);
+    <script>
+        $(document).ready(function () {
+            $("#delete-all").click(function (event) {
+                bootbox.confirm({
+                    title: "Delete selected confirmation",
+                    size: "medium",
+                    closeButton: false,
+                    message: "Are you sure you want delete the selected courses?",
+                    buttons: {
+                        confirm: {
+                            label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                            className: 'red-btn pull-left'
+                        }
+                    },
+                    callback: function (result) {
 
-                      $.ajax({
-                          type: "POST",
-                          url: "<%= admin_courses_bulk_delete_path %>",
-                          context: document.body,
-                          data: {
-                              ids: JSON.stringify(checkboxValues)
-                          },
+                        if (result == true) {
+                            event.preventDefault();
+                            var checkboxValues = $("#data-area input:checkbox:checked").map(function () {
+                                return $(this).val();
+                            }).get(); // <----
+                            //console.log(checkboxValues);
 
-                          success() {
-                              bootbox.alert({
-                                  title: "Completed bulk deletion",
-                                  size: "medium",
-                                  closeButton: false,
-                                  message: "The bulk action has been applied.",
-                                  callback: function() {
-                                      location.reload();
-                                  }
-                              })
-                          }
-                      })
+                            $.ajax({
+                                type: "POST",
+                                url: "<%= admin_courses_bulk_delete_path %>",
+                                context: document.body,
+                                data: {
+                                    ids: JSON.stringify(checkboxValues)
+                                },
 
-                  } 
+                                success() {
+                                    bootbox.alert({
+                                        title: "Completed bulk deletion",
+                                        size: "medium",
+                                        closeButton: false,
+                                        message: "The bulk action has been applied.",
+                                        callback: function () {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+                            })
 
-              }
-          })
-      });
+                        }
 
-      $("#csv-export").click(function(event) {
-          event.preventDefault();
-          var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
-              return $(this).val();
-          }).get(); // <----
-          // console.log(checkboxValues);
-          ids = JSON.stringify(checkboxValues);
-          window.location.replace("<%=admin_courses_path%>.csv?export="+ids);
+                    }
+                })
+            });
 
-      });
+            $("#csv-export").click(function (event) {
+                event.preventDefault();
+                var checkboxValues = $("#data-area input:checkbox:checked").map(function () {
+                    return $(this).val();
+                }).get(); // <----
+                // console.log(checkboxValues);
+                ids = JSON.stringify(checkboxValues);
+                window.location.replace("<%=admin_courses_path%>.csv?export=" + ids);
 
-
-
-      $("#clone-all").click(function(event) {
-          bootbox.confirm({
-              title: "Clone selected confirmation",
-              size: "medium",
-              closeButton: false,
-              message: "Are you sure you want clone the selected courses?",
-              buttons: {
-                  confirm: {
-                      label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
-                      className: 'btn-success'
-                  },
-                  cancel: {
-                      label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
-                      className: 'red-btn pull-left'
-                  }
-              },
-              callback: function(result) {
+            });
 
 
+            $("#clone-all").click(function (event) {
+                bootbox.confirm({
+                    title: "Clone selected confirmation",
+                    size: "medium",
+                    closeButton: false,
+                    message: "Are you sure you want clone the selected courses?",
+                    buttons: {
+                        confirm: {
+                            label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                            className: 'red-btn pull-left'
+                        }
+                    },
+                    callback: function (result) {
 
-                  if (result == true) {
-                      event.preventDefault();
-                      var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
-                          return $(this).val();
-                      }).get(); // <----
-                      //console.log(checkboxValues);
 
-                      $.ajax({
-                          type: "POST",
-                          url: "<%= admin_courses_clone_path %>",
-                          context: document.body,
-                          data: {
-                              ids: JSON.stringify(checkboxValues)
-                          },
+                        if (result == true) {
+                            event.preventDefault();
+                            var checkboxValues = $("#data-area input:checkbox:checked").map(function () {
+                                return $(this).val();
+                            }).get(); // <----
+                            //console.log(checkboxValues);
 
-                          success() {
-                              bootbox.alert({
-                                  title: "Completed bulk clone",
-                                  size: "medium",
-                                  closeButton: false,
-                                  message: "The bulk action has been applied. The cloned courses will show after the page reloads.",
-                                  callback: function() {
-                                      location.reload();
-                                  }
-                              })
-                          }
-                      })
+                            $.ajax({
+                                type: "POST",
+                                url: "<%= admin_courses_clone_path %>",
+                                context: document.body,
+                                data: {
+                                    ids: JSON.stringify(checkboxValues)
+                                },
 
-                  } 
+                                success() {
+                                    bootbox.alert({
+                                        title: "Completed bulk clone",
+                                        size: "medium",
+                                        closeButton: false,
+                                        message: "The bulk action has been applied. The cloned courses will show after the page reloads.",
+                                        callback: function () {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+                            })
 
-              }
-          })
-      });
-  });
-</script>
-<% elsif request.query_parameters["search"].present?%>
-  <h4 style="margin-bottom:30px;">Unfortunately, we couldn't find any courses related to your search query.</h4>
+                        }
+
+                    }
+                })
+            });
+        });
+    </script>
+<% elsif request.query_parameters["search"].present? %>
+    <h4 style="margin-bottom:30px;">Unfortunately, we couldn't find any courses related to your search query.</h4>
 <% else %>
-  <h4 style="margin-bottom:30px;">No courses found</h4>
+    <h4 style="margin-bottom:30px;">No courses found</h4>
 <% end %>
