@@ -1,6 +1,7 @@
 class CareerSearchController < ApplicationController
 	include CareerSearchHelper
 
+	# the begin action of the career search where the user can enter/edit their details
 	def begin
     	@faculties = Faculty.all
     	@departments = {}
@@ -26,9 +27,7 @@ class CareerSearchController < ApplicationController
 		end
 	end
 
-	  
-
-
+  # the choose action where modules are chosen
   def choose
     if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? 
        	  @year_of_study = params[:year]
@@ -39,6 +38,7 @@ class CareerSearchController < ApplicationController
     end
   end
 
+  # handles the results by looking the modules' career tags and returning those
   def view_results
   	if params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? && params.has_key?(:chosen_modules) && !params[:chosen_modules].empty? 
   		  @year_of_study = params[:year]
