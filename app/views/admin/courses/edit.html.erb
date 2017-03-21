@@ -17,10 +17,12 @@ For information on how toolbox works and what each local does, see the tool box 
                :locals => {:object => Course.find(params[:id]),
                            :name_of_file=>Course.find(params[:id]).name.to_s,
                            :blacklist_attributes=>"", :entity_attributes=>"",
-                           :has_many_attributes => ["uni_modules"]}) %>
+                           :has_many_attributes => ["uni_modules"],
+                           :back_button => false}) %>
     <%#back button%>
     <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-                admin_courses_path, class: "button tool-box" %>
+                admin_courses_path,
+                class: "button tool-box", style: "padding-top: 11.5px;padding-bottom: 11.5px;" %>
   </div>
 </header>
 
@@ -29,7 +31,7 @@ For information on how toolbox works and what each local does, see the tool box 
 
 <%= render 'admin/application/course-partials/manage_pathways_card' %>
 
-<!-- render of fields which relate to a course's attributes-->
-<%= render 'form', :action =>"Update" %>
+<label style="font-size: 19px;margin: 20px 0px; "> Course information</label>
 
+<%= render 'form', :action =>"Update" %>
 

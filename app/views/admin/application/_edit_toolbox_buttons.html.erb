@@ -13,8 +13,8 @@
 
 <%# assign back-button to true by default to render back button in this partial, unless specified otherwise %>
 <% back_button = true if local_assigns[:back_button].nil? %>
-<div style="margin-bottom: 20px">
-  <div class="btn-group">
+
+<div class="btn-group">
   <%# button drop down %>
   <button style="height: 36px; outline: none; padding-bottom:4px"
           class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin toolbox"
@@ -49,7 +49,7 @@
                   class: "button tool-box", style: "padding-top: 11.5px;padding-bottom: 11.5px;" %>
 <% end%>
 
-</div>
+
 <%# styling of toolbox dropdown %>
 <style>
   .scrollable-submenu {
