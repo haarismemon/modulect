@@ -11,7 +11,9 @@ module Admin
       redirect_to edit_admin_course_path(params[:id])
     end
 
+    # the customised advanced index action handles the displaying of the correct records for the user level, the pagination, the search and the sorting by the columns specified in the view
     def index
+      # show correct records based on user level
       if current_user.user_level == "super_admin_access"
          if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
           @dept_filter_id = params[:dept].to_i
@@ -23,24 +25,28 @@ module Admin
         @courses = Department.find(current_user.department_id).courses
       end
 
+      # if user has changed per_page, change it else use the default of 20
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
       else
         @per_page = 20
       end 
 
-
+      # if the user is searching look for records which match the search query and paginate accordingly
       if params[:search].present?
         @search_query = params[:search]
         @courses = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) }.sort_by{|course| course[:name]}
 
         @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(@per_page)
+
+      # if the user wasn't search but was sorting get the records and sort accordingly
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
         @courses = sort(Course, @courses, @sort_by, @order, @per_page, "name")
         @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(@per_page)
 
+      # default record view
       else
          @courses = @courses.order('name ASC').page(params[:page]).per(@per_page)
       end
@@ -49,6 +55,7 @@ module Admin
         redirect_to admin_courses_path
       end
 
+      # handles the csv export
       @courses_to_export = @courses
       if params[:export].present?
         export_course_ids_string = params[:export]
@@ -127,7 +134,7 @@ module Admin
       redirect_to(admin_courses_path)
     end
 
-
+    # handles the bulk deletion of courses, deleting year structures, groups and any logs which may reference this course
     def bulk_delete
       course_ids_string = params[:ids]
       course_ids = eval(course_ids_string)
