@@ -742,17 +742,18 @@
     requirementsSatisfied = true;
     if(this_module.uni_modules.length > 0) {
       for(module = 0; module < this_module.uni_modules.length; module++) {
-        requiredMod = this_module.uni_module_requirements[module];
+        requiredMod = this_module.uni_modules[module];
         moduleTaken = false;
         // Check if this required module is already in the compulsory modules (for all years)
         console.log("start mod search 1");
         moduleSearch1:
-        for(year = 0; year < js_course.year_structures.length; year++) {
-          for(g = 0; g < required_modules_per_year[year].length; ++g) {
-            for(item = 0; item < required_modules_per_year[year][g]; ++item) {
-              currentMod = required_modules_per_year[year][g].uni_modules[item];
+        for(y = 0; y < js_course.year_structures.length; y++) {
+          for(g = 0; g < required_modules_per_year[y].length; ++g) {
+            for(item = 0; item < required_modules_per_year[y][g]; ++item) {
+              currentMod = required_modules_per_year[y][g].uni_modules[item];
               if(requiredMod.id == currentMod.id) {
                 moduleTaken = true;
+                console.log("Found in 1");
                 break moduleSearch1;
               }
             }
@@ -763,12 +764,14 @@
           continue; // If we have found the module at this point go to the next required module
         } else {
           // Check if this required module is in the selected modules (for all years)
+          console.log("starting mod search 2");
           moduleSearch2:
-          for(year = 0; year < js_course.year_structures.length; year++) {
-            for(g = 0; g < optional_modules_per_year[year].length; ++g) {
-              for(item = 0; item < selected_ids[year][g].length; ++item) {
-                if(requiredMod.id == selected_ids[year][g][item].id) {
+          for(y = 0; y < js_course.year_structures.length; y++) {
+            for(g = 0; g < optional_modules_per_year[y].length; ++g) {
+              for(item = 0; item < selected_ids[y][g].length; ++item) {
+                if(requiredMod.id == selected_ids[y][g][item]) {
                   moduleTaken = true;
+                  console.log("Found in 2");
                   break moduleSearch2;
                 }
               }
@@ -787,7 +790,7 @@
     if(credits_used >= max_credits) {
       window.alert("You have already selected enough credits from this group");
     }
-    else if(credits_this_year+this_module.credits > js_course.year_structures[year].year_credits) {
+    else if(credits_this_year + this_module.credits > js_course.year_structures[year].year_credits) {
       window.alert("You have enough credits this year");
     }
     else if(!requirementsSatisfied) {
@@ -818,7 +821,7 @@
   function deselectModule(year, group, moduleId) {
     indexToDelete = selected_ids[year][group].indexOf(moduleId);
     if(indexToDelete > -1) {
-      selected_ids[year][group].splice(index, 1);
+      selected_ids[year][group].splice(index + 1, 1);
     }
     // Decrement every tuple of the selected modules
     for(g = 0; g < selected_ids[year].length; ++g) {
@@ -830,7 +833,6 @@
   }
 
   function callIncrementLog(firstMod, secondMod) {
-    console.log("IIIDDDD: " + <%= @course %>);
     $.ajax({
       url: '<%= pathway_search_increment_pathway_search_log_path %>',
       type: 'POST',
