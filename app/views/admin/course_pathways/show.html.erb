@@ -11,10 +11,10 @@
 </header>
 <% @course.pathways.each do |pathway| %>
 	<div class = "col-md-12 login-card" style="text-align: left;margin-bottom: 20px;">
-    	<div class = "panel-heading">
+    	<div>
         	<h3><span class="glyphicon glyphicon-pushpin-sm"></span><%= pathway.name %></h3>
         </div>
-        <div class = "panel-body">
+        <div>
         	<h4>Optional modules:</h4>
         	<ul>
             	<% pathway.get_module_list.each do |uni_module| %>
@@ -54,7 +54,6 @@ function deletePathway(id){
            
                     $.ajax({
                         type: "POST",
-                        url: "<%= admin_departments_bulk_delete_path %>",
                         context: document.body,
                         url: "<%= application_delete_course_pathway_path %>",
 						data: {
