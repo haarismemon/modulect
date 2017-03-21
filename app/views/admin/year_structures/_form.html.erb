@@ -22,11 +22,11 @@ To modify this file access the partials within
 
     <!--button to allow for a new group form to be added-->
     <div class='links' onclick='loseFocus()' id="add-another-group">
-      <%= link_to_add_association "Add Module Group", f, :groups %>
+      <%= link_to_add_association "+ Add Module Group", f, :groups %>
     </div>
 
     <!--submit button-->
-    <div class="form-actions">
+    <div class="form-actions" style="margin-top:20px;">
       <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
         <%= action %> year
       </button>
