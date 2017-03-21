@@ -16,8 +16,8 @@
 <div id="main-container">
 </div>
 
-<div>
-	<button onclick="savePathway()" class="btn btn-lg" id="save">Save Pathway</button>
+<div style="margin-top:20px;">
+	<button onclick="savePathway()" class="btn" id="save"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</button>
 </div>
 
 <script type="text/javascript">
@@ -77,7 +77,7 @@ function generateView(){
 		out+="<h3>Year " + (y+1) + "</h3>";
 		for(g=0; g<optional_modules_per_year[y].length; g++){
 			out+="<b>" + optional_modules_per_year[y][g].name + "</b><br/>";
-			out+='<ul class="list-group">';
+			out+='<ul class="list-group" style="margin-bottom:40px;">';
 			for(m=0; m<optional_modules_per_year[y][g].uni_modules.length; m++){
 				if(selected_ids[y][g].includes(optional_modules_per_year[y][g].uni_modules[m].id)){
 					out+='<li class ="list-group-item" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-check-square-o"></i>&nbsp;&nbsp;';
@@ -97,7 +97,7 @@ function generateView(){
 function savePathway(){
 	txt = $('input#save-name').val();
 	if(txt == ""){
-		window.alert("Please give this pathway a name");
+		bootbox.alert("Please give this pathway a name");
 	}else{
 		$.ajax({
 		    type: "POST",

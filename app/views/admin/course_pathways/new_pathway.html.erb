@@ -15,8 +15,8 @@
 <div id="main-container">
 </div>
 
-<div>
-	<button onclick="savePathway()" class="btn btn-lg" id="save">Save Pathway</button>
+<div style="margin-top:20px;">
+	<button onclick="savePathway()" class="btn" id="save"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</button>
 </div>
 
 <script type="text/javascript">
@@ -60,11 +60,11 @@ function updateSelectedModules(){
 function toggle(year, group, module){
 	mod = optional_modules_per_year[year][group].uni_modules[module];
 	if(selected_ids[year][group].includes(mod.id)){
-		console.log("removed " + mod.name);
+		//console.log("removed " + mod.name);
 		selected_ids[year][group].splice(selected_ids[year][group].indexOf(mod.id),1);		
 		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-lg fa fa-square-o');
 	}else{
-		console.log("added " + mod.name);
+		//console.log("added " + mod.name);
 		selected_ids[year][group].push(mod.id);
 		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-lg fa fa-check-square-o');
 	}
@@ -76,7 +76,7 @@ function generateView(){
 		out+="<h3>Year " + (y+1) + "</h3>";
 		for(g=0; g<optional_modules_per_year[y].length; g++){
 			out+="<b>" + optional_modules_per_year[y][g].name + "</b><br/>";
-			out+='<ul class="list-group">';
+			out+='<ul class="list-group" style="margin-bottom:40px;">';
 			for(m=0; m<optional_modules_per_year[y][g].uni_modules.length; m++){
 				out+='<li class ="list-group-item" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
 				out+=optional_modules_per_year[y][g].uni_modules[m].name + ", " + optional_modules_per_year[y][g].uni_modules[m].credits + " credits";
@@ -90,7 +90,7 @@ function generateView(){
 function savePathway(){
 	txt = $('input#save-name').val();
 	if(txt == ""){
-		window.alert("Please give this pathway a name");
+		bootbox.alert("Please give this pathway a name");
 	}else{
 		$.ajax({
 		    type: "POST",
@@ -106,14 +106,14 @@ function savePathway(){
 			}
    		})
 	}
-	console.log(txt);
+	//console.log(txt);
 }
 /*
 function savePathwayFromViewResults() {
     console.log("SAVING");
     $.ajax({
         type: "POST",
-        url: "<%= application_save_pathway_path %>",
+        url: "<%#= application_save_pathway_path %>",
         data: {
         	course_id: @course.id,
             name: document.getElementById('save-name').value,
