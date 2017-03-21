@@ -4,6 +4,8 @@
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
+  <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe,
+            admin_course_pathway_path(params[:id]), class: "button tool-box" %>
   </div>
 </header>
 
@@ -76,9 +78,9 @@ function generateView(){
 		out+="<h3>Year " + (y+1) + "</h3>";
 		for(g=0; g<optional_modules_per_year[y].length; g++){
 			out+="<b>" + optional_modules_per_year[y][g].name + "</b><br/>";
-			out+='<ul class="list-group" style="margin-bottom:40px;">';
+			out+='<ul class="list-group" style="margin-bottom:40px;margin-top:10px;">';
 			for(m=0; m<optional_modules_per_year[y][g].uni_modules.length; m++){
-				out+='<li class ="list-group-item" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
+				out+='<li class ="list-group-item" style="cursor:pointer;" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
 				out+=optional_modules_per_year[y][g].uni_modules[m].name + ", " + optional_modules_per_year[y][g].uni_modules[m].credits + " credits";
 				out+='</li>'
 			}

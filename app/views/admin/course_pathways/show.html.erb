@@ -5,10 +5,12 @@
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
+  <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+            :back, class: "button tool-box" %>
   </div>
 </header>
 <% @course.pathways.each do |pathway| %>
-	<div class = "login-card" style="text-align: left;margin-bottom: 20px;">
+	<div class = "col-md-12 login-card" style="text-align: left;margin-bottom: 20px;">
     	<div class = "panel-heading">
         	<h3><span class="glyphicon glyphicon-pushpin-sm"></span><%= pathway.name %></h3>
         </div>
