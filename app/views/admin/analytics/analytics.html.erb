@@ -51,13 +51,14 @@
 <%= render partial: "admin/analytics/tabs" %>
 
 <%
-# FERAS IM USING A HELPER TO STORE A HASH OF THE DATA AND THEN PASSING IT INTO PARTIALS
+# FERAS, IM USING A HELPER TO STORE A HASH OF THE DATA AND THEN PASSING IT INTO PARTIALS
 # PREVENTS US FROM HAVING TO RECALL QUERIES
-# PLEASE DELETE THIS COMMENT WHEN READ
 # ALSO LEFT A COMMENT IN THE CONTROLLER 
-# WE SHOULDNT HAVE ANY DIRECT QUERIES IN THE VIEW ASIDE FROM THE BIG GRAPHS
+# WE SHOULDN'T HAVE ANY DIRECT QUERIES IN THE VIEW ASIDE FROM THE BIG GRAPHS
 # YOU'LL NEED TO TAKE A LOOK AT THE TOP STRIP ON EACH TAB, ANY MAIN GRAPHS AND THEN SUBGRAPHS
 # NOTE THAT SOME THINGS I HAVEN'T GOT ROUND TO ADDING TO THE HASH
+# Also I noticed a small bug: when there is long name for a module, the graphs mess up. Try a long module and see the anayltics it generates
+# Also some of the headers are a bit messed up too
 # THANKS, AQIB
 all_data = get_all_data(@all_uni_modules, @all_users, @department, @time_period)
 
@@ -67,19 +68,19 @@ all_data = get_all_data(@all_uni_modules, @all_users, @department, @time_period)
          <%= render partial: "admin/analytics/overview", :locals => {all_data: all_data} %>
       </div>
       <div id="quick-search" class="tab-pane fade">      
-         <%#= render partial: "admin/analytics/quick_search" %>
+         <%#= render partial: "admin/analytics/quick_search", :locals => {all_data: all_data}  %>
       </div>
       <div id="pathway-search" class="tab-pane fade">   
-         <%#= render partial: "admin/analytics/pathway_search" %>
+         <%#= render partial: "admin/analytics/pathway_search", :locals => {all_data: all_data}  %>
       </div>
       <div id="career-search" class="tab-pane fade">
-         <%#= render partial: "admin/analytics/career_search" %>
+         <%#= render partial: "admin/analytics/career_search", :locals => {all_data: all_data}  %>
       </div>
       <div id="modules" class="tab-pane fade">
-         <%#= render partial: "admin/analytics/modules" %>
+         <%#= render partial: "admin/analytics/modules", :locals => {all_data: all_data}  %>
       </div>
       <div id="tags" class="tab-pane fade">
-         <%#= render partial: "admin/analytics/tags" %>
+         <%#= render partial: "admin/analytics/tags", :locals => {all_data: all_data}  %>
       </div>
    </div>
 </div>
