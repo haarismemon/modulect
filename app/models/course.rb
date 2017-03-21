@@ -40,11 +40,15 @@ class Course < ApplicationRecord
                                   year_of_study: new_year_of_study)
         end
       end
+    elsif duration_in_years_post_update < duration_in_years_pre_update
+      (duration_in_years_pre_update - duration_in_years_post_update).times do
+        self.year_structures.last.destroy
+      end
     end
   end
 
   def all_year_structures_defined?
-    self.year_structures.each do |year_structure|
+    self.year_structures.each_with_index do |year_structure, index|
       if !year_structure.groups_existent?
         return false
       end
