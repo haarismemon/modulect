@@ -1,3 +1,4 @@
+<% provide(:title, 'Upload data') %>
 <style>
   @media (min-width: 990px) {
     .row {
@@ -20,7 +21,6 @@
     }
   }
 </style>
-
 <h1 style="font-size: 1.728em; margin-bottom: 30px;">Upload Data</h1>
 
 <div id="upload-instructions" class="col-lg-12 login-card">
@@ -51,7 +51,7 @@
         </select>
       </div>
       <div class="form-entry text-center" style="margin-top: 20px;">
-        <a id="upload-1-next" class="btn btn-md">Next</a>
+        <a id="upload-1-next" class="btn btn-md">Next&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></a>
       </div>
     </form>
   </div>
@@ -192,7 +192,10 @@
     <h3>Step 3: Upload data</h3>
     <div class="form-entry text-center" style="margin-top: 20px;">
       <%= form_tag('/admin/upload/upload_csv', method: 'post', multipart: true) do %>
-          <%= file_field_tag :csv_upload, id: 'csv-upload', onchange: 'validate_file_extension(this.value);', required: true, accept: 'text/csv' %>
+          <%= file_field_tag :csv_upload, id: 'csv-upload', onchange: 'validate_file_extension(this.value);', required: true, accept: 'text/csv', class: "file" %>
+
+
+
           <%= submit_tag 'Upload', id: 'upload-3-next', class: 'btn btn-md' %>
       <% end %>
     </div>
@@ -216,8 +219,12 @@
         $("#upload-3-next").hide();
         // Delete currently selected file
         $("#csv-upload").val(null);
-        alert("File must be a CSV (.csv). Ensure the uploaded file meets " +
-            "this requirement before continuing.");
+         bootbox.alert({
+                                title: "File type mismatch",
+                                size: "medium",
+                                closeButton: false,
+                                message: "File must be a CSV (.csv). Ensure the uploaded file meets this requirement before continuing."
+                            });
         return false;
     }
 
