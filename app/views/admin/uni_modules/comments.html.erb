@@ -9,6 +9,7 @@
             </button>
             <ul class="dropdown-menu">
                <li> <a id="delete-all" style="cursor:pointer;"><i class='fa fa-trash' aria-hidden='true'></i>&nbsp;&nbsp;Delete selected</a></li>
+               <li> <a id="unflag-all" style="cursor:pointer;"><i class='fa fa-flag-o' aria-hidden='true'></i>&nbsp;&nbsp;Unflag selected</a></li>
             </ul>
          </div>
          <% end %>
@@ -161,6 +162,61 @@
                    }
    
    
+               }
+           })
+       });
+
+       $("#unflag-all").click(function(event) {
+           bootbox.confirm({
+               title: "Unflag selected confirmation",
+               size: "medium",
+               closeButton: false,
+               message: "Are you sure you want to unflag the selected reviews?",
+               buttons: {
+                   confirm: {
+                       label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                       className: 'btn-success'
+                   },
+                   cancel: {
+                       label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                       className: 'red-btn pull-left'
+                   }
+               },
+               callback: function(result) {
+
+
+
+                   if (result == true) {
+                       event.preventDefault();
+                       var checkboxValues = $("#data-area input:checkbox:checked").map(function() {
+                           return $(this).val();
+                       }).get(); // <----
+                       //console.log(checkboxValues);
+
+                       $.ajax({
+                           type: "POST",
+                           url: "<%= admin_uni_modules_bulk_unflag_comments_path %>",
+                           context: document.body,
+                           data: {
+                               ids: JSON.stringify(checkboxValues)
+                           },
+
+                           success() {
+                               bootbox.alert({
+                                   title: "Completed bulk deletion",
+                                   size: "medium",
+                                   closeButton: false,
+                                   message: "The bulk action has been applied",
+                                   callback: function() {
+                                       location.reload();
+                                   }
+                               })
+                           }
+                       })
+
+                   }
+
+
                }
            })
        });
