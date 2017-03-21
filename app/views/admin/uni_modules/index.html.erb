@@ -86,7 +86,11 @@
                 <% if count == 0 %>
                     <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews".html_safe, admin_comment_path(uni_module), method: :get %></div>
                 <% else %>
-                    <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews <i style='color: #c77067;' class='fa fa-flag' aria-hidden='true'></i>".html_safe, admin_comment_path(uni_module), method: :get %></div>
+                    <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews".html_safe, admin_comment_path(uni_module), method: :get %>
+                    <div style="display:inline-block">
+                      <a class="help-tooltip"  data-toggle="tooltip"  data-placement="right" href="<%= admin_comment_path(uni_module) %>" title="This module contains reviews flagged by users"><i style='color: #c77067;' class='fa fa-flag' aria-hidden='true'></i></a>
+                    </div>
+                    </div>
                 <% end %>
 
                 <div class="col-md-3"><%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_uni_module_path(uni_module), method: :delete,

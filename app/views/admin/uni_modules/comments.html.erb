@@ -45,11 +45,11 @@
             <td class="no-link checkboxes">
                <div class="checkbox" style="margin:0px;display:inline-block;">
                   <input type="checkbox" name="check_action[]" id="check_individual" value="<%= comment.id %>" class="toggle-bulk" /><label for="check_individual"><span></span></label>
-                 <% if comment.reported_users.length > 0 %>
-                     <div style="display: inline-block;"><i style='color: #c77067;' class='fa fa-flag' aria-hidden='true'></i></div>
-                 <% end %>
-
                </div>
+                 <% if comment.reported_users.length > 0 %>
+                     <div style="display: inline-block;"><a class="help-tooltip"  data-toggle="tooltip"  data-placement="right" title="This review has been flagged by users as requiring attention"><i style='color: #c77067;' class='fa fa-flag' aria-hidden='true'></i></a></div>
+                 <% end %>
+ 
             </td>
             <td class="cell-data cell-data--string"><%= comment.created_at.strftime("%d %B %Y at %H:%M %p")%></td>
             <td class="cell-data cell-data--string"><% if comment.created_at != comment.updated_at %><i class="fa fa-check" aria-hidden="true" ></i><% else %>-<%end%></td>
