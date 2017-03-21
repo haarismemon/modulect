@@ -146,24 +146,38 @@ module Admin
             # Add departments attribute to create and/or link departments to this course
             # Lookup if Course already exists: Course is unique by name + year combo
             created_course = Course.find_by(name: new_record['name'], year: new_record['year'])
+            # Track if Course failed to be created
+            course_verification_failed = false
             if created_course.nil?
-              # Create the Course
-              created_course = Course.create!(new_record.except('departments'))
+              # Store any verification errors + Create Course
+              created_course_errors = Course.create!(new_record.except('departments')).errors.full_messages
+              if created_course_errors.any?
+                course_verification_failed = true
+                # Flash errors
+                created_course_errors.each { |message| flash[:error] = "Creation failed: #{message}" }
+              else
+                # Find created course
+                created_course = Course.find_by(name: new_record['name'], year: new_record['year'])
+              end
             else
               # Update the existing Course
               created_course.update(new_record.except('departments'))
             end
-            # Transform string of departments into array of departments
-            departments_s = new_record['departments']
-            departments_s = departments_s.gsub('; ', ';')
-            departments_a = departments_s.split(';')
-            # For every entered department
-            departments_a.each do |dept_name|
-              # Look for a department with the name
-              department_found = Department.find_by_name(dept_name)
-              unless department_found.nil?
-                # Add the found department to the departments the course belongs to
-                created_course.departments << department_found
+            unless course_verification_failed
+              # Transform string of departments into array of departments
+              departments_s = new_record['departments']
+              departments_s = departments_s.gsub('; ', ';')
+              departments_a = departments_s.split(';')
+              # For every entered department
+              departments_a.each do |dept_name|
+                # Look for a department with the name
+                department_found = Department.find_by_name(dept_name)
+                unless department_found.nil?
+                  # Add the found department to the departments the course belongs to
+                  created_course.departments << department_found
+                else flash[:error] = "Department with name: #{dept_name} does not exist and therefore has not
+                                        been linked to Course: #{new_record['name']}, #{new_record['year']}"
+                end
               end
             end
 
