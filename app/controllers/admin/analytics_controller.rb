@@ -51,12 +51,9 @@ module Admin
   			end
       end
 
-      # allows filtering by course
-			if params[:course].present? && Course.exists?(params[:course].to_i)
-				@course = Course.find(params[:course].to_i)
-			else
-				@course = "any"
-			end
+
+
+      
 
 			
 		end

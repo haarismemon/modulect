@@ -21,6 +21,7 @@ module AnalyticsHelper
 	# get all the unimodules from department / course
 	# if "any", return all
 	def get_uni_modules(department_id, course_id)
+=begin
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil? && course_id != "any" && is_number?(course_id) && !Course.find(course_id.to_i).nil?
 			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i)) && check_mod_in_course(uni_module.id, course_id) }
 		elsif department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
@@ -29,20 +30,10 @@ module AnalyticsHelper
 			uni_modules = UniModule.all
 		end
 		uni_modules
+=end
 	end
 
-  # check that a module is part of a course
-  def check_mod_in_course(uni_module_id, course_id)
-    course = Course.find(course_id)
-    course.year_structures.each do |year|
-      year.groups.each do |group|
-        if group.uni_modules.include?(UniModule.find(uni_module_id))
-          return true
-        end
-      end
-    end
-    return false
-  end
+ 
 
 	# sort, filter and format the resulting dataset
 	def format_ouput_data(input_hash, sort_by, number_to_show)
@@ -151,10 +142,9 @@ module AnalyticsHelper
 
 
 
-	def get_review_modules_analytics(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_review_modules_analytics(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
-		uni_modules = get_uni_modules(department_id, course_id)
 
 		uni_modules.each do |uni_module|
 			uni_module.comments.each do |comment|
@@ -175,10 +165,9 @@ module AnalyticsHelper
 	end
 
 	# most/least highly rated modules
-	def get_rating_modules_analytics(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_rating_modules_analytics(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
 
 		uni_modules_data = Hash.new
-		uni_modules = get_uni_modules(department_id, course_id)
 					
 		uni_modules.each do |uni_module|
 			uni_module.comments.each do |comment|
@@ -204,9 +193,8 @@ module AnalyticsHelper
 	end
 
 	# most/least active courses
-	def get_active_courses(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_active_courses(users, amount_time, time_period, from_date, sort_by, number_to_show)
 		courses_data = Hash.new
-		users = get_users(department_id)
 
 		users.each do |user|
 			if user.course_id.present?
@@ -227,7 +215,6 @@ module AnalyticsHelper
 	# most/least active department
 	def get_active_departments(amount_time, time_period, from_date, sort_by, number_to_show)
 		departments_data = Hash.new
-		users = get_users("any")
 
 		users.each do |user|
 			if user.department_id.present?
@@ -247,9 +234,9 @@ module AnalyticsHelper
 	end
 
 	# most/least active department (admin-wise)
-	def get_active_departments_admin_wise(amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_active_departments_admin_wise(users, amount_time, time_period, from_date, sort_by, number_to_show)
 		departments_data = Hash.new
-		users =  User.all.select{ |user| user.user_level == "department_admin_access"}
+		users =  users.select{ |user| user.user_level == "department_admin_access"}
 
 		users.each do |user|
 			department = Department.find(user.department_id)
@@ -267,9 +254,8 @@ module AnalyticsHelper
 	end
 
 	# most/least active users by number of saved
-	def get_active_user(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_active_user(users, amount_time, time_period, from_date, sort_by, number_to_show)
 		users_data = Hash.new
-		users = get_users(department_id)
 
 		users.each do |user|
 			if user.uni_modules.size > 0
@@ -291,10 +277,8 @@ module AnalyticsHelper
 	end
 
 	# most/least saved modules
-	def get_saved_modules(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_saved_modules(uni_modules, users, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
-		uni_modules = get_uni_modules(department_id, course_id)
-		users = get_users(department_id)
 				
 		users.each do |user|
 			if user.uni_modules.size > 0
@@ -315,9 +299,8 @@ module AnalyticsHelper
 	end
 
 	# most/least clicked modules
-	def get_visited_modules(department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_visited_modules(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
-		uni_modules = get_uni_modules(department_id, course_id)
 
 		UniModuleLog.all.each do |log|
 			if UniModule.find(log.uni_module_id)
