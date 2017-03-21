@@ -1,6 +1,11 @@
+<%#
+  Analytics which displays Modulect analytics based on data which is collected through user activity. 
+  The different tabs separate out the various data categories available to the user.
+  Different partials are used to render different areas of the page. See each partial for details.
+  Department admins and super admins have different views (slightly) in that a department admin only sees data relevant to them
+%>
 <% provide(:title, 'Analytics') %>
 <style>
-/** we gotta move this when we finish **/
    #analytics-page .header-item{border-right:1px solid #dfe2e1;}
    #analytics-page .header-item.last{border-right:0px;}
    #analytics-page .tab-pane{padding-left:20px;padding-right: 20px;}

@@ -1,3 +1,7 @@
+<%# The quick search partial is used to display information about the number of quick searches, trending careers and any associated modules (e.g. most saved, most visited from quick search).
+
+The main graph shows the number of quick searches in the time period. 
+%>
 <div class="row" >
    <div class="col-md-12  login-card header-card" style="">
       <div class="col-md-3 header-item">
@@ -17,8 +21,6 @@
          </div>
          <% end %>
       </div>
-
-
        <div class="col-md-3 header-item">
          <div class="small-header"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The tag which was most searched for">Most searched (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
@@ -26,16 +28,11 @@
          <div class="main-figure">
          <% most_searched_tag = get_top_size_check_analytics(get_clicked_tags(@department,1,@time_period,Time.now,"most", 1)) %>
             <%= get_top_module_name(most_searched_tag) %>
-         </div>
-        
+         </div>      
          <div class="percentage-change">
             across any type of search
          </div>
       </div>
-
-
-
-
       <div class="col-md-3 header-item">
          <div class="small-header"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most clicked module from search results">Most clicked module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
@@ -48,8 +45,6 @@
             <%= get_top_module_name(most_clicked_module) %>
          </div>
       </div>
-
-
       <div class="col-md-3 header-item last">
          <div class="small-header"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most saved module from results">Most saved module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
@@ -106,19 +101,8 @@
          
       </script>
    </div>
-
-
-
-
-
-
-
 <% most_visited_modules = get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 10) %>
-
-
    <div class="row">
-
-
       <div class="col-md-6" >
          <div class="col-md-12 login-card subox-card">
          <% if most_visited_modules.size != 0 %>
@@ -149,11 +133,7 @@
             	
          </div>
       </div>
-
-
 <% most_clicked_tags = get_clicked_tags(@department,1,@time_period,Time.now,"most", 10) %>
-
-
        <div class="col-md-6" >
          <div class="col-md-12 login-card subox-card">
          <% if most_clicked_tags.size != 0 %>
@@ -184,22 +164,5 @@
             	
          </div>
       </div>
-
-
-      
-
-
-
    </div>
-
-
-
-
-
-
-
-
-
-
-
 </div>

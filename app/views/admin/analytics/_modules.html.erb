@@ -1,8 +1,7 @@
+<%# The module partial is used to display general information about modules and tags which may be of interest to the user (e.g. most saved, most visited)
+%>
 <div class="row" >
    <div class="col-md-12  login-card header-card" style="">
-
-
-
 
       <div class="col-md-3 header-item">
          <div class="small-header"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most clicked module from search results">Most clicked module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
@@ -59,17 +58,8 @@
       
    </div>
   
-
-
-
-
-
 <% most_visited_modules = get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 20) %>
-
-
    <div class="row">
-
-
       <div class="col-md-6" >
          <div class="col-md-12 login-card subox-card">
          <% if most_visited_modules.size != 0 %>
@@ -98,9 +88,7 @@
          </div>
       </div>
 
-
 <% most_saved_modules = get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 20) %>
-
 
        <div class="col-md-6" >
          <div class="col-md-12 login-card subox-card">
@@ -129,21 +117,11 @@
             	
          </div>
       </div>
-
-
-      
-
-
-
    </div>
-
 
    <% most_reviewed_modules = get_review_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 20) %>
 
-
    <div class="row">
-
-
       <div class="col-md-6" >
          <div class="col-md-12 login-card subox-card">
          <% if most_reviewed_modules.size != 0 %>
@@ -172,9 +150,7 @@
          </div>
       </div>
 
-
 <% most_highly_rated_modules = get_rating_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 20) %>
-
 
        <div class="col-md-6" >
          <div class="col-md-12 login-card subox-card">
@@ -203,23 +179,5 @@
             	
          </div>
       </div>
-
-
-      
-
-
-
    </div>
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
