@@ -244,16 +244,14 @@ module AnalyticsHelper
 	def get_saved_modules(uni_modules, users, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
 				
-		users.each do |user|
-			if user.uni_modules.size > 0
-				user.uni_modules.each do |uni_module|
-					if uni_modules.include?(uni_module) && date_check(amount_time, time_period, from_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at)
-						if uni_modules_data.key?(uni_module)
-							uni_modules_data[uni_module] += 1
-						else
-							uni_modules_data[uni_module] = 1
-						end	
-					end
+		SavedModule.all.each do |record|
+			user = User.find(record.user_id)
+			uni_module = UniModule.find(record.uni_module_id)
+			if users.include?(user) && date_check(amount_time, time_period, from_date, record.created_at)
+				if uni_modules_data.key?(uni_module)
+					uni_modules_data[uni_module] += 1
+				else
+					uni_modules_data[uni_module] = 1
 				end
 			end
 		end
