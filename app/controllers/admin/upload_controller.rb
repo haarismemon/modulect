@@ -125,12 +125,8 @@ module Admin
                 # Retrieve the existing faculty
                 faculty_entry = Faculty.find_by_name(new_record['name'])
               end
-              # Transform string of departments into array of departments
-              departments_s = new_record['departments']
-              departments_s = departments_s.gsub('; ', ';')
-              departments_a = departments_s.split(';')
               # For every entered department
-              departments_a.each do |dept_name|
+              parse_mult_association_string(new_record['departments']).each do |dept_name|
                 # Look for a department with the name
                 department_found = Department.find_by_name(dept_name)
                 if department_found.nil?
@@ -165,12 +161,8 @@ module Admin
               created_course.update(new_record.except('departments'))
             end
             unless course_verification_failed
-              # Transform string of departments into array of departments
-              departments_s = new_record['departments']
-              departments_s = departments_s.gsub('; ', ';')
-              departments_a = departments_s.split(';')
               # For every entered department
-              departments_a.each do |dept_name|
+              parse_mult_association_string(new_record['departments']).each do |dept_name|
                 # Look for a department with the name
                 department_found = Department.find_by_name(dept_name)
                 unless department_found.nil?
@@ -203,12 +195,8 @@ module Admin
                   'career_tags',
                   'interest_tags'))
             end
-            # Transform string of departments into array of departments
-            departments_s = new_record['departments']
-            departments_s = departments_s.gsub('; ', ';')
-            departments_a = departments_s.split(';')
             # For every entered department
-            departments_a.each do |dept_name|
+            parse_mult_association_string(new_record['departments']).each do |dept_name|
               # Look for a department with the name
               department_found = Department.find_by_name(dept_name)
               unless department_found.nil?
@@ -218,11 +206,7 @@ module Admin
             end
 
             # Add prerequisite modules
-            # Transform string of modules into array
-            pre_req_modules = new_record['prerequisite_modules']
-            pre_req_modules = pre_req_modules.gsub('; ', ';')
-            pre_req_modules = pre_req_modules.split(';')
-            pre_req_modules.each do |module_name|
+            parse_mult_association_string(new_record['prerequisite_modules']).each do |module_name|
               module_found = UniModule.find_by_name(module_name)
               unless module_found.nil?
                 # Add the found module to this modules prerequisites
@@ -231,10 +215,7 @@ module Admin
             end
 
             # Add career_tags
-            career_tags = new_record['career_tags']
-            career_tags = career_tags.gsub('; ', ';')
-            career_tags = career_tags.split(';')
-            career_tags.each do |career_tag_name|
+            parse_mult_association_string(new_record['career_tags']).each do |career_tag_name|
               # Lookup if tag with same name exists already
               career_tag_found = CareerTag.find_by(name: career_tag_name, type: 'CareerTag')
               if career_tag_found.nil?
@@ -247,10 +228,7 @@ module Admin
             end
 
             # Add interest_tags
-            interest_tags = new_record['interest_tags']
-            interest_tags = interest_tags.gsub('; ', ';')
-            interest_tags = interest_tags.split(';')
-            interest_tags.each do |interest_tag_name|
+            parse_mult_association_string(new_record['interest_tags']).each do |interest_tag_name|
               # Lookup if tag with same name exists already
               interest_tag_found = InterestTag.find_by(name: interest_tag_name, type: 'InterestTag')
               if interest_tag_found.nil?
