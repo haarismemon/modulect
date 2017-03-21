@@ -67,6 +67,7 @@ module Admin
           TagLog.destroy_all
           UniModuleLog.destroy_all
           VisitorLog.destroy_all
+          SuggestedPathway.destroy_all
 
         	app_settings.update_attributes(:offline_message => "", :allow_new_registration => true, :tag_percentage_match => 60.0, :disable_new_reviews => false, :disable_all_reviews => false)
 

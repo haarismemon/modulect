@@ -9,7 +9,7 @@ module Admin
 		end
 
 		def edit
-			@pathway = Pathway.find_by(id: params[:id])
+			@pathway = SuggestedPathway.find_by(id: params[:id])
 		end
 
 		

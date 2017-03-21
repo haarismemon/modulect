@@ -9,7 +9,7 @@
             :back, class: "button tool-box" %>
   </div>
 </header>
-<% @course.pathways.each do |pathway| %>
+<% @course.suggested_pathways.each do |pathway| %>
 	<div class = "col-md-12 login-card" style="text-align: left;margin-bottom: 20px;">
     	<div>
         	<h3><span class="glyphicon glyphicon-pushpin-sm"></span><%= pathway.name %></h3>
@@ -55,7 +55,7 @@ function deletePathway(id){
                     $.ajax({
                         type: "POST",
                         context: document.body,
-                        url: "<%= application_delete_course_pathway_path %>",
+                        url: "<%= application_delete_suggested_course_pathway_path %>",
 						data: {
 				    			pathway_id: id
 				    	},

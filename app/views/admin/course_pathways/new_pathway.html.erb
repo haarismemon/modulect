@@ -96,7 +96,7 @@ function savePathway(){
 	}else{
 		$.ajax({
 		    type: "POST",
-		    url: "<%= application_save_course_pathway_path %>",
+		    url: "<%= application_save_suggested_course_pathway_path %>",
 		    data: {
 		        name: document.getElementById('save-name').value,
 		        data: JSON.stringify(selected_ids),
