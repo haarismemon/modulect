@@ -103,7 +103,7 @@ module Admin
               new_record = new_record.except('faculty_name')
               # Check whether to update a department or create a new one
               if Department.find_by_name(new_record['name']).nil?
-                Department.create!(new_record)
+                Department.create(new_record).errors.full_messages.each { |message| flash[:error] = "Creation failed: #{message}" }
               else
                 Department.update(new_record)
               end
@@ -246,8 +246,6 @@ module Admin
             session[:resource_name].to_s.classify.constantize.create!(new_record)
           end
         end
-
-        flash[:success] = "Processed #{parsed_csv.length} new #{session[:resource_name]}"
       end
 
       redirect_to :back
