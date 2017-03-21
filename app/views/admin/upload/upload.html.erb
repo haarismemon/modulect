@@ -1,26 +1,31 @@
+<% provide(:title, 'Upload data') %>
 <style>
-  @media (min-width: 990px) {
-    .row {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-    }
-
-    .row > [class*='col-'] {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .login-card {
-      height: 100%;
-      text-align: center;
-    }
+  #csv-upload-file-area .input-group-btn{
+    padding-left:20px;
   }
-</style>
 
+  #csv-upload-file-area .krajee-default.file-preview-frame:not(.file-preview-error):hover{
+    box-shadow: 0px 0px 0px 0px black;
+  }
+
+  #csv-upload-file-area .file-preview-frame{
+    width: 98%;
+    border:0px;
+    box-shadow: 0px 0px 0px 0px black;
+  }    
+
+  #csv-upload-file-area .file-preview-text{width: 100%;color:#555459;}
+
+  #csv-upload-file-area .kv-fileinput-caption{
+    padding: 7px 0px 28px 10px;
+  }
+
+  #csv-upload{cursor: pointer}
+
+  #csv-upload-file-area .btn-file{border:0px;margin-left: 5px;}
+
+ 
+</style>
 <h1 style="font-size: 1.728em; margin-bottom: 30px;">Upload Data</h1>
 
 <div id="upload-instructions" class="col-lg-12 login-card">
@@ -51,7 +56,7 @@
         </select>
       </div>
       <div class="form-entry text-center" style="margin-top: 20px;">
-        <a id="upload-1-next" class="btn btn-md">Next</a>
+        <a id="upload-1-next" class="btn btn-md">Next&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></a>
       </div>
     </form>
   </div>
@@ -59,26 +64,27 @@
   <div id="upload-step-2" class="col-lg-12 login-card" style="margin-bottom: 20px; display: none;">
     <h3>Step 2: Download CSV template</h3>
     <div class="form-entry text-center" style="margin-top: 20px;">
-      <%= button_to 'Download', admin_download_path(resource_choice: 'default'), class: 'btn btn-md', id: 'upload-2-next' %>
+      <%= button_to 'Download', admin_download_path(resource_choice: 'default'), class: 'btn btn-md upload-2-next' %>
+      <div style="margin-top:20px;"><a class="upload-2-next" style="cursor: pointer;">Continue without downloading</a></div>
     </div>
   </div>
 
-  <div id="upload-help" class="col-lg-12 login-card" style="margin-bottom: 20px; display: none;">
-    <a id="upload-help-toggle">Click here for help on how to fill out the CSV</a>
+  <div id="upload-help" class="col-lg-12 login-card" style="margin-bottom: 15px; display: none;padding-top: 15px;padding-bottom: 15px;">
+    <a id="upload-help-toggle" style="cursor: pointer;"><i class="fa fa-question-circle" aria-hidden="true"></i>&nbsp;&nbsp; How do I fill out the CSV?</a>
     <div id="upload-help-content" class="text-center" style="margin-top: 20px; display: none;">
       <p>Here's an example of what a valid CSV might look like:</p>
       <ul class="nav nav-pills">
-        <li class="nav-item">
+        <li class="nav-item" style="cursor: pointer;">
           <a class="nav-link active" id="upload-help-modules-link">Modules</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" style="cursor: pointer;">
           <a class="nav-link" id="upload-help-courses-link">Courses</a>
         </li>
         <% if current_user.user_level == 'super_admin_access' %>
-            <li class="nav-item">
+            <li class="nav-item" style="cursor: pointer;">
               <a class="nav-link" id="upload-help-departments-link">Departments</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" style="cursor: pointer;">
               <a class="nav-link" id="upload-help-faculties-link">Faculties</a>
             </li>
         <% end %>
@@ -184,7 +190,7 @@
           </div>
       <% end %>
       <br>
-      <a id="upload-help-close">Close</a>
+      <a id="upload-help-close" style="cursor: pointer;"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Close</a>
     </div>
   </div>
 
@@ -192,8 +198,13 @@
     <h3>Step 3: Upload data</h3>
     <div class="form-entry text-center" style="margin-top: 20px;">
       <%= form_tag('/admin/upload/upload_csv', method: 'post', multipart: true) do %>
-          <%= file_field_tag :csv_upload, id: 'csv-upload', onchange: 'validate_file_extension(this.value);', required: true, accept: 'text/csv' %>
+      <div id="csv-upload-file-area">
+          <%= file_field_tag :csv_upload, id: 'csv-upload', onchange: 'validate_file_extension(this.value);', required: true, accept: 'text/csv', class: "file", data: { "show-upload": "false" } %>
+      </div>
+
+          <div style="margin-top:20px;">
           <%= submit_tag 'Upload', id: 'upload-3-next', class: 'btn btn-md' %>
+          </div>
       <% end %>
     </div>
   </div>
@@ -216,8 +227,12 @@
         $("#upload-3-next").hide();
         // Delete currently selected file
         $("#csv-upload").val(null);
-        alert("File must be a CSV (.csv). Ensure the uploaded file meets " +
-            "this requirement before continuing.");
+         bootbox.alert({
+                                title: "File type mismatch",
+                                size: "medium",
+                                closeButton: false,
+                                message: "File must be a CSV (.csv). Ensure the uploaded file meets this requirement before continuing."
+                            });
         return false;
     }
 
@@ -231,7 +246,7 @@
             $("#upload-step-2").show();
         });
 
-        $("#upload-2-next").on("click", function () {
+        $(".upload-2-next").on("click", function () {
             $("#upload-step-3").show();
             $("#upload-help").show();
             var resource_name = $("select#upload-resource").val();
