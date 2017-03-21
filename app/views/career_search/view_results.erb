@@ -1,3 +1,6 @@
+<%#
+   This page is reslts stage of the career search whereby a user can see the resulting careers from their search.
+%>
 <% provide(:title, 'Potential Careers - Career Search') %>
 <% if request.query_parameters["sl"].present? &&  request.query_parameters["sl"] == "true"%>
   <% add_to_search_log("career") %>
