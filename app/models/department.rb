@@ -4,6 +4,8 @@ class Department < ApplicationRecord
   has_many :users
   has_and_belongs_to_many :courses
   has_and_belongs_to_many :uni_modules
+  has_one :notice
+
   belongs_to :faculty, optional: true
 
   # Registers a course as belonging to this department.
@@ -12,18 +14,11 @@ class Department < ApplicationRecord
   end
 
   def self.to_csv
-    base_attributes = %w{name}
-    csv_header = ["Name", "Faculty"]
-
-    CSV.generate(headers:true) do |csv|
-      csv << csv_header.each { |att| att.titleize }
-
-      all.each do |department|
-        to_append = department.attributes.values_at(*base_attributes)
-
-        to_append << department.faculty.to_s
-
-        csv << to_append
+    attributes = %w{name}
+    CSV.generate(headers:true)do |csv|
+      csv << [attributes.first,'faculty_name']
+      all.each do |dept|
+        csv << dept.attributes.values_at(*attributes) + [*Faculty.find(dept.faculty_id).name]
       end
     end
   end

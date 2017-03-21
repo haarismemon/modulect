@@ -42,7 +42,7 @@ RSpec.describe Faculty, type: :model do
   describe ".to_csv" do
     let! (:department) { create(:department, faculty: faculty) }
     let (:csv_content) { Faculty.to_csv }
-    let (:csv_header) { "Name,Departments\n" }
+    let (:csv_header) { "name,departments\n" }
 
     before do
       faculty.save

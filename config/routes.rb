@@ -6,10 +6,16 @@ Rails.application.routes.draw do
     resources :departments
     resources :faculties
     resources :groups
+    resources :notices
     resources :uni_modules
     patch '/uni_modules' => 'uni_modules#create'
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
+    resources :course_pathways  do
+      member do
+        get :new_pathway
+      end
+    end
 
     # GENERAL
     get 'upload', to: 'upload#upload'
@@ -31,6 +37,7 @@ Rails.application.routes.draw do
     post '/faculties/bulk_delete', to: 'faculties#bulk_delete'
     post '/faculties/clone', to: 'faculties#clone'
     post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
+    post '/uni_modules/bulk_delete_comments', to: 'uni_modules#bulk_delete_comments'
     post '/users/bulk_activate', to: 'users#bulk_activate'
     post '/users/bulk_deactivate', to: 'users#bulk_deactivate'
     post '/users/bulk_delete', to: 'users#bulk_delete'
@@ -39,6 +46,8 @@ Rails.application.routes.draw do
     post '/users/make_student_user', to: 'users#make_student_user'
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
+    post '/notices/bulk_delete', to: 'notices#bulk_delete'
+    post '/notices/clone', to: 'notices#clone'
 
     # RESET MODULECT
     post '/reset_modulect', to: 'base#reset_modulect'
@@ -100,7 +109,12 @@ Rails.application.routes.draw do
   get 'pathway-search/begin'
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
-  get 'pathway-search/view_results_test'
+  post 'pathway-search/increment_pathway_search_log', to: 'pathway_search#increment_pathway_search_log'
+  post 'pathway-search/decrement_pathway_search_log', to: 'pathway_search#decrement_pathway_search_log'
+  # Pathway search analytics
+  get '/*all/update_modules', to: 'admin/analytics#update_modules', defaults: { format: 'js' }
+  get '/*all/update_selected_module', to: 'admin/analytics#update_selected_module', defaults: { format: 'js' }
+  get '/*all/update_selected_department', to: 'admin/analytics#update_selected_department', defaults: { format: 'js' }
 
 
   # Career search
@@ -114,12 +128,16 @@ Rails.application.routes.draw do
   resources :uni_modules, only: [:show] do
     resources :comments
   end
+  get 'admin/uni_modules/:id/comments', to: 'admin/uni_modules#comments', as: 'admin_comment'
 
 
   # AJAX
   # Save pathways and modules, and create tags used in ajax
   post 'application/save_module'
   post 'application/save_pathway'
+  post 'application/save_course_pathway'
+  post 'application/delete_course_pathway'
+  post 'application/update_course_pathway'
   post 'application/delete_pathway'
 
   get 'application/rating_for_module'
@@ -129,6 +147,7 @@ Rails.application.routes.draw do
   post 'comments/like'
   post 'comments/edit'
   post 'comments/delete'
+  delete 'comments/destroy'
 
 
   # ERROR PAGES

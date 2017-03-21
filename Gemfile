@@ -26,6 +26,8 @@ gem 'cocoon'
 gem 'selectize-rails'
 gem 'kaminari'
 gem 'tinymce-rails',          '~> 4.3'
+gem 'device_detector'
+
 
 group :development, :test do
   gem 'sqlite3'
@@ -45,7 +47,6 @@ group :development do
   gem 'guard-rspec', require: false
   gem "better_errors"
   gem "binding_of_caller"
-  gem "pry-rails"
 end
 
 group :test do

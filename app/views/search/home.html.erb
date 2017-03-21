@@ -27,6 +27,8 @@
                     </div>
                   <% end %>
                 </div>
+              <%# sl= should log %>
+              <input type="hidden" name="sl" value="true">
               </form>
               <script>
               var tags = [];
@@ -119,5 +121,13 @@
 </div>
 </div>
 </div>
-</div>
-</div>
+         <% if (@current_user && @current_user.department_id.present?)||(!@notices.empty?&&(@current_user.nil?||@current_user=="super_admin_accless")) %>
+             <%= render "search/notice_board" %>
+         <% end %>
+       </div>
+
+
+      </div>
+
+
+

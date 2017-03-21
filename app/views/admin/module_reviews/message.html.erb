@@ -3,3 +3,8 @@
   <h1 class="page-title">Module Reviews</h1>
 </header>
 <p>Module Reviews can be managed by going to the individual module page. <a href="<%= admin_uni_modules_path%>">Go now ></a></p>
+<% if app_settings.disable_all_reviews %>
+<p>Note: the System Administrators have currently turned off all module reviews.</p>
+<% elsif app_settings.disable_new_reviews%>
+<p>Note: the System Administrators have currently turned off new module reviews.</p>
+<% end %>

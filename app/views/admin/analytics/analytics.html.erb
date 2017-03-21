@@ -1,98 +1,69 @@
 <% provide(:title, 'Analytics') %>
 <style>
-@import url('https://fonts.googleapis.com/css?family=Quicksand');
-#analytics-page .login-card{padding-left: 15px;}
-.header-item{border-right:1px solid #dfe2e1;}
-.header-item.last{border-right:0px;}
-
-@media(max-width:991px) {
-   .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;}
-   .header-item.last{border-right:0px;}
+/** we gotta move this when we finish **/
+   #analytics-page .header-item{border-right:1px solid #dfe2e1;}
+   #analytics-page .header-item.last{border-right:0px;}
+   #analytics-page .tab-pane{padding-left:20px;padding-right: 20px;}
+   #analytics-page .small-header{font-weight:300;margin-bottom:5px;}
+   #analytics-page .main-figure{font-size:42px;margin-bottom:5px;}
+   #analytics-page .percentage-change{}
+   #analytics-page .green{color: #2ab27b;}
+   #analytics-page .red{color:#c77067;}
+   #analytics-page .header-card{padding-left: 0px;padding-right: 0px;padding-bottom: 0px;}
+   #analytics-page .header-item .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;font-family: "Open Sans"}
+   #analytics-page .overview-card{min-height: 320px;}
+   #analytics-page .subox-card{padding-left: 20px;padding-right: 20px;}
+   #analytics-page .subox-card .small-header {margin-bottom: 20px;}
+   #analytics-page .subox-card .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
+   #analytics-page .expand-link a{color:#337ab7;font-family: "Open Sans";font-size: 12px;}
+   #analytics-page .trending-list{margin-left:15px;}
+   #analytics-page .trending-list li{ list-style: decimal;margin-bottom: 5px;font-size:16px;font-family: "Open Sans"}
+   .side-right{float:right;width:130px;}
+   .side-right .dropdown-toggle,
+   .side-right .dropdown-toggle:hover,
+   .side-right .dropdown-toggle:focus,
+   .side-right .dropdown-toggle:active {
+   background: whitesmoke;
+   color: #333;
+   box-shadow: 0px 3px 0px 0px #dfe2e1;
+   outline: none;
+   width: 130px;
+   font-size:13px;
+   padding-bottom: 0px;
+   }
+   #pagination-bottom .bootstrap-select{width:100px}
+   @media(max-width:991px) {
+   #analytics-page .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;text-align: center;}
+   #analytics-page .header-item.last{border-bottom:0px;}
    #analytics-tabs li{display: block;float:none;}
-}
+   }
 </style>
-<header class="header">
-   <h1 class="page-title">Analytics</h1>
-   <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-            :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
-</header>
+
+<%= render partial: "admin/analytics/header" %>
+
 <div id="analytics-page">
-   <script type="text/javascript">
-      $(function () {
-          var hashTab = window.location.hash;
-          if (hashTab != '') {
-              $('.nav-tabs a[href="' + hashTab + '"]').tab('show');
-              $(hashTab).addClass('active');
-          }
-      });
-      
-   </script>
-   <ul id="analytics-tabs" class="nav nav-tabs" style="margin-top:-10px;">
-      <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
-      <li><a data-toggle="tab" href="#quick-search">Quick Search</a></li>
-      <li><a data-toggle="tab" href="#pathway-search">Pathway Search</a></li>
-      <li><a data-toggle="tab" href="#career-search">Career Search</a></li>
-   </ul>
+
+<%= render partial: "admin/analytics/tabs" %>
+
    <div class="tab-content" style="margin-top:30px;">
       <div id="overview" class="tab-pane fade in active">
-         <div class="row" >
-            <div class="col-md-12  login-card" style="padding-left: 0px;padding-right: 0px;">
-               <div class="col-md-2 header-item">Num visitors </div>
-               <div class="col-md-2 header-item">Num quick searches</div>
-               <div class="col-md-2 header-item">Num pathway searches</div>
-               <div class="col-md-2 header-item">Num career searches</div>
-               <div class="col-md-2 header-item">Item</div>
-               <div class="col-md-2 header-item last">Item</div>
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-md-12 login-card">
-               GRAPH AREA
-            </div>
-            <div class="row">
-               <div class="col-md-4" >
-                  <div class="col-md-12 login-card">
-                     Subgraph
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="col-md-12 login-card">
-                     Subgraph
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="col-md-12 login-card">
-                     Subgraph
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-4" >
-                  <div class="col-md-12 login-card">
-                     Subgraph
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="col-md-12 login-card">
-                     Subgraph
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="col-md-12 login-card">
-                     Subgraph
-                  </div>
-               </div>
-            </div>
-         </div>
+         <%= render partial: "admin/analytics/overview" %>
       </div>
-      <div id="quick-search" class="tab-pane fade">
-         Quick search
+      <div id="quick-search" class="tab-pane fade">      
+         <%= render partial: "admin/analytics/quick_search" %>
       </div>
-      <div id="pathway-search" class="tab-pane fade">
-         Pathway search
+      <div id="pathway-search" class="tab-pane fade">   
+         <%= render partial: "admin/analytics/pathway_search" %>
       </div>
       <div id="career-search" class="tab-pane fade">
-         Caree search
+         <%= render partial: "admin/analytics/career_search" %>
+      </div>
+      <div id="modules" class="tab-pane fade">
+         <%= render partial: "admin/analytics/modules" %>
+      </div>
+      <div id="tags" class="tab-pane fade">
+         <%= render partial: "admin/analytics/tags" %>
       </div>
    </div>
+</div>
 </div>

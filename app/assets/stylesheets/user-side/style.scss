@@ -817,6 +817,8 @@ th, td {
     margin-top:15px;
 }
 
+.mobile-block{display:inline-block}
+
 @media only screen and (max-width: 560px) {
     #footer-logo {
         width: 120px;
@@ -889,4 +891,6 @@ th, td {
     .career-row{
         margin-top:0px;
     }
+
+    .mobile-block{display:block;}
 }

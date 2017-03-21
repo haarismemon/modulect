@@ -1,0 +1,2 @@
+class TagLog < ApplicationRecord
+end

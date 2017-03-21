@@ -162,10 +162,12 @@ RSpec.describe Course, type: :model do
 
   describe ".to_csv" do
     let (:csv_content) { Course.to_csv }
-    let (:csv_header) { "Name,Description,Year\n" }
+    let (:csv_header) { "name,description,year,duration_in_years,departments\n" }
+    let (:department) { create(:department) }
 
     before do
       course.save
+      course.departments << department
     end
 
     it "outputs all saved courses" do
@@ -184,6 +186,10 @@ RSpec.describe Course, type: :model do
       expect(line).to include course.name
       expect(line).to include course.description
       expect(line).to include course.year.to_s
+      expect(line).to include course.duration_in_years.to_s
+      course.departments.each do |department|
+        expect(line).to include department.to_s
+      end
       i += 1
     end
   end

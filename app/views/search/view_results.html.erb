@@ -1,4 +1,7 @@
 <% provide(:title, 'Search Results') %>
+<% if request.query_parameters["sl"].present? &&  request.query_parameters["sl"] == "true"%>
+  <% add_to_search_log("quick") %>
+<% end %>
 <% sortby = request.query_parameters["sort_by"] %>
 <% module_results = sort_by(@results, sortby) %>
 <% @found_results = [] %>
@@ -42,6 +45,8 @@
             </div>
             <% end %>
           </div>
+           <%# sl= should log %>
+          <input type="hidden" name="sl" value="true">
         </form>
         <script>
           var tags = [];
