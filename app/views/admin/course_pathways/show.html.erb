@@ -6,7 +6,7 @@
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
   <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-            :back, class: "button tool-box" %>
+            edit_admin_course_path(params[:id]), class: "button tool-box" %>
   </div>
 </header>
 <% @course.suggested_pathways.each do |pathway| %>

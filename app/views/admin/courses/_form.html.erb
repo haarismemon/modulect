@@ -13,41 +13,7 @@ To modify this file access the partials within
 
     <%# error message %>
     <%= error_messages_for(f.object) %>
-    <% if action == "Update" %>
-        <%= render 'admin/application/course-partials/year_structures_set' %>
-    <% end %>
-
-    <% if Course.exists?(@course) %>
-        <%# pathway card  %>
-        <label style="font-size: 19px;margin: 20px 0px;"> Modify the pre-defined pathways for this course
-          <a class="help-tooltip" style="font-size:14px" data-toggle="tooltip" data-placement="right"
-             title="Pathways are admin-defined pools of optional modules for associated careers and matchings. It is to be used by the student as a indicator of what modules to pick. ">
-            [<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-
-        <div class="col-md-12 text-center" style="padding: 0px">
-          <div class="col-md-12 login-card">
-            <div class="col-md-12">
-              <div class="icon-row"><i class="fa fa-list-ul" aria-hidden="true"></i></div>
-              <div>
-                <h3>Suggested Course Pathways</h3>
-                <h5 style="margin-top: 20px">
-                  Suggested Pathways: <%= @course.pathways.count %>
-                </h5>
-              </div>
-              <div>
-                <div style="margin-top: 30px;padding-left:0px">
-                  <div class="form-group">
-                    <a id="manage-pathways" href="<%= admin_course_pathway_path(@course.id) %>" class="btn btn-lg"><span>Manage</span></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <label class="col-md-12" style="font-size: 19px;margin: 20px 0px; padding-left: 0px"> Modify course
-          structure</label>
-    <% end %>
-
+    
     <% path_of_field_store = "admin/application/fields/" %>
 
 
