@@ -307,13 +307,20 @@ module AnalyticsHelper
   end
 
 	# most/least clicked (trending) tags
-	def get_clicked_tags(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_clicked_tags(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show, type_of_tag)
 		
 		all_uni_modules = uni_modules
 
 		all_tags = []
 		all_uni_modules.each do |uni_module|
-			all_tags.concat uni_module.tags
+			if type_of_tag == "any"
+				all_tags.concat uni_module.tags
+			elsif type_of_tag == "career"
+				all_tags.concat uni_module.career_tags
+			elsif type_of_tag == "interest"
+				all_tags.concat uni_module.interest_tags
+			end
+				
 		end
 		all_tags = all_tags.uniq{|tag| tag.id}
 
@@ -341,77 +348,6 @@ module AnalyticsHelper
 
 	end
 
-	# most/least clicked (trending) tags
-	def get_clicked_career_tags(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
-
-		all_uni_modules = uni_modules
-		
-
-		all_tags = []
-		all_uni_modules.each do |uni_module|
-			all_tags.concat uni_module.career_tags
-		end
-		all_tags = all_tags.uniq{|tag| tag.id}
-
-		tags_data = Hash.new
-		TagLog.all.each do |log|
-			if Tag.find(log.tag_id)
-				tag = Tag.find(log.tag_id)
-				if all_tags.include?(tag) && date_check(amount_time, time_period, from_date, log.created_at)
-						tags_data[tag] = log.counter
-				end
-			end
-		end
-
-		# then sort based on request
-		if sort_by == "least"
-			tags_data = tags_data.sort_by {|_key, value| value}
-		elsif
-			tags_data = tags_data.sort_by {|_key, value| value}.reverse
-		end
-
-		if is_number?(number_to_show)
-			tags_data = tags_data.first(number_to_show)
-		end
-		tags_data
-
-	end
-
-	# most/least clicked (trending) tags
-	def get_clicked_interest_tags(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
-
-		all_uni_modules = uni_modules
-		
-
-		all_tags = []
-		all_uni_modules.each do |uni_module|
-			all_tags.concat uni_module.interest_tags
-		end
-		all_tags = all_tags.uniq{|tag| tag.id}
-
-		tags_data = Hash.new
-		TagLog.all.each do |log|
-			if Tag.find(log.tag_id)
-				tag = Tag.find(log.tag_id)
-				if all_tags.include?(tag) && date_check(amount_time, time_period, from_date, log.created_at)
-						tags_data[tag] = log.counter
-				end
-			end
-		end
-
-		# then sort based on request
-		if sort_by == "least"
-			tags_data = tags_data.sort_by {|_key, value| value}
-		elsif
-			tags_data = tags_data.sort_by {|_key, value| value}.reverse
-		end
-
-		if is_number?(number_to_show)
-			tags_data = tags_data.first(number_to_show)
-		end
-		tags_data
-
-	end
 
 	# get number of visitors (both logged in and non-logged in)
 	def get_number_visitors(department_id, amount_time, time_period, from_date)
@@ -689,7 +625,7 @@ module AnalyticsHelper
 		all_data["percentage_difference_number_of_career_searches"] = percentage_difference(all_data["number_of_career_searches"], get_number_career_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
 		
 		# clicked tags
-		all_data["clicked_tags"] = get_clicked_tags(all_uni_modules, 1, time_period, Time.now, "most", 20)
+		all_data["clicked_tags"] = get_clicked_tags(all_uni_modules, 1, time_period, Time.now, "most", 20, "any")
 
 		# most visited modules
 		all_data["visited_modules"] = get_visited_modules(all_uni_modules, 1, time_period, Time.now, "most", 20)
@@ -720,10 +656,10 @@ module AnalyticsHelper
 
 
 		# clicked career tags
-		all_data["clicked_career_tags"] = get_clicked_career_tags(all_uni_modules, 1, time_period, Time.now, "most", 20)
+		all_data["clicked_career_tags"] = get_clicked_tags(all_uni_modules, 1, time_period, Time.now, "most", 20, "career")
 
 		# clicked interest tags
-		all_data["clicked_interest_tags"] = get_clicked_interest_tags(all_uni_modules, 1, time_period, Time.now, "most", 20)
+		all_data["clicked_interest_tags"] = get_clicked_tags(all_uni_modules, 1, time_period, Time.now, "most", 20, "interest")
 
 
 		all_data
