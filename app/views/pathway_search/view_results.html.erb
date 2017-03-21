@@ -289,14 +289,17 @@
 
   module_results = <%= raw @results.to_json%>;
   updateData(); 
-  creditsComplete = []
-  // Initialise selected array
+  creditsComplete = [];
+  groupComplete = [];
+  // Initialise selected array, credits array and groups credit array
   if(selected_ids.length == 0) {
     for(year = 0; year < optional_modules_per_year.length; ++year) {
       selected_ids.push([]);
+      groupComplete.push([]);
       creditsComplete[year] = false;
       for(group = 0; group < optional_modules_per_year[year].length; ++group) {
         selected_ids[year].push([]);
+        groupComplete[year][group] = false;
       }
     }
   }
@@ -515,7 +518,11 @@
       nav = "<div id=\"pathway-tabs\"><ul class=\"nav nav-tabs\">";
       for(i = 0; i < optional_modules_per_year[year].length; ++i) {  
         if(optional_modules_per_year[year][i].uni_modules) {
-          out = "<li><a role=\"tab\" data-toggle=\"tab\" id = \"btn_opt_year_"+year+"_group_"+i+"\">" + optional_modules_per_year[year][i].name + "</a></li>";
+          out = "<li><a role=\"tab\" data-toggle=\"tab\" id = \"btn_opt_year_"+year+"_group_"+i+"\">" + optional_modules_per_year[year][i].name;
+          if(groupComplete[year][i]) {
+            out += "<span style=\"color: #2ab27b\"><i class=\"fa fa-check-circle\" aria-hidden=\"true\"></i> - Done</span>";
+          } 
+          out += "</a></li>";
           nav += out;
         }
       }
@@ -804,6 +811,9 @@
       if(credits_this_year + this_module.credits == js_course.year_structures[year].year_credits) {
         creditsComplete[year] = true;
       }
+      if(credits_used >= min_credits) {
+        groupComplete[year][group] = true;
+      }
       console.log(year + " " + group);
       console.log(selected_ids[year][group]);
       // Increment every tuple of the selected modules
@@ -824,29 +834,22 @@
 
   // Remove a module from the selected array
   function deselectModule(year, group, moduleId) {
-    console.log("de" + moduleId);
-    console.log(selected_ids[year][group]);
     indexToDelete = selected_ids[year][group].indexOf(moduleId);
-    console.log("in" + indexToDelete);
     if(indexToDelete > -1) {
       selected_ids[year][group].splice(indexToDelete, 1);
     }
     // Remove modules which this was a prerequisite of.
     modulesRemoved = [];
-    console.log("deselecting");
     for(var uni_module in preReqMap) {
       if(preReqMap.hasOwnProperty(uni_module)) {
         // If this module is a pre_req of a module
-        console.log(preReqMap[uni_module][2]);
         if(moduleId == preReqMap[uni_module][2]) {
           modulesRemoved.push(uni_module);
           deselectYear = preReqMap[uni_module][0];
           deselectGroup =  preReqMap[uni_module][1];
-          console.log("um " + uni_module);
           deselectId = uni_module;
-
-          console.log(deselectYear + "," + deselectGroup +"," + deselectId);
           delete preReqMap[uni_module];
+          modulesRemoved.push(deselectId);
           deselectModule(deselectYear, deselectGroup, parseInt(deselectId));
 
         }
@@ -858,7 +861,6 @@
         callDecrementLog(moduleId, selected_ids[year][g][i]);
       }
     }
-    console.log("deselecting done");
     updateUI();
   }
 
