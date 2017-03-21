@@ -224,21 +224,16 @@ module AnalyticsHelper
 	def get_active_user(users, amount_time, time_period, from_date, sort_by, number_to_show)
 		users_data = Hash.new
 
-		users.each do |user|
-			if user.uni_modules.size > 0
-				user.uni_modules.each do |uni_module|
-					if date_check(amount_time, time_period, from_date, SavedModule.where(:user_id => user.id, :uni_module_id => uni_module.id).first.created_at)
-						if users_data.key?(user)
-							users_data[user] += 1
-						else
-							users_data[user] = 1
-						end	
-					end
+		SavedModule.all.each do |record|
+			user = User.find(record.user_id)
+			if users.include?(user) && date_check(amount_time, time_period, from_date, record.created_at)
+				if users_data.key?(user)
+					users_data[user] += 1
+				else
+					users_data[user] = 1
 				end
 			end
 		end
-
-		SavedModule
 
 
 		format_ouput_data(users_data, sort_by, number_to_show)
