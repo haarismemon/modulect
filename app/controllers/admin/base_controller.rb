@@ -67,6 +67,7 @@ module Admin
           TagLog.destroy_all
           UniModuleLog.destroy_all
           VisitorLog.destroy_all
+          SuggestedPathway.destroy_all
 
         	app_settings.update_attributes(:offline_message => "", :allow_new_registration => true, :tag_percentage_match => 60.0, :disable_new_reviews => false, :disable_all_reviews => false)
 
@@ -75,7 +76,7 @@ module Admin
         		user.update_attributes(:faculty_id => nil, :department_id => nil, :course_id => nil)
         	end
 
-        	flash[:success] = "Modulect has succesfully been reset"
+        	flash[:success] = "Modulect has succesfully been reset."
         else
         	flash[:error] = "The password you entered was incorrect."
         end

@@ -36,7 +36,8 @@ Renders space to display and print a box for each group that exists in the curre
                         <div style="margin-top: 30px;padding-left:0px">
 
                           <div class="form-group">
-                            <a href="<%= edit_admin_group_path(group) %>" class="btn btn-lg" style="font-size: 15px; box-shadow:none"><span>Modify ></span></a>
+                            <!--edit button of group card-->
+                            <a href="<%= edit_admin_group_path(group) %>" class="btn btn-lg" style="font-size: 15px;"><span>Modify ></span></a>
                           </div>
 
                           <%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_group_path(group.id), method: :delete,

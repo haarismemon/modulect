@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170319043317) do
+ActiveRecord::Schema.define(version: 20170321015457) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -129,6 +129,12 @@ ActiveRecord::Schema.define(version: 20170319043317) do
     t.integer  "course_id"
   end
 
+  create_table "reported_comments_users", id: false, force: :cascade do |t|
+    t.integer "comment_id"
+    t.integer "user_id"
+    t.index ["comment_id", "user_id"], name: "index_reported_comments_users_on_comment_id_and_user_id"
+  end
+
   create_table "saved_modules", force: :cascade do |t|
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
@@ -142,6 +148,15 @@ ActiveRecord::Schema.define(version: 20170319043317) do
     t.integer  "department_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "suggested_pathways", force: :cascade do |t|
+    t.string   "name"
+    t.string   "data"
+    t.integer  "year"
+    t.integer  "course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tag_logs", force: :cascade do |t|
