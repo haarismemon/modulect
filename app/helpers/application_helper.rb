@@ -84,7 +84,8 @@ module ApplicationHelper
         # sort the results by their average rating
         results_with_attribute = modules_with_ratings.sort_by {|result| [module_average_rating(result[0]), result[1].size] }
         # sort the remaining modules (with rating 0) according to number of tags matched
-	     	results_without_attribute = modules_with_no_pass_rate.sort_by {|result| result[1].size}
+	     	results_without_attribute = modules_with_no_ratings.sort_by {|result| result[1].size}
+        return (results_without_attribute.concat results_with_attribute).reverse
 	    end
 
       return results_array
@@ -240,8 +241,12 @@ module ApplicationHelper
       total += comment.rating
     end
 
-    average = total / comments.length
-		((average)*2).round / 2.0
+    if comments.length != 0
+      average = total / comments.length
+		  ((average)*2).round / 2.0
+    else
+      average
+    end
   end
 
 
