@@ -203,7 +203,7 @@ module AnalyticsHelper
 	# most/least active department (admin-wise)
 	def get_active_departments_admin_wise(users, amount_time, time_period, from_date, sort_by, number_to_show)
 		departments_data = Hash.new
-		users =  users.select{ |user| user.user_level == "department_admin_access"}
+		users =  User.all.select{ |user| user.user_level == "department_admin_access"}
 
 		users.each do |user|
 			department = Department.find(user.department_id)
@@ -307,19 +307,9 @@ module AnalyticsHelper
   end
 
 	# most/least clicked (trending) tags
-	def get_clicked_tags(uni_modules, department_id, amount_time, time_period, from_date, sort_by, number_to_show)
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			departments = [Department.find(department_id.to_i)]
-		else
-			departments = Department.all
-		end
-
-		all_uni_modules = []
-		departments.each do |department|
-			all_uni_modules.concat uni_modules.select { |uni_module| uni_module.departments.include?(department)}
-		end
-		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
+	def get_clicked_tags(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
 		
+		all_uni_modules = uni_modules
 
 		all_tags = []
 		all_uni_modules.each do |uni_module|
@@ -352,18 +342,9 @@ module AnalyticsHelper
 	end
 
 	# most/least clicked (trending) tags
-	def get_clicked_career_tags(uni_modules, department_id, amount_time, time_period, from_date, sort_by, number_to_show)
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			departments = [Department.find(department_id.to_i)]
-		else
-			departments = Department.all
-		end
+	def get_clicked_career_tags(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
 
-		all_uni_modules = []
-		departments.each do |department|
-			all_uni_modules.concat uni_modules.select { |uni_module| uni_module.departments.include?(department)}
-		end
-		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
+		all_uni_modules = uni_modules
 		
 
 		all_tags = []
@@ -397,18 +378,9 @@ module AnalyticsHelper
 	end
 
 	# most/least clicked (trending) tags
-	def get_clicked_interest_tags(uni_modules, department_id, amount_time, time_period, from_date, sort_by, number_to_show)
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			departments = [Department.find(department_id.to_i)]
-		else
-			departments = Department.all
-		end
+	def get_clicked_interest_tags(uni_modules, amount_time, time_period, from_date, sort_by, number_to_show)
 
-		all_uni_modules = []
-		departments.each do |department|
-			all_uni_modules.concat uni_modules.select { |uni_module| uni_module.departments.include?(department)}
-		end
-		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
+		all_uni_modules = uni_modules
 		
 
 		all_tags = []
@@ -717,7 +689,7 @@ module AnalyticsHelper
 		all_data["percentage_difference_number_of_career_searches"] = percentage_difference(all_data["number_of_career_searches"], get_number_career_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
 		
 		# clicked tags
-		all_data["clicked_tags"] = get_clicked_tags(all_uni_modules, department, 1, time_period, Time.now, "most", 20)
+		all_data["clicked_tags"] = get_clicked_tags(all_uni_modules, 1, time_period, Time.now, "most", 20)
 
 		# most visited modules
 		all_data["visited_modules"] = get_visited_modules(all_uni_modules, 1, time_period, Time.now, "most", 20)
@@ -745,6 +717,13 @@ module AnalyticsHelper
 
 		# active departments
 		all_data["active_departments"] = get_active_departments(all_users, 1, time_period, Time.now, "most", 20)
+
+
+		# clicked career tags
+		all_data["clicked_career_tags"] = get_clicked_career_tags(all_uni_modules, 1, time_period, Time.now, "most", 20)
+
+		# clicked interest tags
+		all_data["clicked_interest_tags"] = get_clicked_interest_tags(all_uni_modules, 1, time_period, Time.now, "most", 20)
 
 
 		all_data
