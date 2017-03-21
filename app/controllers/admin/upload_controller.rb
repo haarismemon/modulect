@@ -93,14 +93,20 @@ module Admin
           # When uploading departments, specify faculty name instead of id
           if session[:resource_name] == 'departments'
             # Lookup a faculty with matching name and retrieve it's ID
-            new_record['faculty_id'] = Faculty.where(name: row.to_hash['faculty_name']).first.id
-            # Remove the faculty name attribute from row hash
-            new_record = new_record.except('faculty_name')
-            # Check whether to update a department or create a new one
-            if Department.find_by_name(new_record['name']).nil?
-              Department.create!(new_record)
+            # If no faculty with matching name found, don't create the department
+            if Faculty.where(name: row.to_hash['faculty_name']).first.nil?
+              flash[:error] = "No Faculty with name: #{row.to_hash['faculty_name']} found.
+                              Department with name: #{row.to_hash['name']} has not been created"
             else
-              Department.update(new_record)
+              new_record['faculty_id'] = Faculty.where(name: row.to_hash['faculty_name']).first.id
+              # Remove the faculty name attribute from row hash
+              new_record = new_record.except('faculty_name')
+              # Check whether to update a department or create a new one
+              if Department.find_by_name(new_record['name']).nil?
+                Department.create!(new_record)
+              else
+                Department.update(new_record)
+              end
             end
 
           elsif session[:resource_name] == 'faculties'
