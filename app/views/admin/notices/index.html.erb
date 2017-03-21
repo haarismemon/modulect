@@ -1,3 +1,10 @@
+<style>
+@media (max-width: 1286px) {
+  #data-area .no-link .col-md-3 {
+    float:none;
+  }
+}
+</style>
 <% if request.query_parameters["search"].present? %>
     <% provide(:title, "\"" + request.query_parameters["search"] +"\"" + ' - Notices') %>
 <% else %>
