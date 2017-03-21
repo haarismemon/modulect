@@ -1,3 +1,6 @@
+<%#
+  The main page for the settings whereby a system admin can modify the application's behaviour.
+%>
 <% provide(:title, 'Settings') %>
 <header class="header">
   <h1 class="page-title"><i class='fa fa-cogs' aria-hidden='true'></i>&nbsp;&nbsp;Settings</h1>
@@ -62,9 +65,6 @@ Save settings</button>
       </div>
    </div>
 </div>
-
-
-
 <div class="col-md-12">
    <h4>
      Quick search and pathway search setings
@@ -94,8 +94,6 @@ Save settings</button>
       </div>
    </div>
 </div>
-
-
 <div class="col-md-12">
    <h4>
      Module review settings
@@ -118,7 +116,6 @@ Save settings</button>
       </div>
    </div>
 </div>
-
 <div class="col-md-12">
    <div class="row field-unit field-unit--checkbox is_offline" >
       <div class="col-xs-12">
@@ -136,9 +133,6 @@ Save settings</button>
       </div>
    </div>
 </div>
-
-
-
 <button style="margin-bottom:20px;" type="submit" name="commit" data-disable-with="Save settings" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
 Save settings</button>
 <% end %>
@@ -169,15 +163,11 @@ Save settings</button>
             </p>
          </div>
          <div class="field-unit__field" style="margin-top:20px;">
-
             <a id="reset-modulect-link" class="btn red-btn" style="cursor:pointer;">Reset Modulect</a>
-
          </div>
       </div>
    </div>
 </div>
-
-
   <script>
 $(document).ready(function() {
     $("#reset-modulect-link").click(function(event) {

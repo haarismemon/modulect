@@ -5,33 +5,38 @@ module Admin
     def show
       redirect_to edit_admin_department_path(params[:id])
     end
-     
+    
+    # the customised advanced index action handles the displaying of the correct records for the user level, the pagination, the search and the sorting by the columns specified in the view
   	def index      
-
+      # show correct records based on user level
       if params[:faculty].present? && params[:faculty].to_i != 0 && Faculty.exists?(params[:faculty].to_i)
           @faculty_filter_id = params[:faculty].to_i
           @departments = Faculty.find(@faculty_filter_id).departments
         else
           @departments = Department.all 
         end
-
+      
+      # if user has changed per_page, change it else use the default of 20
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
       else
         @per_page = 20
       end
 
+      # if the user is searching look for records which match the search query and paginate accordingly
       if params[:search].present?
         @search_query = params[:search]
         @departments = @departments.select { |department| department.name.downcase.include?(params[:search].downcase) }.sort_by{|department| department[:name]}
         @departments = Kaminari.paginate_array(@departments).page(params[:page]).per(@per_page) 
 
+      # if the user wasn't search but was sorting get the records and sort accordingly
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
         @departments = sort(Department, @departments, @sort_by, @order, @per_page, "name")
         @departments = Kaminari.paginate_array(@departments).page(params[:page]).per(@per_page)
 
+      # default record view
       else
          @departments = @departments.order('name ASC').page(params[:page]).per(@per_page)
       end
@@ -40,6 +45,7 @@ module Admin
         redirect_to admin_departments_path
       end
 
+      # handles the csv export
       if current_user.user_level == "super_admin_access"
 
 
@@ -63,6 +69,7 @@ module Admin
 
     end
 
+    # default new action for departments
     def new
       @department = Department.new
     end
@@ -125,7 +132,7 @@ module Admin
       redirect_to admin_departments_path
     end
 
-
+    # handles the bulk deletion of courses and any logs which may reference this course    
     def bulk_delete
       department_ids_string = params[:ids]
       department_ids = eval(department_ids_string)
@@ -141,7 +148,6 @@ module Admin
             Notice.where(department_id: department.id).destroy_all
             SearchLog.where(department_id: department.id).destroy_all
             TagLog.where(department_id: department.id).destroy_all
-            UniModuleLog.where(department_id: department.id).destroy_all
             VisitorLog.where(department_id: department.id).destroy_all
             department.destroy
           end
@@ -151,6 +157,8 @@ module Admin
       head :no_content
     end
 
+
+    # handles the clone bulk action by copying all of a department's attributes. if a record already has been cloned (and is tried to be recloned) then an error is shown
     def clone 
       department_ids_string = params[:ids]
       department_ids = eval(department_ids_string)
@@ -189,7 +197,8 @@ module Admin
       def has_no_course_dependacies
         @department.courses.empty??true:false
       end
-
+      
+      # verify that the current user is a super admin otherwise redirect away
       def verify_super_admin
          redirect_to admin_path unless current_user.user_level == "super_admin_access"
 

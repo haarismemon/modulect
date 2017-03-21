@@ -33,4 +33,52 @@ RSpec.describe Faculty, type: :model do
     end
   end
 
+  describe "#to_s" do
+    it "returns the name" do
+      expect(faculty.to_s).to eq faculty.name
+    end
+  end
+
+  describe ".to_csv" do
+    let! (:department) { create(:department, faculty: faculty) }
+    let (:csv_content) { Faculty.to_csv }
+    let (:csv_header) { "name,departments\n" }
+
+    before do
+      faculty.save
+      faculty.departments << department
+    end
+
+    it "outputs all saved courses" do
+      expect(csv_content).to include csv_header
+      test_csv_attributes_for_all_faculties
+    end
+
+    context "when a faculty doesn't have any departments" do
+      before do
+        department.destroy
+      end
+
+      it "doesn't crash" do
+        expect(csv_content).to include csv_header
+        test_csv_attributes_for_all_faculties
+      end
+    end
+  end
+
+  private
+  def test_csv_attributes_for_all_faculties
+    faculties = Faculty.all
+    csv_content.slice! csv_header
+    i = 0
+    CSV.parse(csv_content) do |line|
+      faculty = faculties[i]
+      expect(line).to include faculty.to_s
+      faculty.departments.each do |department|
+        expect(line).to include department.to_s
+      end
+      i += 1
+    end
+  end
+
 end

@@ -1,3 +1,10 @@
+<%#  Renders a complete form for module which is displayed within edit and new course form
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+A form with several field partials within which allows for the manipulation of @uni_module object.
+
+To modify this file access the partials within
+%>
 <%= tinymce_assets %>
 <%= error_messages_for(f.object) %>
 <style>

@@ -6,8 +6,9 @@ module Admin
       redirect_to edit_admin_uni_module_path(params[:id])
     end
 
+    # the customised advanced index action handles the displaying of the correct records for the user level, the pagination, the search and the sorting by the columns specified in the view
     def index
-
+      # show correct records based on user level
       if current_user.user_level == "super_admin_access"
         if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
           @dept_filter_id = params[:dept].to_i
@@ -19,12 +20,14 @@ module Admin
         @uni_modules = Department.find(current_user.department_id).uni_modules
       end
 
+      # if user has changed per_page, change it else use the default of 20
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
       else
         @per_page = 20
       end
-
+      
+      # if the user is searching look for records which match the search query and paginate accordingly
       if params[:search].present?
         @search_query = params[:search]
         # find the correct modules,sort alphabetically and paginate
@@ -42,7 +45,7 @@ module Admin
         @uni_modules = sort(UniModule, @uni_modules, @sort_by, @order, @per_page, "name")
         @uni_modules = Kaminari.paginate_array(@uni_modules).page(params[:page]).per(@per_page)
 
-
+      # if the user wasn't search but was sorting get the records and sort accordingly
       else
         @uni_modules = @uni_modules.order('LOWER(name) ASC').page(params[:page]).per(@per_page)
       end
@@ -51,6 +54,7 @@ module Admin
         redirect_to admin_uni_modules_path
       end
      
+      # handles the csv uploads
       @uni_modules_to_export = @uni_modules
       if params[:export].present?
         export_module_ids_string = params[:export]
@@ -63,6 +67,8 @@ module Admin
 
         @uni_modules_to_export = UniModule.where(id: export_module_ids)
         @uni_modules_to_export = @uni_modules_to_export.order('LOWER(name) ASC')
+      
+      # default record view
       else
         @uni_modules_to_export = @uni_modules
       end
@@ -195,6 +201,7 @@ module Admin
 
     end
 
+    # tag generation using opencalais api
     def generate_tags
       uri = URI.parse("https://api.thomsonreuters.com/permid/calais")
       http = Net::HTTP.new(uri.host, uri.port)
@@ -217,6 +224,7 @@ module Admin
       render :json => http.request(request).body
     end
 
+    # destruction of uni modules only occurs if there are no courses (through groups) using the module. if not, all associated logs are deleted too
     def destroy
       @uni_module = UniModule.find(params[:id])
       can_delete = true
@@ -242,13 +250,13 @@ module Admin
         pflogs = PathwaySearchLog.all.where(:first_mod_id => @uni_module.id)
           if pflogs.size >0
             pflogs.each do |log|
-                pflogs.destroy
+                log.destroy
             end
           end        
         pslogs = PathwaySearchLog.all.where(:second_mod_id => @uni_module.id)
           if pslogs.size >0
             pslogs.each do |log|
-                pslogs.destroy
+                log.destroy
             end
           end    
         @uni_module.destroy
@@ -262,6 +270,7 @@ module Admin
 
     end
 
+    # similar to destroy action
     def bulk_delete
       module_ids_string = params[:ids]
       module_ids = eval(module_ids_string)
@@ -311,6 +320,7 @@ module Admin
 
     end
 
+    # handles the "index" action for a single module's comments
     def comments
       @uni_module = UniModule.find(params[:id])
       @comments = @uni_module.comments
@@ -335,6 +345,7 @@ module Admin
 
     end
 
+    # allows for bulk deletion of comments
     def bulk_delete_comments
      comment_ids_string = params[:ids]
       comment_ids = eval(comment_ids_string)
@@ -372,6 +383,7 @@ module Admin
       params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :assessment_dates, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
     end
 
+    # verify that the department is correct
     def verify_correct_department
       @uni_module = UniModule.find(params[:id])
 
@@ -380,6 +392,7 @@ module Admin
       end
     end
 
+    # delete any unused tags to keep the tag database as clean and up to date as possibl
     def tag_clean_up
       all_tags = Tag.all
       all_modules = UniModule.all

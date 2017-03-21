@@ -28,10 +28,12 @@ module AdminHelper
 
     end 
 
+    # returns the number of courses for a department
     def get_num_courses_for_department(valid_department)
       valid_department.courses.size
     end
 
+    # returns the number of departments for a faculty
     def get_num_depts_for_faculty(valid_faculty)
       count = 0
 
@@ -44,6 +46,7 @@ module AdminHelper
       count
     end
 
+    # gets number of departments for a course
     def get_num_departments_for_course(valid_course)
       count = 0
       Department.all.each do |department|
@@ -77,7 +80,8 @@ module AdminHelper
         UniModule.all
       end
     end
-      
+    
+    # returns the possible uni modules which can be in the group
     def possible_uni_modules_for_existing_group(year_structure)
       to_return = []
 

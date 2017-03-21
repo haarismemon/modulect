@@ -2,8 +2,8 @@ class PathwaySearchController < ApplicationController
 
   include PathwaySearchHelper
 
-
-	def begin
+  # the begin action of the career search where the user can enter/edit their details
+  def begin
     @faculties = Faculty.all
     @departments = {}
     @courses = {}
@@ -108,10 +108,12 @@ class PathwaySearchController < ApplicationController
     end
   end
 
+  # add items to pathway search log counters
   def increment_pathway_search_log
     add_to_pathway_search_log(params[:first_mod_id], params[:second_mod_id], params[:course_id])
   end
 
+  # remove items from pathway search log counters
   def decrement_pathway_search_log
     remove_from_pathway_search_log(params[:first_mod_id], params[:second_mod_id], params[:course_id])
   end

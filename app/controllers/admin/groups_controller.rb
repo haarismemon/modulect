@@ -1,6 +1,9 @@
 module Admin
   class GroupsController < Admin::BaseController
 
+    # Handles controller for a group which is used within a course
+    # Most of the code is self-explanatory
+
     def show
       redirect_to edit_admin_group_path(params[:id])
     end

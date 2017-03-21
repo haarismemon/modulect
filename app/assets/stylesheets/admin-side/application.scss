@@ -58,7 +58,10 @@ a:hover,a :focus, a:active{text-decoration:none;color:#555459;}
     transition: all 0.5s;
     font-family: "Varela Round";
     text-transform: uppercase;
+    border:0px;
 }
+.btn-primary{
+    border:0px;}
 .btn:hover,
 .btn:focus,
 

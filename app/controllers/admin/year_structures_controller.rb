@@ -2,6 +2,9 @@ module Admin
   class YearStructuresController < Admin::BaseController
     before_action :check_valid_update, only: [:update]
 
+    # Handles controller for a year structure which is used within a course
+    # Most of the code is self-explanatory
+
     def show
       redirect_to edit_admin_year_structure_path(params[:id])
     end
@@ -22,6 +25,7 @@ module Admin
     end
 
     private
+    # checks that the update made was valid, and if not redirects and produces a warning in the index
     def check_valid_update
       if params[:year_structure].nil?
         flash_message = "No module group was added. "

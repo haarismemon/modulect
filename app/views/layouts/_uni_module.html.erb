@@ -1,3 +1,6 @@
+<%#
+  This partial is used to display a uni_module's details. Since quick search, saved and reviews all use a very similar structure, this has been combined into a single partial and can be deployed anywhere across the application.
+%>
 <% if type == "search" %>
     <div class="col-md-12 login-card res-card result-card-<%= colour_code_card uni_module.code, tags_matched, tags_searched_for %>">
 <% elsif type == "saved" %>

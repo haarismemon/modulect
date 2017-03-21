@@ -1,3 +1,8 @@
+<%#
+  Index which displays a collection of modules via @uni_modules instance variables and displays it in a table
+  Contains: a table which contain of set of columns with each representing an attribute.
+  The table is produced via a for loop which iterates through, producing a row for each tuple.
+%>
 <style>
 @media (max-width: 1136px) {
   #data-area .no-link .col-md-3 {
@@ -42,7 +47,7 @@
             </ul>
           </div>
       <% end %>
-      <%= link_to "<i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Module".html_safe, new_admin_uni_module_path, method: :get, class: "button" %>
+      <%= link_to "<i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Module".html_safe, new_admin_uni_module_path, method: :get, class: "button", style: "height: 36px" %>
     </div>
   </div>
 </header>

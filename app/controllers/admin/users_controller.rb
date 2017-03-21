@@ -1,8 +1,10 @@
 module Admin
   class UsersController < Admin::BaseController
     before_action :verify_correct_department, only: [:destroy, :update, :edit]
+    
+    # the customised advanced index action handles the displaying of the correct records for the user level, the pagination, the search and the sorting by the columns specified in the view
     def index
-
+      # show correct records based on user level
       if current_user.user_level == "super_admin_access"
         if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
           @dept_filter_id = params[:dept].to_i
@@ -14,18 +16,21 @@ module Admin
        # @users = User.select{|user| user.department_id == current_user.department_id && user.user_level != "super_admin_access"}
         @users = User.where("department_id = ? AND (user_level = ? OR user_level = ?)", current_user.department_id, "2", "3")
       end
-
+      
+      # if user has changed per_page, change it else use the default of 20
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
       else
         @per_page = 20
       end
 
+      # if the user is searching look for records which match the search query and paginate accordingly      
       if params[:search].present?
         @search_query = params[:search]
         @users = @users.select { |user| user.first_name.downcase.include?(params[:search].downcase) || user.last_name.downcase.include?(params[:search].downcase) }.sort_by{|user| user[:first_name]}
         @users = Kaminari.paginate_array(@users).page(params[:page]).per(@per_page)
 
+      # if the user wasn't search but was sorting get the records and sort accordingly
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
@@ -39,7 +44,8 @@ module Admin
       if @users.size == 0 && params[:page].present? && params[:page] != "1"
         redirect_to admin_users_path
       end
-
+     
+      # handles the csv uploads
       @users_to_export = @users
       if params[:export].present?
         export_user_ids_string = params[:export]
@@ -202,6 +208,7 @@ module Admin
 
     end
 
+    # handles bulk activation action
     def bulk_activate
       user_ids_string = params[:ids]
       user_ids = eval(user_ids_string)
@@ -218,7 +225,7 @@ module Admin
       head :no_content
     end
 
-
+    # handles bulk deactivation action
     def bulk_deactivate
       user_ids_string = params[:ids]
       user_ids = eval(user_ids_string)
@@ -235,7 +242,7 @@ module Admin
       head :no_content
     end
 
-
+    # handles bulk deletion action
     def bulk_delete
       user_ids_string = params[:ids]
       user_ids = eval(user_ids_string)
@@ -252,6 +259,7 @@ module Admin
       head :no_content
     end
 
+    # handles downgrade of user level
     def make_student_user
       user_ids_string = params[:ids]
       user_ids = eval(user_ids_string)
@@ -268,6 +276,7 @@ module Admin
       head :no_content
     end
 
+    # handles a change in user level
     def make_department_admin
         user_ids_string = params[:ids]
       user_ids = eval(user_ids_string)
@@ -284,6 +293,7 @@ module Admin
       head :no_content
     end
 
+    # handles a change in user level
     def make_super_admin
       user_ids_string = params[:ids]
       user_ids = eval(user_ids_string)
@@ -300,6 +310,7 @@ module Admin
       head :no_content
     end
 
+    # handles the bulk limiting of users action
     def bulk_limit
       user_ids_string = params[:ids]
       user_ids = eval(user_ids_string)
@@ -316,6 +327,7 @@ module Admin
       head :no_content
     end
 
+    # handles bulk unlimiting of users
     def bulk_unlimit
       user_ids_string = params[:ids]
       user_ids = eval(user_ids_string)

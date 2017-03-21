@@ -1,5 +1,6 @@
 class SavedController < ApplicationController
-
+  
+  # allows user to view their saved modules
   def view
     if !logged_in?
 
