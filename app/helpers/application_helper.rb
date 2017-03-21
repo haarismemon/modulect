@@ -35,6 +35,8 @@ module ApplicationHelper
 	    modules_with_no_weightings = []
 	    modules_with_pass_rate = []
 	    modules_with_no_pass_rate = []
+      modules_with_ratings = []
+      modules_with_no_ratings = []
 
 	    results_array.each do |result|
 	      uni_module = result[0]
@@ -51,6 +53,13 @@ module ApplicationHelper
 	      else
 	        modules_with_no_pass_rate << result
 	      end
+
+        # if a module has a rating that is not 0, then store in array for ratings
+        if module_average_rating(uni_module) != 0
+          modules_with_ratings << result
+        else
+          modules_with_no_ratings << result
+        end
 	    end
 
 	    if sort_by_category == "coursework"
@@ -71,6 +80,11 @@ module ApplicationHelper
 	      # sort the remaining modules (without the pass rate attribute) according to number of tags matched
 	      results_without_attribute = modules_with_no_pass_rate.sort_by {|result| result[1].size}
 	      return (results_without_attribute.concat results_with_attribute).reverse
+	    elsif sort_by_category == "rating"
+        # sort the results by their average rating
+        results_with_attribute = modules_with_ratings.sort_by {|result| [module_average_rating(result[0]), result[1].size] }
+        # sort the remaining modules (with rating 0) according to number of tags matched
+	     	results_without_attribute = modules_with_no_pass_rate.sort_by {|result| result[1].size}
 	    end
 
       return results_array
