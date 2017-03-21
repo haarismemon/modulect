@@ -1,17 +1,27 @@
-<!--
+<%#
   A text field component.
-  Extend accordingly. If locals want to be added to partial, deal with the case if local isn't provided as seen below
-  to prevent code from being broken anywhere else.
 
  The block contains a set of classes which can be used,  to reference fields in
  javascript and css
 
+ Locals:
+
+ :f => the form object itself,
+ :name => name of field,  represent the object's attribute {:symbol},
+ :label => the field label name {:symbol},
+  :placeholder => provides a placeholder for field{string},
+ :tooltip => A tool tip which provides additional information of the current field{string},
+ :options => any additional options to be added to field element{hash}
+
  Classes it contains:
- Type of components (i.e field-unit--string)
+ Type of components (i.e field-unit--number)
  Name of component (i.e department)
 
--->
+  Extend accordingly. If locals want to be added to partial, deal with the case if local isn't provided as seen below
+  to prevent code from being broken anywhere else.
+%>
 
+<%# sees if renders have been passed into render, if not, just assign defaults to each %>
 <% label = name if local_assigns[:label].nil? %>
 <% placeholder = "" if local_assigns[:placeholder].nil? %>
 <% tooltip = nil if local_assigns[:tooltip].nil? %>
@@ -20,17 +30,19 @@
 <div class="row field-unit field-unit--string <%= name.to_s %>" >
   <div class="col-xs-12">
     <div class="field-unit__label">
+      <%# label %>
       <%= f.label name, label.to_s.titleize %>
         <% if tooltip.present?%>
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right"
                title="<%= tooltip.to_s %>">[<i class="fa fa-question" aria-hidden="true"></i>]
             </a>
         <% end %>
+
       </label>
     </div>
-    <!--element part-->
+    <%# element part %>
     <div class="field-unit__field">
-      <!--text area-->
+      <%# text area %>
       <%= f.text_field name, placeholder: placeholder, options: options %>
     </div>
   </div>

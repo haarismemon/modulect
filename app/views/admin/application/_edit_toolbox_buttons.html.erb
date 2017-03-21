@@ -1,40 +1,52 @@
+<%#
+  Renders toolbox button
+  defines a set of locals:
+  :object => The object itself
+  :name_of_file=>Name of file when exported  {format: string},
+  :blacklist_attributes=>attributes you dont want to include in export
+  :entity_attributes=>attributes that are entity attributes i.e attributes which are objects from other entites {format : "field1,field2"}
+  :has_many_attributes=> attributes which are involved in a has_many associationwith other entities {format : ["uni_modules"]},
+  :back_button => defines whether or not you want to render a back button with partial {format : boolean}
 
-<!--assign back-button to true by default to render back button in this partial, unless specified otherwise-->
+  Can easily be modified by adding more options in drop down.
+%>
+
+<%# assign back-button to true by default to render back button in this partial, unless specified otherwise %>
 <% back_button = true if local_assigns[:back_button].nil? %>
 <div class="btn-group">
-  <!--button for drop down-->
+  <%# button drop down %>
   <button style="height: 36px; outline: none; padding-bottom:4px"
           class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin toolbox"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="fa fa-wrench" aria-hidden="true"></i>&nbsp;&nbsp;Toolbox
     <span class="caret"></span>
   </button>
-  <!--list options for drop down where each is a link-->
+
   <ul class="dropdown-menu scrollable-submenu" style="padding: 0px;">
-    <!--link to print form-->
+    <%# print form %>
     <li><a onclick="openPrintForm('<%= blacklist_attributes%>','<%=entity_attributes%>')"
     ><i class="fa fa-print" aria-hidden="true" style='margin-right: 2px'></i> Print data</a>
     </li>
-    <!--link to export to html-->
+    <%# export to html %>
     <li>
       <a onclick="exportToHTML('<%= blacklist_attributes%>','<%=entity_attributes%>')"><i class='fa fa-download' aria-hidden='true' style='margin-right:2px'></i></span>
         Export as simple data</a>
     </li>
-    <!--link to generate pdf from form's data-->
+    <%# generate pdf from form's data %>
     <li>
       <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')"><i class="fa fa-file-pdf-o" aria-hidden="true" style="margin-right: 2px;"></i>
         Download as PDF</a>
     </li>
+
   </ul>
 </div>
 
-<%if back_button %>
-<!--back button-->
-<%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-            :back, class: "button tool-box" %>
+<% if back_button %>
+<%# back button %>
+<%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe, :back, class: "button tool-box" %>
 <%end%>
 
-<!--styling of toolbox dropdown-->
+<%# styling of toolbox dropdown %>
 <style>
   .scrollable-submenu {
     padding: 10px;
@@ -45,13 +57,13 @@
   }
 
   button.toolbox {
-    height: 35px;
+    height: 36.3px;
     border-radius: 4%;
     font-weight: 700;
   }
 
   .caret {
-    margin-left: 4px;
+    margin-left: 6px;
   }
 
   .btn-group a {

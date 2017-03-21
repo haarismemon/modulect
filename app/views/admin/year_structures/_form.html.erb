@@ -1,30 +1,29 @@
-<!-- Renders a complete form of group form which is displayed within edit year structure form
+<%#  Renders a complete form of year_structure form which is displayed within edit year structure form
 
-Contains a form with several partials within.
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+Also contains render which iterates through the year structure groups and makes a card for each.
+Also contains a partial which contains form to allow for the creation of groups within year_structure
 
 To modify this file access the partials within
--->
+%>
 
 <%= form_for @year_structure, url: admin_year_structure_path(@year_structure) do |f| %>
 
-    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%# errors message %>
     <%= error_messages_for(f.object) %>
 
-    <!--year structure's groups-->
+    <%# group cards %>
     <%= render 'admin/application/course-partials/groups_set' %>
 
-    <!-- Render nested group form in year structure -->
+    <%# nested group form %>
     <% f.fields_for :groups do |group| %>
-        <!--renders attributes-->
         <%= render "admin/application/course-partials/group_form_fields",
                    :f => group, :year_structure => YearStructure.find(params[:id]) %>
     <% end %>
 
-    <!--button to allow for a new group form to be added-->
     <div class='links' onclick='loseFocus()' id="add-another-group">
       <%= link_to_add_association "+ Add Module Group", f, :groups %>
     </div>
-
     <!--submit button-->
     <div class="form-actions" style="margin-top:20px;">
       <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
