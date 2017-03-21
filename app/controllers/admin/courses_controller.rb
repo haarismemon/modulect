@@ -83,6 +83,7 @@ module Admin
       @course = Course.new
     end
 
+    # creates a new course
     def create
       @course = Course.new(course_params)
       if @course.save
@@ -98,6 +99,7 @@ module Admin
       @course = Course.find_by(id: params[:id])
     end
 
+    # updates a course
     def update
       @course = Course.find(params[:id])
       duration_in_years_pre_update = @course.duration_in_years
@@ -110,6 +112,7 @@ module Admin
       end
     end
 
+    # destroys a course as well as assoicated year strucutres and groups, as well as clearing pathway logs
     def destroy
       @course = Course.find(params[:id])
 
@@ -123,11 +126,15 @@ module Admin
       end
 
       pathway_search_logs = PathwaySearchLog.all.where(:course_id => @course.id)
-          if pathway_search_logs.size >0
-            pathway_search_logs.each do |log|
-                pathway_search_logs.destroy
-            end
-          end  
+      if pathway_search_logs.size >0
+        pathway_search_logs.each do |log|
+          pathway_search_logs.destroy
+        end
+      end  
+
+      Pathway.where(course_id: @course.id).destroy_all
+      SuggestedPathway.where(course_id: @course.id).destroy_all
+
 
       @course.destroy
       flash[:success] =  "Successfully deleted " + @course.name
@@ -146,12 +153,14 @@ module Admin
               Group.where(year_structure_id: year_structure.id).destroy_all
             end
             YearStructure.where(course_id: course.id).destroy_all
-             pathway_search_logs = PathwaySearchLog.all.where(:course_id => course.id)
+            pathway_search_logs = PathwaySearchLog.all.where(:course_id => course.id)
               if pathway_search_logs.size >0
                 pathway_search_logs.each do |log|
-                    pathway_search_logs.destroy
-                end
-              end 
+                pathway_search_logs.destroy
+              end
+            end 
+            Pathway.where(course_id: course.id).destroy_all
+            SuggestedPathway.where(course_id: course.id).destroy_all
             course.destroy
           end
       end
@@ -174,6 +183,7 @@ module Admin
                   year_structures_attributes: [:id, :year_of_study, :_destroy])
     end
 
+    # verifies that only the correct departments will be modifying this course
     def verify_correct_department
       @course = Course.find(params[:id])
       if (current_user.user_level == "department_admin_access" &&
