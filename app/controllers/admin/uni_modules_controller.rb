@@ -87,7 +87,7 @@ module Admin
       @uni_module = UniModule.new(uni_module_params)
       if @uni_module.save
         # If save succeeds, redirect to the index action
-        flash[:success] = "Succesfully created module"
+        flash[:success] = "Succesfully created " @uni_module.name
         redirect_to(admin_uni_modules_path)
       else
         # If save fails, redisplay the form so user can fix problems
@@ -253,10 +253,10 @@ module Admin
           end    
         @uni_module.destroy
         tag_clean_up
-        flash[:success] = "Module successfully deleted"
+        flash[:success] = "Successfully deleted module"
         redirect_to admin_uni_modules_path
       else
-        flash[:error] = "Module is linked to a course, remove from course first"
+        flash[:error] = "This module is linked to a course. You must first either unlink or delete those courses."
         redirect_to admin_uni_modules_path
       end
 
