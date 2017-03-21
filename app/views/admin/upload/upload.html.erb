@@ -164,6 +164,22 @@
           </tbody>
         </table>
       </div>
+      <div id="upload-table-faculties" class="table-responsive" style="display: none;">
+        <table aria-labelledby="page-title" class="collection-data table">
+          <thead>
+          <tr class="table-header-fields">
+            <th scope="col">name</th>
+            <th scope="col">departments</th>
+          </tr>
+          </thead>
+          <tbody id="data-area">
+          <tr>
+            <td>My new Faculty</td>
+            <td>Other Dept 1; A New Dept 1; Other Dept 5</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
       <br>
       <a id="upload-help-close">Close</a>
     </div>
@@ -232,19 +248,29 @@
         $("#upload-help-modules-link").on("click", function () {
             $("#upload-table-courses").hide();
             $("#upload-table-departments").hide();
+            $("#upload-table-faculties").hide();
             $("#upload-table-modules").show();
         });
 
         $("#upload-help-courses-link").on("click", function () {
             $("#upload-table-modules").hide();
             $("#upload-table-departments").hide();
+            $("#upload-table-faculties").hide();
             $("#upload-table-courses").show();
         });
 
         $("#upload-help-departments-link").on("click", function () {
             $("#upload-table-modules").hide();
             $("#upload-table-courses").hide();
+            $("#upload-table-faculties").hide();
             $("#upload-table-departments").show();
+        });
+
+        $("#upload-help-faculties-link").on("click", function () {
+            $("#upload-table-modules").hide();
+            $("#upload-table-courses").hide();
+            $("#upload-table-departments").hide();
+            $("#upload-table-faculties").show();
         });
 
         $("select#upload-resource").change(function () {
