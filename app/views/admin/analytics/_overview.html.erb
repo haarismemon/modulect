@@ -10,11 +10,11 @@ The main graph shows the number of quick searches, career searches and pathway s
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= number_visitors_now = get_number_visitors(@department, 1, @time_period, Time.now) %>
+            <%= all_data["number_of_visitors"] %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_users = 
-            percentage_difference(number_visitors_now, get_number_visitors(@department, 1, @time_period, get_start_desired_period(1,@time_period, Time.now)))
+            all_data["percentage_difference_number_of_visitors"]
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_users)%>">
             <% if percentage_difference_total_users != 0 %>
@@ -27,11 +27,11 @@ The main graph shows the number of quick searches, career searches and pathway s
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= number_quick_searches_now = get_number_quick_searches(@department, 1, @time_period, Time.now) %>
+            <%= all_data["number_of_quick_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_quick_searches = 
-            percentage_difference(number_quick_searches_now, get_number_quick_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            all_data["percentage_difference_number_of_quick_searches"]
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_quick_searches)%>">
             <% if percentage_difference_total_quick_searches != 0 %>
@@ -44,11 +44,11 @@ The main graph shows the number of quick searches, career searches and pathway s
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= number_pathway_searches_now = get_number_pathway_searches(@department, 1, @time_period, Time.now) %>
+            <%= all_data["number_of_pathway_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_pathway_searches = 
-            percentage_difference(number_pathway_searches_now, get_number_pathway_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            all_data["percentage_difference_number_of_pathway_searches"]
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_pathway_searches)%>">
             <% if percentage_difference_total_pathway_searches != 0 %>
@@ -61,11 +61,11 @@ The main graph shows the number of quick searches, career searches and pathway s
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= number_career_searches = get_number_career_searches(@department, 1, @time_period, Time.now) %>
+            <%= all_data["number_of_career_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_career_searches = 
-            percentage_difference(number_career_searches, get_number_career_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            all_data["percentage_difference_number_of_career_searches"]
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_career_searches)%>">
             <% if percentage_difference_total_career_searches != 0 %>

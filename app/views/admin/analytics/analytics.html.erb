@@ -50,9 +50,20 @@
 
 <%= render partial: "admin/analytics/tabs" %>
 
+<%
+# FERAS IM USING A HELPER TO STORE A HASH OF THE DATA AND THEN PASSING IT INTO PARTIALS
+# PREVENTS US FROM HAVING TO RECALL QUERIES
+# PLEASE DELETE THIS COMMENT WHEN READ
+# ALSO LEFT A COMMENT IN THE CONTROLLER 
+# WE SHOULDNT HAVE ANY DIRECT QUERIES IN THE VIEW ASIDE FROM THIS HASH AND THE BIG GRAPHS
+# IF POSSIBLE PLEASE MOVE THIS CHUNK OF CODE INTO ANOTHER FILE AND INCLUDE IT
+
+all_data = get_all_data(@uni_modules, @users, @department, @time_period)
+
+%>
    <div class="tab-content" style="margin-top:30px;">
       <div id="overview" class="tab-pane fade in active">
-         <%= render partial: "admin/analytics/overview" %>
+         <%= render partial: "admin/analytics/overview", :locals => {all_data: all_data} %>
       </div>
       <div id="quick-search" class="tab-pane fade">      
          <%#= render partial: "admin/analytics/quick_search" %>

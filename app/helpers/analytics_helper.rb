@@ -702,5 +702,31 @@ module AnalyticsHelper
 		end
 	end
 
+	def get_all_data(uni_modules, users, department_id, time_period)
+		all_data = Hash.new
+
+		all_data["number_of_visitors"] = get_number_visitors(@department, 1, @time_period, Time.now) 
+		all_data["percentage_difference_number_of_visitors"] = percentage_difference(all_data["number_of_visitors"], get_number_visitors(@department, 1, @time_period, get_start_desired_period(1,@time_period, Time.now)))
+
+		# number of quick searches
+		all_data["number_of_quick_searches"] = get_number_quick_searches(@department, 1, @time_period, Time.now)
+		all_data["percentage_difference_number_of_quick_searches"] = percentage_difference(all_data["number_of_quick_searches"], get_number_quick_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+
+		# pathway searches
+		all_data["number_of_pathway_searches"] = get_number_pathway_searches(@department, 1, @time_period, Time.now)
+		all_data["percentage_difference_number_of_pathway_searches"] = percentage_difference(all_data["number_of_pathway_searches"], get_number_pathway_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+
+		# career searches
+		all_data["number_of_career_searches"] = get_number_career_searches(@department, 1, @time_period, Time.now)
+
+		all_data["percentage_difference_number_of_career_searches"] = percentage_difference(all_data["number_of_career_searches"], get_number_career_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+	
+
+
+
+
+		all_data
+	end
+
 
 end
