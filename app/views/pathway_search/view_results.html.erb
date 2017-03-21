@@ -778,8 +778,7 @@
     if(credits_used >= max_credits) {
       window.alert("You have already selected enough credits from this group");
     }
-    // !!UNSURE IF THIS SHOULD BE STATIC!!
-    else if(credits_this_year+this_module.credits > 120) {
+    else if(credits_this_year+this_module.credits > js_course.year_structures[year].year_credits) {
       window.alert("You have enough credits this year");
     }
     else if(!requirementsSatisfied) {
