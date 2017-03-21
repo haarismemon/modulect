@@ -60,11 +60,11 @@ module Admin
           @all_users = users = User.all.select { |user| user.department_id == department_id && user.user_level == "user_access"}
         else 
           @all_uni_modules = UniModule.all
-          @all_users = User.all
+          @all_users = User.all.select{|user|user.user_level == "user_access"}
         end
       else
         @all_uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i))}
-        @all_users = users = User.all.select { |user| user.department_id == department_id.to_i && user.user_level == "user_access"}
+        @all_users = User.all.select { |user| user.department_id == department_id.to_i && user.user_level == "user_access"}
       end
 
 

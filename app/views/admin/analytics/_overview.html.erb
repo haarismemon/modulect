@@ -10,11 +10,11 @@ The main graph shows the number of quick searches, career searches and pathway s
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= get_number_visitors(@department, 1, @time_period, Time.now) %>
+            <%= number_visitors_now = get_number_visitors(@department, 1, @time_period, Time.now) %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_users = 
-            percentage_difference(get_number_visitors(@department, 1, @time_period, Time.now), get_number_visitors(@department, 1, @time_period, get_start_desired_period(1,@time_period, Time.now)))
+            percentage_difference(number_visitors_now, get_number_visitors(@department, 1, @time_period, get_start_desired_period(1,@time_period, Time.now)))
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_users)%>">
             <% if percentage_difference_total_users != 0 %>
@@ -27,11 +27,11 @@ The main graph shows the number of quick searches, career searches and pathway s
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= get_number_quick_searches(@department, 1, @time_period, Time.now) %>
+            <%= number_quick_searches_now = get_number_quick_searches(@department, 1, @time_period, Time.now) %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_quick_searches = 
-            percentage_difference(get_number_quick_searches(@department, 1, @time_period, Time.now), get_number_quick_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            percentage_difference(number_quick_searches_now, get_number_quick_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_quick_searches)%>">
             <% if percentage_difference_total_quick_searches != 0 %>
@@ -44,11 +44,11 @@ The main graph shows the number of quick searches, career searches and pathway s
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= get_number_pathway_searches(@department, 1, @time_period, Time.now) %>
+            <%= number_pathway_searches_now = get_number_pathway_searches(@department, 1, @time_period, Time.now) %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_pathway_searches = 
-            percentage_difference(get_number_pathway_searches(@department, 1, @time_period, Time.now), get_number_pathway_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            percentage_difference(number_pathway_searches_now, get_number_pathway_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_pathway_searches)%>">
             <% if percentage_difference_total_pathway_searches != 0 %>
@@ -61,11 +61,11 @@ The main graph shows the number of quick searches, career searches and pathway s
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= get_number_career_searches(@department, 1, @time_period, Time.now) %>
+            <%= number_career_searches = get_number_career_searches(@department, 1, @time_period, Time.now) %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_career_searches = 
-            percentage_difference(get_number_career_searches(@department, 1, @time_period, Time.now), get_number_career_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            percentage_difference(number_career_searches, get_number_career_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_career_searches)%>">
             <% if percentage_difference_total_career_searches != 0 %>
@@ -307,22 +307,22 @@ The main graph shows the number of quick searches, career searches and pathway s
     <% end %>
 </div>
 <script>
-  
+  <% get_clicked_tags_now = get_clicked_tags(@all_uni_modules, @department, 1, @time_period, Time.now, "most", 5) %>
 
   function drawTrendingTags() {
     var chartType = $("#trending-tag-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), chart_name: "Trending Tags") %>").html_safe;
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_clicked_tags_now, chart_name: "Trending Tags") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Trending Tags") %>").html_safe;
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags_now, type: "bar", chart_name: "Trending Tags") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Trending Tags") %>").html_safe;
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags_now, type: "horizontalBar", chart_name: "Trending Tags") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Trending Tags") %>").html_safe;
+      $("#trending_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_clicked_tags_now, type: "pie", chart_name: "Trending Tags") %>").html_safe;
     }
   }
 
@@ -332,20 +332,22 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawTrendingTags();
 
+<% get_visited_modules = get_visited_modules(@all_uni_modules, 1, @time_period, Time.now, "most", 5) %>
+
   function drawTrendingModules() {
     var chartType = $("#trending-module-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_visited_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Trending Modules") %>").html_safe;
+      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_visited_modules, chart_name: "Trending Modules") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Trending Modules") %>").html_safe;
+      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules, type: "bar", chart_name: "Trending Modules") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Trending Modules") %>").html_safe;
+      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules, type: "horizontalBar", chart_name: "Trending Modules") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Trending Modules") %>").html_safe;
+      $("#trending_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_visited_modules, type: "pie", chart_name: "Trending Modules") %>").html_safe;
     }
   }
 
@@ -355,20 +357,22 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawTrendingModules();
 
+<% get_saved_modules = get_saved_modules(@all_uni_modules, @all_users, 1, @time_period, Time.now, "most", 5) %>
+
   function drawSavedModules() {
     var chartType = $("#saved-module-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_saved_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Most Saved Modules") %>").html_safe;
+      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_saved_modules, chart_name: "Most Saved Modules") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Saved Modules") %>").html_safe;
+      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules, type: "bar", chart_name: "Most Saved Modules") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Saved Modules") %>").html_safe;
+      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules, type: "horizontalBar", chart_name: "Most Saved Modules") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Saved Modules") %>").html_safe;
+      $("#saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_saved_modules, type: "pie", chart_name: "Most Saved Modules") %>").html_safe;
     }
   }
 
@@ -378,20 +382,22 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawSavedModules();
 
+<% get_device_usage = get_device_usage(@department, 1, @time_period, Time.now) %>
+
   function drawDeviceUsage() {
     var chartType = $("#device-usage-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_device_usage(@department, 1, @time_period, Time.now), chart_name: "Device Usage") %>").html_safe;
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_device_usage, chart_name: "Device Usage") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "bar", chart_name: "Device Usage") %>").html_safe;
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage, type: "bar", chart_name: "Device Usage") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "horizontalBar", chart_name: "Device Usage") %>").html_safe;
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage, type: "horizontalBar", chart_name: "Device Usage") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage(@department, 1, @time_period, Time.now), type: "pie", chart_name: "Device Usage") %>").html_safe;
+      $("#device_usage_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_device_usage, type: "pie", chart_name: "Device Usage") %>").html_safe;
     }
   }
 
@@ -401,20 +407,22 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawDeviceUsage();
 
+<% review_modules = get_review_modules_analytics(@all_uni_modules, 1, @time_period, Time.now, "most", 5) %>
+
   function drawReviewedModules() {
     var chartType = $("#reviewed-module-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Top Reviewed Modules") %>").html_safe;
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: review_modules, chart_name: "Top Reviewed Modules") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Top Reviewed Modules") %>").html_safe;
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: review_modules, type: "bar", chart_name: "Top Reviewed Modules") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Top Reviewed Modules") %>").html_safe;
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: review_modules, type: "horizontalBar", chart_name: "Top Reviewed Modules") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_review_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Top Reviewed Modules") %>").html_safe;
+      $("#reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: review_modules, type: "pie", chart_name: "Top Reviewed Modules") %>").html_safe;
     }
   }
 
@@ -424,20 +432,23 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawReviewedModules();
 
+
+<% rating_modules = get_rating_modules_analytics(@all_uni_modules, 1, @time_period, Time.now, "most", 5) %>
+
   function drawRatedModules() {
     var chartType = $("#rated-module-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_rating_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), chart_name: "Top Rated Modules") %>").html_safe;
+      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: rating_modules, chart_name: "Top Rated Modules") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_rating_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Top Rated Modules") %>").html_safe;
+      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: rating_modules, type: "bar", chart_name: "Top Rated Modules") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_rating_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Top Rated Modules") %>").html_safe;
+      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: rating_modules, type: "horizontalBar", chart_name: "Top Rated Modules") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_rating_modules_analytics(@department, 'any', 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Top Rated Modules") %>").html_safe;
+      $("#rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: rating_modules, type: "pie", chart_name: "Top Rated Modules") %>").html_safe;
     }
   }
 
@@ -447,20 +458,22 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawRatedModules();
 
+<% get_active_users = get_active_user(@all_users, 1, @time_period, Time.now, "most", 5) %>
+
   function drawActiveStudents() {
     var chartType = $("#active-students-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#active_students_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_user(@department, 1, @time_period, Time.now, "most", 5), chart_name: "Most Active Students") %>").html_safe;
+      $("#active_students_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_users, chart_name: "Most Active Students") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_user(@department, 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Active Students") %>").html_safe;
+      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_users, type: "bar", chart_name: "Most Active Students") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_user(@department, 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Active Students") %>").html_safe;
+      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_users, type: "horizontalBar", chart_name: "Most Active Students") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_user(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Active Students") %>").html_safe;
+      $("#active_students_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_users, type: "pie", chart_name: "Most Active Students") %>").html_safe;
     }
   }
 
@@ -470,20 +483,22 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawActiveStudents();
 
+
+<% login_analytics = get_login_analytics(@department, 1, @time_period, Time.now)%>
   function drawLoggedIn() {
     var chartType = $("#login-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#login_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_login_analytics(@department, 1, @time_period, Time.now), chart_name: "Users Logged In") %>").html_safe;
+      $("#login_table_area").empty().append("<%= escape_javascript(render "table", input_hash: login_analytics, chart_name: "Users Logged In") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_login_analytics(@department, 1, @time_period, Time.now), type: "bar", chart_name: "Users Logged In") %>").html_safe;
+      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: login_analytics, type: "bar", chart_name: "Users Logged In") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_login_analytics(@department, 1, @time_period, Time.now), type: "horizontalBar", chart_name: "Users Logged In") %>").html_safe;
+      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: login_analytics, type: "horizontalBar", chart_name: "Users Logged In") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_login_analytics(@department, 1, @time_period, Time.now), type: "pie", chart_name: "Users Logged In") %>").html_safe;
+      $("#login_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: login_analytics, type: "pie", chart_name: "Users Logged In") %>").html_safe;
     }
   }
 
@@ -493,20 +508,22 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawLoggedIn();
 
+  <% active_courses = get_active_courses(@all_users, 1, @time_period, Time.now, "most", 5) %>
+
   function drawActiveCourses() {
     var chartType = $("#active-courses-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), chart_name: "Most Active Courses") %>").html_safe;
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "table", input_hash: active_courses, chart_name: "Most Active Courses") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Active Courses") %>").html_safe;
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: active_courses, type: "bar", chart_name: "Most Active Courses") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Active Courses") %>").html_safe;
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: active_courses, type: "horizontalBar", chart_name: "Most Active Courses") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_courses(@department, 1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Active Courses") %>").html_safe;
+      $("#active_courses_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: active_courses, type: "pie", chart_name: "Most Active Courses") %>").html_safe;
     }
   }
 
@@ -516,20 +533,22 @@ The main graph shows the number of quick searches, career searches and pathway s
 
   drawActiveCourses();
 
+<% active_departments = get_active_departments(@all_users, 1, @time_period, Time.now, "most", 5) %>
+
   function drawActiveDepartments() {
     var chartType = $("#active-departments-selector option:selected").val();
 
     if(chartType == "table") {
-      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "table", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), chart_name: "Most Active Department") %>").html_safe;
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "table", input_hash: active_departments, chart_name: "Most Active Department") %>").html_safe;
     }
     else if(chartType == "vBar") {
-      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "bar", chart_name: "Most Active Department") %>").html_safe;
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: active_departments, type: "bar", chart_name: "Most Active Department") %>").html_safe;
     }
     else if(chartType == "hBar") {
-      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "horizontalBar", chart_name: "Most Active Department") %>").html_safe;
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: active_departments, type: "horizontalBar", chart_name: "Most Active Department") %>").html_safe;
     }
     else if(chartType == "pie") {
-      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: get_active_departments(1, @time_period, Time.now, "most", 5), type: "pie", chart_name: "Most Active Department") %>").html_safe;
+      $("#active_departments_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: active_departments, type: "pie", chart_name: "Most Active Department") %>").html_safe;
     }
   }
 

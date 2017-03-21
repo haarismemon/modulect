@@ -7,34 +7,6 @@ module AnalyticsHelper
   		true if Float(string) rescue false
 	end
 
-	# get the student users from the department
-	# if "any", return all users
-	def get_users(department_id)
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			users = User.all.select { |user| user.department_id == department_id.to_i && user.user_level == "user_access"}
-		else
-			users = User.all.select { |user| user.user_level == "user_access"}
-		end
-		users 
-	end
-
-	# get all the unimodules from department / course
-	# if "any", return all
-	def get_uni_modules(department_id, course_id)
-=begin
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil? && course_id != "any" && is_number?(course_id) && !Course.find(course_id.to_i).nil?
-			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i)) && check_mod_in_course(uni_module.id, course_id) }
-		elsif department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			uni_modules = UniModule.all.select { |uni_module| uni_module.departments.include?(Department.find(department_id.to_i))}
-		else
-			uni_modules = UniModule.all
-		end
-		uni_modules
-=end
-	end
-
- 
-
 	# sort, filter and format the resulting dataset
 	def format_ouput_data(input_hash, sort_by, number_to_show)
 		# sort alphabetically
@@ -213,7 +185,7 @@ module AnalyticsHelper
 	end
 
 	# most/least active department
-	def get_active_departments(amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_active_departments(users, amount_time, time_period, from_date, sort_by, number_to_show)
 		departments_data = Hash.new
 
 		users.each do |user|
@@ -345,7 +317,7 @@ module AnalyticsHelper
   end
 
 	# most/least clicked (trending) tags
-	def get_clicked_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_clicked_tags(uni_modules, department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			departments = [Department.find(department_id.to_i)]
 		else
@@ -354,7 +326,7 @@ module AnalyticsHelper
 
 		all_uni_modules = []
 		departments.each do |department|
-			all_uni_modules.concat get_uni_modules(department.id.to_s, "any")
+			all_uni_modules.concat uni_modules.select { |uni_module| uni_module.departments.include?(department)}
 		end
 		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
 		
@@ -390,7 +362,7 @@ module AnalyticsHelper
 	end
 
 	# most/least clicked (trending) tags
-	def get_clicked_career_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_clicked_career_tags(uni_modules, department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			departments = [Department.find(department_id.to_i)]
 		else
@@ -399,7 +371,7 @@ module AnalyticsHelper
 
 		all_uni_modules = []
 		departments.each do |department|
-			all_uni_modules.concat get_uni_modules(department.id.to_s, "any")
+			all_uni_modules.concat uni_modules.select { |uni_module| uni_module.departments.include?(department)}
 		end
 		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
 		
@@ -435,7 +407,7 @@ module AnalyticsHelper
 	end
 
 	# most/least clicked (trending) tags
-	def get_clicked_interest_tags(department_id, amount_time, time_period, from_date, sort_by, number_to_show)
+	def get_clicked_interest_tags(uni_modules, department_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			departments = [Department.find(department_id.to_i)]
 		else
@@ -444,7 +416,7 @@ module AnalyticsHelper
 
 		all_uni_modules = []
 		departments.each do |department|
-			all_uni_modules.concat get_uni_modules(department.id.to_s, "any")
+			all_uni_modules.concat uni_modules.select { |uni_module| uni_module.departments.include?(department)}
 		end
 		all_uni_modules = all_uni_modules.uniq{|uni_module| uni_module.id}
 		
