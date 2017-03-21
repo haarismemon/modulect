@@ -19,7 +19,7 @@ feature "System Admin visiting index page of departments", :js => true do
   scenario "can clone a department" do
     select_first_checkbox
     select_bulk_clone
-    confirm_action
+    confirm_bulk_action
     i_should_be_on_the_departments_index_page
     i_should_see_a_clone_of(department)
   end
@@ -27,16 +27,14 @@ feature "System Admin visiting index page of departments", :js => true do
   context "can delete" do
    scenario "by 'Delete' link press" do
       click_delete_link
-      wait_for_ajax
-      confirm_bulk_delete
+      confirm_delete
       i_should_not_see(department)
     end
 
     scenario "by bulk delete" do
       select_first_checkbox
       select_bulk_delete
-      wait_for_ajax
-      confirm_bulk_delete
+      confirm_bulk_action
       i_should_be_on_the_departments_index_page
       i_should_not_see(department)
     end

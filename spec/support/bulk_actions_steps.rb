@@ -17,14 +17,9 @@ module BulkActionsSteps
     find("#delete-all").click
   end
 
-  def confirm_action
+  def confirm_bulk_action
     wait_for_ajax
     click_button("Proceed")
     click_button("OK")
-  end
-
-  def confirm_bulk_delete
-    wait_for_ajax
-    click_button("Proceed")
   end
 end

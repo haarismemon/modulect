@@ -17,6 +17,11 @@ module CoursesIndexSteps
     click_on "Delete"
   end
 
+  def confirm_delete
+    wait_for_ajax
+    click_on "Proceed"
+  end
+
   def i_should_be_on_the_courses_index_page
     expect(page).to have_current_path(admin_courses_path)
   end

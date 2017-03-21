@@ -16,6 +16,10 @@ module DepartmentsIndexSteps
   def click_delete_link
     click_on "Delete"
   end
+
+  def confirm_delete
+    click_on "Proceed"
+  end
   
   def i_should_be_on_the_departments_index_page
     expect(page).to have_current_path admin_departments_path
