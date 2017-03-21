@@ -21,12 +21,14 @@ class Course < ApplicationRecord
 
   has_many :users
 
+  # creates year structures for a course
   def create_year_structures
     for y in 1..self.duration_in_years
       self.year_structures << YearStructure.create(year_of_study: y)
     end
   end
 
+  # updates the year structures
   def update_year_structures(duration_in_years_pre_update)
     if (self.year_structures.empty?)
       create_year_structures
@@ -49,6 +51,7 @@ class Course < ApplicationRecord
     end
   end
 
+  # checks that all year structures have been well-defined. if not this is used to show a warning in the admin area
   def all_year_structures_defined?
     self.year_structures.each_with_index do |year_structure, index|
       if !year_structure.groups_existent?
@@ -63,6 +66,7 @@ class Course < ApplicationRecord
     departments << valid_department
   end
 
+  # CSV export, loops over the course record obtaining the individual columns from the database
   def self.to_csv
     attributes = %w{name description year duration_in_years}
     headers = Array.new

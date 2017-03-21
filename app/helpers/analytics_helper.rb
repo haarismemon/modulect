@@ -678,6 +678,7 @@ module AnalyticsHelper
 		toReturn
 	end
 
+	# attaches search log date to atime period by normalising both hashes and comparing the different time periods
 	def attach_search_log_data_to_time_period(data_log, time_period)
 
 		data_with_time = Hash.new
@@ -723,7 +724,7 @@ module AnalyticsHelper
 	end
 
 
-
+	# a simple size checker
 	def get_top_size_check_analytics(input_hash)
 		if input_hash.size == 0
 			"(None)"
@@ -732,6 +733,7 @@ module AnalyticsHelper
 		end
 	end
 
+	# a simple size checker
 	def get_top_module_name(input)
 		if input == "(None)"
 			"(None)"

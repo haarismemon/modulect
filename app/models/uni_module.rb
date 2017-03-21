@@ -164,7 +164,8 @@ class UniModule < ApplicationRecord
 
     return pathway_results
   end
-
+  
+  # CSV export, loops over the module record obtaining the individual columns from the database
   def self.to_csv
     attributes = %w{name code description lecturers pass_rate assessment_methods semester credits exam_percentage coursework_percentage more_info_link assessment_dates prerequisite_modules}
     caps = []
@@ -200,6 +201,7 @@ class UniModule < ApplicationRecord
     end
   end
 
+  # string method for return the module 
   def to_s
     "#{self.code} #{self.name}"
   end

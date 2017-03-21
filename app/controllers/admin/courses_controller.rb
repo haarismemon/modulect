@@ -11,7 +11,9 @@ module Admin
       redirect_to edit_admin_course_path(params[:id])
     end
 
+    # the customised advanced index action handles the displaying of the correct records for the user level, the pagination, the search and the sorting by the columns specified in the view
     def index
+      # show correct records based on user level
       if current_user.user_level == "super_admin_access"
          if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
           @dept_filter_id = params[:dept].to_i
@@ -23,24 +25,28 @@ module Admin
         @courses = Department.find(current_user.department_id).courses
       end
 
+      # if user has changed per_page, change it else use the default of 20
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
       else
         @per_page = 20
       end 
 
-
+      # if the user is searching look for records which match the search query and paginate accordingly
       if params[:search].present?
         @search_query = params[:search]
         @courses = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) }.sort_by{|course| course[:name]}
 
         @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(@per_page)
+
+      # if the user wasn't search but was sorting get the records and sort accordingly
       elsif params[:sortby].present? && params[:order].present? && !params[:search].present?
         @sort_by = params[:sortby]
         @order = params[:order]
         @courses = sort(Course, @courses, @sort_by, @order, @per_page, "name")
         @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(@per_page)
 
+      # default record view
       else
          @courses = @courses.order('name ASC').page(params[:page]).per(@per_page)
       end
@@ -49,6 +55,7 @@ module Admin
         redirect_to admin_courses_path
       end
 
+      # handles the csv export
       @courses_to_export = @courses
       if params[:export].present?
         export_course_ids_string = params[:export]
@@ -76,6 +83,7 @@ module Admin
       @course = Course.new
     end
 
+    # creates a new course
     def create
       @course = Course.new(course_params)
       if @course.save
@@ -91,6 +99,7 @@ module Admin
       @course = Course.find_by(id: params[:id])
     end
 
+    # updates a course
     def update
       @course = Course.find(params[:id])
       duration_in_years_pre_update = @course.duration_in_years
@@ -103,6 +112,7 @@ module Admin
       end
     end
 
+    # destroys a course as well as assoicated year strucutres and groups, as well as clearing pathway logs
     def destroy
       @course = Course.find(params[:id])
 
@@ -119,7 +129,13 @@ module Admin
       pathway_search_logs = PathwaySearchLog.all.where(:course_id => @course.id)
       if pathway_search_logs.size >0
         pathway_search_logs.each do |log|
-            pathway_search_logs.destroy
+          log.destroy
+        end
+      end  
+
+      Pathway.where(course_id: @course.id).destroy_all
+      SuggestedPathway.where(course_id: @course.id).destroy_all
+
         end
       end  
 
@@ -128,7 +144,7 @@ module Admin
       redirect_to(admin_courses_path)
     end
 
-
+    # handles the bulk deletion of courses, deleting year structures, groups and any logs which may reference this course
     def bulk_delete
       course_ids_string = params[:ids]
       course_ids = eval(course_ids_string)
@@ -140,12 +156,14 @@ module Admin
               Group.where(year_structure_id: year_structure.id).destroy_all
             end
             YearStructure.where(course_id: course.id).destroy_all
-             pathway_search_logs = PathwaySearchLog.all.where(:course_id => course.id)
+            pathway_search_logs = PathwaySearchLog.all.where(:course_id => course.id)
               if pathway_search_logs.size >0
                 pathway_search_logs.each do |log|
-                    pathway_search_logs.destroy
-                end
-              end 
+                log.destroy
+              end
+            end 
+            Pathway.where(course_id: course.id).destroy_all
+            SuggestedPathway.where(course_id: course.id).destroy_all
             course.destroy
           end
       end
@@ -153,7 +171,7 @@ module Admin
       head :no_content
     end
 
-
+    # handles the clone bulk action
     def clone
       course_ids_string = params[:ids]
       deep_clone_courses_with_ids(course_ids_string)
@@ -168,6 +186,7 @@ module Admin
                   year_structures_attributes: [:id, :year_of_study, :_destroy])
     end
 
+    # verifies that only the correct departments will be modifying this course
     def verify_correct_department
       @course = Course.find(params[:id])
       if (current_user.user_level == "department_admin_access" &&

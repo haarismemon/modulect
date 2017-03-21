@@ -11,6 +11,7 @@ class Group < ApplicationRecord
     joins(:uni_modules).where(["uni_modules.code = ?", module_code])
   }
 
+  # ensure that the maximum number of credits isn't greater than the minimum
   def min_can_not_be_bigger_than_max
     if !max_credits.nil? && !min_credits.nil? && min_credits.to_int > max_credits.to_int
       errors.add(:minimum_credits, "can't be greater than maximum credits")

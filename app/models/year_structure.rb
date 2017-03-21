@@ -9,14 +9,17 @@ class YearStructure < ApplicationRecord
 
   accepts_nested_attributes_for :groups
 
+  # set the maximum year of study
   def self.max_year_of_study
     7
   end
 
+  # check that groups exist for this year structure
   def groups_existent?
     self.groups.count > 0
   end
 
+  # simple method to obtain the year structure as a string
   def to_s
     "#{year_of_study.titleize}"
   end

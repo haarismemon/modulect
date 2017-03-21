@@ -144,6 +144,7 @@ class UsersController < ApplicationController
     redirect_to(root_url) unless current_user?(@user)
   end
 
+  # checks whether registration has been disabled by a super admin
   def registration_allowed
     if !app_settings.allow_new_registration
       flash[:error] = "Registration is currently offline, please check back later."

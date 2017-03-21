@@ -2,11 +2,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :admin_has_dept
   before_action :modulect_is_online
+  before_action :store_location
+  before_action :log_visit
 
   include ApplicationHelper
   include SessionsHelper
-  before_action :store_location
-  before_action :log_visit
 
   # Confirms a logged in user.
   def logged_in_user
@@ -43,6 +43,7 @@ class ApplicationController < ActionController::Base
     current_user.pathways.delete(pathway)
   end
 
+  # saves a suggested course pathway
   def save_suggested_course_pathway
     course = Course.find_by(id: params[:course])
     suggested_pathway_name = params[:name]
@@ -52,6 +53,7 @@ class ApplicationController < ActionController::Base
     course.suggested_pathways << SuggestedPathway.create(name: suggested_pathway_name, data: suggested_pathway_data, year: suggested_pathway_year, course_id: suggested_pathway_course)
   end
 
+  # updates a suggested course pathway
   def update_suggested_course_pathway
       suggested_pathway = SuggestedPathway.find_by(id: params[:id])
       suggested_pathway.name = params[:name]
@@ -62,7 +64,7 @@ class ApplicationController < ActionController::Base
       render json: suggested_pathway
   end
 
-
+  # deletes a suggested course pathway
   def delete_suggested_course_pathway
     suggested_pathway = SuggestedPathway.find_by_id(params[:pathway_id])
     suggested_pathway.destroy
@@ -94,6 +96,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # logs a user's visit by obtaining their device type and whether or not they were logged in
   def log_visit
     session_id = request.session_options[:id]
     client = DeviceDetector.new(request.env["HTTP_USER_AGENT"])

@@ -1,5 +1,9 @@
 class SearchController < ApplicationController
   include ApplicationHelper
+
+  # Controller handles the quick search the homepage
+
+  # main homepage
   def home
     retrieve_notices
     @tag_names = Tag.pluck(:name)
@@ -7,6 +11,7 @@ class SearchController < ApplicationController
     @module_code = UniModule.pluck(:code)
   end
 
+  # get the modules associated with the tags
   def view_results
     @tag_names = Tag.pluck(:name)
     @module_names = UniModule.pluck(:name)
