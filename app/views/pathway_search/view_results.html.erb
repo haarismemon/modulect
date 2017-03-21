@@ -301,6 +301,9 @@
     }
   }
 
+  // Store prerequistes for quick deletions
+  var preReqMap = {};
+
   updateUI();
 
 
@@ -753,6 +756,7 @@
               currentMod = required_modules_per_year[y][g].uni_modules[item];
               if(requiredMod.id == currentMod.id) {
                 moduleTaken = true;
+                preReqMap[this_module.id] = [year, group, currentMod.id];
                 console.log("Found in 1");
                 break moduleSearch1;
               }
@@ -771,6 +775,7 @@
               for(item = 0; item < selected_ids[y][g].length; ++item) {
                 if(requiredMod.id == selected_ids[y][g][item]) {
                   moduleTaken = true;
+                  preReqMap[this_module.id] = [year, group, currentMod.id];
                   console.log("Found in 2");
                   break moduleSearch2;
                 }
@@ -819,9 +824,33 @@
 
   // Remove a module from the selected array
   function deselectModule(year, group, moduleId) {
+    console.log("de" + moduleId);
+    console.log(selected_ids[year][group]);
     indexToDelete = selected_ids[year][group].indexOf(moduleId);
+    console.log("in" + indexToDelete);
     if(indexToDelete > -1) {
-      selected_ids[year][group].splice(index + 1, 1);
+      selected_ids[year][group].splice(indexToDelete, 1);
+    }
+    // Remove modules which this was a prerequisite of.
+    modulesRemoved = [];
+    console.log("deselecting");
+    for(var uni_module in preReqMap) {
+      if(preReqMap.hasOwnProperty(uni_module)) {
+        // If this module is a pre_req of a module
+        console.log(preReqMap[uni_module][2]);
+        if(moduleId == preReqMap[uni_module][2]) {
+          modulesRemoved.push(uni_module);
+          deselectYear = preReqMap[uni_module][0];
+          deselectGroup =  preReqMap[uni_module][1];
+          console.log("um " + uni_module);
+          deselectId = uni_module;
+
+          console.log(deselectYear + "," + deselectGroup +"," + deselectId);
+          delete preReqMap[uni_module];
+          deselectModule(deselectYear, deselectGroup, parseInt(deselectId));
+
+        }
+      }
     }
     // Decrement every tuple of the selected modules
     for(g = 0; g < selected_ids[year].length; ++g) {
@@ -829,6 +858,7 @@
         callDecrementLog(moduleId, selected_ids[year][g][i]);
       }
     }
+    console.log("deselecting done");
     updateUI();
   }
 
