@@ -136,9 +136,6 @@ module Admin
       Pathway.where(course_id: @course.id).destroy_all
       SuggestedPathway.where(course_id: @course.id).destroy_all
 
-        end
-      end  
-
       @course.destroy
       flash[:success] =  "Successfully deleted " + @course.name
       redirect_to(admin_courses_path)
@@ -159,8 +156,8 @@ module Admin
             pathway_search_logs = PathwaySearchLog.all.where(:course_id => course.id)
               if pathway_search_logs.size >0
                 pathway_search_logs.each do |log|
-                log.destroy
-              end
+                  log.destroy
+                end
             end 
             Pathway.where(course_id: course.id).destroy_all
             SuggestedPathway.where(course_id: course.id).destroy_all
@@ -194,5 +191,6 @@ module Admin
         redirect_to admin_path
       end
     end
+
   end
 end
