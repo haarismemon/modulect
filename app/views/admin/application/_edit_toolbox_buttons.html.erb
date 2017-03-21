@@ -13,7 +13,8 @@
 
 <%# assign back-button to true by default to render back button in this partial, unless specified otherwise %>
 <% back_button = true if local_assigns[:back_button].nil? %>
-<div class="btn-group">
+<div style="margin-bottom: 40px">
+  <div class="btn-group">
   <%# button drop down %>
   <button style="height: 36px; outline: none; padding-bottom:4px"
           class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin toolbox"
@@ -43,10 +44,12 @@
 
 <% if back_button %>
 <%# back button %>
-<%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-            :back, class: "button tool-box", style: "padding-top: 11px;padding-bottom: 11px;" %>
+      <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+                  (local_assigns[:f].nil? || form_valid?(f) ? :back : "/admin/"+object.class.name.downcase.pluralize),
+                  class: "button tool-box", style: "padding-top: 11.5px;padding-bottom: 11.5px;" %>
 <% end%>
 
+</div>
 <%# styling of toolbox dropdown %>
 <style>
   .scrollable-submenu {
@@ -61,6 +64,7 @@
     height: 36.3px;
     border-radius: 4%;
     font-weight: 700;
+
   }
 
   .caret {
