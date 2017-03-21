@@ -159,7 +159,7 @@ module Admin
       head :no_content
     end
 
-
+    # handles the clone bulk action
     def clone
       course_ids_string = params[:ids]
       deep_clone_courses_with_ids(course_ids_string)
