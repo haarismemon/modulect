@@ -6,8 +6,9 @@ module Admin
       redirect_to edit_admin_uni_module_path(params[:id])
     end
 
+    # the customised advanced index action handles the displaying of the correct records for the user level, the pagination, the search and the sorting by the columns specified in the view
     def index
-
+      # show correct records based on user level
       if current_user.user_level == "super_admin_access"
         if params[:dept].present? && params[:dept].to_i != 0 && Department.exists?(params[:dept].to_i)
           @dept_filter_id = params[:dept].to_i
@@ -19,12 +20,14 @@ module Admin
         @uni_modules = Department.find(current_user.department_id).uni_modules
       end
 
+      # if user has changed per_page, change it else use the default of 20
       if params[:per_page].present? && params[:per_page].to_i > 0
         @per_page = params[:per_page].to_i
       else
         @per_page = 20
       end
-
+      
+      # if the user is searching look for records which match the search query and paginate accordingly
       if params[:search].present?
         @search_query = params[:search]
         # find the correct modules,sort alphabetically and paginate
@@ -42,7 +45,7 @@ module Admin
         @uni_modules = sort(UniModule, @uni_modules, @sort_by, @order, @per_page, "name")
         @uni_modules = Kaminari.paginate_array(@uni_modules).page(params[:page]).per(@per_page)
 
-
+      # if the user wasn't search but was sorting get the records and sort accordingly
       else
         @uni_modules = @uni_modules.order('LOWER(name) ASC').page(params[:page]).per(@per_page)
       end
@@ -63,6 +66,8 @@ module Admin
 
         @uni_modules_to_export = UniModule.where(id: export_module_ids)
         @uni_modules_to_export = @uni_modules_to_export.order('LOWER(name) ASC')
+      
+      # default record view
       else
         @uni_modules_to_export = @uni_modules
       end
