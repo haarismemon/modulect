@@ -141,7 +141,6 @@ module Admin
             Notice.where(department_id: department.id).destroy_all
             SearchLog.where(department_id: department.id).destroy_all
             TagLog.where(department_id: department.id).destroy_all
-            UniModuleLog.where(department_id: department.id).destroy_all
             VisitorLog.where(department_id: department.id).destroy_all
             department.destroy
           end
