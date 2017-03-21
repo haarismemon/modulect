@@ -37,7 +37,8 @@ Rails.application.routes.draw do
     post '/faculties/bulk_delete', to: 'faculties#bulk_delete'
     post '/faculties/clone', to: 'faculties#clone'
     post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
-    post '/uni_modules/bulk_delete_comments', to: 'uni_modules#bulk_delete_comments'
+    post '/uni_modules/bulk_delete_comments'
+    post '/uni_modules/bulk_unflag_comments'
     post '/users/bulk_activate', to: 'users#bulk_activate'
     post '/users/bulk_deactivate', to: 'users#bulk_deactivate'
     post '/users/bulk_delete', to: 'users#bulk_delete'
@@ -54,7 +55,6 @@ Rails.application.routes.draw do
 
     root to: "dashboard#index"
   end
-
 
   # GENERAL
   root 'search#home'
@@ -148,6 +148,8 @@ Rails.application.routes.draw do
   post 'comments/edit'
   post 'comments/delete'
   delete 'comments/destroy'
+  post 'comments/unflag'
+  post 'comments/report'
 
 
   # ERROR PAGES

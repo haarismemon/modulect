@@ -352,6 +352,21 @@ module Admin
 
     end
 
+    def bulk_unflag_comments
+      comment_ids_string = params[:ids]
+      comment_ids = eval(comment_ids_string)
+
+      comment_ids.each do |id|
+        comment = Comment.find(id.to_i)
+        if !comment.nil?
+          comment.reported_users.clear
+        end
+
+      end
+
+      head :no_content
+    end
+
     private
     def uni_module_params
       params.require(:uni_module).permit(:name, :code, :description, :semester, :credits, :lecturers, :assessment_methods, :assessment_dates, :exam_percentage, :coursework_percentage, :pass_rate, :more_info_link)
