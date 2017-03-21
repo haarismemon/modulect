@@ -1,24 +1,30 @@
 <!--
   A text area component.
-  Extend accordingly. If locals want to be added to partial, deal with the case if local isn't provided as seen below
-  to prevent code from being broken anywhere else.
 
  The block contains a set of classes which can be used,  to reference fields in
  javascript and css
 
+ Locals:
+
+ :f => the form object itself,
+ :name => name of field,  represent the object's attribute {:symbol},
+ :placeholder => provides a placeholder for field{string},
+ :label => the field label name {:symbol},
+ :tooltip => A tool tip which provides additional information of the current field{string},
+ :options => any additional options to be added to field element{hash}
+
  Classes it contains:
- Type of components (i.e field-unit--textarea)
+ Type of components (i.e field-unit--number)
  Name of component (i.e department)
 
+  Extend accordingly. If locals want to be added to partial, deal with the case if local isn't provided as seen below
+  to prevent code from being broken anywhere else.
 -->
 
-<!--sees if label passed into render, if not, just assign the name of field to label by default-->
+<!--sees if renders have been passed into render, if not, just assign defaults to each-->
 <% label = name if local_assigns[:label].nil? %>
-<!--sees if placeholder passed into render, if not, just assign empty string as placeholder-->
 <% placeholder = "" if local_assigns[:placeholder].nil? %>
-<!--sees if tooltip passed into render, if not, just assign nil-->
 <% tooltip = nil if local_assigns[:tooltip].nil? %>
-<!--sees if any additional options are passed into render, if not, just assign to empty hash-->
 <% options = {} if local_assigns[:options].nil? %>
 
 <!--form field-->
