@@ -45,10 +45,10 @@
           <h1> Time to start picking your modules </h1>
           <h4> We've added compulsory modules for you. Just click pick a module and go through the different groups of modules available. </h4>
           <% if @suggested_pathways.length > 0 %>
-            <h4> This module has 
+            <h4> This course has 
             <%= @suggested_pathways.length %> suggested pathway<% if(@suggested_pathways.length>1)%>s<%end%>:
             </h4>
-            <ul>
+            <ul style="margin-bottom:20px;">
               <% @suggested_pathways.each do |good_path| %>
                 <li><a href="/pathway-search/view_results?year=<%=@year_of_study%>&course=<%=@course_obj.id%>&selected=<%=good_path.data%>"><%= good_path.name %></a></li>
               <% end %>
