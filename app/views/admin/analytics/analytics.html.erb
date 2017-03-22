@@ -68,7 +68,7 @@ all_data = get_all_data(@all_uni_modules, @all_users, @all_tags, @department, @t
          <%= render partial: "admin/analytics/overview", :locals => {all_data: all_data} %>
       </div>
       <div id="quick-search" class="tab-pane fade">      
-         <%#= render partial: "admin/analytics/quick_search", :locals => {all_data: all_data}  %>
+         <%= render partial: "admin/analytics/quick_search", :locals => {all_data: all_data}  %>
       </div>
       <div id="pathway-search" class="tab-pane fade">   
          <%#= render partial: "admin/analytics/pathway_search", :locals => {all_data: all_data}  %>

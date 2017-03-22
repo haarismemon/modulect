@@ -8,11 +8,11 @@ The main graph shows the number of quick searches in the time period.
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= get_number_quick_searches(@department, 1, @time_period, Time.now) %>
+            <%= all_data["number_of_quick_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_quick_searches = 
-            percentage_difference(get_number_quick_searches(@department, 1, @time_period, Time.now), get_number_quick_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            all_data["percentage_difference_number_of_quick_searches"]
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_quick_searches)%>">
             <% if percentage_difference_total_quick_searches != 0 %>
@@ -26,8 +26,7 @@ The main graph shows the number of quick searches in the time period.
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The tag which was most searched for">Most searched (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_searched_tag = get_top_size_check_analytics(get_clicked_tags(@department,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_name(most_searched_tag) %>
+            <%= get_top_module_name(get_top_size_check_analytics(all_data["clicked_tags"])) %>
          </div>      
          <div class="percentage-change">
             across any type of search
@@ -37,8 +36,7 @@ The main graph shows the number of quick searches in the time period.
          <div class="small-header"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most clicked module from search results">Most clicked module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_clicked_module =  get_top_size_check_analytics(get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_code(most_clicked_module) %>
+         <% most_clicked_module =  get_top_module_code(get_top_size_check_analytics(all_data["visited_modules"])) %>
          </div>
         
          <div class="percentage-change">
@@ -49,7 +47,7 @@ The main graph shows the number of quick searches in the time period.
          <div class="small-header"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most saved module from results">Most saved module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_saved_module =  get_top_size_check_analytics(get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+         <% most_saved_module =  get_top_size_check_analytics(all_data["saved_modules"]) %>
             <%= get_top_module_code(most_saved_module) %>
          </div>
         
