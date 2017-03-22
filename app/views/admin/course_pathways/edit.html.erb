@@ -29,6 +29,7 @@ var data = '<%=raw (@course.to_json(
 var js_course = jQuery.parseJSON(data);
 var optional_modules_per_year = [];
 var selected_ids = <%= @pathway.data %>;
+console.log(selected_ids);
 updateOptionalModules(); 
 //updateSelectedModules();
 generateView();
@@ -82,7 +83,6 @@ function generateView(){
 			out+='<ul class="list-group" style="margin-bottom:40px;margin-top:10px;">';
 			for(m=0; m<optional_modules_per_year[y][g].uni_modules.length; m++){
 				if(selected_ids[y][g].includes(optional_modules_per_year[y][g].uni_modules[m].id)){
-				out+='<li class ="list-group-item" style="cursor:pointer;" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
 					out+='<li class ="list-group-item"  id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-check-square-o"></i>&nbsp;&nbsp;';
 					out+=optional_modules_per_year[y][g].uni_modules[m].name + ", " + optional_modules_per_year[y][g].uni_modules[m].credits + " credits";
 					out+='</li>'
