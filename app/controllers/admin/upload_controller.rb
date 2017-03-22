@@ -136,7 +136,7 @@ module Admin
               # Clear the departments of this faculty before overriding/updating
               faculty_entry.departments= []
               # For every entered department
-              parse_mult_association_string(new_record['departments']).each do |dept_name|
+              split_multi_association_field(new_record['departments']).each do |dept_name|
                 # Look for a department with the name
                 department_found = Department.find_by_name(dept_name)
                 if department_found.nil?
@@ -150,44 +150,9 @@ module Admin
             end
 
           elsif session[:resource_name] == 'courses'
-            # Add departments attribute to create and/or link departments to this course
-            # Lookup if Course already exists: Course is unique by name + year combo
-            created_course = Course.find_by(name: new_record['name'], year: new_record['year'])
-            # Track if Course failed to be created
-            course_verification_failed = false
-            if created_course.nil?
-              # Store any verification errors + Create Course
-              created_course_errors = Course.create!(new_record.except('departments')).errors.full_messages
-              if created_course_errors.any?
-                course_verification_failed = true
-                # Flash errors
-                created_course_errors.each { |message| flash[:error] = "Creation failed: #{message}" }
-              else
-                # Find created course
-                created_course = Course.find_by(name: new_record['name'], year: new_record['year'])
-                creations += 1
-              end
-            else
-              # Update the existing Course
-              created_course.update(new_record.except('departments'))
-              updates += 1
-            end
-            unless course_verification_failed
-              # Clear the departments this course belongs to before overriding/updating
-              created_course.departments= []
-              # For every entered department
-              parse_mult_association_string(new_record['departments']).each do |dept_name|
-                # Look for a department with the name
-                department_found = Department.find_by_name(dept_name)
-                unless department_found.nil?
-                  # Add the found department to the departments the course belongs to
-                  created_course.departments << department_found
-                else flash[:error] = "Department with name: #{dept_name} does not exist and therefore has not
-                                        been linked to Course: #{new_record['name']}, #{new_record['year']}"
-                end
-              end
-            end
-
+            new_creations, new_updates = upload_course(new_record)
+            creations += new_creations
+            updates += new_updates
           elsif session[:resource_name] == 'uni_modules'
             new_creations, new_updates = upload_uni_module(new_record)
             creations += new_creations

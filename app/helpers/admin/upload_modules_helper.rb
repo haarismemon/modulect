@@ -1,14 +1,12 @@
 module Admin::UploadModulesHelper
 
-  MULTI_ITEM_FIELD_SEPARATOR = ';'
+  include Admin::MultiItemFieldHelper
 
   def upload_uni_module(new_record)
-    # Lookup if Module already exists: Module is unique by Code
-    csv_module = UniModule.find_by_code(new_record['code'])
-
     creations = 0
     updates = 0
 
+    csv_module = find_module_by_code(new_record['code'])
     if csv_module.nil?
       csv_module = try_to_create_module(new_record)
       creations += 1
@@ -23,27 +21,31 @@ module Admin::UploadModulesHelper
       csv_module.save
     end
 
+    if csv_module.errors.any?
+      display_errors csv_module
+    end
+
     return creations, updates
   end
 
   private
   def try_to_create_module(new_record)
-    created_module = UniModule.new(new_record.except(
+    new_module = UniModule.new(new_record.except(
         'departments',
         'prerequisite_modules',
         'career_tags',
         'interest_tags'))
 
-    update_departments(created_module, new_record)
-    update_prerequisite_modules(created_module, new_record)
-    update_career_tags(created_module, new_record)
-    update_interest_tags(created_module, new_record)
+    update_departments(new_module, new_record)
+    update_prerequisite_modules(new_module, new_record)
+    update_career_tags(new_module, new_record)
+    update_interest_tags(new_module, new_record)
 
-    created_module
+    new_module
   end
 
   def try_to_update_module(new_record)
-    updated_module = UniModule.find_by_code(new_record['code'])
+    updated_module = find_module_by_code(new_record['code'])
 
     updated_module.assign_attributes(new_record.except(
         'departments',
@@ -59,81 +61,82 @@ module Admin::UploadModulesHelper
     updated_module
   end
 
-  def update_departments(created_module, new_record)
-    created_module.departments.clear
-    uploaded_departments = new_record['departments']
-    unless uploaded_departments.nil?
-      uploaded_departments = uploaded_departments.split(MULTI_ITEM_FIELD_SEPARATOR)
+  def update_departments(uni_module, new_record)
+    uni_module.departments.clear
+    uploaded_department_names = split_multi_association_field(new_record['departments'])
+    unless uploaded_department_names.blank?
       if current_user.user_level == 'department_admin_access'
         user_dept = Department.find(current_user.department_id).name
-        if uploaded_departments.include? user_dept
-          uploaded_departments.each do |dept|
-            chosen_dept = Department.find_by_name(dept)
-            created_module.departments << chosen_dept
+        if uploaded_department_names.include? user_dept
+          uploaded_department_names.each do |dept_name|
+            chosen_dept = find_department_by_name(dept_name)
+            uni_module.departments << chosen_dept
           end
         end
       end
     end
   end
 
-  def update_prerequisite_modules(created_module, new_record)
-    created_module.uni_modules.clear
-    uploaded_prerequisites = new_record['prerequisite_modules']
-    unless uploaded_prerequisites.nil?
-      uploaded_prerequisites = uploaded_prerequisites.split(MULTI_ITEM_FIELD_SEPARATOR)
-      if !uploaded_prerequisites.include? created_module.name
-        uploaded_prerequisites.each do |mod|
-          chosen_mod = UniModule.find_by_name(mod)
-          created_module.uni_modules << chosen_mod
+  def update_prerequisite_modules(uni_module, new_record)
+    uni_module.uni_modules.clear
+    prerequisite_codes = split_multi_association_field(new_record['prerequisite_modules'])
+    unless prerequisite_codes.blank?
+      unless prerequisite_codes.include? uni_module.name
+        prerequisite_codes.each do |prerequisite_code|
+          chosen_mod = find_module_by_code(prerequisite_code)
+          if !chosen_mod.blank?
+            uni_module.uni_modules << chosen_mod
+          else
+            uni_module.errors[:base] << "Could not find module by code: #{prerequisite_code}"
+          end
         end
       end
     end
   end
 
-  def update_career_tags(created_module, new_record)
-    created_module.tags.clear
-    uploaded_career_tags = new_record['career_tags']
+  def update_career_tags(uni_module, new_record)
+    uni_module.tags.clear
+    uploaded_career_tags = split_multi_association_field(new_record['career_tags'])
     unless uploaded_career_tags.blank?
-      uploaded_career_tags = uploaded_career_tags.split(MULTI_ITEM_FIELD_SEPARATOR)
-      uploaded_career_tags.each do |tag|
-        chosen_tag = Tag.find_by_name(tag)
+      uploaded_career_tags.each do |tag_name|
+        chosen_tag = find_tag_by_name(tag_name)
         if chosen_tag.present?
-          created_module.tags << chosen_tag
+          uni_module.tags << chosen_tag
         else
-          new_tag = Tag.new(name: tag, type: 'CareerTag')
-          created_module.tags << new_tag
+          new_tag = Tag.new(name: tag_name, type: 'CareerTag')
+          uni_module.tags << new_tag
         end
       end
     end
   end
 
-
-  def update_interest_tags(created_module, new_record)
-    created_module.interest_tags.clear
-    uploaded_interest_tags = new_record['interest_tags']
+  def update_interest_tags(uni_module, new_record)
+    uni_module.interest_tags.clear
+    uploaded_interest_tags = split_multi_association_field(new_record['interest_tags'])
     unless uploaded_interest_tags.blank?
-      uploaded_interest_tags = uploaded_interest_tags.split(MULTI_ITEM_FIELD_SEPARATOR)
-      uploaded_interest_tags.each do |tag|
-        chosen_tag = Tag.find_by_name(tag)
+      uploaded_interest_tags.each do |tag_name|
+        chosen_tag = find_tag_by_name(tag_name)
         if chosen_tag.present?
-          created_module.tags << chosen_tag
+          uni_module.tags << chosen_tag
         else
-          new_tag = Tag.new(name: tag, type: 'InterestTag')
-          created_module.tags << new_tag
+          new_tag = Tag.new(name: tag_name, type: 'InterestTag')
+          uni_module.tags << new_tag
         end
       end
     end
   end
 
   def check_module_errors(csv_module)
-    valid_module = false
-    if valid_base_attributes?(csv_module) && valid_associations?(csv_module)
-      valid_module = true
-    else
-      display_errors csv_module
+    valid_module = true
+    if invalid_module?(csv_module)
+      valid_module = false
     end
 
     valid_module
+  end
+
+  def invalid_module?(csv_module)
+    !csv_module.errors.empty? || valid_associations?(csv_module) || !valid_base_attributes?(csv_module)
   end
 
   def valid_base_attributes?(record)
@@ -141,13 +144,13 @@ module Admin::UploadModulesHelper
   end
 
   def valid_associations?(csv_module)
-    valid_module = true
+    valid_module = false
     if csv_module.tags.empty?
       csv_module.errors[:base] << "At least a Tag must be given"
-      valid_module = false
     elsif csv_module.departments.empty?
       csv_module.errors[:base] << "At least a Department must be given"
-      valid_module = false
+    else
+      valid_module = true
     end
 
     valid_module
@@ -159,5 +162,17 @@ module Admin::UploadModulesHelper
       update_error += error + '; '
     end
     flash[:error] = update_error
+  end
+
+  def find_department_by_name(name)
+    Department.find_by_name(name)
+  end
+
+  def find_module_by_code(code)
+    UniModule.find_by_code(code)
+  end
+
+  def find_tag_by_name(name)
+    Tag.find_by_name(name)
   end
 end
