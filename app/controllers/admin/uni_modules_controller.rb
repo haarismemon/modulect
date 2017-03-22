@@ -119,6 +119,16 @@ module Admin
         end
 
         @uni_module.uni_modules.clear()
+        if required.include? @uni_module.name
+          @uni_module.errors[:base] << "A module cannot be a prerequisite of itself."
+          @departments = @uni_module.departments.pluck(:name)
+          @careerTags = @uni_module.career_tags.pluck(:name)
+          @interestTags = @uni_module.interest_tags.pluck(:name)
+          @required = @uni_module.uni_modules.pluck(:name)
+          # Redisplay the form so user can fix problems
+          render(:edit)
+          return
+        end
         required.each do |mod|
           chosen_mod = UniModule.find_by_name(mod)
           @uni_module.uni_modules << chosen_mod
@@ -232,6 +242,16 @@ module Admin
 
         @uni_module.uni_modules.clear()
         required = params[:uni_module][:required].split(',')
+        if required.include? @uni_module.name
+          @uni_module.errors[:base] << "A module cannot be a prerequisite of itself."
+          @departments = @uni_module.departments.pluck(:name)
+          @careerTags = @uni_module.career_tags.pluck(:name)
+          @interestTags = @uni_module.interest_tags.pluck(:name)
+          @required = @uni_module.uni_modules.pluck(:name)
+          # Redisplay the form so user can fix problems
+          render(:edit)
+          return
+        end
         required.each do |mod|
           chosen_mod = UniModule.find_by_name(mod)
           @uni_module.uni_modules << chosen_mod

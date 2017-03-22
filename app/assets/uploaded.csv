@@ -1,2 +1,2 @@
-name,description,year,duration_in_years,departments
-ZEXL,,2019,3,Informatics; Physics;Chemistry
+name,code,description,lecturers,pass_rate,assessment_methods,semester,credits,exam_percentage,coursework_percentage,more_info_link,assessment_dates,prerequisite_modules,career_tags,interest_tags,departments
+tesssst,12345678,mewmewm,Trump,50,mi,2,15,40,60,ww,week 213213,Foundations of Computing 1;,a;c;efwefwef,b,Informatics;Mathematics;Chemistry

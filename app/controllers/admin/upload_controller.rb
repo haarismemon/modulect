@@ -196,152 +196,133 @@ module Admin
             created_module = UniModule.find_by_code(new_record['code'])
 
             if created_module.nil?
-              created_module_errors = UniModule.create(new_record.except(
+              UniModule.create(new_record.except(
                   'departments',
                   'prerequisite_modules',
                   'career_tags',
-                  'interest_tags')).errors.full_messages
-              if created_module_errors.any?
-                module_verification_failed = true
-                # Flash errors
-                created_module_errors.each { |message| flash[:error] = "Creation failed: #{message}" }
-              else
+                  'interest_tags'))
                 # Find created module
                 created_module = UniModule.find_by_code(new_record['code'])
                 creations += 1
-                # For every entered department
-                parse_mult_association_string(new_record['departments']).each do |dept_name|
-                  # Look for a department with the name
-                  department_found = Department.find_by_name(dept_name)
-                  unless department_found.nil?
-                    # Add the found department to the departments the module belongs to
-                    created_module.departments << department_found
+                departments = new_record['departments'].split(';')
+                required = new_record['prerequisite_modules'].split(';')
+                career_tags = new_record['career_tags'].split(';')
+                interest_tags = new_record['interest_tags'].split(',')
+
+                created_module.departments.clear()
+                if current_user.user_level == "department_admin_access"
+                  user_dept = Department.find(current_user.department_id).name
+                  if !(departments.include? user_dept)
+                    # If user does not include their own department in the department list.
+                    created_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+                    return
+                  end
+                end
+                departments.each do |dept|
+                  chosen_dept = Department.find_by_name(dept)
+                  created_module.departments << chosen_dept
+                end
+
+                created_module.uni_modules.clear()
+                if required.include? created_module.name
+                  created_module.errors[:base] << "A module cannot be a prerequisite of itself."
+                  return
+                end
+                required.each do |mod|
+                  chosen_mod = UniModule.find_by_name(mod)
+                  created_module.uni_modules << chosen_mod
+                end
+
+                created_module.tags.clear()
+
+                career_tags.each do |tag|
+                  chosen_tag = Tag.find_by_name(tag)
+                  # Add the career tag association
+                  if chosen_tag.present?
+                    created_module.tags << chosen_tag
+                  else
+                    # If tag does not already exist then create a new tag
+                    new_tag = Tag.new(name: tag, type: "CareerTag")
+                    created_module.tags << new_tag
                   end
                 end
 
-                # Add prerequisite modules
-                parse_mult_association_string(new_record['prerequisite_modules']).each do |module_code|
-                  # Lookup the module by unique code
-                  module_found = UniModule.find_by_code(module_code)
-                  # Link prereq to module unless prereq. module doesn't exist
-                  unless module_found.nil?
-                    # Add the found module to this modules prerequisites
-                    created_module.uni_modules << module_found
+                interest_tags.each do |tag|
+                  chosen_tag = Tag.find_by_name(tag)
+                   # Add the interest tag association
+                  if chosen_tag.present?
+                    created_module.tags << chosen_tag
+                  else
+                    # If tag does not already exist then create a new tag
+                    new_tag = Tag.new(name: tag, type: "InterestTag")
+                    created_module.tags << new_tag
                   end
                 end
 
-                unless new_record['career_tags'].nil?
-                  # Add career_tags
-                  parse_mult_association_string(new_record['career_tags']).each do |career_tag_name|
-                    # Lookup if tag with same name exists already
-                    career_tag_found = CareerTag.find_by(name: career_tag_name, type: 'CareerTag')
-                    if career_tag_found.nil? && (not career_tag_name == '')
-                      # Create new tag and add to this module
-                      created_module.add_tag(CareerTag.create(name: career_tag_name, type: 'CareerTag'))
-                    else
-                      # Already exists, so add to this module
-                      created_module.add_tag(career_tag_found)
-                    end
-                  end
-                end
-
-                unless new_record['interest_tags'].nil?
-                  # Add interest_tags
-                  parse_mult_association_string(new_record['interest_tags']).each do |interest_tag_name|
-                    # Lookup if tag with same name exists already
-                    interest_tag_found = InterestTag.find_by(name: interest_tag_name, type: 'InterestTag')
-                    if interest_tag_found.nil? && (not interest_tag_name == '')
-                      # Create new tag and add to this module
-                      created_module.add_tag(InterestTag.create(name: interest_tag_name, type: 'InterestTag'))
-                    else
-                      # Already exists, so add to this module
-                      created_module.add_tag(interest_tag_found)
-                    end
-                  end
-                end
-
-              end
             else
               # Update the existing Module
-              if new_record['name'] == '' || new_record['name'].nil?
-                flash[:error] = "Name update failed: Cannot update name of #{new_record['code']} to blank value"
-              else
-                created_module.update_attribute(:name, new_record['name'])
-              end
-              created_module.update_attribute(:description, new_record['description'])
-              created_module.update_attribute(:lecturers, new_record['lecturers'])
-              created_module.update_attribute(:pass_rate, new_record['pass_rate'])
-              created_module.update_attribute(:assessment_methods, new_record['assessment_methods'])
-              if ['1', '2', '1 or 2', '1 & 2'].include? new_record['semester']
-                created_module.update_attribute(:semester, new_record['semester'])
-              else
-                flash[:error] = "Semester update verification failed: Semester of #{new_record['code']} must be '1', '2', '1 or 2' or '1 & 2'"
-              end
-              if new_record['credits'] == '' || new_record['credits'].nil?
-                flash[:error] = 'Credits update failed: Credits cannot be left blank'
-              else
-                created_module.update_attribute(:credits, new_record['credits'])
-              end
-              created_module.update_attribute(:exam_percentage, new_record['exam_percentage'])
-              created_module.update_attribute(:coursework_percentage, new_record['coursework_percentage'])
-              created_module.update_attribute(:more_info_link, new_record['more_info_link'])
-              created_module.update_attribute(:assessment_dates, new_record['assessment_dates'])
+              UniModule.update(new_record.except(
+                  'departments',
+                  'prerequisite_modules',
+                  'career_tags',
+                  'interest_tags'))
+                # Find created module
+                created_module = UniModule.find_by_code(new_record['code'])
+                creations += 1
+                departments = new_record['departments'].split(';')
+                required = new_record['prerequisite_modules'].split(';')
+                career_tags = new_record['career_tags'].split(';')
+                interest_tags = new_record['interest_tags'].split(',')
 
-              # Override module departments
-              department_names = parse_mult_association_string(new_record['departments'])
-              departments = []
-              # Lookup department by department name
-              department_names.each do |dept_name|
-                # If department found then add to departments
-                find_department = Department.find_by_name(dept_name)
-                unless find_department.nil?
-                  departments << find_department
+                created_module.departments.clear()
+                if current_user.user_level == "department_admin_access"
+                  user_dept = Department.find(current_user.department_id).name
+                  if !(departments.include? user_dept)
+                    # If user does not include their own department in the department list.
+                    created_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+                    return
+                  end
                 end
-              end
-              created_module.departments= departments
+                departments.each do |dept|
+                  chosen_dept = Department.find_by_name(dept)
+                  created_module.departments << chosen_dept
+                end
 
-              # Override module prerequisite modules
-              req_module_codes = parse_mult_association_string(new_record['prerequisite_modules'])
-              req_modules = []
-              req_module_codes.each do |module_code|
-                # Lookup module by module code
-                find_module = UniModule.find_by_code(module_code)
-                # If module found then add to req modules
-                unless find_module.nil?
-                  req_modules << find_module
+                created_module.uni_modules.clear()
+                if required.include? created_module.name
+                  created_module.errors[:base] << "A module cannot be a prerequisite of itself."
+                  return
                 end
-              end
-              created_module.uni_modules= req_modules
+                required.each do |mod|
+                  chosen_mod = UniModule.find_by_name(mod)
+                  created_module.uni_modules << chosen_mod
+                end
 
-              # Override module tags
-              tags = []
-              # Retrieve career tags
-              career_tag_names = parse_mult_association_string(new_record['career_tags'])
-              career_tag_names.each do |career_tag|
-                find_career_tag = CareerTag.find_by(name: career_tag)
-                if find_career_tag.nil? && (not career_tag == '')
-                  # Create the career tag
-                  find_career_tag = CareerTag.create(name: career_tag)
+                created_module.tags.clear()
+
+                career_tags.each do |tag|
+                  chosen_tag = Tag.find_by_name(tag)
+                  # Add the career tag association
+                  if chosen_tag.present?
+                    created_module.tags << chosen_tag
+                  else
+                    # If tag does not already exist then create a new tag
+                    new_tag = Tag.new(name: tag, type: "CareerTag")
+                    created_module.tags << new_tag
+                  end
                 end
-                # Add the new/existing tag to collection
-                unless find_career_tag.nil?
-                  tags << find_career_tag
+
+                interest_tags.each do |tag|
+                  chosen_tag = Tag.find_by_name(tag)
+                   # Add the interest tag association
+                  if chosen_tag.present?
+                    created_module.tags << chosen_tag
+                  else
+                    # If tag does not already exist then create a new tag
+                    new_tag = Tag.new(name: tag, type: "InterestTag")
+                    created_module.tags << new_tag
+                  end
                 end
-              end
-              # Retrieve interest tags
-              interest_tag_names = parse_mult_association_string(new_record['interest_tags'])
-              interest_tag_names.each do |interest_tag|
-                find_interest_tag = InterestTag.find_by(name: interest_tag)
-                if find_interest_tag.nil? && (not interest_tag == '')
-                  # Create the career tag
-                  find_interest_tag = InterestTag.create(name: interest_tag)
-                end
-                # Add the new/existing tag to collection
-                unless find_interest_tag.nil?
-                  tags << find_interest_tag
-                end
-              end
-              created_module.tags= tags
               updates += 1
             end
 

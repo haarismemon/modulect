@@ -53,6 +53,10 @@ Rails.application.routes.draw do
     # RESET MODULECT
     post '/reset_modulect', to: 'base#reset_modulect'
 
+    post '/uni_modules/upload_csv', to: 'uni_modules#update_csv'
+    post '/uni_modules/create_csv', to: 'uni_modules#create_csv'
+
+
     root to: "dashboard#index"
   end
 
