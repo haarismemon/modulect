@@ -4,7 +4,7 @@
 <% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
 <style>
    .bootstrap-tagsinput {
-   background-color: none;
+     background: none;
    box-shadow: 0 0 0;
    border-radius:0;
    border:0;
@@ -217,7 +217,10 @@
                      <input type="hidden" value="<%= @course %>" name="course">
                      <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;                   
 <div style="float:right;">
-<button type="button" value="Reset Form" onClick="window.location.reload(false);" class="btn red-btn" id="reset-button" /><i class="fa fa-repeat" aria-hidden="true"></i> Reset</button></div>
+  <button type="button" value="Reset Form" onClick="window.location.reload(false);" class="btn red-btn" id="reset-button">
+    <i class="fa fa-repeat" aria-hidden="true"></i> Reset
+  </button>
+</div>
                      <br />
                   </div>
                   <% end %>
@@ -233,3 +236,4 @@
    </div>
 </div>
 <% end %>
+</div>
