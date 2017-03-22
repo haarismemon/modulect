@@ -1,4 +1,4 @@
-<!-- A template for editing a year_structure
+<%#  A template for editing a year_structure
 Contains its groups and the ability modify or delete each one
 Also contains nested group forms to give the ability to create new groups in-place within year structure form
 To modify this file access the partials within
@@ -9,20 +9,20 @@ Can easily be adjusted to preference. I.e to remove a attribute from resulting e
 to the blacklist_attributes string.
 Note: Both blacklist and entity attributes are strings when each attribute is separated by
 comma. This is so it can be passed to javascript, to be used.
--->
+%>
 
 <% provide :title, 'Edit Year Structure' %>
 <% provide :submit_button_text, 'Update' %>
 
-<!--header of edit page-->
+<%# header of edit page %>
 <header class="header">
-  <!--main header-->
+  <%# main header %>
   <h1> Edit <%= @year_structure.to_s %> of <a href="<%= admin_course_path(@year_structure.course) %>">
     <%= @year_structure.course.name %></a> <%= @year_structure.course.year %>
   </h1>
   <div class="header__actions">
 
-    <!--tool box-->
+    <%# tool box %>
     <%= render(:partial => 'admin/application/edit_toolbox_buttons',
                :locals => {:object => YearStructure.find(params[:id]),
                            :name_of_file => YearStructure.find(params[:id]).course.name+"_year"+YearStructure.find(params[:id]).year_of_study,
@@ -31,7 +31,7 @@ comma. This is so it can be passed to javascript, to be used.
                            :has_many_attributes => ["groups"],
                            :back_button => false}) %>
 
-    <!--back button-->
+    <%# back button %>
     <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
                 edit_admin_course_path(@year_structure.course.id), class: "button tool-box",
                 style: "padding-top: 11px;padding-bottom: 11px;" %>
@@ -42,5 +42,5 @@ comma. This is so it can be passed to javascript, to be used.
 
 
 
-<!--form render-->
+<%# form render%>
 <%= render 'form', :action => "Update" %>

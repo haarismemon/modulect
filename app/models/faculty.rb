@@ -4,6 +4,7 @@ class Faculty < ApplicationRecord
   has_many :users
   has_many :departments
 
+  # CSV export, loops over the faculty record obtaining the individual columns from the database
   def self.to_csv
     attributes = %w{name}
     CSV.generate(headers:true)do |csv|
@@ -11,9 +12,18 @@ class Faculty < ApplicationRecord
       all.each do |faculty|
         deptNames = ''
         Department.where(:faculty_id => faculty.id).each { |dept| deptNames += dept.name + '; '}
-        deptNames.chop!.chop!
+
+        deptNames.chop!
+        if deptNames!=''
+          deptNames.chop!
+        end
+
         csv << faculty.attributes.values_at(*attributes) + [*deptNames]
       end
     end
+  end
+
+  def to_s
+    name
   end
 end

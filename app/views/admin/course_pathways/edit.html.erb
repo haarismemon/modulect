@@ -1,10 +1,12 @@
 <% @course = Course.find_by_id(@pathway.course_id) %>
-<% provide :title, "Edit pathway #{@pathway.name} for #{@course.name}" %>
+<% provide :title, "Edit Suggested Pathway #{@pathway.name} for #{@course.name}" %>
 <% provide :submit_button_text, 'Update' %>
 
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
   <div class="header__actions">
+  <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+            :back, class: "button tool-box" %>
   </div>
 </header>
 
@@ -16,8 +18,8 @@
 <div id="main-container">
 </div>
 
-<div>
-	<button onclick="savePathway()" class="btn btn-lg" id="save">Save Pathway</button>
+<div style="margin-top:20px;">
+	<button onclick="savePathway()" class="btn" id="save"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</button>
 </div>
 
 <script type="text/javascript">
@@ -25,83 +27,55 @@ var data = '<%=raw (@course.to_json(
 :include => {:year_structures => {:include => {:groups => {:include => {:uni_modules => {:include => :uni_modules}}}}}}
       ).gsub(/["]/, '\\"')) %>';
 var js_course = jQuery.parseJSON(data);
-var optional_modules_per_year = [];
 var selected_ids = <%= @pathway.data %>;
-updateOptionalModules(); 
-//updateSelectedModules();
 generateView();
 
-function updateOptionalModules(){
-// Go through each year structure
-	for(year = 0; year < js_course.year_structures.length; ++year) {
-	  optional_modules_this_year = [];
-	  // Sort the moduels for this year into compuslory and non-compulsory
-	  for(group= 0; group < js_course.year_structures[year].groups.length; ++group) {
-	    // If a group is marked as compulsory add its module to the required group modules array. If not add it to the optional array.
-	    currentGroup = js_course.year_structures[year].groups[group];
-	    if(!currentGroup.compulsory) {
-	      optional_modules_this_year.push(currentGroup);
-	    }
-	  }
-
-	  // Add the data for this year into the array for all years
-	  optional_modules_per_year.push(optional_modules_this_year);
-	}
-}
-
-function updateSelectedModules(){
-	for(year = 0; year < optional_modules_per_year.length; ++year) {
-		selected_ids.push([]);
-		for(group = 0; group < optional_modules_per_year[year].length; ++group) {
-	    	selected_ids[year].push([]);
-		}
-	}
-}
 
 function toggle(year, group, module){
-	mod = optional_modules_per_year[year][group].uni_modules[module];
+	mod = js_course.year_structures[year].groups[group].uni_modules[module];
 	if(selected_ids[year][group].includes(mod.id)){
-		console.log("removed " + mod.name);
 		selected_ids[year][group].splice(selected_ids[year][group].indexOf(mod.id),1);		
 		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-lg fa fa-square-o');
 	}else{
-		console.log("added " + mod.name);
 		selected_ids[year][group].push(mod.id);
 		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-lg fa fa-check-square-o');
 	}
 }
-
 function generateView(){
 	out = "";
-	for(y=0; y<optional_modules_per_year.length; y++){
+	for(y=0; y<js_course.year_structures.length; y++){
 		out+="<h3>Year " + (y+1) + "</h3>";
-		for(g=0; g<optional_modules_per_year[y].length; g++){
-			out+="<b>" + optional_modules_per_year[y][g].name + "</b><br/>";
-			out+='<ul class="list-group">';
-			for(m=0; m<optional_modules_per_year[y][g].uni_modules.length; m++){
-				if(selected_ids[y][g].includes(optional_modules_per_year[y][g].uni_modules[m].id)){
-					out+='<li class ="list-group-item" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-check-square-o"></i>&nbsp;&nbsp;';
-					out+=optional_modules_per_year[y][g].uni_modules[m].name + ", " + optional_modules_per_year[y][g].uni_modules[m].credits + " credits";
-					out+='</li>'
-				}else{
-					out+='<li class ="list-group-item" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
-					out+=optional_modules_per_year[y][g].uni_modules[m].name + ", " + optional_modules_per_year[y][g].uni_modules[m].credits + " credits";
-					out+='</li>'
+		for(g=0; g<js_course.year_structures[y].groups.length; g++){
+			group = js_course.year_structures[y].groups[g];
+			if(!group.compulsory){
+				out+="<b>" + group.name + "</b><br/>";
+				out+='<ul class="list-group" style="margin-bottom:40px;margin-top:10px;">';
+				for(m=0; m<group.uni_modules.length; m++){
+					if(selected_ids[y][g].includes(group.uni_modules[m].id)){
+						out+='<li class ="list-group-item"  id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-check-square-o"></i>&nbsp;&nbsp;';
+						out+=group.uni_modules[m].name + ", " + group.uni_modules[m].credits + " credits";
+						out+='</li>'
+					}else{
+						out+='<li class ="list-group-item" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
+						out+=group.uni_modules[m].name + ", " + group.uni_modules[m].credits + " credits";
+						out+='</li>'
+					}
 				}
+				out+='</ul>';
 			}
-			out+='</ul>';
 		}
 	}
 	document.getElementById("main-container").innerHTML = out;
 }
+
 function savePathway(){
 	txt = $('input#save-name').val();
 	if(txt == ""){
-		window.alert("Please give this pathway a name");
+		bootbox.alert("Please give this pathway a name");
 	}else{
 		$.ajax({
 		    type: "POST",
-		    url: "<%= application_update_course_pathway_path %>",
+		    url: "<%= application_update_suggested_course_pathway_path %>",
 		    data: {
 		    	id: <%= @pathway.id %>,
 		        name: document.getElementById('save-name').value,
@@ -110,12 +84,10 @@ function savePathway(){
 		        course_id: js_course.id
 		    },
 		    success: function(result) {
-				console.log(result);
 				window.location = "<%= admin_course_pathway_path(@course.id) %>";
 			}
    		})
 	}
-	console.log(txt);
 }
 /*
 function savePathwayFromViewResults() {

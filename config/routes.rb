@@ -37,7 +37,8 @@ Rails.application.routes.draw do
     post '/faculties/bulk_delete', to: 'faculties#bulk_delete'
     post '/faculties/clone', to: 'faculties#clone'
     post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
-    post '/uni_modules/bulk_delete_comments', to: 'uni_modules#bulk_delete_comments'
+    post '/uni_modules/bulk_delete_comments'
+    post '/uni_modules/bulk_unflag_comments'
     post '/users/bulk_activate', to: 'users#bulk_activate'
     post '/users/bulk_deactivate', to: 'users#bulk_deactivate'
     post '/users/bulk_delete', to: 'users#bulk_delete'
@@ -54,7 +55,6 @@ Rails.application.routes.draw do
 
     root to: "dashboard#index"
   end
-
 
   # GENERAL
   root 'search#home'
@@ -135,10 +135,10 @@ Rails.application.routes.draw do
   # Save pathways and modules, and create tags used in ajax
   post 'application/save_module'
   post 'application/save_pathway'
-  post 'application/save_course_pathway'
-  post 'application/delete_course_pathway'
-  post 'application/update_course_pathway'
   post 'application/delete_pathway'
+  post 'application/save_suggested_course_pathway'
+  post 'application/delete_suggested_course_pathway'
+  post 'application/update_suggested_course_pathway'
 
   get 'application/rating_for_module'
   
@@ -148,6 +148,8 @@ Rails.application.routes.draw do
   post 'comments/edit'
   post 'comments/delete'
   delete 'comments/destroy'
+  post 'comments/unflag'
+  post 'comments/report'
 
 
   # ERROR PAGES

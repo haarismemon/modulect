@@ -2,8 +2,8 @@ class PathwaySearchController < ApplicationController
 
   include PathwaySearchHelper
 
-
-	def begin
+  # the begin action of the career search where the user can enter/edit their details
+  def begin
     @faculties = Faculty.all
     @departments = {}
     @courses = {}
@@ -60,21 +60,21 @@ class PathwaySearchController < ApplicationController
         @selected = params[:selected]
       end 
 
-			# if using the checkboxes and search
-			if params.has_key?(:chosen_tags) && params.has_key?(:chosen_tags_c)
-				@chosen_tags = params[:chosen_tags].split(",") 
-				params[:chosen_tags_c].each do |tag|
+      # if using the checkboxes and search
+      if params.has_key?(:chosen_tags) && params.has_key?(:chosen_tags_c)
+        @chosen_tags = params[:chosen_tags].split(",") 
+        params[:chosen_tags_c].each do |tag|
           @chosen_tags << tag
         end
         @chosen_tags = @chosen_tags.uniq
-	    	# if just checkboxes
+        # if just checkboxes
       elsif params.has_key?(:chosen_tags_c)
         params[:chosen_tags_c].each do |tag|
           @chosen_tags << tag
         end
-	    # if just search
+      # if just search
       else
-        @chosen_tags = params[:chosen_tags].split(",") 				 
+        @chosen_tags = params[:chosen_tags].split(",")         
       end
 
       @chosen_tags.each do |tag_name|
@@ -88,10 +88,12 @@ class PathwaySearchController < ApplicationController
       else
         @results = {}
       end
+      @suggested_pathways = SuggestedPathway.where(course_id: @course_obj.id)
+      
     # if just viewing structure
     elsif (params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? )
-	    @year_of_study = params[:year]
-	    @course = params[:course]
+      @year_of_study = params[:year]
+      @course = params[:course]
       @structure = YearStructure.where("course_id = ? AND year_of_study = ?", @course, @year_of_study)
       @groups = Group.where("year_structure_id = ?", @structure.ids)
       @course_obj = Course.find_by_id(@course)
@@ -102,16 +104,20 @@ class PathwaySearchController < ApplicationController
       if params.has_key?(:selected) && !params[:selected].empty?
         @selected = params[:selected]
       end
+      @suggested_pathways = SuggestedPathway.where(course_id: @course_obj.id)
+
 
     else
       redirect_to "/pathway-search/"
     end
   end
 
+  # add items to pathway search log counters
   def increment_pathway_search_log
     add_to_pathway_search_log(params[:first_mod_id], params[:second_mod_id], params[:course_id])
   end
 
+  # remove items from pathway search log counters
   def decrement_pathway_search_log
     remove_from_pathway_search_log(params[:first_mod_id], params[:second_mod_id], params[:course_id])
   end

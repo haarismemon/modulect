@@ -3,9 +3,12 @@ class SessionsController < ApplicationController
   skip_before_action :store_location
   before_action :already_logged_in, only: [:new, :create]
 
+  # Handles a session (login)
+
   def new
   end
 
+  # creates a new session with the user's credentials
   def create
     @user = User.find_by(email: params[:session][:email].downcase)
     @as = ""
@@ -34,6 +37,7 @@ class SessionsController < ApplicationController
     end
   end
 
+  # handles the logout/sesions destruction
   def destroy
     log_out if logged_in?
     redirect_to "/"

@@ -1,3 +1,16 @@
+<%#
+  Index which displays a collection of modules via @uni_modules instance variables and displays it in a table
+  Contains: a table which contain of set of columns with each representing an attribute.
+  The table is produced via a for loop which iterates through, producing a row for each tuple.
+%>
+<style>
+@media (max-width: 1136px) {
+  #data-area .no-link .col-md-3 {
+    float:none;
+  }
+}
+</style>
+
 <% if request.query_parameters["search"].present?%>
     <% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Modules') %>
 <% else %>
@@ -5,6 +18,7 @@
 <% end %>
 <header class="header index-header-area">
   <h1 id="page-title">
+    <i class="fa fa-pencil-square" aria-hidden="true"></i>&nbsp;
     <%if request.query_parameters["dept"] && Department.exists?(@dept_filter_id) %>
         <%= Department.find(@dept_filter_id).name %>
     <% end %>
@@ -14,7 +28,7 @@
       <% if @uni_modules.size > 0 %>
           <% if current_user.user_level == "super_admin_access" %>
               <div class="btn-group">
-                <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter  <span class="caret"></span>
+                <button  style="height: 36px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter  <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu scrollable-submenu">
                   <li> <%= link_to ("View All"), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0  ), method: :get %></li>
@@ -25,7 +39,7 @@
               </div>
           <% end %>
           <div class="btn-group">
-            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
+            <button  style="height: 36px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
               <li> <a id="delete-all" style="cursor:pointer;"><i class='fa fa-trash' aria-hidden='true'></i>&nbsp;&nbsp;Delete selected</a>
@@ -34,7 +48,7 @@
             </ul>
           </div>
       <% end %>
-      <%= link_to "<i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Module".html_safe, new_admin_uni_module_path, method: :get, class: "button" %>
+      <%= link_to "<i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New Module".html_safe, new_admin_uni_module_path, method: :get, class: "button", style: "height: 36px" %>
     </div>
   </div>
 </header>
@@ -76,9 +90,23 @@
               <td class="cell-data cell-data--string"><%= uni_module.code %></td>
               <td class="cell-data cell-data--string"><%= make_semester_nice uni_module.semester %></td>
               <td class="no-link">
+                <%  count = 0
+                    uni_module.comments.each do |comment|
+                      count = count + comment.reported_users.length
+                    end %>
+
                 <div class="col-md-3"><a class="action-edit" href="<%= edit_admin_uni_module_path(uni_module) %>"><i class="fa fa-pencil" aria-hidden="true" ></i>&nbsp;&nbspEdit</a></div>
                 <div class="col-md-3"><%= link_to "<i class='fa fa-external-link' aria-hidden='true'></i> View".html_safe, uni_module, method: :get, target: :blank %></div>
-                <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews".html_safe, admin_comment_path(uni_module), method: :get %></div>
+                <% if count == 0 %>
+                    <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews".html_safe, admin_comment_path(uni_module), method: :get %></div>
+                <% else %>
+                    <div class="col-md-3"><%= link_to "<i class='fa fa-comments' aria-hidden='true'></i> Reviews".html_safe, admin_comment_path(uni_module), method: :get %>
+                    <div style="display:inline-block">
+                      <a class="help-tooltip"  data-toggle="tooltip"  data-placement="right" href="<%= admin_comment_path(uni_module) %>" title="This module contains reviews flagged by users"><i style='color: #c77067;' class='fa fa-flag' aria-hidden='true'></i></a>
+                    </div>
+                    </div>
+                <% end %>
+
                 <div class="col-md-3"><%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe, admin_uni_module_path(uni_module), method: :delete,
                                                   data: { confirm: "Are you sure you want to delete this module?" } , class: "table__action--destroy" %></div>
               </td>

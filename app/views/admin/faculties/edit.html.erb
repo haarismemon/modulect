@@ -1,3 +1,7 @@
+<%# A template for editing a faculty
+Contains the relevant fields
+For information on how toolbox works and what each local does, see the tool box render
+%>
 <% content_for(:title) { "Edit #{Faculty.find(params[:id]).name} " } %>
 
 
@@ -5,9 +9,10 @@
   <h1 class="header__heading"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;<%= content_for(:title) %></h1>
   <div class="header__actions">
     <%= render(:partial => 'admin/application/edit_toolbox_buttons',
-               :locals => {:object => Faculty.find(params[:id]),
+               :locals => {:f => @faculty,
+                           :object => Faculty.find(params[:id]),
                            :name_of_file=>Faculty.find(params[:id]).name.tr(' ','').underscore,
-                           :blacklist_attributes=>"",:entity_attributes=>"",
+                           :blacklist_attributes=>"", :entity_attributes=>"",
                            :has_many_attributes=>["departments"]})%>
 
   </div>

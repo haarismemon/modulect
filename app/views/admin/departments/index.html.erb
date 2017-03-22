@@ -1,3 +1,15 @@
+<%#
+  Index which displays a collection of courses via @departments instance variables and displays it in a table
+  Contains: a table which contain of set of columns with each representing an attribute.
+  The table is produced via a for loop which iterates through, producing a row for each tuple.
+%>
+<style>
+@media (max-width: 1286px) {
+  #data-area .no-link .col-md-3 {
+    float:none;
+  }
+}
+</style>
 <% if request.query_parameters["search"].present?%>
 <% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Departments') %>
 <% else %>
@@ -15,7 +27,7 @@
          <% if @departments.size > 0 %>
       <% if current_user.user_level == "super_admin_access" %>
          <div class="btn-group">
-            <button style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Faculty filter  <span class="caret"></span>
+            <button style="height: 36px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Faculty filter  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu scrollable-submenu">
                <li> <%= link_to ("View All"), url_for( :sortby => @sort_by, :order => @order, :per_page => @per_page, :dept => 0  ), method: :get %></li>
@@ -26,7 +38,7 @@
             </div>
             <% end %>
          <div class="btn-group">
-            <button style="height: 34px;" id="bulk-actions" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
+            <button style="height: 36px;" id="bulk-actions" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                <li> <a id="clone-all" style="cursor:pointer;"><i class='fa fa-clone' aria-hidden='true'></i>&nbsp;&nbsp;Clone selected</a>
@@ -36,7 +48,7 @@
             </ul>
             </div>
          <% end %>
-         <a class="button" href="<%= new_admin_department_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New department</a>
+         <a class="button" style="height: 36px;" href="<%= new_admin_department_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New department</a>
       </div>
    </div>
 </header>

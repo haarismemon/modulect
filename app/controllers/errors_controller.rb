@@ -11,7 +11,7 @@ class ErrorsController < ApplicationController
     render(:status => 500)
   end
 
-
+  # if modulect switched offline by system admin, redirect
   def offline
   	if !app_settings.is_offline
   		redirect_to root_path

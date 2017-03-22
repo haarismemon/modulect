@@ -1,10 +1,13 @@
+<%#
+  This is a partial consistent with the rest of the admin area, displaying the time and department filters as well as back buttons whilst also catering for the main title.
+%>
 <header class="header">
    <h1 class="page-title"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;Analytics <%if @department != "any" %><span style="font-size:16px;">for <%= Department.find(@department.to_i).name %></span><% end %>
    </h1>
    <div class="header__actions">
       <% if current_user.user_level == "super_admin_access" %>
       <div class="btn-group">
-         <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter  <span class="caret"></span>
+         <button  style="height: 36px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Department filter  <span class="caret"></span>
          </button>
          <ul class="dropdown-menu scrollable-submenu">
             <li> <%= link_to ("View All"), url_for( :department => "all", :time => @time_period  ), method: :get %></li>
@@ -15,7 +18,7 @@
       </div>
       <% end %>
       <div class="btn-group">
-         <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Time period (<%= @time_period.titleize %>) <span class="caret"></span>
+         <button  style="height: 36px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Time period (<%= @time_period.titleize %>) <span class="caret"></span>
          </button>
          <ul class="dropdown-menu scrollable-submenu">
             <% @possible_times.each do |time_period| %>

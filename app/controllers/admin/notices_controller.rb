@@ -1,6 +1,5 @@
 module Admin
   class NoticesController < Admin::BaseController
-    before_action :verify_correct_access, only: [:destroy, :update, :edit]
 
     def index
       # checks current user status
@@ -62,14 +61,14 @@ module Admin
 
 
     def edit
-      # @notice global variable exists
+      @notice = Notice.find(params[:id])
       #! allows for template's form to be ready populated with the associated notice data ready for modification by admin )
     end
 
 
     def update
-      # @notice global variable exists
       # Update the object
+      @notice = Notice.find(params[:id])
       if @notice.update_attributes(notice_params)
         # If save succeeds, redirect to the index action
         flash[:success] = "The notice has successfuly been created "+(@notice.broadcast ? "and is currently live." : "")
@@ -82,11 +81,10 @@ module Admin
 
 
     def destroy
-      # @notice global variable exists
-
+      @notice = Notice.find(params[:id])
       #delete tuple object from db
       @notice.destroy
-      flash[:success] = "notice has been deleted successfully."
+      flash[:success] = "Successfully deleted notice"
       #redirect to action which displays all notices
       redirect_to(admin_notices_path)
     end
@@ -131,11 +129,6 @@ module Admin
       params.require(:notice).permit(:header, :notice_body, :live_date, :end_date, :broadcast, :optional_link, :auto_delete)
     end
 
-    def verify_correct_access
-      @notice = Notice.find(params[:id])
-      redirect_to admin_path unless (current_user.department_id == @notice.department_id )
-
-    end
 
     # deletes notices which are past their expiry date
     def auto_delete_notices

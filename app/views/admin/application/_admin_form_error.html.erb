@@ -1,5 +1,10 @@
+<%#
+  Checks if there is any errors wrt to an object local and if there is it will produce a flash with
+  clear bullet points of all the full messages from all the errors on to screen
+%>
+
 <% if object && object.errors.size > 0 %>
-    <div id="error-box" class="flash-alert flash-alert-error">
+    <div id="error-box" class="flash-alert flash-alert-error" style="margin-top: 20px">
       <h3><%= pluralize(object.errors.size, "error") %> prohibited this record from being saved</h3>
       <p>There were problems with the following fields:</p>
       <ul>

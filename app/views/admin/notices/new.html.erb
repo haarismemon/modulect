@@ -1,10 +1,10 @@
 <% content_for(:title) { "New Notice"} %>
 
 
-<header class="header" style="padding-bottom: 40px">
-  <h1 class="header__heading"><%= content_for(:title) %></h1>
+<header class="header">
+  <h1 class="header__heading"><i class="fa fa-bell" aria-hidden="true"></i> <%= content_for(:title) %></h1>
   <div class="header__actions">
-    <!--quit button-->
+    <%#quit button%>
     <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, admin_notices_path, class: "button" %>
   </div>
 </header>

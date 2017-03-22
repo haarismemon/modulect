@@ -1,15 +1,26 @@
-<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+<%#  Renders a complete form for faculty which is displayed within edit and new course form
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+A form with several field partials within which allows for the manipulation of @faculty object.
+
+To modify this file access the partials within
+%>
+
+<%# error message %>
 <%= error_messages_for(f.object) %>
-<!--renders attributes-->
-<div class="row field-unit field-unit--string name" >
-   <div class="col-xs-12">
-      <div class="field-unit__label">
-         <%= f.label :name %>
-      </div>
-      <div class="field-unit__field">
-         <%= f.text_field :name %>
-      </div>
-   </div>
+
+<%# Helper which prints error message of current object if there is any on to screen(does nothing, if none) #>
+<%= error_messages_for(f.object) %>
+<%#renders attributes%>
+<div class="row field-unit field-unit--string name">
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%= f.label :name %>
+    </div>
+    <div class="field-unit__field">
+      <%= f.text_field :name %>
+    </div>
+  </div>
 </div>
 <style>
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){width:100%}

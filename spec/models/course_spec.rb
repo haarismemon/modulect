@@ -2,13 +2,32 @@ require 'rails_helper'
 
 RSpec.describe Course, type: :model do
 
-  let(:course) { build(:course) }
+  let (:course) { build(:course) }
 
   describe "#valid?" do
 
     context "when built by FactoryGirl" do
       it "evaluates to true" do
         expect(course.valid?).to eq true
+      end
+    end
+
+    context "when duration_in_years is less than 1" do
+      before do
+        course.duration_in_years = 0
+      end
+      it "evaluates to false" do
+        expect(course.valid?).to eq false
+      end
+    end
+
+    context "when duration_in_years is greater than YearStructure.max_year_of_study" do
+      before do
+        course.duration_in_years = YearStructure.max_year_of_study + 1
+      end
+
+      it "evaluates to false" do
+        expect(course.valid?).to eq false
       end
     end
 
@@ -116,9 +135,32 @@ RSpec.describe Course, type: :model do
       end
     end
   end
+  
+  describe "#all_year_structures_defined?" do
+    let! (:year_structure) { create(:year_structure) }
+    
+    before do
+      course.save
+      course.year_structures << year_structure
+    end
 
-  describe "cascading delete" do
-   
+    context "when there is a year structure with no groups" do
+      it "evaluates to false" do
+        expect(course.all_year_structures_defined?).to eq false
+      end
+    end
+
+    context "when all year structures have at least one module" do
+      before do
+        create(:group, year_structure: year_structure, name: "Semester 2")
+      end
+      it "evaluates to true" do
+        expect(course.all_year_structures_defined?).to eq true
+      end
+    end
+  end
+
+  describe "#destroy" do
     before do
       course.save
       create(:year_structure, course: course)
@@ -128,6 +170,46 @@ RSpec.describe Course, type: :model do
       expect(YearStructure.count).not_to eq 0
       course.destroy
       expect(YearStructure.count).to eq 0
+    end
+  end
+
+  describe "#to_s" do
+    it "returns the name" do
+      expect(course.to_s).to eq course.name
+    end
+  end
+
+  describe ".to_csv" do
+    let (:csv_content) { Course.to_csv }
+    let (:csv_header) { "name,description,year,duration_in_years,departments\n" }
+    let (:department) { create(:department) }
+
+    before do
+      course.save
+      course.departments << department
+    end
+
+    it "outputs all saved courses" do
+      expect(csv_content).to include csv_header
+      test_csv_attributes_for_all_courses
+    end
+  end
+
+  private
+  def test_csv_attributes_for_all_courses
+    courses = Course.all
+    csv_content.slice! csv_header
+    i = 0
+    CSV.parse(csv_content) do |line|
+      course = courses[i]
+      expect(line).to include course.name
+      expect(line).to include course.description
+      expect(line).to include course.year.to_s
+      expect(line).to include course.duration_in_years.to_s
+      course.departments.each do |department|
+        expect(line).to include department.to_s
+      end
+      i += 1
     end
   end
 end

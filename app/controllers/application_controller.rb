@@ -2,11 +2,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :admin_has_dept
   before_action :modulect_is_online
+  before_action :store_location
+  before_action :log_visit
 
   include ApplicationHelper
   include SessionsHelper
-  before_action :store_location
-  before_action :log_visit
 
   # Confirms a logged in user.
   def logged_in_user
@@ -37,35 +37,38 @@ class ApplicationController < ActionController::Base
     current_user.pathways << Pathway.create(name: pathway_name, data: pathway_data, year: pathway_year, course_id: pathway_course)
   end
 
-  def save_course_pathway
-    course = Course.find_by(id: params[:course])
-    pathway_name = params[:name]
-    pathway_data = params[:data]
-    pathway_year = params[:year]
-    pathway_course = params[:course]
-    course.pathways << Pathway.create(name: pathway_name, data: pathway_data, year: pathway_year, course_id: pathway_course)
-  end
-
-  def update_course_pathway
-      pathway = Pathway.find_by(id: params[:id])
-      pathway.name = params[:name]
-      pathway.year = params[:year]
-      pathway.course_id = params[:course_id]
-      pathway.data = params[:data]
-      pathway.save
-      render json: pathway
-  end
-
-  def delete_course_pathway
-    pathway = Pathway.find_by_id(params[:pathway_id])
-    pathway.destroy
-    render json: pathway
-  end
-
   # delete pathway from user's favourites
   def delete_pathway
     pathway = Pathway.find(params[:pathway_par])
     current_user.pathways.delete(pathway)
+  end
+
+  # saves a suggested course pathway
+  def save_suggested_course_pathway
+    course = Course.find_by(id: params[:course])
+    suggested_pathway_name = params[:name]
+    suggested_pathway_data = params[:data]
+    suggested_pathway_year = params[:year]
+    suggested_pathway_course = params[:course]
+    course.suggested_pathways << SuggestedPathway.create(name: suggested_pathway_name, data: suggested_pathway_data, year: suggested_pathway_year, course_id: suggested_pathway_course)
+  end
+
+  # updates a suggested course pathway
+  def update_suggested_course_pathway
+      suggested_pathway = SuggestedPathway.find_by(id: params[:id])
+      suggested_pathway.name = params[:name]
+      suggested_pathway.year = params[:year]
+      suggested_pathway.course_id = params[:course_id]
+      suggested_pathway.data = params[:data]
+      suggested_pathway.save
+      render json: suggested_pathway
+  end
+
+  # deletes a suggested course pathway
+  def delete_suggested_course_pathway
+    suggested_pathway = SuggestedPathway.find_by_id(params[:pathway_id])
+    suggested_pathway.destroy
+    render json: suggested_pathway
   end
 
   # Retrieve module rating
@@ -79,7 +82,7 @@ class ApplicationController < ActionController::Base
     if logged_in? && admin_user && current_user.user_level == "department_admin_access" && !current_user.department_id.present?
       log_out
       redirect_to root_path
-          flash[:error] = "You have not been assigned a department. Contact the System Administrator."
+          flash[:error] = "You have not been assigned a department. Please contact the System Administrator."
     end
   end
 
@@ -93,6 +96,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # logs a user's visit by obtaining their device type and whether or not they were logged in
   def log_visit
     session_id = request.session_options[:id]
     client = DeviceDetector.new(request.env["HTTP_USER_AGENT"])

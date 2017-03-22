@@ -1,10 +1,15 @@
+<%# A template for creating a course
+Contains render which contains fields which corresponds to a particular course's attributes
+%>
+
 <% content_for(:title) { "New Course"} %>
 
 
 <header class="header">
 <h1 class="header__heading" style="margin-bottom: 40px"><%= content_for(:title) %></h1>
 <div class="header__actions">
-  <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, :back, class: "button" %>
+  <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, admin_courses_path,
+              {class: "button", style: "margin-bottom: 10px"} %>
 </div>
 
 </header>

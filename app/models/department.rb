@@ -13,7 +13,8 @@ class Department < ApplicationRecord
     courses << valid_course
   end
 
-  def self.to_csv
+   # CSV export, loops over the department record obtaining the individual columns from the database
+   def self.to_csv
     attributes = %w{name}
     CSV.generate(headers:true)do |csv|
       csv << [attributes.first,'faculty_name']
@@ -21,5 +22,9 @@ class Department < ApplicationRecord
         csv << dept.attributes.values_at(*attributes) + [*Faculty.find(dept.faculty_id).name]
       end
     end
+  end
+
+  def to_s
+    name
   end
 end

@@ -1,11 +1,18 @@
+<%#  Renders a complete form for module which is displayed within edit and new course form
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+A form with several field partials within which allows for the manipulation of @uni_module object.
+
+To modify this file access the partials within
+%>
 <%= tinymce_assets %>
 <%= error_messages_for(f.object) %>
 <style>
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 </style>
-<div class="form-group">
+<div class="form-group" style="margin-top: 30px">
   <label for="inputName">Name</label>
   <%= f.text_field :name, class: 'form-control', :required => true %>
 </div>
@@ -38,7 +45,7 @@
   <label for="prerequisites">Prerequisite Modules <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the modules which are required for a student to be eligible to take this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
   <%= f.text_field :required, :value => @required.join(","), class: 'form-control', :placeholder => 'Search for modules', data: {:role => "tagsinput"}, :id => "required" %>
 </div>
-<h3>Tags</h3>
+<h3 style="margin-top:20px;">Tags</h3>
 <button class="btn btn-small" type="button" id="btn_generate_tags" style="margin-bottom: 20px">Generate Tags from description</button>
 <div class="form-group">
   <label for="career_tags">Career Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the future careers that this module may lead to.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
@@ -48,13 +55,15 @@
   <label for="interest_tags">Interest Tags <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Enter tags that relate to the interests this module may suit.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
   <%= f.text_field :interest_tags, :value => @interestTags.join(","), class: 'form-control', :placeholder => 'Type to add a interest tag and press enter', data: {:role => "tagsinput"}, :id => "interest_tags" %>
 </div>
+
+<h3 style="margin-top:50px;">Additional details</h3>
 <div class="form-group">
   <label for="assessment_methods">Assessment Methods <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the assessment method(s) which are used in this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-  <%= f.text_field :assessment_methods, class: 'form-control'%>
+  <%= f.text_area :assessment_methods, class: 'form-control', style: "padding-top:15px;"%>
 </div>
 <div class="form-group">
   <label for="assessment_dates">Assessment Dates <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the approximate time which exam/coursework will take place.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
-  <%= f.text_field :assessment_dates, class: 'form-control'%>
+  <%= f.text_area :assessment_dates, class: 'form-control', style: "padding-top:15px;"%>
 </div>
 <div class="form-group">
   <label for="exam_percentage">Exam percentage <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify the percentage of marks which are from exams for this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
@@ -69,11 +78,11 @@
   <%= f.text_field :pass_rate, class: 'form-control'%>
 </div>
 <div class="form-group">
-  <label for="more_info_link">More info link <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify a link e.g. to a departmental website which has more information about this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+  <label for="more_info_link">External link <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Specify a link e.g. to a departmental website which has more information about this module.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
   <%= f.text_field :more_info_link, class: 'form-control'%>
 </div>
 <div class="form-group">
-  <button class="btn btn-lg" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;<%if parent=="edit" %>Update<% else %>New<% end %> Module
+  <button type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;<%if parent=="edit" %>Update<% else %>New<% end %> Module
   </button>
   <% if parent == "edit" %>
     &nbsp;&nbsp;&nbsp;<%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete module".html_safe, admin_uni_module_path(@uni_module), method: :delete,data: { confirm: "Are you sure you want to delete this module?" } , class: "table__action--destroy" %>

@@ -1,6 +1,9 @@
 module Admin
   class GroupsController < Admin::BaseController
 
+    # Handles controller for a group which is used within a course
+    # Most of the code is self-explanatory
+
     def show
       redirect_to edit_admin_group_path(params[:id])
     end
@@ -30,7 +33,7 @@ module Admin
 
     private
     def group_params
-      params.require(:group).permit(:name, :max_credits,:min_credits, :compulsory, uni_module_ids: [])
+      params.require(:group).permit(:name, :max_credits, :min_credits, :compulsory, :uni_module_ids => [])
     end
 
   end

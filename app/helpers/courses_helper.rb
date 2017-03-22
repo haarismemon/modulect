@@ -1,4 +1,6 @@
 module CoursesHelper
+
+  # handles the deep cloning of the course (year structures and groups included). if a clone already exists with the same year, a flash error is shown
   def deep_clone_courses_with_ids(ids_to_clone_as_strings)
     course_ids = eval(ids_to_clone_as_strings)
 
@@ -12,12 +14,14 @@ module CoursesHelper
 
             cloned = clone_course(course)
 
+            # adding new clone to the departments
             Department.all.each do |department|
               if department.courses.include?(course)
                 department.courses << cloned
               end
             end
 
+            # cloning the year structures and groups
             course.year_structures.each do |year_structure|
               cloned_year_structure = year_structure.dup
               cloned.year_structures << cloned_year_structure
@@ -37,6 +41,7 @@ module CoursesHelper
   end
 
   private
+  # clones an individual course with no deep cloning
   def clone_course(course)
     cloned_course = course.dup
     cloned_course.update_attribute("name", course.name + "-CLONE")

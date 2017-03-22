@@ -1,44 +1,28 @@
+<%#  Renders a complete form for course which is displayed within edit and new course form
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+Also contains render which iterates through the course year_structures and makes a card for each.
+A form with several field partials within which allows for the manipulation of @course object.
+Also contains a link to allow for the creation of pathways.
+
+To modify this file access the partials within
+%>
+
 <%= form_for [:admin, @course] do |f| %>
 
 
-    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+    <%# error message %>
     <%= error_messages_for(f.object) %>
-
-    <!--prints all year_structures realated to this course in card format-->
-    <% if action == "Update" %>
-        <%= render 'admin/application/course-partials/year_structures_set' %>
-    <% end %>
-
-    <div class="col-md-12 text-center">
-      <div class="col-md-12 login-card">
-        <div class="col-md-12">
-          <div class="icon-row"><i class="fa fa-list-ul" aria-hidden="true"></i></div>
-          <div>
-            <h3>Course Pathways</h3>
-            <h5 style="margin-top: 20px">
-              Pathways: <%= @course.pathways.count %>
-            </h5>
-          </div>
-          <div>
-            <div style="margin-top: 30px;padding-left:0px">
-              <div class="form-group">
-                <a id="manage-pathways" href="<%= admin_course_pathway_path(@course.id) %>" class="btn btn-lg"><span>Manage</span></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!--renders attributes-->
+    
     <% path_of_field_store = "admin/application/fields/" %>
 
-    <!--name field-->
+
+    <%# name field %>
     <%= render path_of_field_store + "string_form_field", :f => f,
                :name => :name %>
 
-    <!--course's departments field-->
+
+    <%# course's departments field %>
     <div class="row field-unit  departments">
       <div class="col-xs-12">
         <div class="field-unit__label">
@@ -51,23 +35,23 @@
       </div>
     </div>
 
-    <!--renders beginning field year -->
+    <%# beginning field year  %>
     <%= render path_of_field_store + "number_form_field", :f => f,
                :name => :year,
                :label => "Beginning year",
-               :tooltip => "The beginning year of the university teaching the course. If the course ready existed prior,
-        then a rough estimate is sufficent.",
+               :tooltip => "The beginning year of the university teaching this course. If the course ready existed prior,
+        then a rough estimate is sufficent. This year is to be used as an alias to differentiate between several courses with same name.",
                :options => {default: Date.current.year} %>
 
 
-    <!--renders description field -->
+    <%# description field  %>
     <%= render path_of_field_store + "textarea_form_field", :f => f,
                :name => :description,
                :tooltip => "Introduction explaining what this course is,
                 and why students might be intrested in taking it." %>
 
 
-    <!--renders duration in years field -->
+    <%# duration in years field  %>
     <div class="col-xs-12">
       <div class="row field-unit duration_in_years">
         <div class="field-unit__label">
@@ -78,13 +62,13 @@
                 is given to this course.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
         </div>
         <div class="field-unit__field">
-          <%= f.select(:duration_in_years, options_for_select(1..9, @course.duration_in_years),
+          <%= f.select(:duration_in_years, options_for_select(1..YearStructure.max_year_of_study, @course.duration_in_years),
                        {:include_blank => true}, {:class => 'selectize'}) %>
         </div>
       </div>
     </div>
 
-    <!--submit button-->
+    <%# submit button %>
     <div class="form-actions">
       <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %>
         Course

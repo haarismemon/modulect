@@ -10,7 +10,7 @@ module ApplicationHelper
 	    end
 	end
 
-
+	# returns the careers for a module
 	def get_careers_for_module(valid_uni_module)
 	    @careers = []
 	    valid_uni_module.career_tags.each do |careertag|
@@ -35,6 +35,8 @@ module ApplicationHelper
 	    modules_with_no_weightings = []
 	    modules_with_pass_rate = []
 	    modules_with_no_pass_rate = []
+      modules_with_ratings = []
+      modules_with_no_ratings = []
 
 	    results_array.each do |result|
 	      uni_module = result[0]
@@ -51,6 +53,13 @@ module ApplicationHelper
 	      else
 	        modules_with_no_pass_rate << result
 	      end
+
+        # if a module has a rating that is not 0, then store in array for ratings
+        if module_average_rating(uni_module) != 0
+          modules_with_ratings << result
+        else
+          modules_with_no_ratings << result
+        end
 	    end
 
 	    if sort_by_category == "coursework"
@@ -71,6 +80,12 @@ module ApplicationHelper
 	      # sort the remaining modules (without the pass rate attribute) according to number of tags matched
 	      results_without_attribute = modules_with_no_pass_rate.sort_by {|result| result[1].size}
 	      return (results_without_attribute.concat results_with_attribute).reverse
+	    elsif sort_by_category == "rating"
+        # sort the results by their average rating
+        results_with_attribute = modules_with_ratings.sort_by {|result| [module_average_rating(result[0]), result[1].size] }
+        # sort the remaining modules (with rating 0) according to number of tags matched
+	     	results_without_attribute = modules_with_no_ratings.sort_by {|result| result[1].size}
+        return (results_without_attribute.concat results_with_attribute).reverse
 	    end
 
       return results_array
@@ -125,6 +140,7 @@ module ApplicationHelper
 		end
 	end
 
+	# returns the admin type of the current user
 	def admin_type
 		if current_user.user_level == "super_admin_access"
 			"System"
@@ -163,20 +179,11 @@ module ApplicationHelper
 	end
 
 
-  # Creates redirect back button for department form only
-  def back_redirect_for_department(page)
-     if !form_valid?(page)
-      # redirects back to faculty form if initially came from there
-      determine_redirect_link_from_previous_state
-     else
-      #or just go back to last page like normal-->
-      link_to 'Back', :back, class: "button"
-     end
-  end
+
 
   # specifies whether current admin form has any errors
   def form_valid?(page)
-     (page.resource && page.resource.errors.size == 0)
+		(page && page.errors.size == 0)
   end
 
   def make_semester_nice(semester_number)
@@ -204,6 +211,7 @@ module ApplicationHelper
 		"-"
 	end
 
+	# returns the name of a association given the object and attribute
 	def find_name_of_association(object,attribute)
 		begin
 			object.send(attribute).name
@@ -224,8 +232,12 @@ module ApplicationHelper
       total += comment.rating
     end
 
-    average = total / comments.length
-		((average)*2).round / 2.0
+    if comments.length != 0
+      average = total / comments.length
+		  ((average)*2).round / 2.0
+    else
+      average
+    end
   end
 
 
@@ -234,6 +246,7 @@ module ApplicationHelper
     AppSetting.instance
   end
 
+  # add a type of search to the search log by checking if the type of search firstly exists and if it does increment a counter. if not it creates a new record.
   def add_to_search_log(type)
   	logs = SearchLog.select{|log| log.search_type == type && log.created_at.hour == Time.now.hour}
 
@@ -267,6 +280,7 @@ module ApplicationHelper
 
   end
 
+  # adds a uni module to the uni module log for analytics, once again checking if there is an existing record
   def add_to_uni_module_log(incoming_uni_module_id)
   	logs = UniModuleLog.select{|log| log.uni_module_id == incoming_uni_module_id && log.created_at.to_date == Time.now.to_date}
   	if logs.size > 0
@@ -278,6 +292,7 @@ module ApplicationHelper
 
   end
 
+  # similar to previous action but for tags
   def add_to_tag_log(incoming_tag_id)
   	logs = TagLog.select{|log| log.tag_id == incoming_tag_id && log.created_at.to_date == Time.now.to_date}
   	if logs.size > 0
@@ -288,6 +303,7 @@ module ApplicationHelper
 	end
   end
   
+  # formats the input into a "nth year, Course name" format
   def get_course_and_year(user, prestring)
   	if user.year_of_study.present? && !user.course_id.nil?
   		", " + user.year_of_study.ordinalize + " year " + Course.find(user.course_id).name

@@ -19,33 +19,4 @@ RSpec.describe UsersHelper, type: :helper do
       expect(full_name_for(user)).to eq "#{user.first_name} #{user.last_name}"
     end
   end
-
-  describe "#privileges_description_for(user)" do
-    context "when the user is a student" do
-      before do
-        user.user_level = 3
-      end
-      it "recognizes that the he is a student" do
-        expect(privileges_description_for(user)).to eq "Student"
-      end
-    end
-
-    context "when the user is a department admin" do
-      before do
-        user.user_level = 2
-      end
-      it "recognizes that the he is a department admin" do
-        expect(privileges_description_for(user)).to eq "Department Administrator"
-      end
-    end
-
-    context "when the user is a system admin" do
-      before do
-        user.user_level = 1
-      end
-      it "recognizes that the he is a system admin" do
-        expect(privileges_description_for(user)).to eq "System Administrator"
-      end
-    end
-  end
 end
