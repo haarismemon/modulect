@@ -38,5 +38,5 @@ $ ->
       $.ajax 'update_selected_department',
         type: 'GET'
         data: {
-          module_id: $("#departments_select option:selected").val()
+          department_id: $("#departments_select option:selected").val()
         }

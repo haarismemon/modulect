@@ -8,7 +8,7 @@
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The interest which was most searched for">Top interest of <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></a>
          </div>
          <div class="main-figure">
-         <% most_searched_interest_tag = get_top_size_check_analytics(get_clicked_interest_tags(@department,1,@time_period,Time.now,"most", 1)) %>
+         <% most_searched_interest_tag = get_top_size_check_analytics(all_data["clicked_interest_tags"]) %>
             <%= get_top_module_name(most_searched_interest_tag) %>
          </div>
          <div class="percentage-change">
@@ -20,52 +20,94 @@
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The career which was most searched for">Top career of <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></a>
          </div>
          <div class="main-figure">
-         <% most_searched_tag = get_top_size_check_analytics(get_clicked_career_tags(@department,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_name(most_searched_tag) %>
+         <% most_searched_career_tag = get_top_size_check_analytics(all_data["clicked_career_tags"]) %>
+            <%= get_top_module_name(most_searched_career_tag) %>
          </div>
          <div class="percentage-change">
             across any type of search
          </div>
       </div>
    </div>
-<% most_clicked_career_tags = get_clicked_career_tags(@department,1,@time_period,Time.now,"most", 100) %>
+
 
    <div class="row">
-<div class="col-md-6">
-         <div class="col-md-12 login-card subox-card">
-         
-            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Careers currently trending on Modulect">Trending careers</a></h4>
-            <% if most_clicked_career_tags.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_clicked_career_tags.each do |tag, counter| %>
-	            	<li><%= tag.name %></li>
-	            <% end %>
-	            </ol>
-            <% end %>
-            	
-         </div>
-</div>
-<% most_clicked_interest_tags = get_clicked_interest_tags(@department,1,@time_period,Time.now,"most", 100) %>    
-<div class="col-md-6">
-         <div class="col-md-12 login-card subox-card">
-         
-            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Interests currently trending on Modulect">Trending interests</a></h4>
-            <% if most_clicked_interest_tags.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_clicked_interest_tags.each do |tag, counter| %>
-	            	<li><%= tag.name %></li>
-	            <% end %>
-	            </ol>
-            <% end %>
-            	
-         </div>
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="career-tag-clicked-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected career tag in the time period selected.">Most Clicked Career Tag</a></h4>
+          <div class="col-md-12" id="career_tag_clicked_table_area">
+          </div>
+        </div>
       </div>
-   </div>
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="interest-tag-clicked-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected interest tag in the time period selected.">Most Clicked Interest Tag</a></h4>
+          <div class="col-md-12" id="interest_tag_clicked_table_area">
+          </div>
+        </div>
+      </div>
 </div>
 
+<script>
+   function drawCareerClickedTag() {
+       var chartType = $("#career-tag-clicked-selector option:selected").val();
 
+       if(chartType == "table") {
+         $("#career_tag_clicked_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["clicked_career_tags"].first(20), chart_name: "Most Clicked Career Tag") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#career_tag_clicked_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_career_tags"].first(20), type: "bar", chart_name: "Most Clicked Career Tag") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#career_tag_clicked_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_career_tags"].first(20), type: "horizontalBar", chart_name: "Most Clicked Career Tag") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#career_tag_clicked_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_career_tags"].first(20), type: "pie", chart_name: "Most Clicked Career Tag") %>").html_safe;
+       }
+     }
+
+     $("#career-tag-clicked-selector").on('change', function() {
+       drawCareerClickedTag();
+     });
+
+     drawCareerClickedTag();
+
+     function drawClickedInterestTag() {
+       var chartType = $("#interest-tag-clicked-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#interest_tag_clicked_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["clicked_interest_tags"].first(20), chart_name: "Most Clicked Interest Tag") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#interest_tag_clicked_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_interest_tags"].first(20), type: "bar", chart_name: "Most Clicked Interest Tag") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#interest_tag_clicked_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_interest_tags"].first(20), type: "horizontalBar", chart_name: "Most Clicked Interest Tag") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#cinterest_tag_clicked_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_interest_tags"].first(20), type: "pie", chart_name: "Most Clicked Interest Tag") %>").html_safe;
+       }
+     }
+
+     $("#interest-tag-clicked-selector").on('change', function() {
+       drawClickedInterestTag();
+     });
+
+     drawClickedInterestTag();
+</script>
 
