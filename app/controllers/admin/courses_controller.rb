@@ -88,6 +88,17 @@ module Admin
       @course = Course.new(course_params)
       if @course.save
         @course.create_year_structures
+
+        departments = params[:course][:department_ids].split(',')
+        if params[:course][:department_ids].present? && !params[:course][:department_ids].empty?
+          if current_user.user_level == "department_admin_access"
+          user_dept = Department.find(current_user.department_id).name
+            if !(departments.include? user_dept)
+              @course.departments << Department.find_by_name(user_dept)
+            end
+          end
+        end
+        
         flash[:success] = "Successfully created " + @course.name
         redirect_to(edit_admin_course_path @course)
       else
@@ -104,7 +115,20 @@ module Admin
       @course = Course.find(params[:id])
       duration_in_years_pre_update = @course.duration_in_years
       if @course.update_attributes course_params
+
+
         @course.update_year_structures(duration_in_years_pre_update)
+
+        departments = params[:course][:department_ids].split(',')
+        if params[:course][:department_ids].present? && !params[:course][:department_ids].empty?
+          if current_user.user_level == "department_admin_access"
+          user_dept = Department.find(current_user.department_id).name
+            if !(departments.include? user_dept)
+              @course.departments << Department.find_by_name(user_dept)
+            end
+          end
+        end
+
         flash[:success] = "Successfully updated #{@course.name}"
         redirect_to edit_admin_course_path(@course)
       else
