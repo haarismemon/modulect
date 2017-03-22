@@ -163,6 +163,8 @@ module Admin
               created_course.update(new_record.except('departments'))
             end
             unless course_verification_failed
+              # Clear the departments this course belongs to before overriding/updating
+              created_course.departments= []
               # For every entered department
               parse_mult_association_string(new_record['departments']).each do |dept_name|
                 # Look for a department with the name
