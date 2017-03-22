@@ -44,6 +44,14 @@
         <div class="row">
           <h1> Time to start picking your modules </h1>
           <h4> We've added compulsory modules for you. Just click pick a module and go through the different groups of modules available. </h4>
+          <% if @suggested_pathways.length > 0 %>
+            <h4> This module has <%= @suggested_pathways.length %> suggested pathways:</h4>
+            <ul>
+              <% @suggested_pathways.each do |good_path| %>
+                <li><a href="/pathway-search/view_results?year=<%=@year_of_study%>&course=<%=@course_obj.id%>&selected=<%=good_path.data%>"><%= good_path.name %></a></li>
+              <% end %>
+            </ul>
+          <% end %>
           <h5> Don't forget that we've given you a tag match percentage to show you how much a module matches your interests and aspirations. </h5>
         </div>
         <% if @course_obj.year_structures.length != 0 %>
@@ -77,12 +85,12 @@
         <div class="row" <% if logged_in? %>style="margin-left:-30px;"<% end %>>
           <% if logged_in? %>
           <form onsubmit="savePathway();return false;" style="margin-top: 30px">
+            <div class="col-md-5">
+              <input type="text" class="form-control no-print" id="save-name" placeholder="Name your Pathway" required>
+            </div>
             <div class="col-md-3">
               <button type="submit" class="btn btn-lg no-print" id="save"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</span>
               </button>
-            </div>
-            <div class="col-md-4">
-              <input type="text" class="form-control no-print" id="save-name" placeholder="Name your Pathway" required>
             </div>
           </form>
           <% else %>

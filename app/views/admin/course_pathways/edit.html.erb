@@ -29,7 +29,6 @@ var data = '<%=raw (@course.to_json(
 var js_course = jQuery.parseJSON(data);
 var optional_modules_per_year = [];
 var selected_ids = <%= @pathway.data %>;
-console.log(selected_ids);
 updateOptionalModules(); 
 //updateSelectedModules();
 generateView();
