@@ -281,7 +281,7 @@ bob = User.create!(first_name:  "Bob",
             password_confirmation: "foobar",
             activated: true,
             activated_at: Time.zone.now,
-            user_level: 1)
+            user_level: :super_admin_access)
 
 # department admin
 sophie = User.create!(first_name:  "Ali",
@@ -291,7 +291,7 @@ sophie = User.create!(first_name:  "Ali",
             password_confirmation: "foobar",
             activated: true,
             activated_at: Time.zone.now,
-            user_level: 2,
+            user_level: :department_admin_access,
             faculty: nms,
             department: informatics)
 
@@ -303,7 +303,7 @@ sophie = User.create!(first_name:  "Sophie",
             password_confirmation: "foobar",
             activated: true,
             activated_at: Time.zone.now,
-            user_level: 3)
+            user_level: :user_access)
 
 
 

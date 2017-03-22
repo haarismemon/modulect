@@ -5,6 +5,7 @@ RSpec.describe Course, type: :model do
   let (:course) { build(:course) }
 
   describe "#valid?" do
+    binding.pry
 
     context "when built by FactoryGirl" do
       it "evaluates to true" do
