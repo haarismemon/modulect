@@ -302,6 +302,14 @@
         groupComplete[year][group] = false;
       }
     }
+  } else {
+    for(year = 0; year < optional_modules_per_year.length; ++year) {
+      groupComplete.push([]);
+      creditsComplete[year] = false;
+      for(group = 0; group < optional_modules_per_year[year].length; ++group) {
+        groupComplete[year][group] = false;
+      }
+    }
   }
 
   // Store prerequistes for quick deletions
