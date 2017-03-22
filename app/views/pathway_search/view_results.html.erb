@@ -520,6 +520,7 @@
         if(optional_modules_per_year[year][i].uni_modules) {
           out = "<li><a role=\"tab\" data-toggle=\"tab\" id = \"btn_opt_year_"+year+"_group_"+i+"\">" + optional_modules_per_year[year][i].name;
           if(groupComplete[year][i]) {
+            console.log("HHHHHH");
             out += "<span style=\"color: #2ab27b\"><i class=\"fa fa-check-circle\" aria-hidden=\"true\"></i> - Done</span>";
           } 
           out += "</a></li>";
@@ -717,8 +718,15 @@
     console.log("min credits in this group: " + min_credits);
     credits_used = 0;
     modules_selected_from_group = selected_ids[year][group].length;
-    for(i = 0; i < selected_ids[year][group].length; ++i) {
-      credits_used += selected_ids[year][group][i].credits;
+    for(item = 0; item < selected_ids[year][group].length; ++item) {
+      var findWithId = selected_ids[year][group][item];
+        for(i = 0; i < optional_modules_per_year[year][group].uni_modules.length; ++i) {
+          var currentMod = optional_modules_per_year[year][group].uni_modules[i];
+          if(currentMod.id == findWithId) {
+            credits_used += currentMod.credits;
+            break;
+          }
+        } 
     }
     console.log("credits already used: " + credits_used);
     console.log("credits already selected: " + modules_selected_from_group);
@@ -799,7 +807,7 @@
 
     console.log("credits used this year: " + credits_this_year);      
     console.log("----------------------------------------");
-    if(credits_used >= max_credits) {
+    if(credits_used + this_module.credits >= max_credits) {
       window.alert("You have already selected enough credits from this group");
     }
     else if(credits_this_year + this_module.credits > js_course.year_structures[year].year_credits) {
@@ -811,7 +819,8 @@
       if(credits_this_year + this_module.credits == js_course.year_structures[year].year_credits) {
         creditsComplete[year] = true;
       }
-      if(credits_used >= min_credits) {
+      if(credits_used + this_module.credits >= min_credits) {
+        console.log(credits_used + "," + credits_used + this_module.credits);
         groupComplete[year][group] = true;
       }
       console.log(year + " " + group);
