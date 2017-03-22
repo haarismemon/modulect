@@ -10,10 +10,12 @@ In addition, a user will be able the tags which are oft chosen together.
       <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
       </div>
       <div class="main-figure">
-        <%= get_number_pathway_searches(@department, 1, @time_period, Time.now) %>
+        <%= all_data["number_of_pathway_searches"] %>
       </div>
       <% if @time_period != "all_time" %>
-      <% percentage_difference_total_pathway_searches = percentage_difference(get_number_pathway_searches(@department, 1, @time_period, Time.now), get_number_pathway_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now))) %>
+      <% percentage_difference_total_quick_searches = 
+            all_data["percentage_difference_number_of_pathway_searches"]
+            %>
       <div class="percentage-change <%= colour(percentage_difference_total_pathway_searches)%>">
         <% if percentage_difference_total_pathway_searches != 0 %>
           <i class="fa fa-caret-<%= indicator(percentage_difference_total_pathway_searches)%>" aria-hidden="true"></i>
