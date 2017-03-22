@@ -11,17 +11,13 @@ module Admin::UploadModulesHelper
       csv_module = try_to_create_module(new_record)
       creations += 1
     else
-      csv_module = try_to_update_module(new_record)
+      csv_module = try_to_update_module(csv_module, new_record)
       updates += 1
     end
 
-    should_save = check_module_errors(csv_module)
-
-    if should_save
+    if should_save?(csv_module)
       csv_module.save
-    end
-
-    if csv_module.errors.any?
+    else
       display_errors csv_module
     end
 
@@ -44,9 +40,7 @@ module Admin::UploadModulesHelper
     new_module
   end
 
-  def try_to_update_module(new_record)
-    updated_module = find_module_by_code(new_record['code'])
-
+  def try_to_update_module(updated_module, new_record)
     updated_module.assign_attributes(new_record.except(
         'departments',
         'prerequisite_modules',
@@ -126,17 +120,14 @@ module Admin::UploadModulesHelper
     end
   end
 
-  def check_module_errors(csv_module)
-    valid_module = true
-    if invalid_module?(csv_module)
-      valid_module = false
-    end
-
-    valid_module
+  def should_save?(csv_module)
+    !invalid_module?(csv_module)
   end
 
+  # Calling csv_module#valid? will override the already existent errors.
+  # Make sure that valid_base_attributes? is called last so no errors are overridden.
   def invalid_module?(csv_module)
-    !csv_module.errors.empty? || valid_associations?(csv_module) || !valid_base_attributes?(csv_module)
+    !csv_module.errors.empty? || !valid_associations?(csv_module) || !valid_base_attributes?(csv_module)
   end
 
   def valid_base_attributes?(record)
