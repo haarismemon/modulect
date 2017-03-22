@@ -8,11 +8,11 @@ The main graph shows the number of career searches in the time period.
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= get_number_career_searches(@department, 1, @time_period, Time.now) %>
+            <%= all_data["number_of_career_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_career_searches = 
-            percentage_difference(get_number_career_searches(@department, 1, @time_period, Time.now), get_number_career_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            all_data["percentage_difference_number_of_career_searches"]
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_career_searches)%>">
             <% if percentage_difference_total_career_searches != 0 %>
@@ -26,8 +26,7 @@ The main graph shows the number of career searches in the time period.
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The career which was most searched for">Top career of <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></a>
          </div>
          <div class="main-figure">
-         <% most_searched_tag = get_top_size_check_analytics(get_clicked_career_tags(@department,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_name(most_searched_tag) %>
+         <%= get_top_module_name(get_top_size_check_analytics(all_data["clicked_tags"])) %>
          </div>
          <div class="percentage-change">
             across any type of search
