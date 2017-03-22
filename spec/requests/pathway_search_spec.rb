@@ -37,8 +37,8 @@ feature "Student searching for module pathway", :js => true do
   given(:cs1) { uni_modules(:cs1) }
 
   # Year Structures
-  given(:cs_year_1) { year_structures(:cs_year_1) }
-  given(:cs_year_2) { year_structures(:cs_year_2) }
+  given(:cs_year_1) { computer_science_15.year_structures.build(year_of_study: 1) }
+  given(:cs_year_2) { computer_science_15.year_structures.build(year_of_study: 2) }
 
   # Groups
   given(:cs1_semester_1) { groups(:cs1_semester_1) }
@@ -112,7 +112,7 @@ feature "Student searching for module pathway", :js => true do
     click_on "Next"
     select_first_three_tags
     click_on "View results"
-    #i_should_see_all_compulsory_modules_for_my_year
-    #binding.pry
+    binding.pry
+    i_should_see_all_compulsory_modules_for_my_year
   end
 end
