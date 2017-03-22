@@ -8,9 +8,6 @@ module Admin::UploadHelper
   end
 
   def upload_uni_module(new_record)
-    # Add departments attribute to create and/or link departments to this module
-    # Track if module failed to be created
-    module_verification_failed = false
     # Lookup if Module already exists: Module is unique by Code
     created_module = UniModule.find_by_code(new_record['code'])
 
@@ -36,94 +33,68 @@ module Admin::UploadHelper
         'interest_tags'))
 
     if created_module.new_record?
-      flash[:error] = created_module.errors.full_messages
+      creation_error = String.new
+      created_module.errors.full_messages.each do |message|
+        creation_error += message + '; '
+      end
+      flash[:error] = creation_error
       return
     end
 
-    new_module_departments = new_record['departments']
-    logger.debug("ASJDHLKJHADKLJFHAIDKHFKAJDHF")
-    logger.debug(new_record['departments'])
-    unless new_module_departments.nil?
-      new_module_departments = new_module_departments.split(';')
+    update_departments(created_module, new_record)
+    update_prerequisite_modules(created_module, new_record)
+    update_career_tags(created_module, new_record)
+    update_interest_tags(created_module, new_record)
+  end
 
-      if current_user.user_level == "department_admin_access"
-        user_dept = Department.find(current_user.department_id).name
-        if !(new_module_departments.include? user_dept)
-          # If user does not include their own department in the department list.
-          created_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
-          return
-        end
+  def update_existing_module(new_record)
+
+    updated_module = UniModule.find_by_code(new_record['code'])
+
+    updated_module.assign_attributes(new_record.except(
+                  'departments',
+                  'prerequisite_modules',
+                  'career_tags',
+                  'interest_tags'))
+
+    unless updated_module.valid?
+      update_error = "Update Failed: "
+      debugger
+      updated_module.errors.full_messages.each do |message|
+        update_error += message + '; '
       end
-      new_module_departments.each do |dept|
-        chosen_dept = Department.find_by_name(dept)
-        created_module.departments << chosen_dept
-      end
+      flash[:error] = update_error
+      return
     end
 
-    prerequisite_modules = new_record['prerequisite_modules']
-    unless prerequisite_modules.nil?
-      prerequisite_modules = prerequisite_modules.split(';')
+    update_departments(updated_module, new_record)
+    update_prerequisite_modules(updated_module, new_record)
+    update_career_tags(updated_module, new_record)
+    update_interest_tags(updated_module, new_record)
+  end
 
-      if prerequisite_modules.include? created_module.name
-        created_module.errors[:base] << "A module cannot be a prerequisite of itself."
-        return
-      end
-      prerequisite_modules.each do |mod|
-        chosen_mod = UniModule.find_by_name(mod)
-        created_module.uni_modules << chosen_mod
+  def update_prerequisite_modules(created_module, new_record)
+    created_module.uni_modules.clear unless created_module.uni_modules.blank?
+    uploaded_prerequisites = new_record['prerequisite_modules']
+    unless uploaded_prerequisites.nil?
+      uploaded_prerequisites = uploaded_prerequisites.split(';')
+      if !uploaded_prerequisites.include? created_module.name
+        uploaded_prerequisites.each do |mod|
+          chosen_mod = UniModule.find_by_name(mod)
+          created_module.uni_modules << chosen_mod
+        end
+      else
+        created_module.errors[:base] << 'A module cannot be a prerequisite of itself.'
       end
     end
   end
 
-  def update_existing_module(new_record)
-    # Update the existing Module
-    UniModule.update(new_record.except(
-        'departments',
-        'prerequisite_modules',
-        'career_tags',
-        'interest_tags'))
-
-    created_module = UniModule.find_by_code(new_record['code'])
-
-    created_module.departments.clear()
-    new_module_departments = new_record['departments']
-    logger.debug("ASJDHLKJHADKLJFHAIDKHFKAJDHF")
-    logger.debug(new_record[:departments])
-    unless new_module_departments.nil?
-      new_module_departments = new_module_departments.split(';')
-      if current_user.user_level == "department_admin_access"
-        user_dept = Department.find(current_user.department_id).name
-        if !(new_module_departments.include? user_dept)
-          # If user does not include their own department in the department list.
-          created_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
-          return
-        end
-      end
-      new_module_departments.each do |dept|
-        chosen_dept = Department.find_by_name(dept)
-        created_module.departments << chosen_dept
-      end
-    end
-
-    created_module.uni_modules.clear()
-    prerequisite_modules = new_record['prerequisite_modules']
-    unless prerequisite_modules.nil?
-      prerequisite_modules = prerequisite_modules.split(';')
-      if prerequisite_modules.include? created_module.name
-        created_module.errors[:base] << "A module cannot be a prerequisite of itself."
-        return
-      end
-      prerequisite_modules.each do |mod|
-        chosen_mod = UniModule.find_by_name(mod)
-        created_module.uni_modules << chosen_mod
-      end
-    end
-
-    created_module.tags.clear()
-    career_tags = new_record['career_tags']
-    unless career_tags.nil?
-      career_tags = career_tags.split(';')
-      career_tags.each do |tag|
+  def update_career_tags(created_module, new_record)
+    created_module.tags.clear unless created_module.tags.blank?
+    uploaded_career_tags = new_record['career_tags']
+    unless uploaded_career_tags.nil?
+      uploaded_career_tags = uploaded_career_tags.split(';')
+      uploaded_career_tags.each do |tag|
         chosen_tag = Tag.find_by_name(tag)
         # Add the career tag association
         if chosen_tag.present?
@@ -135,11 +106,33 @@ module Admin::UploadHelper
         end
       end
     end
+  end
 
-    interest_tags = new_record['interest_tags']
-    unless interest_tags.nil?
-      interest_tags = interest_tags.split(',')
-      interest_tags.each do |tag|
+  def update_departments(created_module, new_record)
+    created_module.departments.clear unless created_module.departments.blank?
+    uploaded_departments = new_record['departments']
+    unless uploaded_departments.nil?
+      uploaded_departments = uploaded_departments.split(';')
+      if current_user.user_level == 'department_admin_access'
+        user_dept = Department.find(current_user.department_id).name
+        if uploaded_departments.include? user_dept
+          uploaded_departments.each do |dept|
+            chosen_dept = Department.find_by_name(dept)
+            created_module.departments << chosen_dept
+          end
+        else
+          created_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+        end
+      end
+    end
+  end
+
+  def update_interest_tags(created_module, new_record)
+    created_module.interest_tags.clear unless created_module.interest_tags.blank?
+    uploaded_interest_tags = new_record['interest_tags']
+    unless uploaded_interest_tags.nil?
+      uploaded_interest_tags = uploaded_interest_tags.split(',')
+      uploaded_interest_tags.each do |tag|
         chosen_tag = Tag.find_by_name(tag)
         # Add the interest tag association
         if chosen_tag.present?
@@ -152,5 +145,4 @@ module Admin::UploadHelper
       end
     end
   end
-
 end

@@ -3,7 +3,7 @@ class UniModule < ApplicationRecord
   validates :name, presence: true
   validates :code, presence: true, length: { is: 8 }, uniqueness: true
   validates :semester, presence: true
-  validates :credits, presence: true
+  validates :credits, presence: true, numericality: { greater_than: 0 }
 
   # A UniModule has been saved as a favourite by many users.
   has_many :saved_modules
