@@ -93,7 +93,7 @@ module Admin
         redirect_to(edit_admin_faculty_path) and return
       else
         # If save fails, redisplay the form so user can fix problems
-        render('admin/faculty/new')
+        render('admin/faculties/edit')
       end
     end
 

@@ -13,6 +13,7 @@
 
 <%# assign back-button to true by default to render back button in this partial, unless specified otherwise %>
 <% back_button = true if local_assigns[:back_button].nil? %>
+
 <div class="btn-group">
   <%# button drop down %>
   <button style="height: 36px; outline: none; padding-bottom:4px"
@@ -34,8 +35,8 @@
     </li>
     <%# generate pdf from form's data %>
     <li>
-      <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')"><i class="fa fa-file-pdf-o" aria-hidden="true" style="margin-right: 2px;"></i>
-        Download as PDF</a>
+      <a href="javascript:genPDF('<%= name_of_file %>','<%= blacklist_attributes %>','<%= entity_attributes %>')">
+        <i class="fa fa-file-pdf-o" aria-hidden="true" style="margin-right: 2px;"></i>Download As PDF</a>
     </li>
 
   </ul>
@@ -43,8 +44,11 @@
 
 <% if back_button %>
 <%# back button %>
-<%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe, :back, class: "button tool-box" %>
-<%end%>
+      <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
+                  (local_assigns[:f].nil? || form_valid?(f) ? :back : "/admin/"+object.class.name.downcase.pluralize),
+                  class: "button tool-box", style: "padding-top: 11.5px;padding-bottom: 11.5px;" %>
+<% end%>
+
 
 <%# styling of toolbox dropdown %>
 <style>
@@ -60,6 +64,7 @@
     height: 36.3px;
     border-radius: 4%;
     font-weight: 700;
+
   }
 
   .caret {
@@ -142,7 +147,12 @@
         //equals zero. If so start a new line by creating a new table row and add current item's name.
         // If not just add the item's name
         if (0 <<%=index%> && <%=index%>% lineBreak == 0) {
+            <% begin %>
             html = appendTo(html, "</td> </tr><tr> <td> <%= item.name %>")
+            <% rescue %>
+            html = appendTo(html, "</td> </tr><tr> <td> -")
+            <% end %>
+
         }
         else if (<%=index==0%>) {
             html = appendTo(html, "<%= item.name %>");
