@@ -124,7 +124,7 @@ module Admin::UploadModulesHelper
 
   def check_module_errors(csv_module)
     valid_module = false
-    if valid_base_attributes?(csv_module) && valid_associations(csv_module)
+    if valid_base_attributes?(csv_module) && valid_associations?(csv_module)
       valid_module = true
     else
       display_errors csv_module
@@ -137,7 +137,7 @@ module Admin::UploadModulesHelper
     record.valid?
   end
 
-  def valid_associations(csv_module)
+  def valid_associations?(csv_module)
     valid_module = true
     if csv_module.tags.empty?
       csv_module.errors[:base] << "At least a Tag must be given"
