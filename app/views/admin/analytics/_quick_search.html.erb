@@ -169,7 +169,7 @@ The main graph shows the number of quick searches in the time period.
        var chartType = $("#visited-module-selector option:selected").val();
 
        if(chartType == "table") {
-         $("#visited_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["visited_modules"].first(20), chart_name: "Visited Modules") %>").html_safe;
+         $("#visited_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["visited_modules"].first(20), chart_name: "Most Visited Modules") %>").html_safe;
        }
        else if(chartType == "vBar") {
          $("#visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "bar", chart_name: "Most Visited Modules") %>").html_safe;
