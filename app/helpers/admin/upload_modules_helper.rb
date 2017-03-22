@@ -1,4 +1,7 @@
 module Admin::UploadModulesHelper
+
+  MULTI_ITEM_FIELD_SEPARATOR = ';'
+
   def upload_uni_module(new_record)
     # Lookup if Module already exists: Module is unique by Code
     csv_module = UniModule.find_by_code(new_record['code'])
@@ -60,7 +63,7 @@ module Admin::UploadModulesHelper
     created_module.departments.clear
     uploaded_departments = new_record['departments']
     unless uploaded_departments.nil?
-      uploaded_departments = uploaded_departments.split(';')
+      uploaded_departments = uploaded_departments.split(MULTI_ITEM_FIELD_SEPARATOR)
       if current_user.user_level == 'department_admin_access'
         user_dept = Department.find(current_user.department_id).name
         if uploaded_departments.include? user_dept
@@ -77,7 +80,7 @@ module Admin::UploadModulesHelper
     created_module.uni_modules.clear
     uploaded_prerequisites = new_record['prerequisite_modules']
     unless uploaded_prerequisites.nil?
-      uploaded_prerequisites = uploaded_prerequisites.split(';')
+      uploaded_prerequisites = uploaded_prerequisites.split(MULTI_ITEM_FIELD_SEPARATOR)
       if !uploaded_prerequisites.include? created_module.name
         uploaded_prerequisites.each do |mod|
           chosen_mod = UniModule.find_by_name(mod)
@@ -91,7 +94,7 @@ module Admin::UploadModulesHelper
     created_module.tags.clear
     uploaded_career_tags = new_record['career_tags']
     unless uploaded_career_tags.blank?
-      uploaded_career_tags = uploaded_career_tags.split(';')
+      uploaded_career_tags = uploaded_career_tags.split(MULTI_ITEM_FIELD_SEPARATOR)
       uploaded_career_tags.each do |tag|
         chosen_tag = Tag.find_by_name(tag)
         if chosen_tag.present?
@@ -109,7 +112,7 @@ module Admin::UploadModulesHelper
     created_module.interest_tags.clear
     uploaded_interest_tags = new_record['interest_tags']
     unless uploaded_interest_tags.blank?
-      uploaded_interest_tags = uploaded_interest_tags.split(';')
+      uploaded_interest_tags = uploaded_interest_tags.split(MULTI_ITEM_FIELD_SEPARATOR)
       uploaded_interest_tags.each do |tag|
         chosen_tag = Tag.find_by_name(tag)
         if chosen_tag.present?
