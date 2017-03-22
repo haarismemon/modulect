@@ -74,8 +74,6 @@
           </div>
         </div>
       </div>
-
-<% most_saved_modules = get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 20) %>
       <div class="col-md-6" >
         <div class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
@@ -91,38 +89,26 @@
           </div>
         </div>
       </div>
-       <div class="col-md-6" >
-         <div class="col-md-12 login-card subox-card">
-         <% if most_saved_modules.size != 0 %>
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <% end %>
-         
-            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules most saved on Modulect">Top saved modules</a></h4>
-            <% if most_saved_modules.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_saved_modules.each do |uni_module, counter| %>
-	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
-	            <% end %>
-	            </ol>
-            <% end %>
-            	
-         </div>
-      </div>
    </div>
 
    <% most_reviewed_modules = get_review_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 20) %>
 
    <div class="row">
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-reviewed-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most reviewed module in the time period selected.">Most Reviewed Modules</a></h4>
+          <div class="col-md-12" id="mod_reviewed_module_table_area">
+          </div>
+        </div>
+      </div>
       <div class="col-md-6" >
          <div class="col-md-12 login-card subox-card">
          <% if most_reviewed_modules.size != 0 %>
@@ -207,7 +193,7 @@
 
      drawModVisitedModule();
 
-     function drawModSaveddModule() {
+     function drawModSavedModule() {
        var chartType = $("#mod-saved-module-selector option:selected").val();
 
        if(chartType == "table") {
@@ -229,4 +215,27 @@
      });
 
      drawModSavedModule();
+
+     function drawModReviewedModule() {
+       var chartType = $("#mod-reviewed-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["reviewed_modules"].first(20), chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "bar", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "horizontalBar", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "pie", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-reviewed-module-selector").on('change', function() {
+       drawModReviewedModule();
+     });
+
+     drawModReviewedModule();
 </script>
