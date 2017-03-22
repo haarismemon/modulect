@@ -125,6 +125,8 @@ module Admin
                 # Retrieve the existing faculty
                 faculty_entry = Faculty.find_by_name(new_record['name'])
               end
+              # Clear the departments of this faculty before overriding/updating
+              faculty_entry.departments= []
               # For every entered department
               parse_mult_association_string(new_record['departments']).each do |dept_name|
                 # Look for a department with the name
@@ -263,7 +265,7 @@ module Admin
                 flash[:error] = "Semester update verification failed: Semester of #{new_record['code']} must be '1', '2', '1 or 2' or '1 & 2'"
               end
               if new_record['credits'] == '' || new_record['credits'].nil?
-                flash[:error] = "Credits update failed: Credits cannot be left blank"
+                flash[:error] = 'Credits update failed: Credits cannot be left blank'
               else
                 created_module.update_attribute(:credits, new_record['credits'])
               end
