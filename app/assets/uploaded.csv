@@ -1,4 +1,2 @@
-First Name,Last Name,Faculty,Course,Department
-Ali,Syed,Natural and Mathematical Sciences,N/A,Informatics
-Bob,Ross,N/A,N/A,N/A
-Sophie,McDonald,Natural and Mathematical Sciences,BSc Computer Science,Chemistry
+name,code,description,lecturers,pass_rate,assessment_methods,semester,credits,exam_percentage,coursework_percentage,more_info_link,assessment_dates,prerequisite_modules,career_tags,interest_tags,departments
+Topology,6YBS2FC2,Just got updated :D,,40,Please work,1,,41,59,bananas,not telling you,,,,
