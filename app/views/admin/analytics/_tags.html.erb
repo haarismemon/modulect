@@ -87,7 +87,7 @@
 
      drawCareerClickedTag();
 
-     function drawInterestInterestTag() {
+     function drawClickedInterestTag() {
        var chartType = $("#interest-tag-clicked-selector option:selected").val();
 
        if(chartType == "table") {
@@ -105,9 +105,9 @@
      }
 
      $("#interest-tag-clicked-selector").on('change', function() {
-       drawCareerInterestTag();
+       drawClickedInterestTag();
      });
 
-     drawCareerInterestTag();
+     drawClickedInterestTag();
 </script>
 
