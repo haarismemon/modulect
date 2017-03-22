@@ -50,24 +50,28 @@
 
 <%= render partial: "admin/analytics/tabs" %>
 
+<%
+all_data = get_all_data(@all_uni_modules, @all_users, @all_tags, @department, @time_period)
+
+%>
    <div class="tab-content" style="margin-top:30px;">
       <div id="overview" class="tab-pane fade in active">
-         <%= render partial: "admin/analytics/overview" %>
+         <%= render partial: "admin/analytics/overview", :locals => {all_data: all_data} %>
       </div>
       <div id="quick-search" class="tab-pane fade">      
-         <%= render partial: "admin/analytics/quick_search" %>
+         <%= render partial: "admin/analytics/quick_search", :locals => {all_data: all_data}  %>
       </div>
       <div id="pathway-search" class="tab-pane fade">   
-         <%= render partial: "admin/analytics/pathway_search" %>
+         <%= render partial: "admin/analytics/pathway_search", :locals => {all_data: all_data}  %>
       </div>
       <div id="career-search" class="tab-pane fade">
-         <%= render partial: "admin/analytics/career_search" %>
+         <%= render partial: "admin/analytics/career_search", :locals => {all_data: all_data}  %>
       </div>
       <div id="modules" class="tab-pane fade">
-         <%= render partial: "admin/analytics/modules" %>
+         <%= render partial: "admin/analytics/modules", :locals => {all_data: all_data}  %>
       </div>
       <div id="tags" class="tab-pane fade">
-         <%= render partial: "admin/analytics/tags" %>
+         <%= render partial: "admin/analytics/tags", :locals => {all_data: all_data}  %>
       </div>
    </div>
 </div>

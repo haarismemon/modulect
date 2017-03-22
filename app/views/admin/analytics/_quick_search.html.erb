@@ -8,11 +8,11 @@ The main graph shows the number of quick searches in the time period.
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-            <%= get_number_quick_searches(@department, 1, @time_period, Time.now) %>
+            <%= all_data["number_of_quick_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
          <% percentage_difference_total_quick_searches = 
-            percentage_difference(get_number_quick_searches(@department, 1, @time_period, Time.now), get_number_quick_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now)))
+            all_data["percentage_difference_number_of_quick_searches"]
             %>
          <div class="percentage-change <%= colour(percentage_difference_total_quick_searches)%>">
             <% if percentage_difference_total_quick_searches != 0 %>
@@ -26,8 +26,7 @@ The main graph shows the number of quick searches in the time period.
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The tag which was most searched for">Most searched (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_searched_tag = get_top_size_check_analytics(get_clicked_tags(@department,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_name(most_searched_tag) %>
+            <%= get_top_module_name(get_top_size_check_analytics(all_data["clicked_tags"])) %>
          </div>      
          <div class="percentage-change">
             across any type of search
@@ -37,8 +36,8 @@ The main graph shows the number of quick searches in the time period.
          <div class="small-header"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most clicked module from search results">Most clicked module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_clicked_module =  get_top_size_check_analytics(get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_code(most_clicked_module) %>
+         <% most_clicked_module =  get_top_size_check_analytics(all_data["visited_modules"]) %>
+            <% get_top_module_code(most_clicked_module) %>
          </div>
         
          <div class="percentage-change">
@@ -49,7 +48,7 @@ The main graph shows the number of quick searches in the time period.
          <div class="small-header"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most saved module from results">Most saved module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_saved_module =  get_top_size_check_analytics(get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+         <% most_saved_module =  get_top_size_check_analytics(all_data["saved_modules"]) %>
             <%= get_top_module_code(most_saved_module) %>
          </div>
         
@@ -101,68 +100,91 @@ The main graph shows the number of quick searches in the time period.
          
       </script>
    </div>
-<% most_visited_modules = get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 10) %>
    <div class="row">
       <div class="col-md-6" >
-         <div class="col-md-12 login-card subox-card">
-         <% if most_visited_modules.size != 0 %>
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <% end %>
-         
-            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules currently trending on Modulect">Trending modules</a></h4>
-            <% if most_visited_modules.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_visited_modules.each do |uni_module, counter| %>
-	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
-	            <% end %>
-	            </ol>
-	            <div class="expand-link">
-	               <a data-toggle="tab" href="#modules" class="go-to-modules">Show more ></a>
-	            </div>
-            <% end %>
-            	
-         </div>
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="visited-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected module in the time period selected.">Most Clicked Modules</a></h4>
+          <div class="col-md-12" id="visited_module_table_area">
+          </div>
+          <div class="expand-link">
+             <a data-toggle="tab" href="#modules" class="go-to-modules">More info ></a>
+          </div>
+        </div>
       </div>
-<% most_clicked_tags = get_clicked_tags(@department,1,@time_period,Time.now,"most", 10) %>
-       <div class="col-md-6" >
-         <div class="col-md-12 login-card subox-card">
-         <% if most_clicked_tags.size != 0 %>
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <% end %>
-         
-            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Tags currently trending on Modulect">Trending tags</a></h4>
-            <% if most_clicked_tags.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_clicked_tags.each do |tag, counter| %>
-	            	<li><%= tag.name %></li>
-	            <% end %>
-	            </ol>
-	            <div class="expand-link">
-	               <a data-toggle="tab" href="#tags" class="go-to-tags">Show more ></a>
-	            </div>
-            <% end %>
-            	
-         </div>
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="clicked-tag-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected tags in the time period selected.">Most Clicked Tags</a></h4>
+          <div class="col-md-12" id="clicked_tag_table_area">
+          </div>
+          <div class="expand-link">
+             <a data-toggle="tab" href="#tags" class="go-to-tags">More info ></a>
+          </div>
+        </div>
       </div>
    </div>
 </div>
+
+<script>
+
+   function drawClickedTag() {
+       var chartType = $("#clicked-tag-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#clicked_tag_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["clicked_tags"].first(20), chart_name: "Most Clicked Tag") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#clicked_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_tags"].first(20), type: "bar", chart_name: "Most Clicked Tag") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#clicked_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_tags"].first(20), type: "horizontalBar", chart_name: "Most Clicked Tag") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#clicked_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_tags"].first(20), type: "pie", chart_name: "Most Clicked Tag") %>").html_safe;
+       }
+     }
+
+     $("#clicked-tag-selector").on('change', function() {
+       drawClickedTag();
+     });
+
+     drawClickedTag();
+
+     function drawVisitedModule() {
+       var chartType = $("#visited-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#visited_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["visited_modules"].first(20), chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "bar", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "horizontalBar", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "pie", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+     }
+
+     $("#visited-module-selector").on('change', function() {
+       drawVisitedModule();
+     });
+
+     drawVisitedModule();
+</script>

@@ -200,6 +200,9 @@ module Admin
         redirect_to(edit_admin_user_path) and return
       else
         #delete tuple object from db
+
+        SavedModule.where(user_id: @user.id).destroy_all
+        Pathway.where(user_id: @user.id).destroy_all
         @user.destroy
         flash[:success] = "Successfully deleted " + @user.full_name
         #redirect to action which displays all users
@@ -251,6 +254,8 @@ module Admin
         user = User.find(id.to_i)
         
           if !user.nil? && user != current_user
+            SavedModule.where(user_id: user.id).destroy_all
+            Pathway.where(user_id: user.id).destroy_all
             user.destroy
           end
         

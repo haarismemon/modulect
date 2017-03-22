@@ -7,8 +7,8 @@
          <div class="small-header"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most clicked module from search results">Most clicked module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_clicked_module =  get_top_size_check_analytics(get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_code(most_clicked_module) %>
+         <% most_clicked_module = get_top_size_check_analytics(all_data["visited_modules"])%>
+         <%= get_top_module_code(most_clicked_module) %>
          </div>
         
          <div class="percentage-change">
@@ -20,7 +20,7 @@
          <div class="small-header"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most saved module from results">Most saved module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_saved_module =  get_top_size_check_analytics(get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+         <% most_saved_module =  get_top_size_check_analytics(all_data["saved_modules"]) %>
             <%= get_top_module_code(most_saved_module) %>
          </div>
         
@@ -33,7 +33,7 @@
          <div class="small-header"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most highly rated module from student reviews">Most highly rated (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_highly_rated =  get_top_size_check_analytics(get_rating_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+         <% most_highly_rated =  get_top_size_check_analytics(all_data["rated_modules"]) %>
             <%= get_top_module_code(most_highly_rated) %>
          </div>
         
@@ -46,7 +46,7 @@
          <div class="small-header"><i class="fa fa-star-half-o" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most reviewed module in the time period">Most reviewed module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_reviewed =  get_top_size_check_analytics(get_review_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+         <% most_reviewed =  get_top_size_check_analytics(all_data["reviewed_modules"]) %>
             <%= get_top_module_code(most_reviewed) %>
          </div>
         
@@ -58,126 +58,162 @@
       
    </div>
   
-<% most_visited_modules = get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 20) %>
    <div class="row">
       <div class="col-md-6" >
-         <div class="col-md-12 login-card subox-card">
-         <% if most_visited_modules.size != 0 %>
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <% end %>
-         
-            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules currently trending on Modulect">Trending modules</a></h4>
-            <% if most_visited_modules.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_visited_modules.each do |uni_module, counter| %>
-	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
-	            <% end %>
-	            </ol>
-            <% end %>
-            	
-         </div>
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-visited-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected module in the time period selected.">Most Clicked Modules</a></h4>
+          <div class="col-md-12" id="mod_visited_module_table_area">
+          </div>
+        </div>
       </div>
-
-<% most_saved_modules = get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 20) %>
-
-       <div class="col-md-6" >
-         <div class="col-md-12 login-card subox-card">
-         <% if most_saved_modules.size != 0 %>
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <% end %>
-         
-            <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules most saved on Modulect">Top saved modules</a></h4>
-            <% if most_saved_modules.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_saved_modules.each do |uni_module, counter| %>
-	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
-	            <% end %>
-	            </ol>
-            <% end %>
-            	
-         </div>
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-saved-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most saved module in the time period selected.">Most Saved Modules</a></h4>
+          <div class="col-md-12" id="mod_saved_module_table_area">
+          </div>
+        </div>
       </div>
    </div>
-
-   <% most_reviewed_modules = get_review_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 20) %>
-
    <div class="row">
       <div class="col-md-6" >
-         <div class="col-md-12 login-card subox-card">
-         <% if most_reviewed_modules.size != 0 %>
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <% end %>
-         
-            <h4 class="small-header"><i class="fa fa-star-half-o" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules currently trending on Modulect">Most reviewed modules</a></h4>
-            <% if most_reviewed_modules.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_reviewed_modules.each do |uni_module, counter| %>
-	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
-	            <% end %>
-	            </ol>
-            <% end %>
-            	
-         </div>
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-reviewed-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most reviewed module in the time period selected.">Most Reviewed Modules</a></h4>
+          <div class="col-md-12" id="mod_reviewed_module_table_area">
+          </div>
+        </div>
       </div>
-
-<% most_highly_rated_modules = get_rating_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 20) %>
-
-       <div class="col-md-6" >
-         <div class="col-md-12 login-card subox-card">
-         <% if most_highly_rated_modules.size != 0 %>
-            <div class="side-right">
-               <select class="selectpicker" name="per_page"  onchange="this.form.submit()">
-                  <option value="500" >Area chart</option>
-                  <option value="500" >Bar chart</option>
-                  <option value="50" >Line chart</option>
-                  <option value="250" >Pie chart</option>
-                  <option value="10" selected="selected">Table</option>
-               </select>
-            </div>
-            <% end %>
-         
-            <h4 class="small-header"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Modules most saved on Modulect">Most highly rated modules</a></h4>
-            <% if most_highly_rated_modules.size == 0 %>
-	            No data avaiable right now. Please try again later.
-            <% else %>
-	            <ol class="trending-list">
-	            <% most_highly_rated_modules.each do |uni_module, counter| %>
-	            	<li><%= uni_module.code %> <%= uni_module.name %></li>
-	            <% end %>
-	            </ol>
-            <% end %>
-            	
-         </div>
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-rated-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most highly rated module in the time period selected.">Highest Rated Modules</a></h4>
+          <div class="col-md-12" id="mod_rated_module_table_area">
+          </div>
+        </div>
       </div>
    </div>
 </div>
+
+<script>
+   function drawModVisitedModule() {
+       var chartType = $("#mod-visited-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_visited_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["visited_modules"].first(20), chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "bar", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "horizontalBar", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "pie", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-visited-module-selector").on('change', function() {
+       drawModVisitedModule();
+     });
+
+     drawModVisitedModule();
+
+     function drawModSavedModule() {
+       var chartType = $("#mod-saved-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_saved_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["saved_modules"].first(20), chart_name: "Most Saved Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["saved_modules"].first(20), type: "bar", chart_name: "Most Saved Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["saved_modules"].first(20), type: "horizontalBar", chart_name: "Most Saved Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["saved_modules"].first(20), type: "pie", chart_name: "Most Saved Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-saved-module-selector").on('change', function() {
+       drawModSavedModule();
+     });
+
+     drawModSavedModule();
+
+     function drawModReviewedModule() {
+       var chartType = $("#mod-reviewed-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["reviewed_modules"].first(20), chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "bar", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "horizontalBar", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "pie", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-reviewed-module-selector").on('change', function() {
+       drawModReviewedModule();
+     });
+
+     drawModReviewedModule();
+
+     function drawModRatedModule() {
+       var chartType = $("#mod-rated-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_rated_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["rated_modules"].first(20), chart_name: "Highest Rated Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["rated_modules"].first(20), type: "bar", chart_name: "Highest Rated Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["rated_modules"].first(20), type: "horizontalBar", chart_name: "Highest Rated Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["rated_modules"].first(20), type: "pie", chart_name: "Highest Rated Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-rated-module-selector").on('change', function() {
+       drawModRatedModule();
+     });
+
+     drawModRatedModule();
+</script>

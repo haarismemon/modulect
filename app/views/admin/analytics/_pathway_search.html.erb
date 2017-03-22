@@ -2,7 +2,7 @@
 
 The main graph shows the number of pathway searches in the time period. 
 
-In addition, a user will be able the tags which are oft chosen together.
+In addition, a user will be able to see which are modules are often chosen together.
 %>
 <div class="row" >
   <div class="col-md-12  login-card header-card" style="">
@@ -10,10 +10,12 @@ In addition, a user will be able the tags which are oft chosen together.
       <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
       </div>
       <div class="main-figure">
-        <%= get_number_pathway_searches(@department, 1, @time_period, Time.now) %>
+        <%= all_data["number_of_pathway_searches"] %>
       </div>
       <% if @time_period != "all_time" %>
-      <% percentage_difference_total_pathway_searches = percentage_difference(get_number_pathway_searches(@department, 1, @time_period, Time.now), get_number_pathway_searches(@department, 1, @time_period, get_start_desired_period(1, @time_period, Time.now))) %>
+      <% percentage_difference_total_pathway_searches = 
+            all_data["percentage_difference_number_of_pathway_searches"]
+            %>
       <div class="percentage-change <%= colour(percentage_difference_total_pathway_searches)%>">
         <% if percentage_difference_total_pathway_searches != 0 %>
           <i class="fa fa-caret-<%= indicator(percentage_difference_total_pathway_searches)%>" aria-hidden="true"></i>
@@ -26,8 +28,7 @@ In addition, a user will be able the tags which are oft chosen together.
         <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The tag which was most searched for">Most searched (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
       </div>
       <div class="main-figure">
-        <% most_searched_tag = get_top_size_check_analytics(get_clicked_tags(@department,1,@time_period,Time.now,"most", 1)) %>
-        <%= get_top_module_name(most_searched_tag) %>
+        <%= get_top_module_name(get_top_size_check_analytics(all_data["clicked_tags"])) %>
       </div>
       <div class="percentage-change">
         across any type of search
