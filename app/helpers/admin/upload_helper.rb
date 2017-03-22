@@ -36,7 +36,7 @@ module Admin::UploadHelper
         'interest_tags'))
 
     if created_module.new_record?
-      build_error_hash(created_module)
+      flash[:error] = created_module.errors.full_messages
       return
     end
 
@@ -153,11 +153,4 @@ module Admin::UploadHelper
     end
   end
 
-  def build_error_hash(unsaved_record)
-    error_message = ''
-    unsaved_record.errors.full_messages.each do |error_message|
-      error_message += error_message.humanize + ' '
-    end
-    flash[:error] = error_message
-  end
 end
