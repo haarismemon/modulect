@@ -181,26 +181,24 @@ module Admin
 
             if created_module.nil?
               # Create the Module
-              logger.debug('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MODULE CREATED')
               created_module = UniModule.create!(new_record.except(
                   'departments',
                   'prerequisite_modules',
                   'career_tags',
                   'interest_tags'))
             else
-              logger.debug('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MODULE UPDATED')
               # Update the existing Module
-              created_module.name= new_record['name']
-              created_module.description= new_record['description']
-              created_module.lecturers= new_record['lecturers']
-              created_module.pass_rate= new_record['pass_rate']
-              created_module.assessment_methods= new_record['assessment_methods']
-              created_module.semester= new_record['semester']
-              created_module.credits= new_record['credits']
-              created_module.exam_percentage= new_record['exam_percentage']
-              created_module.coursework_percentage= new_record['coursework_percentage']
-              created_module.more_info_link= new_record['more_info_link']
-              created_module.assessment_dates= new_record['assessment_dates']
+              created_module.update_attribute(:name, new_record['name'])
+              created_module.update_attribute(:description, new_record['description'])
+              created_module.update_attribute(:lecturers, new_record['lecturers'])
+              created_module.update_attribute(:pass_rate, new_record['pass_rate'])
+              created_module.update_attribute(:assessment_methods, new_record['assessment_methods'])
+              created_module.update_attribute(:semester, new_record['semester'])
+              created_module.update_attribute(:credits, new_record['credits'])
+              created_module.update_attribute(:exam_percentage, new_record['exam_percentage'])
+              created_module.update_attribute(:coursework_percentage, new_record['coursework_percentage'])
+              created_module.update_attribute(:more_info_link, new_record['more_info_link'])
+              created_module.update_attribute(:assessment_dates, new_record['assessment_dates'])
 
               # Override module departments
               department_names = parse_mult_association_string(new_record['departments'])
