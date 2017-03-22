@@ -164,10 +164,10 @@ class UniModule < ApplicationRecord
 
     return pathway_results
   end
-  
+
   # CSV export, loops over the module record obtaining the individual columns from the database
   def self.to_csv
-    attributes = %w{name code description lecturers pass_rate assessment_methods semester credits exam_percentage coursework_percentage more_info_link assessment_dates prerequisite_modules}
+    attributes = %w{name code description lecturers pass_rate assessment_methods semester credits exam_percentage coursework_percentage more_info_link assessment_dates}
     caps = []
     attributes.each{|att| caps.push att}
     %w(career_tags interest_tags departments).each{|att| caps.push att}
@@ -177,9 +177,11 @@ class UniModule < ApplicationRecord
         career_tag_names = ' '
         interest_tag_names = ' '
         department_names = ' '
+        prerequisite_modules = ' '
         uni_module.career_tags.pluck(:name).each{|tag| career_tag_names += tag + '; ' }
         uni_module.interest_tags.pluck(:name).each{|tag| interest_tag_names += tag + '; ' }
         uni_module.departments.pluck(:name).each{|department| department_names += department + '; ' }
+        uni_module.uni_modules.pluck(:code).each { |code| prerequisite_modules += code + '; '}
         career_tag_names.chop!
         if career_tag_names!=''
           career_tag_names.chop!
@@ -195,13 +197,19 @@ class UniModule < ApplicationRecord
           department_names.chop!
           department_names[0] = ''
         end
-        to_add = uni_module.attributes.values_at(*attributes) + [*career_tag_names] + [*interest_tag_names] + [*department_names]
+        prerequisite_modules.chop!
+        if prerequisite_modules!=''
+          prerequisite_modules.chop!
+          prerequisite_modules[0] = ''
+        end
+        to_add = uni_module.attributes.values_at(*attributes) + [*prerequisite_modules] +
+                 [*career_tag_names] + [*interest_tag_names] + [*department_names]
         csv << to_add
       end
     end
   end
 
-  # string method for return the module 
+  # string method for return the module
   def to_s
     "#{self.code} #{self.name}"
   end
