@@ -109,7 +109,7 @@ module Admin::UploadModulesHelper
     created_module.interest_tags.clear
     uploaded_interest_tags = new_record['interest_tags']
     unless uploaded_interest_tags.blank?
-      uploaded_interest_tags = uploaded_interest_tags.split(',')
+      uploaded_interest_tags = uploaded_interest_tags.split(';')
       uploaded_interest_tags.each do |tag|
         chosen_tag = Tag.find_by_name(tag)
         if chosen_tag.present?
