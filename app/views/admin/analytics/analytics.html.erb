@@ -51,15 +51,6 @@
 <%= render partial: "admin/analytics/tabs" %>
 
 <%
-# FERAS, IM USING A HELPER TO STORE A HASH OF THE DATA AND THEN PASSING IT INTO PARTIALS
-# PREVENTS US FROM HAVING TO RECALL QUERIES
-# ALSO LEFT A COMMENT IN THE CONTROLLER 
-# WE SHOULDN'T HAVE **ANY** DIRECT QUERIES IN THE VIEW ASIDE FROM THE BIG GRAPHS everything should be taken from the all_data hash
-# YOU'LL NEED TO TAKE A LOOK AT THE TOP STRIP ON EACH TAB AND THEN SUBGRAPHS
-# NOTE THAT SOME THINGS I HAVEN'T GOT ROUND TO ADDING TO THE HASH
-# Also I noticed a small bug: when there is long name for a module, the graphs mess up. Try a long module and see the anayltics it generates
-# Also some of the headers are a bit messed up too
-# THANKS, AQIB
 all_data = get_all_data(@all_uni_modules, @all_users, @all_tags, @department, @time_period)
 
 %>
