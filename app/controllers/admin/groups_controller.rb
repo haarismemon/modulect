@@ -33,7 +33,7 @@ module Admin
 
     private
     def group_params
-      params.require(:group).permit(:name, :max_credits,:min_credits, :compulsory, uni_module_ids: [])
+      params.require(:group).permit(:name, :max_credits, :min_credits, :compulsory, :uni_module_ids => [])
     end
 
   end

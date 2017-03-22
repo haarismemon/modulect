@@ -15,6 +15,9 @@
 </script>
 <% saved_modules = current_user.uni_modules %>
 <% saved_pathways = current_user.pathways %>
+<%if !saved_pathways.nil? %>
+<% saved_pathways = saved_pathways.order("created_at DESC") %>
+<% end %>
 <div class="banner" style="padding-top:40px;">
    <div class="container">
       <h1>Saved Modules & Pathways</h1>

@@ -24,6 +24,12 @@ To modify this file access the partials within
     <div class='links' onclick='loseFocus()' id="add-another-group">
       <%= link_to_add_association "+ Add Module Group", f, :groups %>
     </div>
+
+    <%# field for change year credits %>
+    <div class="form-group" style="margin-top: 25px">
+      <label for="year_credits">Total Credits for this year</label>
+        <%= f.text_field :year_credits, class: 'form-control', :required => true %>
+    </div>
     <!--submit button-->
     <div class="form-actions" style="margin-top:20px;">
       <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;

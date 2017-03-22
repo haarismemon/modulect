@@ -1,3 +1,9 @@
+<%#
+  Index which displays a collection of notices via @notices instance variables and displays it in a table
+  Contains: a table which contain of set of columns with each representing an attribute.
+  The table is produced via a for loop which iterates through, producing a row for each tuple.
+%>
+
 <style>
 @media (max-width: 1286px) {
   #data-area .no-link .col-md-3 {
@@ -11,7 +17,8 @@
     <% provide(:title, 'Notices') %>
 <% end %>
 <header class="header index-header-area" style="margin-bottom: 20px">
-  <h1 id="page-title">Notices</h1>
+  <h1 id="page-title"><i class="fa fa-bell" aria-hidden="true"></i>&nbsp;
+    Notices</h1>
   <div class="header__actions">
     <div class="col-md-12">
       <% if @notices.size > 0 %>
@@ -55,7 +62,7 @@
               <%= render partial: "admin/layouts/index_sorting", locals: {sorting_columns: sorting_columns, searching: false, per_page: @per_page} %>
           <% end %>
           <% if current_user.user_level == "super_admin_access"%>
-          <th class="cell-label cell-label--string cell-label--false" scope="col">Department</th>
+              <th class="cell-label cell-label--string cell-label--false" scope="col">Department</th>
           <% end %>
           <th class="cell-label cell-label--string cell-label--false" scope="col">Status</th>
           <th class="cell-label cell-label--string cell-label--false" style="width: 10%" scope="col">Expiry date</th>
@@ -73,12 +80,12 @@
               <td class="cell-data cell-data--string" style="white-space: normal"><%= notice.header %></td>
               <td class="cell-data cell-data--string" style="white-space: normal"><%= notice.notice_body.html_safe %></td>
               <% if current_user.user_level == "super_admin_access"%>
-                <td class="cell-data cell-data--string">
-                <% if notice.department_id.present? %>
-                <%= Department.find(notice.department_id).name %>
-                <% else %>
-                  -
-                <% end %>
+                  <td class="cell-data cell-data--string">
+                    <% if notice.department_id.present? %>
+                        <%= Department.find(notice.department_id).name %>
+                    <% else %>
+                        -
+                    <% end %>
               <% end %>
               </td>
               <td class="cell-data cell-data--string"><%= notice.broadcast ? "Active" : "Offline" %></td>

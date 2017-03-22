@@ -38,7 +38,7 @@ a:active {
 
 footer {
     height: 60px;
-    border-top: 1px solid #dfe2e1;
+  //border-top: 1px solid #dfe2e1;
 }
 #page {
     min-height: 800px;
@@ -410,12 +410,12 @@ button:focus, button {outline: 0 !important;}
 /** Footer stuff by Khalil **/
 
 #rec-husky-footer {
-    color: #2AB27B;
+  color: #19593f;
     font-family: "Varela Round";
     /*font-size: 20px;*/
 
     float: right;
-    margin-top: 5px
+  margin-top: 6px
 }
 #footer-logo {
     width: 150px;

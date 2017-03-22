@@ -1,3 +1,6 @@
+<%# The display comments partial is used to display all the comments/reviews of a uni module. %>
+
+<%# Display the average rating of the uni module. %>
 <label class="mobile-block">Average Module Rating: </label><% updated_comments.empty? ? average_rating = 0 : average_rating = module_average_rating(@uni_module) %>
 <% number_of_stars = 0 %>
 <% for i in 1..(average_rating.floor) %>
@@ -12,6 +15,7 @@
     <i class="fa fa-star-o star-rating" aria-hidden="true"></i>
 <% end %><p>
 
+<%# Display the user's own reviews %>
 <% if logged_in?
      module_comments = Array(current_user.comments).keep_if { |c| c.uni_module.id == @uni_module.id }
 
@@ -61,6 +65,7 @@
         <% end %>
     <% end %>
 
+    <%# Prevents duplicate reviews on page %>
     <% filter_comments = [] %>
     <% updated_comments.each do |comment|
         unless module_comments.include? comment
@@ -71,6 +76,7 @@
     <% filter_comments = updated_comments %>
 <% end %>
 
+<%# Display the rest of the uni module's reviews %>
 <h3>All Reviews</h3>
 <% unless filter_comments.empty? %>
 
@@ -211,6 +217,7 @@
   <% end %>
 </div>
 
+<%# Styling for the star rating %>
 <style>
   ul.star-rating {
     margin-left: 10px;
@@ -254,6 +261,7 @@
 
 </style>
 
+<%# Javascript for star rating %>
 <script>
   selected_rating = 0;
 
@@ -275,7 +283,6 @@
       }, function () {
           $('ul.star-rating li').removeClass('active-hover');
           $('ul.star-rating li').removeClass('secondary-active-hover');
-//          $(this).addClass('active-hover');
           $(this).prevAll().addClass('secondary-active-hover');
       })
   }, function () {
@@ -390,6 +397,10 @@
 
   #updated-time {
     padding-left: 2%;
+  }
+
+  [id^=comment-entry] {
+    margin-left: 20px;
   }
 
 </style>

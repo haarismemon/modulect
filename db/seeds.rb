@@ -89,8 +89,8 @@ informatics.courses << elec_eng
 gkt.courses << medicine
 
 # Year Structure seeds
-cs_year1 = YearStructure.create(year_of_study: 1)
-cs_year2 = YearStructure.create(year_of_study: 2)
+cs_year1 = YearStructure.create(year_of_study: 1, year_credits: 120)
+cs_year2 = YearStructure.create(year_of_study: 2, year_credits: 120)
 
 # Course-YearStructure association
 computer_science_15.year_structures << cs_year1
@@ -98,7 +98,7 @@ computer_science_15.year_structures << cs_year2
 
 # Group seeds
 cs1_semester_1 = Group.create(name: "Semester 1", max_credits: 60, min_credits: 60, compulsory: true)
-cs1_semester_2 = Group.create(name: "Semester 2", max_credits: 60, min_credits: 60, compulsory: false)
+cs1_semester_2 = Group.create(name: "Semester 2", max_credits: 45, min_credits: 45, compulsory: false)
 cs2_semester_1 = Group.create(name: "Semester 1", max_credits: 60, min_credits: 60, compulsory: true)
 cs2_semester_2 = Group.create(name: "Semester 2", max_credits: 60, min_credits: 60, compulsory: false)
 
@@ -126,9 +126,9 @@ math_and_ph = Course.create(name: "Mathematics & Physics BSc", year: 2015)
 
 mathematics.courses << math_and_ph
 
-mnp_year1 = YearStructure.create(year_of_study: 1)
-mnp_year2 = YearStructure.create(year_of_study: 2)
-mnp_year3 = YearStructure.create(year_of_study: 3)
+mnp_year1 = YearStructure.create(year_of_study: 1, year_credits: 120)
+mnp_year2 = YearStructure.create(year_of_study: 2, year_credits: 120)
+mnp_year3 = YearStructure.create(year_of_study: 3, year_credits: 120)
 
 math_and_ph.year_structures << mnp_year1
 math_and_ph.year_structures << mnp_year2
@@ -324,9 +324,9 @@ dep = Department.create(name: "Department of Pharmacology and Therapeutics")
 crs = Course.create(name: "Pharmacology BSc", year: 2015)
 
 
-year1 = YearStructure.create(year_of_study: 1)
-year2 = YearStructure.create(year_of_study: 2)
-year3 = YearStructure.create(year_of_study: 3)
+year1 = YearStructure.create(year_of_study: 1, year_credits: 120)
+year2 = YearStructure.create(year_of_study: 2, year_credits: 120)
+year3 = YearStructure.create(year_of_study: 3, year_credits: 120)
 
 req_1_year_1 = Group.create(
 	name: "Required modules", 

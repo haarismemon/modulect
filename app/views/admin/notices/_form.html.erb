@@ -1,21 +1,21 @@
-<!-- Renders a form which is displayed in both the edit and new notice form
+<%#  Renders a form which is displayed in both the edit and new notice form
 
 note: renders of fields belong in in admin/application/fields. For some fields there exists no partials
 because of such fields being such rare instances. If you require a field to adapted, copy the partial over replacing the render
 statement .
 
 see partial fields for additional documentation
--->
+%>
 
-<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+<%# Helper which prints error message of current object if there is any on to screen(does nothing, if none)%>
 <%= error_messages_for(f.object) %>
 
 
 
-<!--renders attributes-->
+<%# renders attributes%>
 <% path_of_field_store = "admin/application/fields/" %>
 
-<!--name field-->
+<%# name field%>
 <%= render path_of_field_store+"string_form_field", :f => f,
            :name => :header,
            :label => :notice_header,
@@ -23,7 +23,7 @@ see partial fields for additional documentation
 
 
 
-<!--renders notice body field -->
+<%# renders notice body field %>
 <%= render path_of_field_store+"textarea_form_field", :f => f,
            :name => :notice_body,
            :label => "Notice description",
@@ -56,7 +56,7 @@ see partial fields for additional documentation
 </div>
 
 
-<!--url field-->
+<%# url field%>
 <%= render path_of_field_store+"string_form_field", :f => f,
            :name => :optional_link,
            :tooltip => "This is displayed to the user along side the notice as a button" %>
@@ -83,12 +83,12 @@ see partial fields for additional documentation
   </div>
 </div>
 
-<!--date fields-->
+<%# date fields%>
 
 
 
 
-<!--submit button-->
+<%# submit button%>
 <div class="form-actions">
   <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %>
     Notice
