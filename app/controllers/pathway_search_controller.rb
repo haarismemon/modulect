@@ -88,6 +88,8 @@ class PathwaySearchController < ApplicationController
       else
         @results = {}
       end
+      @suggested_pathways = SuggestedPathway.where(course_id: @course_obj.id)
+      
     # if just viewing structure
     elsif (params.has_key?(:year) && !params[:year].empty? && params.has_key?(:course) && !params[:course].empty? )
       @year_of_study = params[:year]
@@ -103,6 +105,7 @@ class PathwaySearchController < ApplicationController
         @selected = params[:selected]
       end
       @suggested_pathways = SuggestedPathway.where(course_id: @course_obj.id)
+
 
     else
       redirect_to "/pathway-search/"
