@@ -29,7 +29,7 @@ module Admin
     def check_valid_update
       if params[:year_structure].nil?
         flash_message = "No module group was added. "
-        flash_message += "Please try adding a module group or editing existing ones."
+        flash_message += "Please try adding a module group or editing existing ones before updating."
         flash[:error] = flash_message
         redirect_to edit_admin_year_structure_path(params[:id]) 
         return

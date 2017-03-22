@@ -10,7 +10,7 @@ To modify this file access the partials within
 
 <header class="header">
 
-  <h1 style="margin-bottom: 40px">Edit <%= Group.find(params[:id]).name %> <a
+  <h1 style="margin-bottom: 20px">Edit <%= Group.find(params[:id]).name %> <a
   href="<%= edit_admin_course_path(@group.year_structure.course.id) %>"
   style="font-size: 20px">of <%= Group.find(params[:id]).year_structure.course.name %></a></h1>
 
