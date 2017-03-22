@@ -17,7 +17,7 @@ module Admin
       @year_structure = YearStructure.find(params[:id])
       if @year_structure.update_attributes year_structure_params
         flash[:success] = "Successfully updated."
-        redirect_to admin_course_path(@year_structure.course)
+        redirect_to admin_year_structure_path(@year_structure)
       else
         @year_structure.reload
         render 'edit'

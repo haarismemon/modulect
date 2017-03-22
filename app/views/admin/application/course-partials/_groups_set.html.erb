@@ -31,6 +31,7 @@ Renders space to display and print a box for each group that exists in the curre
                         <% if !group.max_credits.nil? && !group.min_credits.nil? %>
                             <h5 style="margin-top: 20px"> <%= group.max_credits.to_int==group.min_credits.to_int ? "Total credits: "+group.min_credits.to_s : "Min credits: #{ group.min_credits.to_s} |  Max credits: "+group.max_credits.to_s %></h5>
                         <% end %>
+                        <h5><%= group.uni_modules.size %> module<%= group.uni_modules.size==1 ? "" : "s" %></h5>
                       </div>
                       <div>
                         <div style="margin-top: 30px;padding-left:0px">
