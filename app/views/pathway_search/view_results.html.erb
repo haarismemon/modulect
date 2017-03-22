@@ -444,8 +444,10 @@
       s1 = 0; // keeping track of column positions
       s2 = 0;
 
+      cell = 0;
+
       for(i = s1; i < 4; ++i) { // Create blank cells !! THIS MIGHT NEED TO BE CHANGED, LOCKED AT 4!!
-        myTable +="<tr><td>" + create_blank_cell(year + 1) + "</td><td>" + create_blank_cell(year + 1) + "</td></tr>";
+        myTable +="<tr><td id=\"module-cell-" + cell++ + "\">" + create_blank_cell(year + 1) + "</td><td id=\"module-cell-" + cell++ + "\">" + create_blank_cell(year + 1) + "</td></tr>";
       }
 
       myTable += "</table>";      

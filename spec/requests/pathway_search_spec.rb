@@ -1,10 +1,11 @@
 require 'rails_helper'
-#require 'support/login_helper'
+require 'support/login_helper'
 require 'support/wait_for_ajax'
 require 'support/pathway_search_steps'
+require 'timeout'
 
 feature "Student searching for module pathway", :js => true do
-  #include LoginHelper
+  include LoginHelper
   include WaitForAjax
   include PathwaySearchSteps
   
@@ -15,10 +16,9 @@ feature "Student searching for module pathway", :js => true do
   fixtures :interest_tags
   fixtures :career_tags
   fixtures :uni_modules
-  fixtures :year_structures
   fixtures :groups
 
-  given(:user) { users(:sophie) }
+  given(:sophie) { users(:sophie) }
 
   given(:computer_science_15) { courses(:computer_science_15) }
   given(:informatics) { departments(:informatics) }
@@ -106,13 +106,27 @@ feature "Student searching for module pathway", :js => true do
 
 
   scenario "can select and save their modules" do
+    visit login_path
+    login_user(sophie, 'password')
     visit root_path
     click_on "Begin Search"
     fill_in_begin_form
     click_on "Next"
     select_first_three_tags
     click_on "View results"
-    binding.pry
     i_should_see_all_compulsory_modules_for_my_year
+
+    select_first_optional_module
+    sleep(1)
+
+    select_second_optional_module
+    sleep(1)
+
+    select_third_optional_module
+    sleep(1)
+
+    select_fourth_optional_module
+
+    i_should_see_my_selected_optional_modules_for_first_year
   end
 end
