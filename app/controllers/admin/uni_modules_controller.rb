@@ -91,14 +91,87 @@ module Admin
 
     def create
       @uni_module = UniModule.new(uni_module_params)
-      if @uni_module.save
-        # If save succeeds, redirect to the index action
-        flash[:success] = "Succesfully created " + @uni_module.name
-        redirect_to(admin_uni_modules_path)
-      else
-        # If save fails, redisplay the form so user can fix problems
-        render(:new)
-      end
+      if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty?
+
+        departments = params[:uni_module][:department_ids].split(',')
+        required = params[:uni_module][:required].split(',')
+        career_tags = params[:uni_module][:career_tags].split(',')
+        interest_tags = params[:uni_module][:interest_tags].split(',')
+
+        @uni_module.departments.clear()
+        if current_user.user_level == "department_admin_access"
+          user_dept = Department.find(current_user.department_id).name
+          if !(departments.include? user_dept)
+            # If user does not include their own department in the department list.
+            @uni_module.errors[:base] << "Module must also belong to your department (#{user_dept})."
+            @departments = departments
+            @careerTags = career_tags
+            @interestTags = interest_tags
+            @required = required
+            # Redisplay the form so user can fix problems
+            ## THIS RENDER IS CAUSING PROBLEMS - FORM IS NOT RESUBMITTING
+            render("admin/uni_modules/new") and return
+          end
+        end
+        departments.each do |dept|
+          chosen_dept = Department.find_by_name(dept)
+          @uni_module.departments << chosen_dept
+        end
+
+        @uni_module.uni_modules.clear()
+        required.each do |mod|
+          chosen_mod = UniModule.find_by_name(mod)
+          @uni_module.uni_modules << chosen_mod
+        end
+
+        @uni_module.tags.clear()
+
+        career_tags.each do |tag|
+          chosen_tag = Tag.find_by_name(tag)
+          # Add the career tag association
+          if chosen_tag.present?
+            @uni_module.tags << chosen_tag
+          else
+            # If tag does not already exist then create a new tag
+            new_tag = Tag.new(name: tag, type: "CareerTag")
+            @uni_module.tags << new_tag
+          end
+        end
+
+        interest_tags.each do |tag|
+          chosen_tag = Tag.find_by_name(tag)
+           # Add the interest tag association
+          if chosen_tag.present?
+            @uni_module.tags << chosen_tag
+          else
+            # If tag does not already exist then create a new tag
+            new_tag = Tag.new(name: tag, type: "InterestTag")
+            @uni_module.tags << new_tag
+          end
+        end
+
+        if @uni_module.save
+          # If save succeeds, redirect to the index action
+          flash[:success] = "Succesfully created module"
+          redirect_to(admin_uni_modules_path)
+        else
+          # If save fails, redisplay the form so user can fix problems
+          if !params[:uni_module][:department_ids].present? || params[:uni_module][:department_ids].empty?
+            @uni_module.errors[:base] << "Module must belong to at least one department."
+          end
+          if !params[:uni_module][:interest_tags].present? || params[:uni_module][:interest_tags].empty?
+            @uni_module.errors[:base] << "Module must have at least one interest tag."
+          end
+          if !params[:uni_module][:career_tags].present? || params[:uni_module][:career_tags].empty?
+            @uni_module.errors[:base] << "Module must have at least one career tag."
+          end
+          @departments = []
+          @careerTags = []
+          @interestTags = []
+          @required = []
+          # If save fails, redisplay the form so user can fix problems
+          render('admin/uni_modules/new')
+        end
 
     end
 
