@@ -178,6 +178,7 @@ module Admin
             # Add departments attribute to create and/or link departments to this module
             # Lookup if Module already exists: Module is unique by Code
             created_module = UniModule.find_by_code(new_record['code'])
+
             if created_module.nil?
               # Create the Module
               logger.debug('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MODULE CREATED')
@@ -189,11 +190,70 @@ module Admin
             else
               logger.debug('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MODULE UPDATED')
               # Update the existing Module
-              created_module.update(new_record.except(
-                  'departments',
-                  'prerequisite_modules',
-                  'career_tags',
-                  'interest_tags'))
+              created_module.name= new_record['name']
+              created_module.description= new_record['description']
+              created_module.lecturers= new_record['lecturers']
+              created_module.pass_rate= new_record['pass_rate']
+              created_module.assessment_methods= new_record['assessment_methods']
+              created_module.semester= new_record['semester']
+              created_module.credits= new_record['credits']
+              created_module.exam_percentage= new_record['exam_percentage']
+              created_module.coursework_percentage= new_record['coursework_percentage']
+              created_module.more_info_link= new_record['more_info_link']
+              created_module.assessment_dates= new_record['assessment_dates']
+
+              # Override module departments
+              department_names = parse_mult_association_string(new_record['departments'])
+              departments = []
+              # Lookup department by department name
+              department_names.each do |dept_name|
+                # If department found then add to departments
+                find_department = Department.find_by_name(dept_name)
+                unless find_department.nil?
+                  departments << find_department
+                end
+              end
+              created_module.departments= departments
+
+              # Override module prerequisite modules
+              req_module_codes = parse_mult_association_string(new_record['prerequisite_modules'])
+              req_modules = []
+              req_module_codes.each do |module_code|
+                # Lookup module by module code
+                find_module = UniModule.find_by_code(module_code)
+                # If module found then add to req modules
+                unless find_module.nil?
+                  req_modules << find_module
+                end
+              end
+              created_module.uni_modules= req_modules
+
+              # Override module tags
+              tags = []
+              # Retrieve career tags
+              career_tag_names = parse_mult_association_string(new_record['career_tags'])
+              career_tag_names.each do |career_tag|
+                find_career_tag = CareerTag.find_by(name: career_tag)
+                if find_career_tag.nil?
+                  # Create the career tag
+                  find_career_tag = CareerTag.create(name: career_tag)
+                end
+                # Add the new/existing tag to collection
+                tags << find_career_tag
+              end
+              # Retrieve interest tags
+              interest_tag_names = parse_mult_association_string(new_record['interest_tags'])
+              interest_tag_names.each do |interest_tag|
+                find_interest_tag = InterestTag.find_by(name: interest_tag)
+                if find_interest_tag.nil?
+                  # Create the career tag
+                  find_interest_tag = InterestTag.create(name: interest_tag)
+                end
+                # Add the new/existing tag to collection
+                tags << find_interest_tag
+              end
+              created_module.tags= tags
+
             end
             # For every entered department
             parse_mult_association_string(new_record['departments']).each do |dept_name|
