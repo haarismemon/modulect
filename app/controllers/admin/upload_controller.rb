@@ -69,6 +69,10 @@ module Admin
       # Retrieve csv file that was uploaded
       uploaded_csv = params[:csv_upload]
 
+      # Keep rough counter of changes
+      creations = 0
+      updates = 0
+
       # Store/Write uploaded csv file to app/assets directory
       File.open(Rails.root.join('app', 'assets', 'uploaded.csv'), 'wb') do |file|
         file.write(uploaded_csv.read)
@@ -105,8 +109,10 @@ module Admin
               # Check whether to update a department or create a new one
               if Department.find_by_name(new_record['name']).nil?
                 Department.create(new_record).errors.full_messages.each { |message| flash[:error] = "Creation failed: #{message}" }
+                creations += 1
               else
                 Department.update(new_record)
+                updates += 1
               end
             end
 
@@ -121,9 +127,11 @@ module Admin
               if Faculty.find_by_name(new_record['name']).nil?
                 # Create a new faculty
                 faculty_entry = Faculty.create(new_record.except('departments'))
+                creations += 1
               else
                 # Retrieve the existing faculty
                 faculty_entry = Faculty.find_by_name(new_record['name'])
+                updates += 1
               end
               # Clear the departments of this faculty before overriding/updating
               faculty_entry.departments= []
@@ -157,10 +165,12 @@ module Admin
               else
                 # Find created course
                 created_course = Course.find_by(name: new_record['name'], year: new_record['year'])
+                creations += 1
               end
             else
               # Update the existing Course
               created_course.update(new_record.except('departments'))
+              updates += 1
             end
             unless course_verification_failed
               # Clear the departments this course belongs to before overriding/updating
@@ -198,6 +208,7 @@ module Admin
               else
                 # Find created module
                 created_module = UniModule.find_by_code(new_record['code'])
+                creations += 1
                 # For every entered department
                 parse_mult_association_string(new_record['departments']).each do |dept_name|
                   # Look for a department with the name
@@ -331,15 +342,18 @@ module Admin
                 end
               end
               created_module.tags= tags
-
+              updates += 1
             end
 
           else
+            # Will never reach here based on current front end restrictions
+            # General creation
             session[:resource_name].to_s.classify.constantize.create!(new_record)
           end
         end
       end
 
+      flash[:success] = "Upload complete: Processed #{creations} creations, #{updates} updates"
       redirect_to :back
     end
 
