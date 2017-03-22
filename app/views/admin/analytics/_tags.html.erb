@@ -8,7 +8,7 @@
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The interest which was most searched for">Top interest of <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></a>
          </div>
          <div class="main-figure">
-         <% most_searched_interest_tag = get_top_size_check_analytics(get_clicked_interest_tags(@department,1,@time_period,Time.now,"most", 1)) %>
+         <% most_searched_interest_tag = get_top_size_check_analytics(all_data["clicked_interest_tags"]) %>
             <%= get_top_module_name(most_searched_interest_tag) %>
          </div>
          <div class="percentage-change">
@@ -20,8 +20,8 @@
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The career which was most searched for">Top career of <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></a>
          </div>
          <div class="main-figure">
-         <% most_searched_tag = get_top_size_check_analytics(get_clicked_career_tags(@department,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_name(most_searched_tag) %>
+         <% most_searched_career_tag = get_top_size_check_analytics(all_data["clicked_career_tags"]) %>
+            <%= get_top_module_name(most_searched_career_tag) %>
          </div>
          <div class="percentage-change">
             across any type of search

@@ -80,7 +80,7 @@ all_data = get_all_data(@all_uni_modules, @all_users, @all_tags, @department, @t
          <%= render partial: "admin/analytics/modules", :locals => {all_data: all_data}  %>
       </div>
       <div id="tags" class="tab-pane fade">
-         <%#= render partial: "admin/analytics/tags", :locals => {all_data: all_data}  %>
+         <%= render partial: "admin/analytics/tags", :locals => {all_data: all_data}  %>
       </div>
    </div>
 </div>
