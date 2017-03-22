@@ -7,8 +7,8 @@
          <div class="small-header"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most clicked module from search results">Most clicked module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_clicked_module =  get_top_size_check_analytics(get_visited_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
-            <%= get_top_module_code(most_clicked_module) %>
+         <% most_clicked_module = get_top_size_check_analytics(all_data["visited_modules"])%>
+         <%= get_top_module_code(most_clicked_module) %>
          </div>
         
          <div class="percentage-change">
@@ -20,7 +20,7 @@
          <div class="small-header"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most saved module from results">Most saved module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_saved_module =  get_top_size_check_analytics(get_saved_modules(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+         <% most_saved_module =  get_top_size_check_analytics(all_data["saved_modules"]) %>
             <%= get_top_module_code(most_saved_module) %>
          </div>
         
@@ -33,7 +33,7 @@
          <div class="small-header"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most highly rated module from student reviews">Most highly rated (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
          <div class="main-figure">
-         <% most_highly_rated =  get_top_size_check_analytics(get_rating_modules_analytics(@department,@course,1,@time_period,Time.now,"most", 1)) %>
+         <% most_highly_rated =  get_top_size_check_analytics(all_data["rated_modules"]) %>
             <%= get_top_module_code(most_highly_rated) %>
          </div>
         
