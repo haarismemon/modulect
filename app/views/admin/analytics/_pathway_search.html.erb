@@ -13,7 +13,7 @@ In addition, a user will be able the tags which are oft chosen together.
         <%= all_data["number_of_pathway_searches"] %>
       </div>
       <% if @time_period != "all_time" %>
-      <% percentage_difference_total_quick_searches = 
+      <% percentage_difference_total_pathway_searches = 
             all_data["percentage_difference_number_of_pathway_searches"]
             %>
       <div class="percentage-change <%= colour(percentage_difference_total_pathway_searches)%>">

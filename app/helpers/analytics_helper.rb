@@ -279,7 +279,7 @@ module AnalyticsHelper
 	# get modules most frequently chosen with a selected module
 	def get_modules_chosen_with(uni_module_id, department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
-		uni_modules = get_uni_modules(department_id, course_id)
+		uni_modules = @all_uni_modules.where("department_id = ?", department_id);
 		pathway_search_log_first_data = PathwaySearchLog.where("first_mod_id = ?", uni_module_id)
 		pathway_search_log_second_data = PathwaySearchLog.where("second_mod_id = ?", uni_module_id)
     pathway_search_log_first_data.each do |log|
