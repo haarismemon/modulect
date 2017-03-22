@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170321015457) do
+ActiveRecord::Schema.define(version: 20170321201046) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -249,8 +249,9 @@ ActiveRecord::Schema.define(version: 20170321015457) do
   create_table "year_structures", force: :cascade do |t|
     t.integer  "year_of_study"
     t.integer  "course_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "year_credits",  default: 120
     t.index ["course_id"], name: "index_year_structures_on_course_id"
   end
 
