@@ -520,8 +520,7 @@
         if(optional_modules_per_year[year][i].uni_modules) {
           out = "<li><a role=\"tab\" data-toggle=\"tab\" id = \"btn_opt_year_"+year+"_group_"+i+"\">" + optional_modules_per_year[year][i].name;
           if(groupComplete[year][i]) {
-            console.log("HHHHHH");
-            out += "<span style=\"color: #2ab27b\"><i class=\"fa fa-check-circle\" aria-hidden=\"true\"></i> - Done</span>";
+            out += "&nbsp;&nbsp;<span style=\"color: #2ab27b\"><i class=\"fa fa-check-circle\" aria-hidden=\"true\"></i> - Done</span>";
           } 
           out += "</a></li>";
           nav += out;
@@ -807,7 +806,7 @@
 
     console.log("credits used this year: " + credits_this_year);      
     console.log("----------------------------------------");
-    if(credits_used + this_module.credits >= max_credits) {
+    if(credits_used >= max_credits) {
       window.alert("You have already selected enough credits from this group");
     }
     else if(credits_this_year + this_module.credits > js_course.year_structures[year].year_credits) {
@@ -822,6 +821,8 @@
       if(credits_used + this_module.credits >= min_credits) {
         console.log(credits_used + "," + credits_used + this_module.credits);
         groupComplete[year][group] = true;
+      } else {
+        groupComplete[year][group] = false;
       }
       console.log(year + " " + group);
       console.log(selected_ids[year][group]);
@@ -843,6 +844,7 @@
 
   // Remove a module from the selected array
   function deselectModule(year, group, moduleId) {
+    groupComplete[year][group] = false;
     indexToDelete = selected_ids[year][group].indexOf(moduleId);
     if(indexToDelete > -1) {
       selected_ids[year][group].splice(indexToDelete, 1);
