@@ -7,6 +7,10 @@ module Admin::UploadModulesHelper
     updates = 0
 
     csv_module = find_module_by_code(new_record['code'])
+
+    # Convert semester string to enum semester
+    new_record['semester'] = convert_semester_to_enum(new_record['semester'])
+
     if csv_module.nil?
       csv_module = try_to_create_module(new_record)
       creations += 1
@@ -74,7 +78,6 @@ module Admin::UploadModulesHelper
   def update_prerequisite_modules(uni_module, new_record)
     uni_module.uni_modules.clear
     prerequisite_codes = split_multi_association_field(new_record['prerequisite_modules'])
-    logger.debug("BANANANANANANANS #{prerequisite_codes.length}")
     unless prerequisite_codes.blank?
       unless prerequisite_codes.include? uni_module.name
         prerequisite_codes.each do |prerequisite_code|
@@ -166,5 +169,18 @@ module Admin::UploadModulesHelper
 
   def find_tag_by_name(name)
     Tag.find_by_name(name)
+  end
+
+  def convert_semester_to_enum(semester)
+    case semester
+      when '1 or 2'
+        0
+      when '1'
+        1
+      when '2'
+        2
+      else
+        3
+    end
   end
 end
