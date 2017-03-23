@@ -286,7 +286,6 @@
   }
 
   function savePathway() {
-    console.log("SAVING");
     $.ajax({
         type: "POST",
         url: "<%= application_save_pathway_path %>",
@@ -341,18 +340,6 @@
   }
 
   updateUI();
-
-
-  // debugging
-  // logStatus();
-  function logStatus(){
-    console.log("JSON course object");
-    console.log(js_course);
-    console.log("Required modules per year");
-    console.log(required_modules_per_year);
-    console.log("Optional modules per year");
-    console.log(optional_modules_per_year);
-  }
 
   // show and hide year div
   function showYear(divs, year){
@@ -612,9 +599,7 @@
                               "<button type=\"button\" class=\"login-card res-card result-card-" + colour_code_card_group(tagsmatched, <%= raw @chosen_tags %>) +  " res-btn\" id =\"btn_opt_select_" + uni_mod.id +"\" style=\"text-align: left\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Tags Matched: " + tagsmatched.join(", ") + "\"";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
                                     moduleCard += " disabled ";
-                                    console.log("fond");
                                   }
-                                  console.log(uni_mod.id);
                                 moduleCard += ">" +
                                 "<div class=\"col-md-8\" style\"width: 75%\">" +
                                   "<p>" +  uni_mod.code + "</p>" +
@@ -718,7 +703,6 @@
         (function(_year_, _i, currentModId){
           button = document.getElementById("btn_opt_select_" + currentModId);
           button.addEventListener("click", function(){
-            console.log("hit");
             selectModule(_year_,_i,currentModId);
           });
         })(_year, _i, currentModId);
@@ -727,11 +711,7 @@
   }
 
   function selectModule(year, group, module_id) {
-    logStatus();
-    console.log("########################################");
-    console.log("########### selecting module ###########");
     this_module = null;
-    console.log(year + "   " + group + "    " + module_id);
     for(i = 0; i < optional_modules_per_year[year][group].uni_modules.length; ++i) {
       var currentMod = optional_modules_per_year[year][group].uni_modules[i];
       if(currentMod.id == module_id) {
@@ -745,8 +725,6 @@
     // 1. Make sure we don't go over max modules or credits per group
     max_credits = optional_modules_per_year[year][group].max_credits;
     min_credits = optional_modules_per_year[year][group].min_credits;
-    console.log("max credits in this group: " + max_credits);
-    console.log("min credits in this group: " + min_credits);
     credits_used = 0;
     modules_selected_from_group = selected_ids[year][group].length;
     for(item = 0; item < selected_ids[year][group].length; ++item) {
@@ -759,9 +737,6 @@
           }
         } 
     }
-    console.log("credits already used: " + credits_used);
-    console.log("credits already selected: " + modules_selected_from_group);
-    console.log("----------------------------------------");
 
     // 2. Don't select more than the max number of credits worth modules per year
     credits_this_year = 0;
@@ -769,8 +744,6 @@
     for(g = 0; g < required_modules_per_year[year].length; ++g) {
       for(item = 0; item < required_modules_per_year[year][g].length; ++item) {
         credits_this_year += required_modules_per_year[year][g][item].credits;
-          console.log(required_modules_per_year[year][g][item].name + 
-            " (" + required_modules_per_year[year][g][item].credits + ")");
       }
     }
     // Add credits from selected modules
@@ -790,8 +763,6 @@
     // 3. Check this module has its requirements satisified
     requirementsSatisfied = checkPreReq(this_module, year, group);
 
-    console.log("credits used this year: " + credits_this_year);      
-    console.log("----------------------------------------");
     if(credits_used >= max_credits) {
       flashModal("You have already selected enough credits from this group", year);
       updateUI();
@@ -809,13 +780,10 @@
         creditsComplete[year] = true;
       }
       if(credits_used + this_module.credits >= min_credits) {
-        console.log(credits_used + "," + credits_used + this_module.credits);
         groupComplete[year][group] = true;
       } else {
         groupComplete[year][group] = false;
       }
-      console.log(year + " " + group);
-      console.log(selected_ids[year][group]);
       // Increment every tuple of the selected modules
       for(g = 0; g < selected_ids[year].length; ++g) {
         for(i = 0; i < selected_ids[year][g].length; ++i) {
@@ -834,13 +802,11 @@
 
   function checkPreReq(uni_module, year, group) {
     requirementsSatisfied = true;
-    console.log(uni_module);
     if(uni_module.uni_modules.length > 0) {
       for(module = 0; module < uni_module.uni_modules.length; module++) {
         requiredMod = uni_module.uni_modules[module];
         moduleTaken = false;
         // Check if this required module is already in the compulsory modules (for all years)
-        console.log("start mod search 1");
         moduleSearch1:
         for(y = 0; y < js_course.year_structures.length; y++) {
           for(g = 0; g < required_modules_per_year[y].length; ++g) {
@@ -849,18 +815,15 @@
               if(requiredMod.id == currentMod.id) {
                 moduleTaken = true;
                 preReqMap[uni_module.id] = [year, group, currentMod.id];
-                console.log("Found in 1");
                 break moduleSearch1;
               }
             }
           }
         }
-        console.log("finished mod search 1");
         if(moduleTaken) {
           continue; // If we have found the module at this point go to the next required module
         } else {
           // Check if this required module is in the selected modules (for all years)
-          console.log("starting mod search 2");
           moduleSearch2:
           for(y = 0; y < js_course.year_structures.length; y++) {
             for(g = 0; g < optional_modules_per_year[y].length; ++g) {
@@ -868,7 +831,6 @@
                 if(requiredMod.id == selected_ids[y][g][item]) {
                   moduleTaken = true;
                   preReqMap[uni_module.id] = [year, group, requiredMod.id];
-                  console.log("Found in 2");
                   break moduleSearch2;
                 }
               }
@@ -880,10 +842,7 @@
           }
         }
       }
-      console.log("done");
     }
-    console.log("done2");
-
     return requirementsSatisfied;
   }
 
