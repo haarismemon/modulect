@@ -78,17 +78,6 @@ module Admin::UploadHelper
     return creations, updates
   end
 
-  def upload_uni_modules(parsed_csv)
-    creations, updates = 0, 0
-    parsed_csv.each do |row|
-      new_record = row.to_hash
-      new_creations, new_updates = upload_uni_module(new_record)
-      creations += new_creations
-      updates += new_updates
-    end
-    return creations,updates
-  end
-
   def upload_courses(parsed_csv)
     creations, updates = 0, 0
     parsed_csv.each do |row|
@@ -98,5 +87,16 @@ module Admin::UploadHelper
       updates += new_updates
     end
     return creations, updates
+  end
+
+  def upload_uni_modules(parsed_csv)
+    creations, updates = 0, 0
+    parsed_csv.each do |row|
+      new_record = row.to_hash
+      new_creations, new_updates = upload_uni_module(new_record)
+      creations += new_creations
+      updates += new_updates
+    end
+    return creations,updates
   end
 end
