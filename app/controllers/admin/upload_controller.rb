@@ -66,108 +66,39 @@ module Admin
     end
 
     def upload_csv
-      # Retrieve csv file that was uploaded
       uploaded_csv = params[:csv_upload]
 
-      # Keep rough counter of changes
-      creations = 0
-      updates = 0
-
-      # Store/Write uploaded csv file to app/assets directory
       File.open(Rails.root.join('app', 'assets', 'uploaded.csv'), 'wb') do |file|
         file.write(uploaded_csv.read)
       end
 
-      # Process CSV for reading
       csv_text = File.read('app/assets/uploaded.csv')
       parsed_csv = CSV.parse(csv_text, headers: true)
       uploaded_header = parsed_csv.headers
 
       if parsed_csv.length == 0
-        # Validate if uploaded CSV is empty
         flash[:error] = 'Upload Failed: No records found. CSV is empty'
-
-        # Validate uploaded file headers
       elsif uploaded_header != session[:resource_header]
         flash[:error] = 'Upload Failed: Please ensure the CSV header matches the template file'
-
-      else # Validation checks passed, continue with upload
-        # Create records each row of the uploaded csv file
-        parsed_csv.each do |row|
-          new_record = row.to_hash
-          # When uploading departments, specify faculty name instead of id
-          if session[:resource_name] == 'departments'
-            # Lookup a faculty with matching name and retrieve it's ID
-            # If no faculty with matching name found, don't create the department
-            if Faculty.where(name: row.to_hash['faculty_name']).first.nil?
-              flash[:error] = "No Faculty with name: #{row.to_hash['faculty_name']} found.
-                              Department with name: #{row.to_hash['name']} has not been created"
-            else
-              new_record['faculty_id'] = Faculty.where(name: row.to_hash['faculty_name']).first.id
-              # Remove the faculty name attribute from row hash
-              new_record = new_record.except('faculty_name')
-              # Check whether to update a department or create a new one
-              if Department.find_by_name(new_record['name']).nil?
-                Department.create(new_record).errors.full_messages.each { |message| flash[:error] = "Creation failed: #{message}" }
-                creations += 1
-              else
-                Department.update(new_record)
-                updates += 1
-              end
-            end
-
-          elsif session[:resource_name] == 'faculties'
-            # Faculties upload: Add departments attribute to create and/or link departments to the faculty
-            faculty_entry = nil
-            # Check that name is not blank
-            if new_record['name'].nil?
-              flash[:error] = 'Creation failed: Name cannot be left blank'
-            else
-              # Check whether to update a faculty or create a new one
-              if Faculty.find_by_name(new_record['name']).nil?
-                # Create a new faculty
-                faculty_entry = Faculty.create(new_record.except('departments'))
-                creations += 1
-              else
-                # Retrieve the existing faculty
-                faculty_entry = Faculty.find_by_name(new_record['name'])
-                updates += 1
-              end
-              # Clear the departments of this faculty before overriding/updating
-              faculty_entry.departments= []
-              # For every entered department
-              split_multi_association_field(new_record['departments']).each do |dept_name|
-                # Look for a department with the name
-                department_found = Department.find_by_name(dept_name)
-                if department_found.nil?
-                  # Create and link department with the this faculty
-                  Department.create(name: dept_name, faculty_id: faculty_entry.id)
-                else
-                  # Link department with this faculty
-                  department_found.update(faculty_id: faculty_entry.id)
-                end
-              end
-            end
-
-          elsif session[:resource_name] == 'courses'
-            new_creations, new_updates = upload_course(new_record)
-            creations += new_creations
-            updates += new_updates
-          elsif session[:resource_name] == 'uni_modules'
-            new_creations, new_updates = upload_uni_module(new_record)
-            creations += new_creations
-            updates += new_updates
-          else
-            # Will never reach here based on current front end restrictions
-            # General creation
-            session[:resource_name].to_s.classify.constantize.create!(new_record)
-          end
+      else
+        if session[:resource_name] == 'departments'
+          creations, updates = upload_departments(parsed_csv)
+        elsif session[:resource_name] == 'faculties'
+          creations, updates = upload_faculties(parsed_csv)
+        elsif session[:resource_name] == 'courses'
+          creations, updates = upload_courses(parsed_csv)
+        elsif session[:resource_name] == 'uni_modules'
+          creations, updates = upload_uni_modules(parsed_csv)
+        else
+          flash[:notice] = 'Resource not recognized'
         end
       end
+
+      creations ||= 0
+      updates ||= 0
 
       flash[:success] = "Upload complete: Processed #{creations} creations, #{updates} updates"
       redirect_to :back
     end
-
   end
 end
