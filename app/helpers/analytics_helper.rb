@@ -589,7 +589,7 @@ module AnalyticsHelper
 	end
 
 
-
+	# obtain the modudle code from the input module
 	def get_top_module_code(input)
 		if input == "(None)"
 			"(None)"

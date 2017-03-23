@@ -39,7 +39,7 @@
          </div>
          <% end %>
 
-          <% if app_settings.is_offline && controller_name != "errors" %>
+          <% if app_settings.is_offline && controller_name != "errors" && logged_in? %>
          <style>#flash-container{margin-top: 0px;}</style>
          <div class="container" style="margin-top:15px;">
             <div class="row">
