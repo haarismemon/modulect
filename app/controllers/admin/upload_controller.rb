@@ -73,31 +73,8 @@ module Admin
       end
 
       csv_text = File.read('app/assets/uploaded.csv')
-      parsed_csv = CSV.parse(csv_text, headers: true)
-      uploaded_header = parsed_csv.headers
+      parse_csv_and_display_notice(csv_text)
 
-      if parsed_csv.length == 0
-        flash[:error] = 'Upload Failed: No records found. CSV is empty'
-      elsif uploaded_header != session[:resource_header]
-        flash[:error] = 'Upload Failed: Please ensure the CSV header matches the template file'
-      else
-        if session[:resource_name] == 'departments'
-          creations, updates = upload_departments(parsed_csv)
-        elsif session[:resource_name] == 'faculties'
-          creations, updates = upload_faculties(parsed_csv)
-        elsif session[:resource_name] == 'courses'
-          creations, updates = upload_courses(parsed_csv)
-        elsif session[:resource_name] == 'uni_modules'
-          creations, updates = upload_uni_modules(parsed_csv)
-        else
-          flash[:notice] = 'Resource not recognized'
-        end
-      end
-
-      creations ||= 0
-      updates ||= 0
-
-      flash[:success] = "Upload complete: Processed #{creations} creations, #{updates} updates"
       redirect_to :back
     end
   end
