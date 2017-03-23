@@ -67,7 +67,7 @@
           <div class="modal fade" id="optionsModalYear<%= y.year_of_study_before_type_cast.to_i %>" tabindex="-1" role="dialog" aria-hidden="true" style="margin-top: 50px">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" id="optionsModalHeaderYear<%= y.year_of_study_before_type_cast.to_i %>">
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -794,12 +794,15 @@
     console.log("----------------------------------------");
     if(credits_used >= max_credits) {
       flashModal("You have already selected enough credits from this group", year);
+      updateUI();
     }
     else if(credits_this_year + this_module.credits > js_course.year_structures[year].year_credits) {
       flashModal("You have enough credits this year", year);
+      updateUI();
     }
     else if(!requirementsSatisfied) {
       flashModal("This module has prerequisites which you have not met", year);
+      updateUI();
     } else {
       $("#optionsModalYear" + (year + 1)).modal('hide');
       if(credits_this_year + this_module.credits == js_course.year_structures[year].year_credits) {
@@ -960,15 +963,16 @@
   }
 
   function flashModal(message, year) {
-    modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
-    modalTarget.innerHTML = "<div class=\"row search-flash\">" +
+    modalTarget = document.getElementById("optionsModalHeaderYear" + (year + 1));
+    modalTarget.innerHTML = modalTarget.innerHTML + "<div class=\"row search-flash\">" +
          "<div class=\"col-md-12\">" +
             "<div class=\"flash-alert flash-alert-notice\">" +
                "<i class=\"fa fa-info\" aria-hidden=\"true\"></i>" +
                "<span>" + message + "</span>" +
             "</div>" +
          "</div>" +
-   "</div>" + modalTarget.innerHTML;
+   "</div>";
+   fadeFlash();
   }
 
   function flashTable(message, year) {
@@ -981,6 +985,7 @@
             "</div>" +
          "</div>" +
    "</div>" + tableTarget.innerHTML;
+   fadeFlash();
   }
 
   function updateData(){
@@ -1029,11 +1034,11 @@
     }
   }
 
-  $(document).ready(function(){
+  function fadeFlash(){
     setTimeout(fade_out, 5000);
        function fade_out() {
          $(".search-flash").fadeOut().empty();
          $(".search-flash").css("margin-bottom", "0px");
        }
-   });
+   }
 </script>
