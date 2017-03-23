@@ -719,7 +719,6 @@
           button = document.getElementById("btn_opt_select_" + currentModId);
           button.addEventListener("click", function(){
             console.log("hit");
-            $("#optionsModalYear" + (_year + 1)).modal('hide');
             selectModule(_year_,_i,currentModId);
           });
         })(_year, _i, currentModId);
@@ -802,6 +801,7 @@
     else if(!requirementsSatisfied) {
       flashModal("This module has prerequisites which you have not met", year);
     } else {
+      $("#optionsModalYear" + (year + 1)).modal('hide');
       if(credits_this_year + this_module.credits == js_course.year_structures[year].year_credits) {
         creditsComplete[year] = true;
       }
@@ -913,7 +913,7 @@
       removed += modulesRemoved[i] + ", ";
     }
     removed += modulesRemoved[modulesRemoved.length - 1];
-    flashTable("Module")
+    flashTable("Modules " + removed + "also removed as prerequisites are no longer satisified");
     // Decrement every tuple of the selected modules
     for(g = 0; g < selected_ids[year].length; ++g) {
       for(i = 0; i < selected_ids[year][g].length; ++i) {
@@ -949,29 +949,25 @@
 
   function flashModal(message, year) {
     modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
-    modalTarget.innerHTML = "<div class=\"container\" style=\"margin-top:15px;\">" +
-      "<div class=\"row\">" +
+    modalTarget.innerHTML = "<div class=\"row\">" +
          "<div class=\"col-md-12\">" +
             "<div class=\"flash-alert flash-alert-notice\">" +
                "<i class=\"fa fa-info\" aria-hidden=\"true\"></i>" +
-               "<span>" + message "</span>" +
+               "<span>" + message + "</span>" +
             "</div>" +
          "</div>" +
-      "</div>" +
    "</div>" + modalTarget.innerHTML;
   }
 
   function flashTable(message, year) {
     tableTarget = document.getElementById("div_year_#" + year);
-    tableTarget.innerHTML = "<div class=\"container\" style=\"margin-top:15px;\">" +
-      "<div class=\"row\">" +
+    tableTarget.innerHTML = "<div class=\"row\">" +
          "<div class=\"col-md-12\">" +
             "<div class=\"flash-alert flash-alert-notice\">" +
                "<i class=\"fa fa-info\" aria-hidden=\"true\"></i>" +
-               "<span>" + message "</span>" +
+               "<span>" + message + "</span>" +
             "</div>" +
          "</div>" +
-      "</div>" +
    "</div>" + tableTarget.innerHTML;
   }
 
