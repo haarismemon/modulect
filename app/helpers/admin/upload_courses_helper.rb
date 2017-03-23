@@ -47,7 +47,7 @@ module Admin::UploadCoursesHelper
       if !found_department.blank?
         csv_course.departments << found_department
       else
-        csv_course.errors[:base] << "Department not found: #{dept_name}"
+        flash[:error] = "Warning: Department #{dept_name} has not been found, so has not been linked with #{new_record['name']}"
       end
     end
   end
