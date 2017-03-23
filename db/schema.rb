@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314155826) do
+ActiveRecord::Schema.define(version: 20170321201046) do
 
   create_table "app_settings", force: :cascade do |t|
     t.integer  "singleton_guard"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20170314155826) do
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
     t.decimal  "tag_percentage_match",   default: "60.0"
+    t.boolean  "disable_new_reviews",    default: false
+    t.boolean  "disable_all_reviews",    default: false
     t.index ["singleton_guard"], name: "index_app_settings_on_singleton_guard", unique: true
   end
 
@@ -78,13 +80,10 @@ ActiveRecord::Schema.define(version: 20170314155826) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
-    t.integer  "total_credits"
     t.integer  "year_structure_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.boolean  "compulsory"
-    t.integer  "min_modules"
-    t.integer  "max_modules"
     t.integer  "min_credits"
     t.integer  "max_credits"
     t.index ["year_structure_id"], name: "index_groups_on_year_structure_id"
@@ -97,6 +96,29 @@ ActiveRecord::Schema.define(version: 20170314155826) do
     t.index ["uni_module_id", "group_id"], name: "index_groups_uni_modules_on_uni_module_id_and_group_id"
   end
 
+  create_table "notices", force: :cascade do |t|
+    t.string   "header"
+    t.integer  "department_id"
+    t.string   "notice_body"
+    t.date     "live_date"
+    t.date     "end_date"
+    t.string   "optional_link"
+    t.boolean  "broadcast"
+    t.boolean  "auto_delete"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "pathway_search_logs", force: :cascade do |t|
+    t.integer  "first_mod_id"
+    t.integer  "second_mod_id"
+    t.integer  "counter"
+    t.integer  "department_id"
+    t.integer  "course_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "pathways", force: :cascade do |t|
     t.string   "name",       default: "Pathway"
     t.string   "data"
@@ -105,6 +127,44 @@ ActiveRecord::Schema.define(version: 20170314155826) do
     t.datetime "updated_at",                     null: false
     t.integer  "year"
     t.integer  "course_id"
+  end
+
+  create_table "reported_comments_users", id: false, force: :cascade do |t|
+    t.integer "comment_id"
+    t.integer "user_id"
+    t.index ["comment_id", "user_id"], name: "index_reported_comments_users_on_comment_id_and_user_id"
+  end
+
+  create_table "saved_modules", force: :cascade do |t|
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "user_id"
+    t.integer  "uni_module_id"
+  end
+
+  create_table "search_logs", force: :cascade do |t|
+    t.string   "search_type"
+    t.integer  "counter"
+    t.integer  "department_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "suggested_pathways", force: :cascade do |t|
+    t.string   "name"
+    t.string   "data"
+    t.integer  "year"
+    t.integer  "course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tag_logs", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "counter"
+    t.integer  "department_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "tags", force: :cascade do |t|
@@ -118,6 +178,13 @@ ActiveRecord::Schema.define(version: 20170314155826) do
     t.integer "tag_id"
     t.integer "uni_module_id"
     t.index ["tag_id", "uni_module_id"], name: "index_tags_uni_modules_on_tag_id_and_uni_module_id"
+  end
+
+  create_table "uni_module_logs", force: :cascade do |t|
+    t.integer  "counter"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "uni_module_id"
   end
 
   create_table "uni_module_requirements", id: false, force: :cascade do |t|
@@ -170,11 +237,21 @@ ActiveRecord::Schema.define(version: 20170314155826) do
     t.datetime "last_login_time"
   end
 
+  create_table "visitor_logs", force: :cascade do |t|
+    t.string   "session_id"
+    t.boolean  "logged_in"
+    t.string   "device_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "department_id"
+  end
+
   create_table "year_structures", force: :cascade do |t|
     t.integer  "year_of_study"
     t.integer  "course_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "year_credits",  default: 120
     t.index ["course_id"], name: "index_year_structures_on_course_id"
   end
 

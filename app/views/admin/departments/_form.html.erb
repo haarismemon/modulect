@@ -1,9 +1,15 @@
+<%#  Renders a complete form for department which is displayed within edit and new course form
 
-    <!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+A form with several field partials within which allows for the manipulation of @department object.
+
+To modify this file access the partials within
+%>
+    <%# Helper which prints error message of current object if there is any on to screen(does nothing, if none)%>
     <%= error_messages_for(f.object) %>
 
 
-        <!--renders attributes-->
+        <%# renders attributes%>
         <div class="row field-unit field-unit--string name" >
           <div class="col-xs-12">
             <div class="field-unit__label">
@@ -48,7 +54,13 @@
     </div>
 
 
-    <div class="form-actions"><%= f.submit%></div>
+    <div class="form-actions"><button type="submit" name="commit" data-disable-with="<%if parent=="edit"  %>Update<% else %>Create<% end %> department" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
+   <%if parent=="edit"  %>Update<% else %>Create<% end %> department</button>
+   <% if parent == "edit" %>
+   &nbsp;&nbsp;&nbsp;<%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete department".html_safe, admin_department_path(@department), method: :delete,
+      data: { confirm: "Are you sure you want to delete this department?" } , class: "table__action--destroy" %>
+   <% end %>
+</div>
 
     <script>
       var openFacultyCreation = function(){

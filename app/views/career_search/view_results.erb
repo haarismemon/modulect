@@ -1,4 +1,10 @@
+<%#
+   This page is reslts stage of the career search whereby a user can see the resulting careers from their search.
+%>
 <% provide(:title, 'Potential Careers - Career Search') %>
+<% if request.query_parameters["sl"].present? &&  request.query_parameters["sl"] == "true"%>
+  <% add_to_search_log("career") %>
+<% end %>
 <% if logged_in? %>
 <% @year_of_study = current_user.year_of_study %>
 <% @course = current_user.course_id %>
@@ -50,7 +56,7 @@
             <%= request.original_url.gsub("&", "%26")%>
             %0A%0A
             Regards,%0A
-            {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
+            {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Send via Email</a> </li>
       </ul>
    </div>
 </div>

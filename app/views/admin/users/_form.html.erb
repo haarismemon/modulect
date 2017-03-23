@@ -1,6 +1,13 @@
-<!--Helper which prints error message of current object if there is any on to screen(does nothing, if none)-->
+<%#  Renders a complete form for user which is displayed within edit and new course form
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+A form with several field partials within which allows for the manipulation of @user object.
+
+To modify this file access the partials within
+%>
+<%#Helper which prints error message of current object if there is any on to screen(does nothing, if none)%>
 <%= error_messages_for(f.object) %>
-<!--renders attributes-->
+<%#renders attributes%>
 <style>
    #super-admin-warning{display: none;}
    <% if @user.user_level == "super_admin_access" %>

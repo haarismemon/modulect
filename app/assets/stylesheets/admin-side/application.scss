@@ -15,13 +15,13 @@
 @import "base/**/*";
 @import "components/**/*";
 @import "simple-sidebar";
+@import "fileinput.min.css";
 
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
 @import "data-tables";
-
 @import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css');
 @import url('../user-side/awesome-bootstrap-checkbox.css');
 @import "admin-style";
@@ -59,7 +59,10 @@ a:hover,a :focus, a:active{text-decoration:none;color:#555459;}
     transition: all 0.5s;
     font-family: "Varela Round";
     text-transform: uppercase;
+    border:0px;
 }
+.btn-primary{
+    border:0px;}
 .btn:hover,
 .btn:focus,
 
@@ -70,10 +73,12 @@ button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type=
     color: #fff;
     text-decoration:none;
 }
-.btn:active, button:active, input[type="button"]:active, input[type="reset"]:active, input[type="submit"]:active, .button:active {
+.btn:active, button:active, input[type="button"]:active, input[type="reset"]:active, input[type="submit"]:active, .button:active, button:disabled:hover {
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
+    outline: 0 !important;
 }
+button:focus, button {outline: 0 !important;}
 .red-btn {
     background: #c55252;
     box-shadow: 0px 3px 0px 0px #502b2b;
@@ -314,6 +319,14 @@ a.action-edit{margin-right:10px;}
     box-shadow: 0px 3px 0px 0px #228e62;
 }
 
+.btn-drop{
+    font-weight: 600;
+    border-radius: 3px;
+    }
+.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle){
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
 .open-app a{
 	color: #2ab27b;
 	font-size:20px;
@@ -435,7 +448,7 @@ a.action-edit{margin-right:10px;}
 
 .table-header-fields{margin-top:20px;}
 
-.index-header-area{margin-bottom:-20px;}
+.index-header-area{margin-bottom:0px;}
 
 
 .highlight, .highlight:hover{background: #e9e9e9;border-left:2px solid #2ab27b;}
@@ -492,6 +505,10 @@ a.action-edit{margin-right:10px;}
 
 .page-title,#page-title{margin-top:0px;}
 
+.header__actions{margin-top:-10px;}
+
+.header{    margin-bottom: 10px;}
+
 @media(min-width:981px) and (max-width:1055px) {
 .open-app{
 	display:none;
@@ -514,6 +531,12 @@ a.action-edit{margin-right:10px;}
         border: 1px solid #dfe2e1;
     }
     .admin-top-button{    margin-top: -26px;}
+    .header{display: block;}
+    .header__actions{
+        margin-top: 20px;
+        margin-left: 0px;
+    }
+
 }
 @media(max-width:768px) {
     .no-mobile {
@@ -523,3 +546,27 @@ a.action-edit{margin-right:10px;}
         display: block;
     }
 }
+.remove-field{
+  a{
+    color: #2a94d6
+  }
+
+  a:hover{
+    color: #293f54;
+  }
+}
+
+a.add_fields{
+  font-size: 14px;
+}
+
+
+.groups div.field-unit__label{
+  align-self: flex-start;
+  margin-top: 20px;
+}
+
+.header{
+  padding-bottom: 0px;
+}
+

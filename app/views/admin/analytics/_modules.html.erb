@@ -1,0 +1,219 @@
+<%# The module partial is used to display general information about modules and tags which may be of interest to the user (e.g. most saved, most visited)
+%>
+<div class="row" >
+   <div class="col-md-12  login-card header-card" style="">
+
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most clicked module from search results">Most clicked module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+         <% most_clicked_module = get_top_size_check_analytics(all_data["visited_modules"])%>
+         <%= get_top_module_code(most_clicked_module) %>
+         </div>
+        
+         <div class="percentage-change">
+            <%= get_top_module_name(most_clicked_module) %>
+         </div>
+      </div>
+
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most saved module from results">Most saved module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+         <% most_saved_module =  get_top_size_check_analytics(all_data["saved_modules"]) %>
+            <%= get_top_module_code(most_saved_module) %>
+         </div>
+        
+         <div class="percentage-change">
+            <%= get_top_module_name(most_saved_module) %>
+         </div>
+      </div>
+
+      <div class="col-md-3 header-item">
+         <div class="small-header"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most highly rated module from student reviews">Most highly rated (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+         <% most_highly_rated =  get_top_size_check_analytics(all_data["rated_modules"]) %>
+            <%= get_top_module_code(most_highly_rated) %>
+         </div>
+        
+         <div class="percentage-change">
+            <%= get_top_module_name(most_highly_rated) %>
+         </div>
+      </div>
+
+      <div class="col-md-3 header-item last">
+         <div class="small-header"><i class="fa fa-star-half-o" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The most reviewed module in the time period">Most reviewed module (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+         <% most_reviewed =  get_top_size_check_analytics(all_data["reviewed_modules"]) %>
+            <%= get_top_module_code(most_reviewed) %>
+         </div>
+        
+         <div class="percentage-change">
+            <%= get_top_module_name(most_reviewed) %>
+         </div>
+      </div>
+
+      
+   </div>
+  
+   <div class="row">
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-visited-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected module in the time period selected.">Most Clicked Modules</a></h4>
+          <div class="col-md-12" id="mod_visited_module_table_area">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-saved-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most saved module in the time period selected.">Most Saved Modules</a></h4>
+          <div class="col-md-12" id="mod_saved_module_table_area">
+          </div>
+        </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-reviewed-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most reviewed module in the time period selected.">Most Reviewed Modules</a></h4>
+          <div class="col-md-12" id="mod_reviewed_module_table_area">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" >
+        <div class="col-md-12 login-card subox-card overview-card">
+          <div class="side-right">
+            <select class="selectpicker" id="mod-rated-module-selector">
+              <option value="vBar">V-Bar chart</option>
+              <option value="hBar">H-Bar chart</option>
+              <option value="pie">Pie chart</option>
+              <option value="table" selected="selected">Table</option>
+            </select>
+          </div>
+          <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most highly rated module in the time period selected.">Highest Rated Modules</a></h4>
+          <div class="col-md-12" id="mod_rated_module_table_area">
+          </div>
+        </div>
+      </div>
+   </div>
+</div>
+
+<script>
+   function drawModVisitedModule() {
+       var chartType = $("#mod-visited-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_visited_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["visited_modules"].first(20), chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "bar", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "horizontalBar", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_visited_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["visited_modules"].first(20), type: "pie", chart_name: "Most Visited Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-visited-module-selector").on('change', function() {
+       drawModVisitedModule();
+     });
+
+     drawModVisitedModule();
+
+     function drawModSavedModule() {
+       var chartType = $("#mod-saved-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_saved_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["saved_modules"].first(20), chart_name: "Most Saved Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["saved_modules"].first(20), type: "bar", chart_name: "Most Saved Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["saved_modules"].first(20), type: "horizontalBar", chart_name: "Most Saved Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_saved_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["saved_modules"].first(20), type: "pie", chart_name: "Most Saved Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-saved-module-selector").on('change', function() {
+       drawModSavedModule();
+     });
+
+     drawModSavedModule();
+
+     function drawModReviewedModule() {
+       var chartType = $("#mod-reviewed-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["reviewed_modules"].first(20), chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "bar", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "horizontalBar", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_reviewed_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["reviewed_modules"].first(20), type: "pie", chart_name: "Most Reviewed Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-reviewed-module-selector").on('change', function() {
+       drawModReviewedModule();
+     });
+
+     drawModReviewedModule();
+
+     function drawModRatedModule() {
+       var chartType = $("#mod-rated-module-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#mod_rated_module_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["rated_modules"].first(20), chart_name: "Highest Rated Modules") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#mod_rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["rated_modules"].first(20), type: "bar", chart_name: "Highest Rated Modules") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#mod_rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["rated_modules"].first(20), type: "horizontalBar", chart_name: "Highest Rated Modules") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#mod_rated_module_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["rated_modules"].first(20), type: "pie", chart_name: "Highest Rated Modules") %>").html_safe;
+       }
+     }
+
+     $("#mod-rated-module-selector").on('change', function() {
+       drawModRatedModule();
+     });
+
+     drawModRatedModule();
+</script>

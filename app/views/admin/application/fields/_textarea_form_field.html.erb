@@ -1,0 +1,51 @@
+<%#
+  A text area component.
+
+ The block contains a set of classes which can be used,  to reference fields in
+ javascript and css
+
+ Locals:
+
+ :f => the form object itself,
+ :name => name of field,  represent the object's attribute {:symbol},
+ :placeholder => provides a placeholder for field{string},
+ :label => the field label name {:symbol},
+ :tooltip => A tool tip which provides additional information of the current field{string},
+ :options => any additional options to be added to field element{hash}
+
+ Classes it contains:
+ Type of components (i.e field-unit--number)
+ Name of component (i.e department)
+
+  Extend accordingly. If locals want to be added to partial, deal with the case if local isn't provided as seen below
+  to prevent code from being broken anywhere else.
+%>
+
+<%# sees if renders have been passed into render, if not, just assign defaults to each %>
+<% label = name if local_assigns[:label].nil? %>
+<% placeholder = "" if local_assigns[:placeholder].nil? %>
+<% tooltip = nil if local_assigns[:tooltip].nil? %>
+<% options = {} if local_assigns[:options].nil? %>
+
+<%# form field %>
+<div class="row field-unit field-unit--textarea <%= name.to_s %>" style="margin-top: 40px;margin-bottom: 40px">
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%# creates label from label local %>
+        <label for="<%= name.to_s%>"><%= label.to_s.titleize %>
+          <%# checks if tooltip is present and if so render it with its message %>
+            <% if tooltip.present?%>
+              <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
+                 title="<%= tooltip.to_s %>">[<i class="fa fa-question" aria-hidden="true"></i>]
+              </a>
+            <% end %>
+        </label>
+    </div>
+    <%# element part %>
+    <div class="field-unit__field">
+      <%# text area %>
+      <%= f.text_area name, placeholder: placeholder, :class =>"tinymce", options: options %>
+      <%= tinymce %>
+    </div>
+  </div>
+</div>

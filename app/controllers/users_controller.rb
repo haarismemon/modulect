@@ -8,7 +8,6 @@ class UsersController < ApplicationController
 
   include ApplicationHelper
 
-
   def index
     #returns all users by order of last_name
     #@users = User.alphabetically_order_by(:last_name)
@@ -126,30 +125,31 @@ class UsersController < ApplicationController
 
 
   private
-    def user_params
-      if params[:user].blank?
-        return nil
-      end
-      #!add params that want to be recognized by this application
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study, :user_level, :course_id)
+  def user_params
+    if params[:user].blank?
+      return nil
     end
+    #!add params that want to be recognized by this application
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :username, :year_of_study, :user_level, :course_id)
+  end
 
-    # Used when updating the profile
-    def update_params
-      params.require(:user).permit(:password, :faculty_id, :department_id, :course_id, :year_of_study)
-    end
+  # Used when updating the profile
+  def update_params
+    params.require(:user).permit(:password, :faculty_id, :department_id, :course_id, :year_of_study)
+  end
 
-    # Confirms the correct user.
-    def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
-    end
+  # Confirms the correct user.
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to(root_url) unless current_user?(@user)
+  end
 
-    def registration_allowed
-      if !app_settings.allow_new_registration
-        flash[:error] = "Registration is currently offline, please check back later."
-         redirect_to(root_url)
-      end
+  # checks whether registration has been disabled by a super admin
+  def registration_allowed
+    if !app_settings.allow_new_registration
+      flash[:error] = "Registration is currently offline, please check back later."
+       redirect_to(root_url)
     end
+  end
 
 end

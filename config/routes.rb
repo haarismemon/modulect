@@ -6,16 +6,28 @@ Rails.application.routes.draw do
     resources :departments
     resources :faculties
     resources :groups
+    resources :notices
     resources :uni_modules
+    patch '/uni_modules' => 'uni_modules#create'
     resources :users, except: [:show] # adding to fix dropdowns
     resources :year_structures
+    resources :course_pathways  do
+      member do
+        get :new_pathway
+      end
+    end
+
+    # GENERAL
     get 'upload', to: 'upload#upload'
     get 'analytics', to: 'analytics#analytics'
+    get 'module_reviews', to: 'module_reviews#message'
 
-
+    # APP SETTINGS
     put '/app_settings' => 'app_settings#update'
     patch '/app_settings' => 'app_settings#update'
     match 'settings' => 'app_settings#edit', :defaults => {:id => 1}, via: [:get]
+
+    post '/reset_modulect', to: 'base#reset_modulect'
    
     # BULK ACTIONS
     post '/courses/bulk_delete', to: 'courses#bulk_delete'
@@ -25,6 +37,8 @@ Rails.application.routes.draw do
     post '/faculties/bulk_delete', to: 'faculties#bulk_delete'
     post '/faculties/clone', to: 'faculties#clone'
     post '/uni_modules/bulk_delete', to: 'uni_modules#bulk_delete'
+    post '/uni_modules/bulk_delete_comments'
+    post '/uni_modules/bulk_unflag_comments'
     post '/users/bulk_activate', to: 'users#bulk_activate'
     post '/users/bulk_deactivate', to: 'users#bulk_deactivate'
     post '/users/bulk_delete', to: 'users#bulk_delete'
@@ -33,10 +47,18 @@ Rails.application.routes.draw do
     post '/users/make_student_user', to: 'users#make_student_user'
     post '/users/make_department_admin', to: 'users#make_department_admin'
     post '/users/make_super_admin', to: 'users#make_super_admin'
+    post '/notices/bulk_delete', to: 'notices#bulk_delete'
+    post '/notices/clone', to: 'notices#clone'
+
+    # RESET MODULECT
+    post '/reset_modulect', to: 'base#reset_modulect'
+
+    post '/uni_modules/upload_csv', to: 'uni_modules#update_csv'
+    post '/uni_modules/create_csv', to: 'uni_modules#create_csv'
+
 
     root to: "dashboard#index"
   end
-
 
   # GENERAL
   root 'search#home'
@@ -44,6 +66,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'
   get '/search', to: 'search#home'
   get '/saved', to: 'saved#view'
+  get '/reviews', to: 'reviews#view'
   get '/admin', to: 'admin#dashboard'
   get 'career_search/choose'
   get 'career_search/view'
@@ -90,7 +113,12 @@ Rails.application.routes.draw do
   get 'pathway-search/begin'
   get 'pathway-search/choose'
   get 'pathway-search/view_results'
-  get 'pathway-search/view_results_test'
+  post 'pathway-search/increment_pathway_search_log', to: 'pathway_search#increment_pathway_search_log'
+  post 'pathway-search/decrement_pathway_search_log', to: 'pathway_search#decrement_pathway_search_log'
+  # Pathway search analytics
+  get '/*all/update_modules', to: 'admin/analytics#update_modules', defaults: { format: 'js' }
+  get '/*all/update_selected_module', to: 'admin/analytics#update_selected_module', defaults: { format: 'js' }
+  get '/*all/update_selected_department', to: 'admin/analytics#update_selected_department', defaults: { format: 'js' }
 
 
   # Career search
@@ -104,6 +132,7 @@ Rails.application.routes.draw do
   resources :uni_modules, only: [:show] do
     resources :comments
   end
+  get 'admin/uni_modules/:id/comments', to: 'admin/uni_modules#comments', as: 'admin_comment'
 
 
   # AJAX
@@ -111,9 +140,20 @@ Rails.application.routes.draw do
   post 'application/save_module'
   post 'application/save_pathway'
   post 'application/delete_pathway'
+  post 'application/save_suggested_course_pathway'
+  post 'application/delete_suggested_course_pathway'
+  post 'application/update_suggested_course_pathway'
+
+  get 'application/rating_for_module'
+  
   post 'admin/add_new_faculty', to: 'admin/faculties#add_new_faculty'
   post 'comments/sort'
   post 'comments/like'
+  post 'comments/edit'
+  post 'comments/delete'
+  delete 'comments/destroy'
+  post 'comments/unflag'
+  post 'comments/report'
 
 
   # ERROR PAGES
@@ -121,7 +161,11 @@ Rails.application.routes.draw do
   match "/500", :to => "errors#internal_server_error", :via => :all
 
   # OPEN CALAIS
-  get 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
   post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
 
-end
+  # CSV Upload
+  get 'upload', to: 'admin/upload#upload'
+  get 'admin/upload', to: 'admin/upload#upload'
+  post 'admin/download',   to: 'admin/upload#download'
+  post 'admin/upload/upload_csv', to: 'admin/upload#upload_csv'
+  end

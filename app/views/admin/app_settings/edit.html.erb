@@ -1,6 +1,9 @@
+<%#
+  The main page for the settings whereby a system admin can modify the application's behaviour.
+%>
 <% provide(:title, 'Settings') %>
 <header class="header">
-  <h1 class="page-title">Settings</h1>
+  <h1 class="page-title"><i class='fa fa-cogs' aria-hidden='true'></i>&nbsp;&nbsp;Settings</h1>
 
 <%= form_for(@app_setting, :url => { :action => "update",:method => "put" }, html: {class: "form"})do |f| %>
    <div class="header__actions">
@@ -20,7 +23,7 @@ Save settings</button>
    <div class="row field-unit field-unit--checkbox is_offline" >
       <div class="col-xs-12">
          <div class="field-unit__label">
-            <label for="user_is_limited">Turn Modulect offline <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="This will turn Modulect offline rendering it in accessible to users. Admins can still access the admin area.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+            <label for="user_is_limited">Turn Modulect offline <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="This will turn Modulect offline rendering it in accessible to users. Admins can still access the admin area and System Admins can still access Modulect.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
          </div>
          <div class="field-unit__field">
             <div class="radio" style="display:inline-block;">
@@ -62,9 +65,6 @@ Save settings</button>
       </div>
    </div>
 </div>
-
-
-
 <div class="col-md-12">
    <h4>
      Quick search and pathway search setings
@@ -94,6 +94,45 @@ Save settings</button>
       </div>
    </div>
 </div>
+<div class="col-md-12">
+   <h4>
+     Module review settings
+   </h4>
+</div>
+<div class="col-md-12">
+   <div class="row field-unit field-unit--checkbox disable_new_reviews" >
+      <div class="col-xs-12">
+         <div class="field-unit__label">
+            <label for="user_is_limited">Disable new reviews <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="This will prevent users from adding any more reviews. Department admins will be alerted.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+         </div>
+         <div class="field-unit__field">
+            <div class="radio" style="display:inline-block;">
+               <%= f.radio_button :disable_new_reviews, false %><label for="app_setting_disable_new_reviews_false"><span>No</span></label>
+            </div>
+            <div class="radio" style="display:inline-block;margin-left:20px;">
+               <%= f.radio_button :disable_new_reviews, true %><label for="app_setting_disable_new_reviews_true">Yes<span></span></label>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="col-md-12">
+   <div class="row field-unit field-unit--checkbox is_offline" >
+      <div class="col-xs-12">
+         <div class="field-unit__label">
+            <label for="user_is_limited">Disable/hide all reviews <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="This will hide reviews completely from Modulect and will also disable new reviews. Department admins will be alerted.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+         </div>
+         <div class="field-unit__field">
+            <div class="radio" style="display:inline-block;">
+               <%= f.radio_button :disable_all_reviews, false %><label for="app_setting_disable_all_reviews_false"><span>No</span></label>
+            </div>
+            <div class="radio" style="display:inline-block;margin-left:20px;">
+               <%= f.radio_button :disable_all_reviews, true %><label for="app_setting_disable_all_reviews_true">Yes<span></span></label>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 <button style="margin-bottom:20px;" type="submit" name="commit" data-disable-with="Save settings" /><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
 Save settings</button>
 <% end %>
@@ -110,11 +149,71 @@ Save settings</button>
    <div class="row field-unit field-unit--checkbox is_offline" >
       <div class="col-xs-12">
          <div class="field-unit__label">
-            <label ">This action is irreversible, deleting all courses, departments, faculties, modules, users, analytics and any associated settings. Proceed with caution.</label>
+            <p>This action is irreversible, and deletes all
+            <ul style="list-style: square; margin-left:20px;">
+            <li>courses</li>
+            <li>departments</li>
+            <li>faculties</li>
+            <li>modules</li>
+            <li>reviews</li>
+            <li>users (except system administrators)</li>
+            <li>analytics</li>
+            <li>any associated settings</li>
+            </ul>
+            </p>
          </div>
          <div class="field-unit__field" style="margin-top:20px;">
-            <a href="javascript:void()" class="btn red-btn">Reset Modulect ></a>
+            <a id="reset-modulect-link" class="btn red-btn" style="cursor:pointer;">Reset Modulect</a>
          </div>
       </div>
    </div>
 </div>
+  <script>
+$(document).ready(function() {
+    $("#reset-modulect-link").click(function(event) {
+
+        bootbox.prompt({
+            title: "Enter your password",
+            size: "medium",
+            closeButton: false,
+            inputType: 'password',
+            buttons: {
+                confirm: {
+                    label: 'Proceed&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Cancel',
+                    className: 'red-btn pull-left'
+                }
+            },
+            callback: function(result) {
+                if (result != null) {
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<%= admin_reset_modulect_path %>",
+                        context: document.body,
+                        data: {
+                            dwp: result
+                        },
+                        success() {
+                            window.location.replace("<%= admin_settings_path%>");
+                        }
+
+                    })
+
+
+
+
+                }
+            }
+        });
+
+
+    });
+
+
+});
+</script>

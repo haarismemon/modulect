@@ -89,18 +89,18 @@ informatics.courses << elec_eng
 gkt.courses << medicine
 
 # Year Structure seeds
-cs_year1 = YearStructure.create(year_of_study: 1)
-cs_year2 = YearStructure.create(year_of_study: 2)
+cs_year1 = YearStructure.create(year_of_study: 1, year_credits: 120)
+cs_year2 = YearStructure.create(year_of_study: 2, year_credits: 120)
 
 # Course-YearStructure association
 computer_science_15.year_structures << cs_year1
 computer_science_15.year_structures << cs_year2
 
 # Group seeds
-cs1_semester_1 = Group.create(name: "Semester 1", total_credits: 60, compulsory: true)
-cs1_semester_2 = Group.create(name: "Semester 2", total_credits: 60, compulsory: false)
-cs2_semester_1 = Group.create(name: "Semester 1", total_credits: 60, compulsory: true)
-cs2_semester_2 = Group.create(name: "Semester 2", total_credits: 60, compulsory: false)
+cs1_semester_1 = Group.create(name: "Semester 1", max_credits: 60, min_credits: 60, compulsory: true)
+cs1_semester_2 = Group.create(name: "Semester 2", max_credits: 45, min_credits: 45, compulsory: false)
+cs2_semester_1 = Group.create(name: "Semester 1", max_credits: 60, min_credits: 60, compulsory: true)
+cs2_semester_2 = Group.create(name: "Semester 2", max_credits: 60, min_credits: 60, compulsory: false)
 
 # Group-Modules association
 cs1_semester_1.uni_modules << prp
@@ -126,23 +126,23 @@ math_and_ph = Course.create(name: "Mathematics & Physics BSc", year: 2015)
 
 mathematics.courses << math_and_ph
 
-mnp_year1 = YearStructure.create(year_of_study: 1)
-mnp_year2 = YearStructure.create(year_of_study: 2)
-mnp_year3 = YearStructure.create(year_of_study: 3)
+mnp_year1 = YearStructure.create(year_of_study: 1, year_credits: 120)
+mnp_year2 = YearStructure.create(year_of_study: 2, year_credits: 120)
+mnp_year3 = YearStructure.create(year_of_study: 3, year_credits: 120)
 
 math_and_ph.year_structures << mnp_year1
 math_and_ph.year_structures << mnp_year2
 math_and_ph.year_structures << mnp_year3
 
-mnp_year1_required_modules =   Group.create(name: "required", total_credits: 105, compulsory: true)
-mnp_year2_required_modules =   Group.create(name: "required", total_credits: 90, compulsory: true)
-mnp_year3_required_modules =   Group.create(name: "required", total_credits: 15, compulsory: true)
-mnp_year1_optional_modules =   Group.create(name: "optional", total_credits: 15, compulsory: false)
-mnp_year2_optional_modules_1 = Group.create(name: "optional", total_credits: 15, compulsory: false)
-mnp_year2_optional_modules_2 = Group.create(name: "optional", total_credits: 15, compulsory: false)
-mnp_year3_optional_modules_1 = Group.create(name: "optional", total_credits: 15, compulsory: false)
-mnp_year3_optional_modules_2 = Group.create(name: "optional", total_credits: 15, compulsory: false)
-mnp_year3_optional_modules_3 = Group.create(name: "optional", total_credits: 75, compulsory: false)
+mnp_year1_required_modules =   Group.create(name: "required", min_credits: 105, max_credits: 105, compulsory: true)
+mnp_year2_required_modules =   Group.create(name: "required", min_credits: 90, max_credits: 90, compulsory: true)
+mnp_year3_required_modules =   Group.create(name: "required", min_credits: 15, max_credits: 15, compulsory: true)
+mnp_year1_optional_modules =   Group.create(name: "optional", min_credits: 15, max_credits: 15, compulsory: false)
+mnp_year2_optional_modules_1 = Group.create(name: "optional", min_credits: 15, max_credits: 15, compulsory: false)
+mnp_year2_optional_modules_2 = Group.create(name: "optional", min_credits: 15, max_credits: 15, compulsory: false)
+mnp_year3_optional_modules_1 = Group.create(name: "optional", min_credits: 15, max_credits: 15, compulsory: false)
+mnp_year3_optional_modules_2 = Group.create(name: "optional", min_credits: 15, max_credits: 15, compulsory: false)
+mnp_year3_optional_modules_3 = Group.create(name: "optional", min_credits: 75, max_credits: 15, compulsory: false)
 
 mnp_year1.groups << mnp_year1_required_modules
 mnp_year2.groups << mnp_year2_required_modules
@@ -324,13 +324,14 @@ dep = Department.create(name: "Department of Pharmacology and Therapeutics")
 crs = Course.create(name: "Pharmacology BSc", year: 2015)
 
 
-year1 = YearStructure.create(year_of_study: 1)
-year2 = YearStructure.create(year_of_study: 2)
-year3 = YearStructure.create(year_of_study: 3)
+year1 = YearStructure.create(year_of_study: 1, year_credits: 120)
+year2 = YearStructure.create(year_of_study: 2, year_credits: 120)
+year3 = YearStructure.create(year_of_study: 3, year_credits: 120)
 
 req_1_year_1 = Group.create(
 	name: "Required modules", 
-	total_credits: 120, 
+	min_credits: 120,
+	max_credits: 120, 
 	compulsory: true)
 	req_1_year_1.uni_modules << UniModule.create(code: "4BBY1013", semester: "1", credits: 15, name: "Biochemistry")
 	req_1_year_1.uni_modules << UniModule.create(code: "4BBY1020", semester: "1", credits: 15, name: "Chemistry for the Biosciences")
@@ -341,7 +342,8 @@ req_1_year_1 = Group.create(
 	req_1_year_1.uni_modules << UniModule.create(code: "4AAA0001", semester: "2", credits: 15, name: "Skills for the Biosciences")
 req_1_year_2 = Group.create(
 	name: "Required modules", 
-	total_credits: 90, 
+	min_credits: 90,
+	max_credits: 90, 
 	compulsory: true)
 	req_1_year_2.uni_modules << UniModule.create(code: "5BBM0213", semester: "3", credits: 30, name: "Drugs & Disease B")
 	req_1_year_2.uni_modules << UniModule.create(code: "5BBM0216", semester: "1", credits: 15, name: "Drug Discovery & Development")
@@ -359,16 +361,12 @@ opt_1_year_2 = Group.create(
 	opt_1_year_2.uni_modules << UniModule.create(code: "5BBB0230", semester: "1", credits: 15, name: "Gene Cloning & Expression A")
 opt_1_year_3 = Group.create(
 	name: "You are required to take one of the following modules", 
-	min_modules: 1,
-	max_modules:1,
 	compulsory: false)
 	opt_1_year_3.uni_modules << UniModule.create(code: "6BBM0314", semester: "3", credits: 30, name: "Cell & Molecular Pharmacology")
 	opt_1_year_3.uni_modules << UniModule.create(code: "6BBM0329", semester: "3", credits: 30, name: "Cellular Basis of Drug Dependence")
 # schema needs to be change to accomodate this
 opt_2_year_3 = Group.create(
 	name: "You are also required to take one of the following options", 
-	min_modules: 1,
-	max_modules:1,
 	compulsory: false)
 	opt_2_year_3.uni_modules << UniModule.create(code: "6BBM0309", semester: "3", credits: 30, name: "Pharmacology Research Project")
 	opt_2_year_3.uni_modules << UniModule.create(code: "6AAA0001", semester: "0", credits: 15, name: "Pharmacology Library Project")

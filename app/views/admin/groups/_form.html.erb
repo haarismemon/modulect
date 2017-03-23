@@ -1,20 +1,25 @@
+<%#  Renders a complete form for group which is displayed within edit
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+A form with several field partials within which allows for the manipulation of @group object.
+
+To modify this file access the partials within
+%>
+
 <%= form_for [:admin, @group] do |f| %>
-  <%= f.label :name, placeholder: 'i.e: Semester 1' %>
-  <%= f.text_field :name %>
 
-  <%= f.label :total_credits %>
-  <%= f.number_field :total_credits %>
-  <%= f.label :uni_modules %>
-  <div id="select-modules-from-group-form">
-    <%= f.select :uni_module_ids, possible_uni_modules_for_existing_group(@group).collect {|x| [x.to_s, x.id]}, {},
-    :multiple => true, class: 'selectize' %>
-  </div>
+    <%= error_messages_for(f.object) %>
 
+    <%= render "admin/application/course-partials/group_form_fields", :f => f ,
+               :year_structure => Group.find(params[:id]).year_structure %>
 
-  <p>
-    <%= f.check_box :compulsory %>
-    <%= f.label "All Modules Compulsory" %>
-  </p>
-
-  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
+    <div class="form-actions" style="margin-top:30px">
+      <button type="submit" name="commit" >
+        <i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %> group
+      </button>
+    </div>
 <% end %>
+
+<script>
+    intializeSelectize();
+</script>

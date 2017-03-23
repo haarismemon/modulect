@@ -1,11 +1,16 @@
+<%# A template for editing a department
+Contains the relevant fields
+For information on how toolbox works and what each local does, see the tool box render
+%>
 <% content_for(:title) { "Edit #{Department.find(params[:id]).name}" } %>
 
 
 <header class="header">
-  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <h1 class="header__heading"><i class="fa fa-building" aria-hidden="true"></i>&nbsp;&nbsp;<%= content_for(:title) %></h1>
   <div class="header__actions">
     <%= render(:partial => 'admin/application/edit_toolbox_buttons',
-               :locals => {:object => Department.find(params[:id]),
+               :locals => {:f => @department,
+                           :object => Department.find(params[:id]),
                            :name_of_file=>Department.find(params[:id]).name.tr(' ','').underscore,
                            :blacklist_attributes=>"",
                            :entity_attributes=>"Faculty",

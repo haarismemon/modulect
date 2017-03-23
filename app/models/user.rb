@@ -7,13 +7,16 @@ class User < ApplicationRecord
   before_create :create_activation_digest
 
   # A user has many saved modules.
-  has_and_belongs_to_many :uni_modules
+  has_many :saved_modules
+  has_many :uni_modules, through: :saved_modules
   # A user has many pathways
   has_many :pathways
   # A user makes many comments
   has_many :comments
   # A user likes many comments
   has_and_belongs_to_many :liked_comments, class_name: 'Comment'
+  # A user can report many comments
+  has_and_belongs_to_many :reported_comments, class_name: 'Comment', join_table: 'reported_comments_users'
 
   # do not remove the , optional: true
   belongs_to :faculty, optional: true
@@ -93,6 +96,11 @@ class User < ApplicationRecord
            BCrypt::Password.new(digest).is_password?(authentication_token)
   end
 
+  # Verifies a user's password is correct and used in "Reset Modulect" in the settings
+  def is_password?(password)
+    BCrypt::Password.new(self.password_digest) == password
+  end
+
   # Reset a student user's attributes
   def reset
     update_attributes(year_of_study: nil,
@@ -154,27 +162,17 @@ class User < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w{first_name last_name}
-    csv_headers = ['First Name', 'Last Name', 'Faculty', 'Course', 'Department']
-    CSV.generate(headers:true)do |csv|
-      csv << csv_headers.each{|att|att.titleize}
+    base_attributes = %w{first_name last_name}
+    csv_header = ['First Name', 'Last Name', 'Faculty', 'Course', 'Department']
+
+    CSV.generate(headers:true) do |csv|
+      csv << csv_header.each { |att| att.titleize }
       all.each do |user|
-        to_append = user.attributes.values_at(*attributes)
-        if user.faculty.nil?
-          to_append.push 'N/A'
-        else
-          to_append.push user.faculty.name
-        end
-        if user.course.nil?
-          to_append.push 'N/A'
-        else
-          to_append.push user.course.name
-        end
-        if user.department.nil?
-          to_append.push 'N/A'
-        else
-          to_append.push user.department.name
-        end
+        to_append = user.attributes.values_at(*base_attributes)
+
+        to_append.push user.faculty.to_s
+        to_append.push user.course.to_s
+        to_append.push user.department.to_s
 
         csv << to_append
       end

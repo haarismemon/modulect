@@ -1,0 +1,127 @@
+<%# The career search partial is used to display information about the number of career searches, trending careers and any associated modules.
+
+The main graph shows the number of career searches in the time period. 
+%>
+<div class="row" >
+   <div class="col-md-12  login-card header-card" style="">
+      <div class="col-md-6 header-item">
+         <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
+         </div>
+         <div class="main-figure">
+            <%= all_data["number_of_career_searches"] %>
+         </div>
+         <% if @time_period != "all_time" %>
+         <% percentage_difference_total_career_searches = 
+            all_data["percentage_difference_number_of_career_searches"]
+            %>
+         <div class="percentage-change <%= colour(percentage_difference_total_career_searches)%>">
+            <% if percentage_difference_total_career_searches != 0 %>
+            <i class="fa fa-caret-<%= indicator(percentage_difference_total_career_searches)%>" aria-hidden="true"></i>
+            <% end %> <%= percentage_difference_total_career_searches %>% from previous <%= @time_period.titleize.downcase%>
+         </div>
+         <% end %>
+      </div>
+      <div class="col-md-6 header-item last">
+         <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;
+            <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The career which was most searched for">Top career of <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></a>
+         </div>
+         <div class="main-figure">
+         <%= get_top_module_name(get_top_size_check_analytics(all_data["clicked_tags"])) %>
+         </div>
+         <div class="percentage-change">
+            across any type of search
+         </div>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col-md-12 login-card">
+      <h4 class="small-header" style="margin-bottom:20px;">Number of career searches <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></h4>
+      <canvas id="career-search-main-chart" width="400" height="120"></canvas>
+      <script>
+         var ctx = document.getElementById("career-search-main-chart");
+         
+         var searchData = {
+         labels : <%= get_list_of_time_periods(@time_period).to_json.html_safe %>,
+         datasets : [
+         {
+         label : "# number of career searches",
+         data : <%= attach_search_log_data_to_time_period(get_search_lists(@department, "career", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
+         borderColor : "rgba(217,83,79,1)",
+         backgroundColor : "rgba(217,83,79,0.1)"
+         }
+         
+         ]
+         };
+         var mainSearchChart = new Chart(ctx, {
+             type: 'line',
+             data: searchData,
+             options: {
+                 scales: {
+                     yAxes: [{
+                         ticks: {
+                           beginAtZero:true,
+                             userCallback: function(label, index, labels) {
+		                     // no decimals
+		                     if (Math.floor(label) === label) {
+		                         return label;
+		                     }
+
+		                 	},
+                         }
+                     }]
+                 }
+             }
+         });
+         
+      </script>
+   </div>
+
+   </div>
+
+
+   <div class="row">
+    <div class="col-md-12" >
+      <div class="col-md-12 login-card subox-card overview-card">
+        <div class="side-right">
+        <select class="selectpicker" id="career-tag-selector">
+            <option value="vBar">V-Bar chart</option>
+            <option value="hBar">H-Bar chart</option>
+            <option value="pie">Pie chart</option>
+            <option value="table" selected="selected">Table</option>
+          </select>
+        </div>
+        <h4 class="small-header"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The most selected career tags in the time period selected.">Most Clicked Career Tags</a></h4>
+        <div class="col-md-12" id="career_tag_table_area">
+        </div>
+        <div class="expand-link">
+         <a data-toggle="tab" href="#tags" class="go-to-tags">More info ></a>
+       </div>
+     </div>
+   </div>
+  </div>
+
+   <script>
+    function drawClickedCareerTag() {
+       var chartType = $("#career-tag-selector option:selected").val();
+
+       if(chartType == "table") {
+         $("#career_tag_table_area").empty().append("<%= escape_javascript(render "table", input_hash: all_data["clicked_career_tags"].first(20), chart_name: "Most Clicked Career Tag") %>").html_safe;
+       }
+       else if(chartType == "vBar") {
+         $("#career_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_career_tags"].first(20), type: "bar", chart_name: "Most Clicked Career Tag") %>").html_safe;
+       }
+       else if(chartType == "hBar") {
+         $("#career_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_career_tags"].first(20), type: "horizontalBar", chart_name: "Most Clicked Career Tag") %>").html_safe;
+       }
+       else if(chartType == "pie") {
+         $("#career_tag_table_area").empty().append("<%= escape_javascript(render "chart", input_hash: all_data["clicked_career_tags"].first(20), type: "pie", chart_name: "Most Clicked Career Tag") %>").html_safe;
+       }
+     }
+
+     $("#career-tag-selector").on('change', function() {
+       drawClickedCareerTag();
+     });
+
+     drawClickedCareerTag();
+   </script>

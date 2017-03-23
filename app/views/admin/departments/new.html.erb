@@ -1,10 +1,14 @@
+<%# A template for creating a department
+Contains render which contains fields which corresponds to a particular department's attributes
+%>
+
 <% content_for(:title) { "New Department"} %>
 
 
 <header class="header">
-  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <h1 class="header__heading"><i class="fa fa-building" aria-hidden="true"></i>&nbsp;&nbsp;<%= content_for(:title) %></h1>
   <div class="header__actions">
-    <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, :back, class: "button" %>
+    <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, admin_departments_path, class: "button" %>
   </div>
 </header>
 

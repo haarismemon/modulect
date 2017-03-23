@@ -1,4 +1,12 @@
+<%#
+  Show page displays information on a particular module.
+  The page consists of two sections. The module information section and a module review section.
+  Partials are used to render different areas of the page. See each partial for details.
+  A limited user cannot make reviews on this page.
+%>
+
 <% provide(:title, @uni_module.code + " " +@uni_module.name) %>
+<% add_to_uni_module_log(@uni_module.id) %>
 <div class="banner" style="padding-top:40px;">
    <div class="container">
       <h1>Module details</h1>
@@ -10,7 +18,7 @@
    <div class="col-md-10 col-md-offset-1">
       <div class="row" style="margin-bottom:20px">
          <div class="col-md-6">
-            <a onclick="window.history.back();" class="btn btn-default navbar-btn">< Back</a>
+            <%= link_to '< Back', :back, :class=>"btn btn-default navbar-btn", method: :get %>
          </div>
          <div class="col-md-6 text-right">
             <% if logged_in? %>
@@ -19,16 +27,16 @@
                $("#save-<%= @uni_module.code%>").click(function() {
                $("#save-<%= @uni_module.code%> span").html($("#save-<%= @uni_module.code%> span").html() == '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved' ? '<span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module' : '<i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved');
                });});
-               
+
             </script>
             <% if current_user.uni_modules.include?(@uni_module) %>
-            <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span>
-            </button>
+                <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star" aria-hidden="true"></i>&nbsp;&nbsp;Saved</span></button>
             <% else %>
-            <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
-            </button>
+                <button type="submit" class="btn btn-lg btn-small save-button" id="save-<%= @uni_module.code%>"><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span></button>
             <% end %>
-            <a href="#module_review" class="btn btn-lg btn-small" id="review-module" style="width: 170px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</a>
+            <% if !app_settings.disable_all_reviews %>
+                <a href="#module_review" class="btn btn-lg btn-small" id="review-module" style="width: 120px"><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review</a>
+            <% end %>
             <script>
                $("button#save-<%= @uni_module.code%>").on("click", function(){
                    $.ajax({
@@ -39,86 +47,58 @@
                });
             </script>
             <% else %>
-            <form action="/login" method="get">
+            <form action="/login" method="get" style="display:inline-block;">
                <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="left" title="To save modules, you must be logged in."><span><i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Module</span>
                </button>
             </form>
+            <% end %>
+            <% if !app_settings.disable_all_reviews && !logged_in? %>
+               <form action="/login" method="get" style="display:inline-block;">
+                 <button type="submit" class="btn btn-lg btn-small btn-disabled save-button" data-toggle="tooltip"  data-placement="left" title="To review modules, you must be logged in." style="width: 170px"><span><i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;&nbsp; Review Module</span>
+                 </button>
+               </form>
             <% end %>
          </div>
       </div>
       <%= render partial: 'layouts/uni_module', locals: {uni_module: @uni_module, tags_matched: "", tags_searched_for: "", type: "show"}  %>
 
-     <a name="module_review" id="module_review" class="anchor"></a>
-      <div class="col-md-12 login-card res-card">
-         <div class="row">
-            <div class="col-md-9 result-card-main" id="module-review-card">
-              <h2>Module Review</h2>
+      <% if !app_settings.disable_all_reviews %>
+          <a name="module_review" id="module_review" class="anchor"></a>
+          <div class="col-md-12 login-card res-card">
+             <div class="row">
+                <div class="col-md-9 result-card-main" id="module-review-card">
+                  <h2>Module Reviews</h2>
 
-              <div id="sort-comments">
-                <label>Sort by: </label>
-                <select id="sort-by-name" name="sort-by-name">
-                  <option value="created_at">Created at</option>
-                  <option value="rating">Rating</option>
-                </select>
-              </div><br>
+                  <div id="sort-comments">
+                    <label>Sort by:&nbsp;&nbsp;</label>
+                    <select class="selectpicker" id="sort-by-name" name="sort-by-name">
+                      <option value="created_at">Created at</option>
+                      <option value="rating">Rating</option>
+                    </select>
+                  </div><br>
 
-              <div id="comments-partial">
-                <%= render "display_comments", updated_comments: @comments %>
-              </div>
+                  <div id="comments-partial">
+                    <%= render "display_comments", updated_comments: @comments %>
+                  </div>
 
-              <div id="comment-creation">
-                  <% if !logged_in? || (logged_in? && !current_user.is_limited) %>
-                    <a onclick="openCommentCreation()" class="comment-creation-link btn ">Add a Review</a>
-                    <div class="alert alert-success fade in alert-dismissable" id="comment-creation-box" style="display: none">
-                      <h3>Add a Review</h3>
-                      <% if logged_in? %>
-                        <%= form_for([@uni_module, @uni_module.comments.build], remote: true) do |f| %>
-                            <p id="rating-area">
-                                <%= f.label :rating %>
-                                <%= f.radio_button :rating, 1 %><%= f.label :rating_1, '1' %>
-                                <%= f.radio_button :rating, 2 %><%= f.label :rating_2, '2' %>
-                                <%= f.radio_button :rating, 3 %><%= f.label :rating_3, '3' %>
-                                <%= f.radio_button :rating, 4 %><%= f.label :rating_4, '4' %>
-                                <%= f.radio_button :rating, 5, :checked => true %><%= f.label :rating_5, '5' %>
-                            </p>
-                            <p id="review-area">
-                                <%= f.label :body %><br>
-                                <%= f.text_area :body, placeholder: 'Please provide what is good about the module, what may be bad about the module, and how this module can improve.', rows: "10" %>
-                            </p>
-                            <p>
-                                <%= f.submit 'Add Review', class:'btn' %>
-                            </p>
-                        <% end %>
-                      <% else %>
-                          <p>You must be logged in to add a review.</p>
-                      <%end%>
-                    </div>
-                  <% end %>
-              </div>
-            </div>
-         </div>
-      </div>
+                </div>
+             </div>
+          </div>
+      <% end %>
+
    </div>
-</div>
 </div>
 </div>
 
 <style>
-    #rating-area input[type=radio] {display:inline-block;}
-    #sort-comments { float: right}
-    #review-area textarea {width: 100%; height: 100%}
-
+    /*#rating-area input[type=radio] {display:inline-block;}*/
+    #sort-comments { float: right;margin-bottom: 20px;}
+    #review-area textarea {width: 100%; height: 100%;padding-top:10px;font-size:16px;padding-left:10px;}
+    #edit-text-area{padding-top:10px;font-size:16px;padding-left:10px;}
     #module-review-card {
       width: 100%;
     }
 
-    #sort-by-name {
-      margin-right: 25px;
-    }
-
-    #comment-creation {
-      margin-left: 20px;
-    }
 </style>
 
 <script>
@@ -131,22 +111,5 @@
             data: { sort_by_type: sort_by_type, uni_module_id: <%= @uni_module.id %>},
             context: document.body,
         })
-    });
-
-    $("#new_comment").on("ajax:success", function(e, data, status, xhr) {
-        $("#comment_body").val("");
-        openCommentCreation();
-        $("input[name='comment[rating]']").val([5]);
-    });
-
-    $("#comment-creation-box").hide();
-    var openCommentCreation = function(){
-        $("#comment-creation-box").slideToggle("fast");
-        $(".comment-creation-link").text($(".comment-creation-link").text()==open_comment_creation?"Close box":open_comment_creation);;
-    };
-
-    var open_comment_creation;
-    $(document).ready(function () {
-        open_comment_creation = $(".comment-creation-link").text()
     });
 </script>

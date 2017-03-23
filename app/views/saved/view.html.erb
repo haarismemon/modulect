@@ -1,3 +1,6 @@
+<%#
+   Page which shows a user's saved modules and pathways. This uses the uni_modules partial used in other places to display uni module information and uses an overall tabbed structure to switch between pathways and uni modules.
+%>
 <% provide(:title, 'Saved Modules & Pathways') %>
 <% if logged_in? %>
 <script type="text/javascript">
@@ -12,6 +15,9 @@
 </script>
 <% saved_modules = current_user.uni_modules %>
 <% saved_pathways = current_user.pathways %>
+<%if !saved_pathways.nil? %>
+<% saved_pathways = saved_pathways.order("created_at DESC") %>
+<% end %>
 <div class="banner" style="padding-top:40px;">
    <div class="container">
       <h1>Saved Modules & Pathways</h1>
@@ -65,11 +71,6 @@
                   <div class="col-md-12 text-right">
                      <ul class="results-page-options">
                         <li><a href="javascript:void()" onClick="window.print()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print page</a></li>
-                        <li><a href="mailto:?subject=Modulect | Please check my modules&body=Hello {Insert name},%0A%0AI used KCL Modulect to view which optional modules I should take in order to reach my career goals. Please take a look at this link:%0A%0A
-                           <%= request.original_url  %>
-                           %0A%0A
-                           Regards,%0A
-                           {Insert name}" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email someone</a> </li>
                      </ul>
                   </div>
                </div>

@@ -278,4 +278,33 @@ select.form-control{
 }
 
 
+.field-unit--textarea *{
+  box-shadow: none;
+}
 
+@media (min-width: 990px) {
+#landing .row {
+display: -webkit-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display:         flex;
+flex-wrap: wrap;
+width:100%;
+text-align: center;
+}
+#landing .row > [class*='col-'] {
+display: flex;
+flex-direction: column;
+}
+.login-card{    height: 100%;
+text-align: center;}
+}
+
+
+.remove-field{
+  margin-bottom: 0px;
+}
+
+.remove-group *{
+  color: black;
+}

@@ -1,0 +1,45 @@
+<%# Renders a form which is displayed in both the edit year structure form and edit group form
+
+note: renders of fields belong in in admin/application/fields. For some fields there exists no partials
+because of such fields being such rare instances. If you require a field to adapted, copy the partial over replacing the render
+statement .
+
+see partial fields for additional documentation
+%>
+
+<% path_of_field_store = "admin/application/fields/" %>
+
+<%= render path_of_field_store + "string_form_field", :f => f,
+           :name => :name,
+           :label => :name_of_group,
+           :placeholder => "i.e Semester 1" %>
+
+<%= render path_of_field_store + "number_form_field", :f => f,
+           :name => :min_credits,
+           :label => :Minimum_possible_credits_for_this_group %>
+
+<%= render path_of_field_store + "number_form_field", :f => f,
+           :name => :max_credits,
+           :label => :Maximum_possible_credits_for_this_group %>
+
+<div class="row field-unit uni_modules">
+  <div class="col-xs-12">
+    <div class="field-unit__label">
+      <%= f.label :Modules_to_choose_from %>
+    </div>
+    <div id="select-modules" class="field-unit__field ">
+      <%= f.collection_select :uni_module_ids, possible_uni_modules_for_existing_group(year_structure), :id, :name, {}, {multiple: true, "data-actions-box" => "true", :class => "selectize"} %>
+    </div>
+  </div>
+</div>
+
+<div class="row field-unit compulsory">
+  <div class="col-xs-12">
+    <div class="field-unit__label checkbox">
+      <%= f.check_box :compulsory, {style: "margin-right: 4px"} %>
+      <label> Make all modules in this group compulsory? </label>
+    </div>
+  </div>
+</div>
+
+

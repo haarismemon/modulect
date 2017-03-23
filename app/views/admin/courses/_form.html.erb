@@ -1,24 +1,85 @@
+<%#  Renders a complete form for course which is displayed within edit and new course form
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+Also contains render which iterates through the course year_structures and makes a card for each.
+A form with several field partials within which allows for the manipulation of @course object.
+Also contains a link to allow for the creation of pathways.
+
+To modify this file access the partials within
+%>
+
 <%= form_for [:admin, @course] do |f| %>
 
-  <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.label :owner_departments %>
-  <div id="select-departments">
-    <%= f.select :department_ids, Department.all.collect {|x| [x.name, x.id]}, {},
-    :multiple => true, class: 'selectize' %>
-  </div>
-  <%= f.label :name %>
-  <%= f.text_field :name, class: 'form-control' %>
+    <%# error message %>
+    <%= error_messages_for(f.object) %>
+    
+    <% path_of_field_store = "admin/application/fields/" %>
 
-  <%= f.label :start_year %>
-  <%= f.number_field :year, default: Date.current.year %>
 
-  <%= f.label :description %>
-  <%= f.text_area :description, class: 'form-control' %>
+    <%# name field %>
+    <%= render path_of_field_store + "string_form_field", :f => f,
+               :name => :name %>
 
-  <%= f.label :duration_in_years %>
-  <%= f.number_field :duration_in_years, class: 'form-control' %>
 
-  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
+    <%# course's departments field %>
+    <div class="row field-unit  departments">
+      <div class="col-xs-12">
+        <div class="field-unit__label">
+          <%= f.label :departments_of_course %>
+        </div>
+        <div class="field-unit__field select-departments">
+          <%= f.select :department_ids, Department.all.collect { |x| [x.name, x.id] }, {},
+                       :multiple => true, class: 'selectize' %>
+        </div>
+      </div>
+    </div>
+
+    <%# beginning field year  %>
+    <%= render path_of_field_store + "number_form_field", :f => f,
+               :name => :year,
+               :label => "Beginning year",
+               :tooltip => "The beginning year of the university teaching this course. If the course ready existed prior,
+        then a rough estimate is sufficent. This year is to be used as an alias to differentiate between several courses with same name.",
+               :options => {default: Date.current.year} %>
+
+
+    <%# description field  %>
+    <%= render path_of_field_store + "textarea_form_field", :f => f,
+               :name => :description,
+               :tooltip => "Introduction explaining what this course is,
+                and why students might be intrested in taking it." %>
+
+
+    <%# duration in years field  %>
+    <div class="col-xs-12">
+      <div class="row field-unit duration_in_years">
+        <div class="field-unit__label">
+          <label for="duration_in_years">Duration in years
+            <a class="help-tooltip" data-toggle="tooltip" data-placement="right"
+               title="The total amount of years this course will last for.
+               The duration determines how many year structures (year-slots consisting of modules)
+                is given to this course.">[<i class="fa fa-question" aria-hidden="true"></i>]</a></label>
+        </div>
+        <div class="field-unit__field">
+          <%= f.select(:duration_in_years, options_for_select(1..YearStructure.max_year_of_study, @course.duration_in_years),
+                       {:include_blank => true}, {:class => 'selectize'}) %>
+        </div>
+      </div>
+    </div>
+
+    <%# submit button %>
+    <div class="form-actions">
+      <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;<%= action %>
+        Course
+      </button>
+    </div>
 
 <% end %>
+
+<script>
+    //intialize selectize plugin for select fields
+    $(function () {
+        intializeSelectize()
+    });
+</script>

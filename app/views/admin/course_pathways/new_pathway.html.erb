@@ -1,0 +1,116 @@
+<% provide :title, "New Suggested Pathway for #{Course.find(params[:id]).name}" %>
+<% provide :submit_button_text, 'Update' %>
+
+<header class="header">
+  <h1 class="header__heading"><%= content_for(:title) %></h1>
+  <div class="header__actions">
+  <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe,
+            admin_course_pathway_path(params[:id]), class: "button tool-box" %>
+  </div>
+</header>
+
+<div>
+	<input type="text" class="form-control" id="save-name" placeholder="Name the pathway"/>
+</div>
+
+
+<div id="main-container">
+</div>
+
+<div style="margin-top:20px;">
+	<button onclick="savePathway()" class="btn" id="save"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Pathway</button>
+</div>
+
+<script type="text/javascript">
+var data = '<%=raw (@course.to_json(
+:include => {:year_structures => {:include => {:groups => {:include => {:uni_modules => {:include => :uni_modules}}}}}}
+      ).gsub(/["]/, '\\"')) %>';
+var js_course = jQuery.parseJSON(data);
+var selected_ids = [];
+console.log(js_course);
+updateSelectedModules();
+generateView();
+
+
+function updateSelectedModules(){
+	for(year = 0; year < js_course.year_structures.length; ++year) {
+		selected_ids.push([]);
+		for(group = 0; group < js_course.year_structures[year].groups.length; ++group) {
+	    	selected_ids[year].push([]);
+		}
+	}
+}
+
+function toggle(year, group, module){
+	mod = js_course.year_structures[year].groups[group].uni_modules[module];
+	if(selected_ids[year][group].includes(mod.id)){
+		//console.log("removed " + mod.name);
+		selected_ids[year][group].splice(selected_ids[year][group].indexOf(mod.id),1);		
+		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-lg fa fa-square-o');
+	}else{
+		//console.log("added " + mod.name);
+		selected_ids[year][group].push(mod.id);
+		$('#i-' + year + '-' + group + '-' + module).attr('class', 'fa-lg fa fa-check-square-o');
+	}
+}
+
+function generateView(){
+	out = "";
+	for(y=0; y<js_course.year_structures.length; y++){
+		out+="<h3>Year " + (y+1) + "</h3>";
+		for(g=0; g<js_course.year_structures[y].groups.length; g++){
+			group = js_course.year_structures[y].groups[g];
+			console.log(group);
+			if(!group.compulsory){
+				out+="<b>" + group.name + "</b><br/>";
+				out+='<ul class="list-group" style="margin-bottom:40px;margin-top:10px;">';
+				for(m=0; m<group.uni_modules.length; m++){
+					out+='<li class ="list-group-item" style="cursor:pointer;" id="li-' + y + '-' + g + '-' + m + '" onclick="toggle(' + y + ',' + g + ',' + m + ')"><i id="i-' + y + '-' + g + '-' + m + '" class="fa-lg fa fa-square-o"></i>&nbsp;&nbsp;';
+					out+=group.uni_modules[m].name + ", " + group.uni_modules[m].credits + " credits";
+					out+='</li>'
+				}
+				out+='</ul>';
+			}
+		}
+	}
+	document.getElementById("main-container").innerHTML = out;
+}
+
+function savePathway(){
+	txt = $('input#save-name').val();
+	if(txt == ""){
+		bootbox.alert("Please give this pathway a name");
+	}else{
+		$.ajax({
+		    type: "POST",
+		    url: "<%= application_save_suggested_course_pathway_path %>",
+		    data: {
+		        name: document.getElementById('save-name').value,
+		        data: JSON.stringify(selected_ids),
+		        year: <%= @year_of_study.to_i %>,
+		        course: js_course.id
+		    },
+		    success: function(result) {
+				window.location = '<%= admin_course_pathway_path(@course.id) %>';
+			}
+   		});
+	}
+}
+/*
+function savePathwayFromViewResults() {
+    console.log("SAVING");
+    $.ajax({
+        type: "POST",
+        url: "<%#= application_save_pathway_path %>",
+        data: {
+        	course_id: @course.id,
+            name: document.getElementById('save-name').value,
+            data: JSON.stringify(selected_ids),
+            year: 1,
+            course: js_course.id
+        }
+    })
+    document.getElementById("save").innerHTML= "<span><i class=\"fa fa-star\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Saved</span>";     
+  }
+*/
+</script>

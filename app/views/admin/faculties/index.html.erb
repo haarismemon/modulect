@@ -1,15 +1,20 @@
+<%#
+  Index which displays a collection of faculties via @faculties instance variables and displays it in a table
+  Contains: a table which contain of set of columns with each representing an attribute.
+  The table is produced via a for loop which iterates through, producing a row for each tuple.
+%>
 <% if request.query_parameters["search"].present?%>
 <% provide(:title,  "\"" + request.query_parameters["search"] +"\"" + ' - Faculties') %>
 <% else %>
 <% provide(:title, 'Faculties') %>
 <% end %>
 <header class="header index-header-area">
-   <h1 id="page-title">Faculties</h1>
+   <h1 id="page-title"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;Faculties</h1>
    <div class="header__actions">
-      <div class="col-md-12">
+      <div class="col-md-12" style="padding-right: 0px;">
          <% if @faculties.size > 0 %>
          <div class="btn-group">
-            <button  style="height: 34px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
+            <button  style="height: 36px;" class="btn btn-drop btn-default navbar-btn dropdown-toggle-filter mobile-12-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;Bulk Actions  <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                <li> <a id="clone-all" style="cursor:pointer;"><i class='fa fa-clone' aria-hidden='true'></i>&nbsp;&nbsp;Clone selected</a>
@@ -19,7 +24,7 @@
             </ul>
          </div>
          <% end %>
-         <a class="button" href="<%= new_admin_faculty_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New faculty</a>
+         <a class="button" style="height: 36px;" href="<%= new_admin_faculty_path %>"><i aria-hidden='true' class='fa fa-plus'></i>&nbsp;&nbsp;New faculty</a>
       </div>
    </div>
 </header>

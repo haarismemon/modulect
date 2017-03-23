@@ -38,7 +38,7 @@ a:active {
 
 footer {
     height: 60px;
-    border-top: 1px solid #dfe2e1;
+  //border-top: 1px solid #dfe2e1;
 }
 #page {
     min-height: 800px;
@@ -116,6 +116,11 @@ select.form-control{
     background: #14563b;
     box-shadow: 0px 3px 0px 0px #228e62;
 }
+button:focus {outline:0;}
+
+button:focus, button {outline: 0 !important;}
+.btn-primary{
+    border:0px;}
 .red-btn {
     background: #c55252;
     box-shadow: 0px 3px 0px 0px #502b2b;
@@ -128,8 +133,25 @@ select.form-control{
 
 .red-btn:active{
     background: #923e3e;
-    box-shadow: 0px 3px 0px 0px #502b2b;
+    box-shadow: 0px 3px 0px 0px rgb(127, 91, 48);
 }
+
+
+.orange-btn {
+    background: #dfa055;
+    box-shadow: 0px 3px 0px 0px rgb(127, 91, 48);
+}
+
+.orange-btn:hover, .orange-btn:focus{
+    background: rgb(234, 190, 137);
+    box-shadow: 0px 3px 0px 0px rgb(127, 91, 48);
+}
+
+.orange-btn:active{
+    background: rgb(183, 149, 108);
+    box-shadow: 0px 3px 0px 0px rgb(127, 91, 48);
+}
+
 
 
 .form-group {
@@ -162,10 +184,10 @@ select.form-control{
 .flash-alert-success, .alert-success {
     border-left-color: #2ab27b;
 }
-.flash-alert-success i, .alert-success i {
-    color: #2ab27b;
-    margin-right: 8px;
-}
+//.flash-alert-success i, .alert-success i {
+//    color: #2ab27b;
+//    margin-right: 8px;
+//}
 
 
 .flash-alert-notice, .alert-notice {
@@ -388,12 +410,12 @@ select.form-control{
 /** Footer stuff by Khalil **/
 
 #rec-husky-footer {
-    color: #2AB27B;
+  color: #777777;
     font-family: "Varela Round";
     /*font-size: 20px;*/
 
     float: right;
-    margin-top: 5px
+  margin-top: 6px
 }
 #footer-logo {
     width: 150px;
@@ -817,6 +839,8 @@ th, td {
     margin-top:15px;
 }
 
+.mobile-block{display:inline-block}
+
 @media only screen and (max-width: 560px) {
     #footer-logo {
         width: 120px;
@@ -889,4 +913,6 @@ th, td {
     .career-row{
         margin-top:0px;
     }
+
+    .mobile-block{display:block;}
 }

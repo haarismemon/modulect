@@ -1,3 +1,6 @@
+<%#
+   The homepage of the application which is considered to be the quick search page. From here a user can choose the type of search they wish to do.
+%>
 <% provide(:title, 'Search') %>
 <div class="banner" style="padding-top:40px;">
  <div class="container">
@@ -27,6 +30,8 @@
                     </div>
                   <% end %>
                 </div>
+              <%# sl= should log %>
+              <input type="hidden" name="sl" value="true">
               </form>
               <script>
               var tags = [];
@@ -119,5 +124,16 @@
 </div>
 </div>
 </div>
-</div>
-</div>
+         <% if (@current_user && @current_user.department_id.present?)||(!@notices.empty?&&(@current_user.nil?||@current_user=="super_admin_accless")) %>
+             <%= render "search/notice_board" %>
+         <% end %>
+       </div>
+
+
+      </div>
+
+      </div>
+
+      </div>
+
+

@@ -1,14 +1,17 @@
-<% provide :title, 'New course' %>
-<% provide :submit_button_text, 'Create' %>
+<%# A template for creating a course
+Contains render which contains fields which corresponds to a particular course's attributes
+%>
 
-<div class="row">
-  <div class="col-md-1" %>
-    <a href="<%= admin_courses_path %>">
-      <i class="fa fa-arrow-circle-left fa-4x" aria-hidden="true"></i>
-    </a>
-  </div>
-  <div class="col-md-11 text-center">
-    <h1>Create course</h1>
-  </div>
+<% content_for(:title) { "New Course"} %>
+
+
+<header class="header">
+<h1 class="header__heading" style="margin-bottom: 40px"><%= content_for(:title) %></h1>
+<div class="header__actions">
+  <%= link_to "<i class='fa fa-times' aria-hidden='true'></i>&nbsp;&nbsp;Quit".html_safe, admin_courses_path,
+              {class: "button", style: "margin-bottom: 10px"} %>
 </div>
-<%= render 'form' %>
+
+</header>
+
+<%= render 'form', :action =>"New" %>

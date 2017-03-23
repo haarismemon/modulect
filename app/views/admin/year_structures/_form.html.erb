@@ -1,35 +1,48 @@
+<%#  Renders a complete form of year_structure form which is displayed within edit year structure form
+
+Contains: Helper which prints error message of current object if there is any on to screen(does nothing, if none).
+Also contains render which iterates through the year structure groups and makes a card for each.
+Also contains a partial which contains form to allow for the creation of groups within year_structure
+
+To modify this file access the partials within
+%>
+
 <%= form_for @year_structure, url: admin_year_structure_path(@year_structure) do |f| %>
 
-  <%= render 'shared/error_messages', object: f.object %>
-  <!-- Edit existing groups -->
+    <%# errors message %>
+    <%= error_messages_for(f.object) %>
 
-   <style>
-      @media (min-width: 990px) {
-      #landing .row {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display:         flex;
-      flex-wrap: wrap;
-      width:100%;
-      text-align: center;
-      }
-      #landing .row > [class*='col-'] {
-      display: flex;
-      flex-direction: column;
-      }
-      .login-card{    height: 100%;
-      text-align: center;}
-      }
-   </style>
+    <%# group cards %>
+    <%= render 'admin/application/course-partials/groups_set' %>
 
-  <% f.fields_for :groups do |group| %>
-    <%= render 'group_fields', :f => group %>
-  <% end %>
+    <%# nested group form %>
+    <% f.fields_for :groups do |group| %>
+        <%= render "admin/application/course-partials/group_form_fields",
+                   :f => group, :year_structure => YearStructure.find(params[:id]) %>
+    <% end %>
 
-  <div class='links'>
-    <%= link_to_add_association "Add Module Group", f, :groups%>
-  </div>
-  <%= f.submit yield(:submit_button_text), class: 'btn btn-primary' %>
+    <div class='links' onclick='loseFocus()' id="add-another-group">
+      <%= link_to_add_association "+ Add Module Group", f, :groups %>
+    </div>
+
+    <%# field for change year credits %>
+    <div class="form-group" style="margin-top: 25px">
+      <label for="year_credits">Total Credits for this year</label>
+        <%= f.text_field :year_credits, class: 'form-control', :required => true %>
+    </div>
+    <!--submit button-->
+    <div class="form-actions" style="margin-top:20px;">
+      <button type="submit" name="commit"><i class='fa fa-floppy-o' aria-hidden='true'></i>&nbsp;&nbsp;
+        <%= action %> year
+      </button>
+    </div>
 
 <% end %>
+
+
+<script>
+    //remove focus from add group button
+    function loseFocus() {
+        $("#add-another-group *").blur();
+    }
+</script>

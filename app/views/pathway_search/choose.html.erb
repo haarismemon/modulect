@@ -1,7 +1,10 @@
+<%#
+   This page is selection stage of the pathway search whereby a user can choose the tags they have interests in and therefore get a correct pathway result.
+%>
 <% provide(:title, 'Choose Interests & Careers - Pathway Search') %>
 <style>
    .bootstrap-tagsinput {
-   background-color: none;
+     background: none;
    box-shadow: 0 0 0;
    border-radius:0;
    border:0;
@@ -214,17 +217,23 @@
                      <input type="hidden" value="<%= @course %>" name="course">
                      <button id='quickButton'  class="btn btn-lg"  type="submit">View results ></button>&nbsp&nbsp;                   
 <div style="float:right;">
-<button type="button" value="Reset Form" onClick="window.location.reload(false);" class="btn red-btn" id="reset-button" /><i class="fa fa-repeat" aria-hidden="true"></i> Reset</button></div>
+  <button type="button" value="Reset Form" onClick="window.location.reload(false);" class="btn red-btn" id="reset-button">
+    <i class="fa fa-repeat" aria-hidden="true"></i> Reset
+  </button>
+</div>
                      <br />
                   </div>
                   <% end %>
                   <div class="form-group"><%= link_to "< Back to previous page", pathway_search_begin_path, method: :get %>
                   </div>
                </div>
-            </div>
+            </div>   
+             <%# sl= should log %>
+            <input type="hidden" name="sl" value="true">
             </form>
          </div>
       </div>
    </div>
 </div>
 <% end %>
+</div>

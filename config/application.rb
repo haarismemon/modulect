@@ -16,5 +16,21 @@ module ProjectRun
     # Load all subclasses of the Tag model
     config.autoload_paths += %W(#{config.root}/app/models/tags)
     config.exceptions_app = self.routes
-  end
+
+    # Use pry as default console
+=begin
+    console do
+      require "pry"
+      config.console = Pry
+        unless defined? Pry::ExtendCommandBundle
+          Pry::ExtendCommandBundle = Module.new
+        end
+      require "rails/console/app"
+      require "rails/console/helpers"
+      TOPLEVEL_BINDING.eval('self').extend ::Rails::ConsoleMethods
+    end
+
+=end
+
+  end    
 end
