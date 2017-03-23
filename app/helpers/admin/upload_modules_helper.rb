@@ -10,7 +10,7 @@ module Admin::UploadModulesHelper
 
     if current_user.user_level != 'super_admin_access' && !being_updated?(csv_module) && !new_record['departments'].include?(current_user.department.name)
       flash[:error] = "Failed to create module #{new_record['code']}: Module not linked to your department"
-    elsif current_user.user_level != 'super_admin_access' && being_updated?(csv_module) && !csv_module.departments.include?(current_user.department)
+    elsif current_user.user_level != 'super_admin_access' && being_updated?(csv_module) && (!csv_module.departments.include?(current_user.department) || !new_record['departments'].include?(current_user.department.name))
       flash[:error] = "Failed to update module #{new_record['code']}: Module not linked to your department"
     else
       # Convert sUniMoemester string to enum semester
