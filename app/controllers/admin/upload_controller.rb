@@ -68,7 +68,7 @@ module Admin
     def upload_csv
       uploaded_csv = params[:csv_upload]
 
-      File.open(Rails.root.join('app', 'assets', 'uploaded.csv'), 'wb') do |file|
+      File.open(Rails.root.join('app', 'assets', "uploaded_#{current_user.id}.csv"), 'wb') do |file|
         file.write(uploaded_csv.read)
       end
 
