@@ -794,13 +794,13 @@
     console.log("credits used this year: " + credits_this_year);      
     console.log("----------------------------------------");
     if(credits_used >= max_credits) {
-      window.alert("You have already selected enough credits from this group");
+      flashModal("You have already selected enough credits from this group", year);
     }
     else if(credits_this_year + this_module.credits > js_course.year_structures[year].year_credits) {
-      window.alert("You have enough credits this year");
+      flashModal("You have enough credits this year", year);
     }
     else if(!requirementsSatisfied) {
-      window.alert("This module has prerequisites which you have not met");
+      flashModal("This module has prerequisites which you have not met", year);
     } else {
       if(credits_this_year + this_module.credits == js_course.year_structures[year].year_credits) {
         creditsComplete[year] = true;
@@ -908,6 +908,12 @@
         }
       }
     }
+    removed = "";
+    for(i = 0; i < modulesRemoved.length - 1; ++i) {
+      removed += modulesRemoved[i] + ", ";
+    }
+    removed += modulesRemoved[modulesRemoved.length - 1];
+    flashTable("Module")
     // Decrement every tuple of the selected modules
     for(g = 0; g < selected_ids[year].length; ++g) {
       for(i = 0; i < selected_ids[year][g].length; ++i) {
