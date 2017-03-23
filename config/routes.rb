@@ -53,6 +53,10 @@ Rails.application.routes.draw do
     # RESET MODULECT
     post '/reset_modulect', to: 'base#reset_modulect'
 
+    post '/uni_modules/upload_csv', to: 'uni_modules#update_csv'
+    post '/uni_modules/create_csv', to: 'uni_modules#create_csv'
+
+
     root to: "dashboard#index"
   end
 
@@ -159,4 +163,9 @@ Rails.application.routes.draw do
   # OPEN CALAIS
   post 'uni_modules/generate_tags', to: 'admin/uni_modules#generate_tags'
 
-end
+  # CSV Upload
+  get 'upload', to: 'admin/upload#upload'
+  get 'admin/upload', to: 'admin/upload#upload'
+  post 'admin/download',   to: 'admin/upload#download'
+  post 'admin/upload/upload_csv', to: 'admin/upload#upload_csv'
+  end
