@@ -13,8 +13,6 @@ module Admin::UploadModulesHelper
     elsif current_user.user_level != 'super_admin_access' && being_updated?(csv_module) && (!csv_module.departments.include?(current_user.department) || !new_record['departments'].include?(current_user.department.name))
       flash[:error] = "Failed to update module #{new_record['code']}: Module not linked to your department"
     else
-      # Convert sUniMoemester string to enum semester
-      logger.debug csv_module.name
       new_record['semester'] = convert_semester_to_enum(new_record['semester'])
 
       if csv_module.nil?
