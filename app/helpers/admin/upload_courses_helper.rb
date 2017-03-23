@@ -57,18 +57,7 @@ module Admin::UploadCoursesHelper
   end
 
   def invalid_course?(csv_course)
-    !csv_course.errors.empty? || !valid_associations?(csv_course) || !valid_base_attributes?(csv_course)
-  end
-
-  def valid_associations?(csv_course)
-    valid_course = false
-    if csv_course.departments.empty?
-      csv_course.errors[:base] << 'At least a Department must be given'
-    else
-      valid_course = true
-    end
-
-    valid_course
+    !csv_course.errors.empty? || !valid_base_attributes?(csv_course)
   end
 
   def display_errors(csv_course)
