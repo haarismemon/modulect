@@ -403,7 +403,7 @@
         "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
           "<a class=\"no-print\" href=\"/uni_modules/" + module.id + "\" onclick= \"return updateResultLink()\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
            if(isOptional) {
-            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + module.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + module.id + ", true)\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
           }
           moduleCard += "</div>" +
         "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -420,7 +420,7 @@
          "<div class=\"col-md-1\" style=\"font-size: 18px; float: right; padding-top: 15px\">" +
           "<a class=\"no-print\" href=\"/uni_modules/" + module.id + "\" onclick= \"return updateResultLink()\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
           if(isOptional) {
-            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + module.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+            moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + year + ", " + group + ", " + module.id + ", true)\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
           }
           moduleCard += "</div>" +
          "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -624,7 +624,7 @@
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a class=\"no-print\" href=\"/uni_modules/" + uni_mod.id + "\" onclick= \"return updateResultLink()\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
-                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ", true)\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   }
                                 moduleCard += "</div>" +
                                 "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -669,7 +669,7 @@
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a class=\"no-print\" href=\"/uni_modules/" + uni_mod.id + "\" onclick= \"return updateResultLink()\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
-                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ", true)\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   }
                                 moduleCard += "</div>" +
                                 "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -691,7 +691,7 @@
                                 "<div class=\"col-md-1\" style=\"font-size: 18px; float: right\">" +
                                   "<a class=\"no-print\" href=\"/uni_modules/" + uni_mod.id + "\" onclick= \"return updateResultLink()\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i></a>";
                                   if(selected_ids[_year][_i].indexOf(uni_mod.id) > -1) {
-                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ")\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                    moduleCard += "<a class=\"deselect\" onclick = \"deselectModule(" + _year + ", " + _i + ", " + uni_mod.id + ", true)\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
                                   } 
                                  moduleCard += "</div>" +
                                 "<div class=\"col-md-3 tag-match-figure\" style=\"font-size:18px; padding-left: 0px\">" +
@@ -885,14 +885,16 @@
   }
 
   // Remove a module from the selected array
-  function deselectModule(year, group, moduleId) {
+  function deselectModule(year, group, moduleId, initial) {
     groupComplete[year][group] = false;
     indexToDelete = selected_ids[year][group].indexOf(moduleId);
     if(indexToDelete > -1) {
       selected_ids[year][group].splice(indexToDelete, 1);
     }
-    // Remove modules which this was a prerequisite of.
-    modulesRemoved = [];
+    if(initial) {
+      // Remove modules which this was a prerequisite of.
+      modulesRemoved = [];
+    }
     for(var uni_module in preReqMap) {
       if(preReqMap.hasOwnProperty(uni_module)) {
         // If this module is a pre_req of a module
@@ -902,14 +904,12 @@
           deselectGroup =  preReqMap[uni_module][1];
           deselectId = uni_module;
           delete preReqMap[uni_module];
-          modulesRemoved.push(deselectId);
-          deselectModule(deselectYear, deselectGroup, parseInt(deselectId));
-
+          modulesRemoved.concat(deselectModule(deselectYear, deselectGroup, parseInt(deselectId), false));
         }
       }
     }
     removed = "";
-    for(i = 0; i < modulesRemoved.length - 1; ++i) {
+    for(i = 0; i < modulesRemoved.length; ++i) {
       for(j = 0; j < optional_modules_per_year[year][group].uni_modules.length; ++j) {
         var currentMod = optional_modules_per_year[year][group].uni_modules[j];
         if(currentMod.id == modulesRemoved[i]) {
@@ -922,7 +922,6 @@
         }
       }
     }
-    removed += modulesRemoved[modulesRemoved.length - 1];
     // Decrement every tuple of the selected modules
     for(g = 0; g < selected_ids[year].length; ++g) {
       for(i = 0; i < selected_ids[year][g].length; ++i) {
@@ -930,7 +929,10 @@
       }
     }
     updateUI();
-    flashTable("Module " + removed + " also removed as prerequisites are no longer satisified", year);
+    if(removed != "" && initial) {
+      flashTable("Module " + removed + " also removed as prerequisites are no longer satisified", year);
+    }
+    return modulesRemoved;
   }
 
   function callIncrementLog(firstMod, secondMod) {
