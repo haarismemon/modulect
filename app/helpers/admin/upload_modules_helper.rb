@@ -74,6 +74,7 @@ module Admin::UploadModulesHelper
   def update_prerequisite_modules(uni_module, new_record)
     uni_module.uni_modules.clear
     prerequisite_codes = split_multi_association_field(new_record['prerequisite_modules'])
+    logger.debug("BANANANANANANANS #{prerequisite_codes.length}")
     unless prerequisite_codes.blank?
       unless prerequisite_codes.include? uni_module.name
         prerequisite_codes.each do |prerequisite_code|
