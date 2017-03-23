@@ -89,7 +89,7 @@ module Admin
       @required = []
     end
 
-        def create
+    def create
       @uni_module = UniModule.new(uni_module_params)
       if params[:uni_module][:career_tags].present? && !params[:uni_module][:career_tags].empty? && params[:uni_module][:interest_tags].present? && !params[:uni_module][:interest_tags].empty? && params[:uni_module][:department_ids].present? && !params[:uni_module][:department_ids].empty?
 
@@ -109,7 +109,6 @@ module Admin
             @interestTags = interest_tags
             @required = required
             # Redisplay the form so user can fix problems
-            ## THIS RENDER IS CAUSING PROBLEMS - FORM IS NOT RESUBMITTING
             render("admin/uni_modules/new") and return
           end
         end
@@ -119,6 +118,16 @@ module Admin
         end
 
         @uni_module.uni_modules.clear()
+        if required.include? @uni_module.name
+          @uni_module.errors[:base] << "A module cannot be a prerequisite of itself."
+          @departments = @uni_module.departments.pluck(:name)
+          @careerTags = @uni_module.career_tags.pluck(:name)
+          @interestTags = @uni_module.interest_tags.pluck(:name)
+          @required = @uni_module.uni_modules.pluck(:name)
+          # Redisplay the form so user can fix problems
+          render(:edit)
+          return
+        end
         required.each do |mod|
           chosen_mod = UniModule.find_by_name(mod)
           @uni_module.uni_modules << chosen_mod
@@ -232,6 +241,16 @@ module Admin
 
         @uni_module.uni_modules.clear()
         required = params[:uni_module][:required].split(',')
+        if required.include? @uni_module.name
+          @uni_module.errors[:base] << "A module cannot be a prerequisite of itself."
+          @departments = @uni_module.departments.pluck(:name)
+          @careerTags = @uni_module.career_tags.pluck(:name)
+          @interestTags = @uni_module.interest_tags.pluck(:name)
+          @required = @uni_module.uni_modules.pluck(:name)
+          # Redisplay the form so user can fix problems
+          render(:edit)
+          return
+        end
         required.each do |mod|
           chosen_mod = UniModule.find_by_name(mod)
           @uni_module.uni_modules << chosen_mod
