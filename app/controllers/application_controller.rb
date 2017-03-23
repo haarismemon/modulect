@@ -95,8 +95,8 @@ class ApplicationController < ActionController::Base
   # if offline and not on an error page nor admin, redirect to offline page
   # super admins are not redirected
   def modulect_is_online
-    if app_settings.is_offline && controller_name != "errors" && (request.path  =~ /.*\/admin(\/.*)?/) == nil
-      if !logged_in? || (logged_in? && current_user.user_level != "super_admin_access")
+    if app_settings.is_offline && controller_name != "errors" && (request.path  =~ /.*\/admin(\/.*)?/) == nil && (request.path  =~ /.*\/login(\/.*)?/) == nil
+      if !logged_in? || (logged_in? && current_user.user_level == "user_access")
         redirect_to offline_path
       end
     end
