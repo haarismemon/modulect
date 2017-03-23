@@ -4,6 +4,8 @@ module Admin::UploadHelper
   include UploadCoursesHelper
 
   def parse_csv_and_display_notice(csv_text)
+    # Replace characters not defined by utf-8
+    csv_text = csv_text.encode(invalid: :replace, undef: :replace, replace: '')
     parsed_csv = CSV.parse(csv_text, headers: true)
     uploaded_header = parsed_csv.headers
 

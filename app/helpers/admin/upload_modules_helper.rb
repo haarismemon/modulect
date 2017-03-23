@@ -8,22 +8,30 @@ module Admin::UploadModulesHelper
 
     csv_module = find_module_by_code(new_record['code'])
 
-    # Convert semester string to enum semester
-    new_record['semester'] = convert_semester_to_enum(new_record['semester'])
-
-    if csv_module.nil?
-      csv_module = try_to_create_module(new_record)
-      creations += 1
+    if current_user.user_level != 'super_admin_access' && !being_updated?(csv_module) && !new_record['departments'].include?(current_user.department.name)
+      flash[:error] = "Failed to create module #{new_record['code']}: Module not linked to your department"
+    elsif current_user.user_level != 'super_admin_access' && being_updated?(csv_module) && !csv_module.departments.include?(current_user.department)
+      flash[:error] = "Failed to update module #{new_record['code']}: Module not linked to your department"
     else
-      csv_module = try_to_update_module(csv_module, new_record)
-      updates += 1
+      # Convert sUniMoemester string to enum semester
+      logger.debug csv_module.name
+      new_record['semester'] = convert_semester_to_enum(new_record['semester'])
+
+      if csv_module.nil?
+        csv_module = try_to_create_module(new_record)
+        creations += 1
+      else
+        csv_module = try_to_update_module(csv_module, new_record)
+        updates += 1
+      end
+
+      if should_save?(csv_module)
+        csv_module.save
+      else
+        display_errors csv_module
+      end
     end
 
-    if should_save?(csv_module)
-      csv_module.save
-    else
-      display_errors csv_module
-    end
 
     return creations, updates
   end
@@ -128,8 +136,8 @@ module Admin::UploadModulesHelper
     !invalid_module?(csv_module)
   end
 
-  # Calling csv_module#valid? will override the already existent errors.
-  # Make sure that valid_base_attributes? is called last so no errors are overridden.
+# Calling csv_module#valid? will override the already existent errors.
+# Make sure that valid_base_attributes? is called last so no errors are overridden.
   def invalid_module?(csv_module)
     !csv_module.errors.empty? || !valid_associations?(csv_module) || !valid_base_attributes?(csv_module)
   end
@@ -183,4 +191,9 @@ module Admin::UploadModulesHelper
         3
     end
   end
+
+  def being_updated?(the_module)
+    !the_module.nil?
+  end
+
 end
