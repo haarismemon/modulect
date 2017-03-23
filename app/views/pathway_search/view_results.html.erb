@@ -910,10 +910,19 @@
     }
     removed = "";
     for(i = 0; i < modulesRemoved.length - 1; ++i) {
-      removed += modulesRemoved[i] + ", ";
+      for(j = 0; j < optional_modules_per_year[year][group].uni_modules.length; ++j) {
+        var currentMod = optional_modules_per_year[year][group].uni_modules[j];
+        if(currentMod.id == modulesRemoved[i]) {
+          if(i == modulesRemoved.length - 1) {
+            removed += currentMod.name;
+          } else {
+            removed += currentMod.name + ", ";
+          }
+          break;
+        }
+      }
     }
     removed += modulesRemoved[modulesRemoved.length - 1];
-    flashTable("Modules " + removed + "also removed as prerequisites are no longer satisified");
     // Decrement every tuple of the selected modules
     for(g = 0; g < selected_ids[year].length; ++g) {
       for(i = 0; i < selected_ids[year][g].length; ++i) {
@@ -921,6 +930,7 @@
       }
     }
     updateUI();
+    flashTable("Module " + removed + " also removed as prerequisites are no longer satisified", year);
   }
 
   function callIncrementLog(firstMod, secondMod) {
@@ -960,7 +970,7 @@
   }
 
   function flashTable(message, year) {
-    tableTarget = document.getElementById("div_year_#" + year);
+    tableTarget = document.getElementById("div_year_" + (year + 1));
     tableTarget.innerHTML = "<div class=\"row\">" +
          "<div class=\"col-md-12\">" +
             "<div class=\"flash-alert flash-alert-notice\">" +
