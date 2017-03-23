@@ -326,21 +326,16 @@
       for(group = 0; group < optional_modules_per_year[year].length; ++group) {
         groupComplete[year][group] = false;
         for(entry = 0; entry < selected_ids[year][group].length; ++entry) {
-          console.log("item " + entry);
           module_id = selected_ids[year][group][entry];
           // Check prerequisites for selected modules
           for(i = 0; i < optional_modules_per_year[year][group].uni_modules.length; ++i) {
             var currentMod = optional_modules_per_year[year][group].uni_modules[i];
             if(currentMod.id == module_id) {
               checkPreReq(currentMod, year, group);
-              console.log("done3");
               break;
             }
-            console.log("done3.5");
           }
-          console.log("done4");
         }
-        console.log("done5");
       }
     }
   }
@@ -944,6 +939,34 @@
         course_id: <%= @course %>
       }
     });
+  }
+
+  function flashModal(message, year) {
+    modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
+    modalTarget.innerHTML = "<div class=\"container\" style=\"margin-top:15px;\">" +
+      "<div class=\"row\">" +
+         "<div class=\"col-md-12\">" +
+            "<div class=\"flash-alert flash-alert-notice\">" +
+               "<i class=\"fa fa-info\" aria-hidden=\"true\"></i>" +
+               "<span>" + message "</span>" +
+            "</div>" +
+         "</div>" +
+      "</div>" +
+   "</div>" + modalTarget.innerHTML;
+  }
+
+  function flashTable(message, year) {
+    tableTarget = document.getElementById("div_year_#" + year);
+    tableTarget.innerHTML = "<div class=\"container\" style=\"margin-top:15px;\">" +
+      "<div class=\"row\">" +
+         "<div class=\"col-md-12\">" +
+            "<div class=\"flash-alert flash-alert-notice\">" +
+               "<i class=\"fa fa-info\" aria-hidden=\"true\"></i>" +
+               "<span>" + message "</span>" +
+            "</div>" +
+         "</div>" +
+      "</div>" +
+   "</div>" + tableTarget.innerHTML;
   }
 
   function updateData(){
