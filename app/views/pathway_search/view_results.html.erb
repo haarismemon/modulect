@@ -961,7 +961,7 @@
 
   function flashModal(message, year) {
     modalTarget = document.getElementById("optionsModalBodyYear" + (year + 1));
-    modalTarget.innerHTML = "<div class=\"row\">" +
+    modalTarget.innerHTML = "<div class=\"row search-flash\">" +
          "<div class=\"col-md-12\">" +
             "<div class=\"flash-alert flash-alert-notice\">" +
                "<i class=\"fa fa-info\" aria-hidden=\"true\"></i>" +
@@ -973,7 +973,7 @@
 
   function flashTable(message, year) {
     tableTarget = document.getElementById("div_year_" + (year + 1));
-    tableTarget.innerHTML = "<div class=\"row\">" +
+    tableTarget.innerHTML = "<div class=\"row search-flash\">" +
          "<div class=\"col-md-12\">" +
             "<div class=\"flash-alert flash-alert-notice\">" +
                "<i class=\"fa fa-info\" aria-hidden=\"true\"></i>" +
@@ -1028,4 +1028,12 @@
       document.getElementById('btn_year_<%=@year_of_study%>').click();
     }
   }
+
+  $(document).ready(function(){
+    setTimeout(fade_out, 5000);
+       function fade_out() {
+         $(".search-flash").fadeOut().empty();
+         $(".search-flash").css("margin-bottom", "0px");
+       }
+   });
 </script>
