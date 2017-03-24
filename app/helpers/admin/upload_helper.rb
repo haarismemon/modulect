@@ -7,13 +7,17 @@ module Admin::UploadHelper
     # Replace characters not defined by utf-8
     csv_text = csv_text.encode(invalid: :replace, undef: :replace, replace: '')
     parsed_csv = CSV.parse(csv_text, headers: true)
+    # Retrieve the header of the uploaded CSV to determine if valid
     uploaded_header = parsed_csv.headers
 
     if parsed_csv.length == 0
       flash[:error] = 'Upload Failed: No records found. CSV is empty'
     elsif uploaded_header != session[:resource_header]
+      # In this case the user didn't upload the resource the server was expecting
       flash[:error] = 'Upload Failed: Please ensure the CSV header matches the template file'
     else
+      # Depending on the resource, call the appropriate upload method
+      # And retrieve the number of creations and updates that were made
       if session[:resource_name] == 'departments'
         creations, updates = upload_departments(parsed_csv)
       elsif session[:resource_name] == 'faculties'
@@ -34,10 +38,12 @@ module Admin::UploadHelper
     creations, updates = 0, 0
     parsed_csv.each do |row|
       csv_department = row.to_hash
+      # If a department is found to be linked to a Faulty that doesn't exist
       if Faculty.where(name: row.to_hash['faculty_name']).first.nil?
         flash[:error] = "No Faculty with name: #{row.to_hash['faculty_name']} found.
                               Department with name: #{row.to_hash['name']} has not been created"
       else
+        # Add the faculty ID from name to the hash, exclude the faculty name from the hash
         csv_department['faculty_id'] = Faculty.where(name: row.to_hash['faculty_name']).first.id
         csv_department = csv_department.except('faculty_name')
         if Department.find_by_name(csv_department['name']).nil?

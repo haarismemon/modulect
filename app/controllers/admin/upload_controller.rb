@@ -66,14 +66,18 @@ module Admin
     end
 
     def upload_csv
+      # Retrieve the CSV object
       uploaded_csv = params[:csv_upload]
 
+      # Set the filepath and name of the file to be uploaded
       file_path = Rails.root.join('app', 'assets', "uploaded_#{current_user.id}.csv")
 
+      # Write the uploaded CSV object to the path
       File.open(file_path, 'wb') do |file|
         file.write(uploaded_csv.read)
       end
 
+      # Extract the text and send for processing
       csv_text = File.read(file_path)
       parse_csv_and_display_notice(csv_text)
 
