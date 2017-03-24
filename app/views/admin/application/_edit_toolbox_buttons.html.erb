@@ -43,10 +43,10 @@
 </div>
 
 <% if back_button %>
-<%# back button %>
-      <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Back".html_safe,
-                  (local_assigns[:f].nil? || form_valid?(f) ? :back : "/admin/"+object.class.name.downcase.pluralize),
-                  class: "button tool-box", style: "padding-top: 11.5px;padding-bottom: 11.5px;" %>
+    <%# back button %>
+    <%= link_to "<i class='fa fa-angle-left' aria-hidden='true'></i>&nbsp;&nbsp;Index".html_safe,
+                "/admin/"+object.class.name.underscore.downcase.pluralize,
+                class: "button tool-box", style: "padding-top: 11.5px;padding-bottom: 11.5px;" %>
 <% end%>
 
 
