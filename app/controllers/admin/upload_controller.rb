@@ -56,6 +56,8 @@ module Admin
 
       # Create a CSV file in the specified path
       file_name = "app/assets/#{resource.to_s}_upload.csv"
+      session[:template_path] = file_name
+
       CSV.open(file_name, 'wb') do |csv|
         # Add the attribute names as the header/first row
         csv << resource_header
@@ -81,8 +83,9 @@ module Admin
       csv_text = File.read(file_path)
       parse_csv_and_display_notice(csv_text)
 
-      # Delete file after processing upload
+      # Delete generated files after processing upload
       File.delete(file_path)
+      File.delete(session[:template_path])
 
       redirect_to :back
     end
