@@ -463,12 +463,19 @@
       }
 
       // Check that the table creates enough slots
-      numberOfModulesSoFar = selected_modules_any_semester.length + selected_modules_first_semester.length + selected_modules_second_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3] + required_modules_per_year[year][2] + required_modules_per_year[year][1] + required_modules_per_year[year][0];
+      numberOfModulesSoFarSem1 = selected_modules_any_semester.length + selected_modules_first_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3] + required_modules_per_year[year][1] + required_modules_per_year[year][0];
+      numberOfModulesSoFarSem2 = selected_modules_any_semester.length + selected_modules_second_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3] + required_modules_per_year[year][2] + required_modules_per_year[year][0];
+      numberOfModulesSoFar = -1;
+      if(numberOfModulesSoFarSem1 >= numberOfModulesSoFarSem2) {
+        numberOfModulesSoFar = numberOfModulesSoFarSem1;
+      } else {
+        numberOfModulesSoFar = numberOfModulesSoFarSem2;
+      }
       rows = (js_course.year_structures[year].year_credits / 15) / 2;
       if(numberOfModulesSoFar >= rows * 2 && !creditsComplete[year]) {
-        rows = rows + Math.ceil(((rows * 2) - numberOfModulesSoFar) / 2) + 1;
+        rows = rows + Math.ceil(rows - numberOfModulesSoFar) + 1;
       } else if(numberOfModulesSoFar >= rows * 2 && creditsComplete[year]) {
-        rows = rows + Math.ceil(((rows * 2) - numberOfModulesSoFar) / 2);
+        rows = rows + Math.ceil(rows - numberOfModulesSoFar);
       }
 
       // Create table with columns for Semester 1 and 2
