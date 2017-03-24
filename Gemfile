@@ -45,8 +45,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Run 'bundle exec guard' in a terminal to run your tests automatically
   gem 'guard-rspec', require: false
-  gem "better_errors"
-  gem "binding_of_caller"
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :test do
