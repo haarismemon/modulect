@@ -8,9 +8,9 @@ module Admin::UploadModulesHelper
 
     csv_module = find_module_by_code(new_record['code'])
 
-    if dept_admin_invalid_create(csv_module, new_record)
+    if invalid_module_create?(csv_module, new_record)
       flash[:error] = "Failed to create module #{new_record['code']}: Module not linked to your department"
-    elsif dept_admin_invalid_update(csv_module, new_record)
+    elsif invalid_module_update?(csv_module, new_record)
       flash[:error] = "Failed to update module #{new_record['code']}: Module not linked to your department"
     else
       # All validation checks passed
@@ -35,14 +35,16 @@ module Admin::UploadModulesHelper
   end
 
   private
-  def dept_admin_invalid_update(csv_module, new_record)
-    # Prevent updating modules not in their department and prevent un-linking their own dept from module
-    is_not_super_admin && being_updated?(csv_module) && (!csv_module.departments.include?(current_user.department) || !new_record['departments'].include?(current_user.department.name))
+  def invalid_module_create?(csv_module, new_record)
+    # Prevent creating modules that don't belong to their department
+     dept_admin_invalid_request = is_not_super_admin?  && !new_record['departments'].include?(current_user.department.name)
+    !being_updated?(csv_module) && dept_admin_invalid_request
   end
 
-  def dept_admin_invalid_create(csv_module, new_record)
-    # Prevent creating modules that don't belong to their department
-    is_not_super_admin && !being_updated?(csv_module) && !new_record['departments'].include?(current_user.department.name)
+  def invalid_module_update?(csv_module, new_record)
+    # Prevent updating modules not in their department and prevent un-linking their own dept from module
+    dept_admin_invalid_request = is_not_super_admin? && (!csv_module.departments.include?(current_user.department) || !new_record['departments'].include?(current_user.department.name))
+    being_updated?(csv_module) && dept_admin_invalid_request
   end
 
   def try_to_create_module(new_record)
@@ -204,7 +206,7 @@ module Admin::UploadModulesHelper
     !the_module.nil?
   end
 
-  def is_not_super_admin
+  def is_not_super_admin?
     current_user.user_level != 'super_admin_access'
   end
 end
