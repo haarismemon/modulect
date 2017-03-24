@@ -488,14 +488,16 @@
 
       // Fill in year long modules first. Note: required modules are in index 3 of required_modules_per_year.
       for(i = 0; i < required_modules_per_year[year][3].length; ++i) {
-        myTableOnPage += "<tr><td colspan=2>" + create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0) + "</td></tr>";
-        s1++;
-        s2++;
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0);
+        myTableOnPage.rows[++s2].cells[0].colSpan = 2;
+        myTableOnPage.rows[s2].deleteCell(1);
+
       }
       for(i = 0; i < selected_modules_year_long.length; ++i) {
-        myTableOnPage += "<tr><td colspan=2>" + create_module_card(selected_modules_year_long[i][0], true, selected_modules_year_long[i][1], selected_modules_year_long[i][2], selected_modules_year_long[i][3]) + "</td></tr>";
-        s1++;
-        s2++;
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(selected_modules_year_long[i][0], true, selected_modules_year_long[i][1], selected_modules_year_long[i][2], selected_modules_year_long[i][3]);
+        myTableOnPage.rows[++s2].cells[0].colSpan = 2;
+        myTableOnPage.rows[s2].deleteCell(1);
+
       }
 
       // Fill in modules in 1st semester. Note: required modules are in index 1 of required_modules_per_year
