@@ -34,6 +34,7 @@ module Admin::UploadModulesHelper
     return creations, updates
   end
 
+  private
   def dept_admin_invalid_update(csv_module, new_record)
     # Prevent updating modules not in their department and prevent un-linking their own dept from module
     is_not_super_admin && being_updated?(csv_module) && (!csv_module.departments.include?(current_user.department) || !new_record['departments'].include?(current_user.department.name))
@@ -44,7 +45,6 @@ module Admin::UploadModulesHelper
     is_not_super_admin && !being_updated?(csv_module) && !new_record['departments'].include?(current_user.department.name)
   end
 
-  private
   def try_to_create_module(new_record)
     new_module = UniModule.new(new_record.except(
         'departments',

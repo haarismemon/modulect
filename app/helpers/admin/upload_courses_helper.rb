@@ -42,6 +42,7 @@ module Admin::UploadCoursesHelper
     return creations, updates
   end
 
+  private
   def dept_admin_invalid_update(csv_course, new_record_departments)
     # Prevent updating courses not in their department and prevent un-linking their own dept from course
     is_not_super_admin && being_updated?(csv_course) && (!csv_course.departments.include?(current_user.department) || !new_record_departments.include?(current_user.department.name))
@@ -52,7 +53,6 @@ module Admin::UploadCoursesHelper
     is_not_super_admin && !being_updated?(csv_course) && !new_record_departments.include?(current_user.department.name)
   end
 
-  private
   def try_to_create_course(new_record)
     new_course = Course.new(new_record.except('departments'))
     update_departments(new_course, new_record)
