@@ -26,7 +26,7 @@ module Admin::UploadHelper
         flash[:notice] = 'Resource not recognized'
         creations, updates = 0, 0
       end
-      flash[:success] = "Upload complete: Processed #{creations} creations, #{updates} updates"
+      flash[:success] = "Upload complete: Attempted #{creations} creations, #{updates} updates"
     end
   end
 

@@ -68,12 +68,17 @@ module Admin
     def upload_csv
       uploaded_csv = params[:csv_upload]
 
-      File.open(Rails.root.join('app', 'assets', 'uploaded.csv'), 'wb') do |file|
+      file_path = Rails.root.join('app', 'assets', "uploaded_#{current_user.id}.csv")
+
+      File.open(file_path, 'wb') do |file|
         file.write(uploaded_csv.read)
       end
 
-      csv_text = File.read('app/assets/uploaded.csv')
+      csv_text = File.read(file_path)
       parse_csv_and_display_notice(csv_text)
+
+      # Delete file after processing upload
+      File.delete(file_path)
 
       redirect_to :back
     end
