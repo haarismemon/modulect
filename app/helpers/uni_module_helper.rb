@@ -9,7 +9,6 @@ module UniModuleHelper
 	 	else
 	 		input.html_safe
 	 	end
-
 	end
 
 	# returns percentage matched as a float

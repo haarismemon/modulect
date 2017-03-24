@@ -165,45 +165,35 @@ class UniModule < ApplicationRecord
     return pathway_results
   end
 
-  # CSV export, loops over the module record obtaining the individual columns from the database
-  def self.to_csv
-    attributes = %w{name code description lecturers pass_rate assessment_methods semester credits exam_percentage coursework_percentage more_info_link assessment_dates}
-    caps = []
-    attributes.each{|att| caps.push att}
-    %w(career_tags interest_tags departments).each{|att| caps.push att}
-    CSV.generate(headers:true)do |csv|
-      csv << caps
-      all.each do |uni_module|
-        career_tag_names = ' '
-        interest_tag_names = ' '
-        department_names = ' '
-        prerequisite_modules = ' '
-        uni_module.career_tags.pluck(:name).each{|tag| career_tag_names += tag + '; ' }
-        uni_module.interest_tags.pluck(:name).each{|tag| interest_tag_names += tag + '; ' }
-        uni_module.departments.pluck(:name).each{|department| department_names += department + '; ' }
-        uni_module.uni_modules.pluck(:code).each { |code| prerequisite_modules += code + '; '}
-        career_tag_names.chop!
-        if career_tag_names!=''
-          career_tag_names.chop!
-          career_tag_names[0] = ''
-        end
-        interest_tag_names.chop!
-        if interest_tag_names!=''
-          interest_tag_names.chop!
-          interest_tag_names[0] = ''
-        end
-        department_names.chop!
-        if department_names!=''
-          department_names.chop!
-          department_names[0] = ''
-        end
-        prerequisite_modules.chop!
-        if prerequisite_modules!=''
-          prerequisite_modules.chop!
-          prerequisite_modules[0] = ''
-        end
-        to_add = uni_module.attributes.values_at(*attributes) + [*prerequisite_modules] +
-                 [*career_tag_names] + [*interest_tag_names] + [*department_names]
+  def to_csv_row
+    base_attributes = %w{ name code description lecturers pass_rate assessment_methods semester
+                          credits exam_percentage coursework_percentage more_info_link assessment_dates }
+
+    career_tag_names = ' '
+    self.career_tags.pluck(:name).each{|tag| career_tag_names += tag + '; ' }
+    remove_trailing_characters(career_tag_names)
+
+    interest_tag_names = ' '
+    self.interest_tags.pluck(:name).each{|tag| interest_tag_names += tag + '; ' }
+    remove_trailing_characters(interest_tag_names)
+
+    department_names = ' '
+    self.departments.pluck(:name).each{|department| department_names += department + '; ' }
+    remove_trailing_characters(department_names)
+
+    prerequisite_modules = ' '
+    self.uni_modules.pluck(:code).each { |code| prerequisite_modules += code + '; '}
+    remove_trailing_characters(prerequisite_modules)
+
+    self.attributes.values_at(*base_attributes) + [*prerequisite_modules] +
+      [*career_tag_names] + [*interest_tag_names] + [*department_names]
+  end
+
+  def self.to_csv(modules_to_export)
+    CSV.generate(headers:true) do |csv|
+      csv << generate_headers
+      modules_to_export.each do |uni_module|
+        to_add = uni_module.to_csv_row
         csv << to_add
       end
     end
@@ -212,5 +202,31 @@ class UniModule < ApplicationRecord
   # string method for return the module
   def to_s
     "#{self.code} #{self.name}"
+  end
+
+  private
+  def self.generate_headers
+    attributes = %w{name code description lecturers pass_rate assessment_methods semester
+                    credits exam_percentage coursework_percentage more_info_link assessment_dates}
+    csv_headers = []
+    attributes.each { |att| csv_headers.push att }
+    %w(prerequisite_modules career_tags interest_tags departments).each{|att| csv_headers.push att}
+    csv_headers
+  end
+
+  def self.remove_trailing_characters(multi_field_attribute)
+    multi_field_attribute.chop!
+    if multi_field_attribute != ''
+      multi_field_attribute.chop!
+      multi_field_attribute[0] = ''
+    end
+  end
+
+  def remove_trailing_characters(multi_field_attribute)
+    multi_field_attribute.chop!
+    if multi_field_attribute != ''
+      multi_field_attribute.chop!
+      multi_field_attribute[0] = ''
+    end
   end
 end
