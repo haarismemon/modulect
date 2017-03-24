@@ -472,9 +472,9 @@
         numberOfModulesSoFar = numberOfModulesSoFarSem2;
       }
       rows = (js_course.year_structures[year].year_credits / 15) / 2;
-      if(numberOfModulesSoFar >= rows * 2 && !creditsComplete[year]) {
+      if(numberOfModulesSoFar >= rows && !creditsComplete[year]) {
         rows = numberOfModulesSoFar + 1;
-      } else if(numberOfModulesSoFar >= rows * 2 && creditsComplete[year]) {
+      } else if(numberOfModulesSoFar >= rows && creditsComplete[year]) {
         rows = numberOfModulesSoFar;
       }
 
