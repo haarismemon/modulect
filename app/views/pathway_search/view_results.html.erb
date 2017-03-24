@@ -463,8 +463,8 @@
       }
 
       // Check that the table creates enough slots
-      numberOfModulesSoFarSem1 = selected_modules_any_semester.length + selected_modules_first_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3] + required_modules_per_year[year][1] + required_modules_per_year[year][0];
-      numberOfModulesSoFarSem2 = selected_modules_any_semester.length + selected_modules_second_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3] + required_modules_per_year[year][2] + required_modules_per_year[year][0];
+      numberOfModulesSoFarSem1 = selected_modules_any_semester.length + selected_modules_first_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3].length + required_modules_per_year[year][1].length + required_modules_per_year[year][0].length;
+      numberOfModulesSoFarSem2 = selected_modules_any_semester.length + selected_modules_second_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3].length + required_modules_per_year[year][2].length + required_modules_per_year[year][0].length;
       numberOfModulesSoFar = -1;
       if(numberOfModulesSoFarSem1 >= numberOfModulesSoFarSem2) {
         numberOfModulesSoFar = numberOfModulesSoFarSem1;
