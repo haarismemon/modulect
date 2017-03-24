@@ -463,12 +463,19 @@
       }
 
       // Check that the table creates enough slots
-      numberOfModulesSoFar = selected_modules_any_semester.length + selected_modules_first_semester.length + selected_modules_second_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3] + required_modules_per_year[year][2] + required_modules_per_year[year][1] + required_modules_per_year[year][0];
+      numberOfModulesSoFarSem1 = selected_modules_any_semester.length + selected_modules_first_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3].length + required_modules_per_year[year][1].length + required_modules_per_year[year][0].length;
+      numberOfModulesSoFarSem2 = selected_modules_any_semester.length + selected_modules_second_semester.length + selected_modules_year_long.length + required_modules_per_year[year][3].length + required_modules_per_year[year][2].length + required_modules_per_year[year][0].length;
+      numberOfModulesSoFar = -1;
+      if(numberOfModulesSoFarSem1 >= numberOfModulesSoFarSem2) {
+        numberOfModulesSoFar = numberOfModulesSoFarSem1;
+      } else {
+        numberOfModulesSoFar = numberOfModulesSoFarSem2;
+      }
       rows = (js_course.year_structures[year].year_credits / 15) / 2;
-      if(numberOfModulesSoFar >= rows * 2 && !creditsComplete[year]) {
-        rows = rows + Math.ceil(((rows * 2) - numberOfModulesSoFar) / 2) + 1;
-      } else if(numberOfModulesSoFar >= rows * 2 && creditsComplete[year]) {
-        rows = rows + Math.ceil(((rows * 2) - numberOfModulesSoFar) / 2);
+      if(numberOfModulesSoFar >= rows && !creditsComplete[year]) {
+        rows = numberOfModulesSoFar + 1;
+      } else if(numberOfModulesSoFar >= rows && creditsComplete[year]) {
+        rows = numberOfModulesSoFar;
       }
 
       // Create table with columns for Semester 1 and 2
@@ -488,14 +495,16 @@
 
       // Fill in year long modules first. Note: required modules are in index 3 of required_modules_per_year.
       for(i = 0; i < required_modules_per_year[year][3].length; ++i) {
-        myTableOnPage += "<tr><td colspan=2>" + create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0) + "</td></tr>";
-        s1++;
-        s2++;
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(required_modules_per_year[year][3][i], false, 0, 0, 0);
+        myTableOnPage.rows[++s2].cells[0].colSpan = 2;
+        myTableOnPage.rows[s2].deleteCell(1);
+
       }
       for(i = 0; i < selected_modules_year_long.length; ++i) {
-        myTableOnPage += "<tr><td colspan=2>" + create_module_card(selected_modules_year_long[i][0], true, selected_modules_year_long[i][1], selected_modules_year_long[i][2], selected_modules_year_long[i][3]) + "</td></tr>";
-        s1++;
-        s2++;
+        myTableOnPage.rows[++s1].cells[0].innerHTML = create_module_card(selected_modules_year_long[i][0], true, selected_modules_year_long[i][1], selected_modules_year_long[i][2], selected_modules_year_long[i][3]);
+        myTableOnPage.rows[++s2].cells[0].colSpan = 2;
+        myTableOnPage.rows[s2].deleteCell(1);
+
       }
 
       // Fill in modules in 1st semester. Note: required modules are in index 1 of required_modules_per_year
@@ -515,7 +524,7 @@
       }
 
       // Fill in modules in any semester, Note: required modules are in index 0 of required_modules_per_year
-      for(i = 0; i < required_modules_per_year[year][3].length; ++i) {
+      for(i = 0; i < required_modules_per_year[year][0].length; ++i) {
         if(s2 < s1) {
           myTableOnPage.rows[++s2].cells[1].innerHTML = create_module_card(required_modules_per_year[year][0][i], false, 0, 0, 0);
         } else {

@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
 var data = '<%=raw (@course.to_json(
-:include => {:year_structures => {:include => {:groups => {:include => {:uni_modules => {:include => :uni_modules}}}}}}
+:include => {:year_structures => {:include => {:groups => {:include => {:uni_modules => {:except => :description, :include => { :uni_modules => {:except => :description}}}}}}}}
       ).gsub(/["]/, '\\"')) %>';
 var js_course = jQuery.parseJSON(data);
 var selected_ids = <%= @pathway.data %>;

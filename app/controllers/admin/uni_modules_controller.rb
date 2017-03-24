@@ -75,9 +75,8 @@ module Admin
 
       respond_to do |format|
         format.html
-        format.csv {send_data @uni_modules_to_export.to_csv}
+        format.csv {send_data UniModule.to_csv(@uni_modules_to_export)}
       end
-
     end
 
     def new
