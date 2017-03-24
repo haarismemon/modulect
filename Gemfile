@@ -61,8 +61,6 @@ group :test do
 end
 
 group :production do
-  # Use postrgres in production
-  # Use postrgres in production
   gem 'pg', '0.18.4'
 end
 
