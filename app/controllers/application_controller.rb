@@ -18,14 +18,14 @@ class ApplicationController < ActionController::Base
   end
 
 
- # Save module to favourites
- def save_module
-      uni_module = UniModule.find(params[:module_par])
-      if(current_user.uni_modules.include?(uni_module))
-        current_user.unsave_module(uni_module)
-      else
-        current_user.save_module(uni_module)
-      end
+  # Save module to favourites
+  def save_module
+    uni_module = UniModule.find(params[:module_par])
+    if(current_user.uni_modules.include?(uni_module))
+      current_user.unsave_module(uni_module)
+    else
+      current_user.save_module(uni_module)
+    end
   end
 
   # Save pathway to favourites
@@ -41,6 +41,12 @@ class ApplicationController < ActionController::Base
   def delete_pathway
     pathway = Pathway.find(params[:pathway_par])
     current_user.pathways.delete(pathway)
+    if current_user.pathways.size < 1
+    respond_to do |format|
+      format.html { redirect_to '/saved#pathways' }
+      format.json { head :no_content }
+    end
+    end
   end
 
   # saves a suggested course pathway
@@ -55,13 +61,13 @@ class ApplicationController < ActionController::Base
 
   # updates a suggested course pathway
   def update_suggested_course_pathway
-      suggested_pathway = SuggestedPathway.find_by(id: params[:id])
-      suggested_pathway.name = params[:name]
-      suggested_pathway.year = params[:year]
-      suggested_pathway.course_id = params[:course_id]
-      suggested_pathway.data = params[:data]
-      suggested_pathway.save
-      render json: suggested_pathway
+    suggested_pathway = SuggestedPathway.find_by(id: params[:id])
+    suggested_pathway.name = params[:name]
+    suggested_pathway.year = params[:year]
+    suggested_pathway.course_id = params[:course_id]
+    suggested_pathway.data = params[:data]
+    suggested_pathway.save
+    render json: suggested_pathway
   end
 
   # deletes a suggested course pathway
@@ -82,15 +88,15 @@ class ApplicationController < ActionController::Base
     if logged_in? && admin_user && current_user.user_level == "department_admin_access" && !current_user.department_id.present?
       log_out
       redirect_to root_path
-          flash[:error] = "You have not been assigned a department. Please contact the System Administrator."
+      flash[:error] = "You have not been assigned a department. Please contact the System Administrator."
     end
   end
 
   # if offline and not on an error page nor admin, redirect to offline page
   # super admins are not redirected
   def modulect_is_online
-    if app_settings.is_offline && controller_name != "errors" && (request.path  =~ /.*\/admin(\/.*)?/) == nil
-      if !logged_in? || (logged_in? && current_user.user_level != "super_admin_access")
+    if app_settings.is_offline && controller_name != "errors" && (request.path  =~ /.*\/admin(\/.*)?/) == nil && (request.path  =~ /.*\/login(\/.*)?/) == nil
+      if !logged_in? || (logged_in? && current_user.user_level == "user_access")
         redirect_to offline_path
       end
     end
@@ -100,7 +106,7 @@ class ApplicationController < ActionController::Base
   def log_visit
     session_id = request.session_options[:id]
     client = DeviceDetector.new(request.env["HTTP_USER_AGENT"])
-    client_os = client.os_name 
+    client_os = client.os_name
     if !VisitorLog.find_by_session_id(session_id)
       VisitorLog.create(:session_id => session_id, :logged_in => false, :device_type => client_os)
     end

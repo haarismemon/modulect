@@ -39,7 +39,7 @@ module SessionsHelper
 
 	# gets the last login time of the current user from the session cache or db
 	def current_user_last_login_time
-		cached_last_login_time = session[:last_login_time] 
+		cached_last_login_time = session[:last_login_time]
 		if cached_last_login_time.nil?
 			"Never"
 		else
