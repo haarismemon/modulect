@@ -24,9 +24,11 @@ module Admin::UploadCoursesHelper
       # All validation checks passed
       if csv_course.blank?
         csv_course = try_to_create_course(new_record)
+        course_duration_in_years_pre_update = 0
         creations += 1
       else
         csv_course = try_to_update_course(csv_course, new_record)
+        course_duration_in_years_pre_update = csv_course.duration_in_years || 0
         updates += 1
       end
 
@@ -34,6 +36,7 @@ module Admin::UploadCoursesHelper
 
       if should_save?(csv_course)
         csv_course.save
+        csv_course.update_year_structures(course_duration_in_years_pre_update)
       else
         display_errors csv_course
       end
