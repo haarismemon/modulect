@@ -62,7 +62,7 @@ To modify this file access the partials within
 <div class="row field-unit field-unit--string email" >
    <div class="col-xs-12">
       <div class="field-unit__label">
-         <%= f.label :email %>
+         <label for="user_email">Email</label> <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="Only @kcl.ac.uk emails are valid.">[<i class="fa fa-question" aria-hidden="true"></i>]</a>
       </div>
       <div class="field-unit__field ">
          <%= f.text_field :email %>
