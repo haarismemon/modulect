@@ -8,11 +8,12 @@ module Admin::UploadModulesHelper
 
     csv_module = find_module_by_code(new_record['code'])
 
-    if current_user.user_level != 'super_admin_access' && !being_updated?(csv_module) && !new_record['departments'].include?(current_user.department.name)
+    if invalid_module_create?(csv_module, new_record)
       flash[:error] = "Failed to create module #{new_record['code']}: Module not linked to your department"
-    elsif current_user.user_level != 'super_admin_access' && being_updated?(csv_module) && (!csv_module.departments.include?(current_user.department) || !new_record['departments'].include?(current_user.department.name))
+    elsif invalid_module_update?(csv_module, new_record)
       flash[:error] = "Failed to update module #{new_record['code']}: Module not linked to your department"
     else
+      # All validation checks passed
       new_record['semester'] = convert_semester_to_enum(new_record['semester'])
 
       if csv_module.nil?
@@ -30,11 +31,22 @@ module Admin::UploadModulesHelper
       end
     end
 
-
     return creations, updates
   end
 
   private
+  def invalid_module_create?(csv_module, new_record)
+    # Prevent creating modules that don't belong to their department
+     dept_admin_invalid_request = is_not_super_admin?  && !new_record['departments'].include?(current_user.department.name)
+    !being_updated?(csv_module) && dept_admin_invalid_request
+  end
+
+  def invalid_module_update?(csv_module, new_record)
+    # Prevent updating modules not in their department and prevent un-linking their own dept from module
+    dept_admin_invalid_request = is_not_super_admin? && (!csv_module.departments.include?(current_user.department) || !new_record['departments'].include?(current_user.department.name))
+    being_updated?(csv_module) && dept_admin_invalid_request
+  end
+
   def try_to_create_module(new_record)
     new_module = UniModule.new(new_record.except(
         'departments',
@@ -194,4 +206,7 @@ module Admin::UploadModulesHelper
     !the_module.nil?
   end
 
+  def is_not_super_admin?
+    current_user.user_level != 'super_admin_access'
+  end
 end
