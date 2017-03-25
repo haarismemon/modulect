@@ -1,0 +1,23 @@
+software_engineer:
+  name: Software Engineer
+  type: CareerTag
+
+network_engineer:
+  name: Network Engineer
+  type: CareerTag
+
+logic_engineer:
+  name: Logic Engineer
+  type: CareerTag
+
+database_engineer:
+  name: Database Engineer
+  type: CareerTag
+
+hardware_engineer:
+  name: Hardware Engineer
+  type: CareerTag
+
+front_end_developer:
+  name: Front-end Developer
+  type: CareerTag

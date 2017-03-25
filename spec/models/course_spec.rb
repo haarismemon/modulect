@@ -5,7 +5,6 @@ RSpec.describe Course, type: :model do
   let (:course) { build(:course) }
 
   describe "#valid?" do
-
     context "when built by FactoryGirl" do
       it "evaluates to true" do
         expect(course.valid?).to eq true

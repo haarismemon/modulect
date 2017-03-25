@@ -483,9 +483,11 @@
       myTable = "<table id =\"results_table_" + year + "\" style=\"width: 100%\"><tr><th>Semester 1</th><th>Semester 2</th></tr>";
       s1 = 0; // keeping track of column positions
       s2 = 0;
+      
+      cell = 0;
 
-      for(i = s1; i < rows; ++i) { // Create blank cells 
-        myTable +="<tr><td>" + create_blank_cell(year + 1) + "</td><td>" + create_blank_cell(year + 1) + "</td></tr>";
+      for(i = s1; i < rows; ++i) { // Create blank cells
+        myTable +="<tr><td id=\"module-cell-" + cell++ + "\">" + create_blank_cell(year + 1) + "</td><td id=\"module-cell-" + cell++ + "\">" + create_blank_cell(year + 1) + "</td></tr>";
       }
 
       myTable += "</table>";      
