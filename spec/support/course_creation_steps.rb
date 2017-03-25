@@ -18,13 +18,15 @@ module CourseCreationSteps
 
   def define_a_module_group_for_each_year_structure(uni_modules_to_include)
     for i in 1 .. Course.last.year_structures.count
+      visit edit_admin_course_path(Course.last)
       i_should_be_on_the_edit_page_of_the_new_course
       find("#modify-#{i}").click
       click_add_module_group
       wait_for_ajax
       fill_in_new_group_form(uni_modules_to_include)
       click_button "Update"
-      i_should_be_on_the_edit_page_of_the_new_course
+      expect(page).to have_current_path edit_admin_year_structure_path(YearStructure.all[i - 1])
+      click_on "Back"
       reload_page
     end
   end
