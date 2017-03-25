@@ -165,8 +165,8 @@
             </script>
             <div id="tags-area" style="margin-top:20px;">
             <ul id="modulect-tags">
-            <%  tag_names.sort.each do |tag| %>
-            <li data-eventtype="<%= Tag.find_by_name(tag).type%>">
+            <%  tag_names.sort.each_with_index do |tag, index| %>
+              <li id="modulect-tag-<%= index %>" data-eventtype="<%= Tag.find_by_name(tag).type %>">
             <input type="checkbox" name="chosen_tags_c[]" id="<%= tag %>" value="<%= tag %>"class="chk-btn">
             <label for="<%= tag %>"><%= tag %></label>
             </li>

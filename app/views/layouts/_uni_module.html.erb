@@ -16,7 +16,7 @@
   <% else %>
       <div class="col-md-12 result-card-main">
   <% end %>
-  <h2 id="uni-module-title-<%= uni_module.id %>" style="cursor: pointer;"><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
+  <h2 id="uni-module-title-<%= uni_module.id %>"><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
   <h4>Semester <%= make_semester_nice size_check uni_module.semester %> - <%= uni_module.credits %> credits</h4><br>
 
   <% if type == "review" %>
@@ -205,7 +205,9 @@
   </div>
   <div class="col-md-12 text-right" style="margin-bottom:15px;">
     <% if !uni_module.more_info_link.nil? %>
+      <% if uni_module.more_info_link.length > 0 %>
         <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, uni_module.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
+           <% end %>
     <% end %>
     <% if type != "show" %> <%= link_to "Open page >", uni_module, method: :get, class: "btn btn-lg btn-small" %>
     <% end %>

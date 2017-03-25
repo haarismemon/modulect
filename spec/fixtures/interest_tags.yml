@@ -1,0 +1,19 @@
+programming:
+  name: Programming
+  type: InterestTag
+
+maths:
+  name: Maths
+  type: InterestTag
+
+robotics:
+  name: Robotics
+  type: InterestTag
+
+algorithms:
+  name: Algorithms
+  type: InterestTag
+
+artificial_intelligence:
+  name: Artificial Intelligence
+  type: InterestTag

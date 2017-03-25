@@ -1,0 +1,23 @@
+cs1_semester_1:
+  name: Semester 1
+  max_credits: 60
+  min_credits: 60
+  compulsory: true
+
+cs1_semester_2:
+  name: Semester 2
+  max_credits: 60
+  min_credits: 60
+  compulsory: false
+
+cs2_semester_1:
+  name: Semester 1
+  max_credits: 60
+  min_credits: 60
+  compulsory: true
+
+cs2_semester_2:
+  name: Semester 2
+  max_credits: 60
+  min_credits: 60
+  compulsory: false
