@@ -3,6 +3,13 @@
   Contains: a table which contain of set of columns with each representing an attribute.
   The table is produced via a for loop which iterates through, producing a row for each tuple.
 %>
+<style>
+@media (max-width: 1376px) {
+  #data-area .no-link .col-md-3 {
+    float:none;
+  }
+}
+</style>
 <% provide(:title, @uni_module.code + " " + @uni_module.name + " - " + ' Module Reviews') %>
 <header class="header index-header-area">
    <h1 id="page-title"><%= @uni_module.code %> <%= @uni_module.name %> Reviews</h1>
@@ -75,7 +82,7 @@
                <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;View</a>
             </td>
             <td class="cell-data cell-data--string"><%= comment.rating%></td>
-            <td>
+            <td class="no-link">
                <div class="col-md-3">
                  <%= link_to "<i class='fa fa-trash' aria-hidden='true'></i> Delete".html_safe,
                   uni_module_comment_path(@uni_module, comment), method: :delete,

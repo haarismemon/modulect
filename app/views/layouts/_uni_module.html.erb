@@ -205,7 +205,9 @@
   </div>
   <div class="col-md-12 text-right" style="margin-bottom:15px;">
     <% if !uni_module.more_info_link.nil? %>
+      <% if uni_module.more_info_link.length > 0 %>
         <%= link_to "Open external link&nbsp;&nbsp;<i class='fa fa-external-link' aria-hidden='true'></i>".html_safe, uni_module.more_info_link, method: :get, target: :blank, class: "external-module-link" %>
+           <% end %>
     <% end %>
     <% if type != "show" %> <%= link_to "Open page >", uni_module, method: :get, class: "btn btn-lg btn-small" %>
     <% end %>
