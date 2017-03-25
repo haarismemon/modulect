@@ -16,7 +16,7 @@
   <% else %>
       <div class="col-md-12 result-card-main">
   <% end %>
-  <h2 id="uni-module-title-<%= uni_module.id %>" style="cursor: pointer;"><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
+  <h2 id="uni-module-title-<%= uni_module.id %>"><%= size_check uni_module.code %> <%= size_check uni_module.name %></h2>
   <h4>Semester <%= make_semester_nice size_check uni_module.semester %> - <%= uni_module.credits %> credits</h4><br>
 
   <% if type == "review" %>
