@@ -389,10 +389,10 @@ RSpec.describe User, type: :model do
   describe ".to_csv" do
     let! (:course) { create(:course) }
     let! (:department) { create(:department) }
-    let! (:user1) { create(:user, faculty: department.faculty, course: course, department: department) }
+    let! (:user1) { create(:user, faculty: department.faculty, course_id: course.id, department_id: department.id) }
     let! (:user2) { create(:user, first_name: "John", last_name: "Sonmez", email: "john.sonmez@kcl.ac.uk") }
     let (:csv_content) { User.to_csv }
-    let (:csv_header) { "First Name,Last Name,Faculty,Course,Department\n" }
+    let (:csv_header) { "First Name,Last Name,User level,Faculty,Department,Course,Year of study\n" }
 
     it "outputs all saved users" do
       expect(csv_content).to include csv_header
@@ -406,6 +406,7 @@ RSpec.describe User, type: :model do
     csv_content.slice!(csv_header)
     i = 0
     CSV.parse(csv_content).each do |line|
+      line = line.join(",")
       user = users[i]
       expect(line).to include user.first_name
       expect(line).to include user.last_name

@@ -1,21 +1,19 @@
 module AnalyticsHelper
 
-	# general helpers:
-
 	# check if the input is a number
 	def is_number? string
-  		true if Float(string) rescue false
+    true if Float(string) rescue false
 	end
 
 	# sort, filter and format the resulting dataset
-	def format_ouput_data(input_hash, sort_by, number_to_show)
+	def format_output_data(input_hash, sort_by, number_to_show)
 		# sort alphabetically
 		input_hash = input_hash.sort_by {|_key, value| _key}
 
 		# then sort based on request
 		if sort_by == "least"
 			input_hash = input_hash.sort_by {|_key, value| value}
-		elsif
+		else
 			input_hash = input_hash.sort_by {|_key, value| value}.reverse
 		end
 
@@ -128,8 +126,8 @@ module AnalyticsHelper
 					end
 			end
 		end
-		
-		format_ouput_data(uni_modules_data, sort_by, number_to_show)
+
+		format_output_data(uni_modules_data, sort_by, number_to_show)
 	end
 
 	# most/least highly rated modules
@@ -156,7 +154,7 @@ module AnalyticsHelper
 			uni_modules_data[uni_module] = counter / uni_module.comments.select{ |comment| User.exists?(comment.user_id) && User.find(comment.user_id).user_level == "user_access"}.size.to_f
 		end
 
-		format_ouput_data(uni_modules_data, sort_by, number_to_show)
+		format_output_data(uni_modules_data, sort_by, number_to_show)
 	end
 
 	# most/least active courses
@@ -176,7 +174,7 @@ module AnalyticsHelper
 			end
 		end
 
-		format_ouput_data(courses_data, sort_by, number_to_show)
+		format_output_data(courses_data, sort_by, number_to_show)
 	end
 
 	# most/least active department
@@ -196,7 +194,7 @@ module AnalyticsHelper
 			end
 		end
 
-		format_ouput_data(departments_data, sort_by, number_to_show)
+		format_output_data(departments_data, sort_by, number_to_show)
 
 	end
 
@@ -216,7 +214,7 @@ module AnalyticsHelper
 			end
 		end
 
-		format_ouput_data(departments_data, sort_by, number_to_show)
+		format_output_data(departments_data, sort_by, number_to_show)
 
 	end
 
@@ -235,9 +233,7 @@ module AnalyticsHelper
 			end
 		end
 
-
-		format_ouput_data(users_data, sort_by, number_to_show)
-
+		format_output_data(users_data, sort_by, number_to_show)
 	end
 
 	# most/least saved modules
@@ -257,7 +253,7 @@ module AnalyticsHelper
 		end
 			
 
-		format_ouput_data(uni_modules_data, sort_by, number_to_show)
+		format_output_data(uni_modules_data, sort_by, number_to_show)
 	end
 
 	# most/least clicked modules
@@ -273,15 +269,14 @@ module AnalyticsHelper
 			end
 		end
 
-		format_ouput_data(uni_modules_data, sort_by, number_to_show)
+		format_output_data(uni_modules_data, sort_by, number_to_show)
 	end
 
 	# get modules most frequently chosen with a selected module
 	def get_modules_chosen_with(uni_module_id, department_id, course_id, amount_time, time_period, from_date, sort_by, number_to_show)
 		uni_modules_data = Hash.new
-		uni_modules = @all_uni_modules.where("department_id = ?", department_id);
-		pathway_search_log_first_data = PathwaySearchLog.where("first_mod_id = ?", uni_module_id)
-		pathway_search_log_second_data = PathwaySearchLog.where("second_mod_id = ?", uni_module_id)
+		pathway_search_log_first_data = PathwaySearchLog.where('first_mod_id = ?', uni_module_id)
+		pathway_search_log_second_data = PathwaySearchLog.where('second_mod_id = ?', uni_module_id)
     pathway_search_log_first_data.each do |log|
       if UniModule.find(log.second_mod_id)
         uni_module = UniModule.find(log.second_mod_id)
@@ -300,27 +295,25 @@ module AnalyticsHelper
       end
     end
 
-    format_ouput_data(uni_modules_data, sort_by, number_to_show)
+    format_output_data(uni_modules_data, sort_by, number_to_show)
 
-    p format_ouput_data(uni_modules_data, sort_by, number_to_show)
-
+    p format_output_data(uni_modules_data, sort_by, number_to_show)
   end
 
 	# most/least clicked (trending) tags
 	def get_clicked_tags(tags, amount_time, time_period, from_date, sort_by, number_to_show, type_of_tag)
 		all_tags = tags
 
-		if type_of_tag == "career"
-			all_tags = all_tags.select{|tag| tag.type == "CareerTag"}
-		elsif  type_of_tag == "interest"
-			all_tags = all_tags.select{|tag| tag.type == "InterestTag"}
+		if type_of_tag == 'career'
+			all_tags = all_tags.select{ |tag| tag.type == 'CareerTag' }
+		elsif  type_of_tag == 'interest'
+			all_tags = all_tags.select{ |tag| tag.type == 'InterestTag' }
 		end
 		
 
 		tags_data = Hash.new
 		TagLog.all.each do |log|
-			if Tag.find(log.tag_id)
-				tag = Tag.find(log.tag_id)
+			if (tag = Tag.find(log.tag_id))
 				if all_tags.include?(tag) && date_check(amount_time, time_period, from_date, log.created_at)
 						tags_data[tag] = log.counter
 				end
@@ -330,7 +323,7 @@ module AnalyticsHelper
 		# then sort based on request
 		if sort_by == "least"
 			tags_data = tags_data.sort_by {|_key, value| value}
-		elsif
+		else
 			tags_data = tags_data.sort_by {|_key, value| value}.reverse
 		end
 
@@ -345,7 +338,7 @@ module AnalyticsHelper
 	# get number of visitors (both logged in and non-logged in)
 	def get_number_visitors(department_id, amount_time, time_period, from_date)
 
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+		if department_id != 'any' && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
 		else
 			logs = VisitorLog.all
@@ -367,7 +360,7 @@ module AnalyticsHelper
 	# get number of logged in users
 	def get_number_logged_in_users(department_id, amount_time, time_period, from_date)
 		
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+		if department_id != 'any' && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
 		else
 			logs = VisitorLog.all
@@ -390,8 +383,8 @@ module AnalyticsHelper
     logged_in = get_number_logged_in_users(department_id, amount_time, time_period, from_date)
     not_logged_in = get_number_visitors(department_id, amount_time, time_period, from_date) - logged_in
 
-    data["Logged In"] = logged_in
-    data["Not Logged In"] = not_logged_in
+    data['Logged In'] = logged_in
+    data['Not Logged In'] = not_logged_in
 
     data
   end
@@ -399,7 +392,7 @@ module AnalyticsHelper
 	# get device usage
 	def get_device_usage(department_id, amount_time, time_period, from_date)
 		
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+		if department_id != 'any' && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = VisitorLog.all.select{|log| log.department_id == department_id.to_i}
 		else
 			logs = VisitorLog.all
@@ -424,10 +417,10 @@ module AnalyticsHelper
 
 	# get number quick searches
 	def get_number_quick_searches(department_id, amount_time, time_period, from_date)
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "quick"}
+		if department_id != 'any' && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = SearchLog.all.select{ |log| log.department_id == department_id.to_i && log.search_type == 'quick' }
 		else
-			logs = SearchLog.all.select{|log| log.search_type == "quick"}
+			logs = SearchLog.all.select{ |log| log.search_type == 'quick' }
 		end
 
 
@@ -444,10 +437,10 @@ module AnalyticsHelper
 
 	# get number pathway searches(department_id, time_period, end_date)
 	def get_number_pathway_searches(department_id, amount_time, time_period, from_date)
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "pathway"}
+		if department_id != 'any' && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = SearchLog.all.select{ |log| log.department_id == department_id.to_i && log.search_type == 'pathway' }
 		else
-			logs = SearchLog.all.select{|log| log.search_type == "pathway"}
+			logs = SearchLog.all.select{ |log| log.search_type == 'pathway' }
 		end
 
 
@@ -464,10 +457,10 @@ module AnalyticsHelper
 
 	# get number career searches
 	def get_number_career_searches(department_id, amount_time, time_period, from_date)
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
-			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == "career"}
+		if department_id != 'any' && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+			logs = SearchLog.all.select{ |log| log.department_id == department_id.to_i && log.search_type == 'career' }
 		else
-			logs = SearchLog.all.select{|log| log.search_type == "career"}
+			logs = SearchLog.all.select{ |log| log.search_type == 'career' }
 		end
 
 
@@ -485,7 +478,7 @@ module AnalyticsHelper
 
 	# return search logs
 	def get_search_lists(department_id, type, amount_time, time_period, from_date)
-		if department_id != "any" && is_number?(department_id) && !Department.find(department_id.to_i).nil?
+		if department_id != 'any' && is_number?(department_id) && !Department.find(department_id.to_i).nil?
 			logs = SearchLog.all.select{|log| log.department_id == department_id.to_i && log.search_type == type}
 		else
 			logs = SearchLog.all.select{|log| log.search_type == type}
@@ -499,25 +492,25 @@ module AnalyticsHelper
 	# March ('16) April ('16) May ('16) June ('16) July ('16) August ('16) September ('16) October ('16) November ('16) December ('16) January ('17) February ('17) March ('17) 2012 2013 2014 2015 2016 2017
 	def get_list_of_time_periods(time_period)
 		toReturn = []
-		if time_period == "day"
+		if time_period == 'day'
 			24.downto(0) do |i|
-				toReturn << i.hours.ago.strftime("%a %d %H:00")
+				toReturn << i.hours.ago.strftime('%a %d %H:00')
 			end
-		elsif time_period == "week"
+		elsif time_period == 'week'
 			7.downto(0) do |i|
-				toReturn << i.days.ago.strftime("%A %d")
+				toReturn << i.days.ago.strftime('%A %d')
 			end
-		elsif  time_period == "month"
+		elsif  time_period == 'month'
 			31.downto(0) do |i|
-				toReturn << i.days.ago.strftime("%b %d")
+				toReturn << i.days.ago.strftime('%b %d')
 			end
-		elsif  time_period == "year"
+		elsif  time_period == 'year'
 			12.downto(0) do |i|
 				toReturn << i.months.ago.strftime("%B ('%y)")
 			end
-		elsif time_period == "all_time"
+		elsif time_period == 'all_time'
 			3.downto(0) do |i|
-				toReturn << i.years.ago.strftime("%Y")
+				toReturn << i.years.ago.strftime('%Y')
 			end		
 		end
 
@@ -533,29 +526,29 @@ module AnalyticsHelper
 			data_with_time[time] = 0
 		end
 
-		if time_period == "day"
+		if time_period == 'day'
 			data_log.each do |log|
-				hour = log.created_at.strftime("%a %d %H:00")
+				hour = log.created_at.strftime('%a %d %H:00')
 				data_with_time[hour] = data_with_time[hour] + log.counter
 			end
-		elsif time_period == "week"
+		elsif time_period == 'week'
 			data_log.each do |log|
-				day = log.created_at.strftime("%A %d")
+				day = log.created_at.strftime('%A %d')
 				data_with_time[day] = data_with_time[day] + log.counter
 			end
-		elsif  time_period == "month"
+		elsif  time_period == 'month'
 			data_log.each do |log|
-				day = log.created_at.strftime("%b %d")
+				day = log.created_at.strftime('%b %d')
 				data_with_time[day] = data_with_time[day] + log.counter
 			end
-		elsif  time_period == "year"
+		elsif  time_period == 'year'
 			data_log.each do |log|
 				month = log.created_at.strftime("%B ('%y)")
 				data_with_time[month] = data_with_time[month] + log.counter
 			end
-		elsif time_period == "all_time"
+		elsif time_period == 'all_time'
 			data_log.each do |log|
-				year = log.created_at.strftime("%Y")
+				year = log.created_at.strftime('%Y')
 				data_with_time[year] = data_with_time[year] + log.counter
 			end
 		end
@@ -573,7 +566,7 @@ module AnalyticsHelper
 	# a simple size checker
 	def get_top_size_check_analytics(input_hash)
 		if input_hash.size == 0
-			"(None)"
+      '(None)'
 		else
 			input_hash.first.first
 		end
@@ -581,8 +574,8 @@ module AnalyticsHelper
 
 	# a simple size checker
 	def get_top_module_name(input)
-		if input == "(None)"
-			"(None)"
+		if input == '(None)'
+      '(None)'
 		else
 			input.name
 		end
@@ -591,8 +584,8 @@ module AnalyticsHelper
 
 	# obtain the modudle code from the input module
 	def get_top_module_code(input)
-		if input == "(None)"
-			"(None)"
+		if input == '(None)'
+      '(None)'
 		else
 			input.code
 		end
@@ -602,61 +595,57 @@ module AnalyticsHelper
 	def get_all_data(all_uni_modules, all_users, all_tags, department, time_period)
 		all_data = Hash.new
 
-		all_data["number_of_visitors"] = get_number_visitors(department, 1, time_period, Time.now) 
-		all_data["percentage_difference_number_of_visitors"] = percentage_difference(all_data["number_of_visitors"], get_number_visitors(department, 1, time_period, get_start_desired_period(1,time_period, Time.now)))
+		all_data['number_of_visitors'] = get_number_visitors(department, 1, time_period, Time.now.utc)
+		all_data['percentage_difference_number_of_visitors'] = percentage_difference(all_data['number_of_visitors'], get_number_visitors(department, 1, time_period, get_start_desired_period(1, time_period, Time.now.utc)))
 
 		# number of quick searches
-		all_data["number_of_quick_searches"] = get_number_quick_searches(department, 1, time_period, Time.now)
-		all_data["percentage_difference_number_of_quick_searches"] = percentage_difference(all_data["number_of_quick_searches"], get_number_quick_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
+		all_data['number_of_quick_searches'] = get_number_quick_searches(department, 1, time_period, Time.now.utc)
+		all_data['percentage_difference_number_of_quick_searches'] = percentage_difference(all_data['number_of_quick_searches'], get_number_quick_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now.utc)))
 
 		# pathway searches
-		all_data["number_of_pathway_searches"] = get_number_pathway_searches(department, 1, time_period, Time.now)
-		all_data["percentage_difference_number_of_pathway_searches"] = percentage_difference(all_data["number_of_pathway_searches"], get_number_pathway_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
+		all_data['number_of_pathway_searches'] = get_number_pathway_searches(department, 1, time_period, Time.now.utc)
+		all_data['percentage_difference_number_of_pathway_searches'] = percentage_difference(all_data['number_of_pathway_searches'], get_number_pathway_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now.utc)))
 
 		# career searches
-		all_data["number_of_career_searches"] = get_number_career_searches(department, 1, time_period, Time.now)
-		all_data["percentage_difference_number_of_career_searches"] = percentage_difference(all_data["number_of_career_searches"], get_number_career_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
-		
+		all_data['number_of_career_searches'] = get_number_career_searches(department, 1, time_period, Time.now.utc)
+		all_data['percentage_difference_number_of_career_searches'] = percentage_difference(all_data['number_of_career_searches'], get_number_career_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now.utc)))
+
 		# clicked tags
-		all_data["clicked_tags"] = get_clicked_tags(all_tags, 1, time_period, Time.now, "most", 20, "any")
+		all_data['clicked_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now.utc, 'most', 20, 'any')
 
 		# most visited modules
-		all_data["visited_modules"] = get_visited_modules(all_uni_modules, 1, time_period, Time.now, "most", 20)
+		all_data['visited_modules'] = get_visited_modules(all_uni_modules, 1, time_period, Time.now.utc, 'most', 20)
 
 		# most saved modules
-		all_data["saved_modules"] = get_saved_modules(all_uni_modules, all_users, 1, time_period, Time.now, "most", 20)
+		all_data['saved_modules'] = get_saved_modules(all_uni_modules, all_users, 1, time_period, Time.now.utc, 'most', 20)
 
 		# device usage
-		all_data["device_usage"] = get_device_usage(department, 1, time_period, Time.now)
+		all_data['device_usage'] = get_device_usage(department, 1, time_period, Time.now.utc)
 
 		# most review modules
-		all_data["reviewed_modules"] = get_review_modules_analytics(all_uni_modules, 1, time_period, Time.now, "most", 20)
+		all_data['reviewed_modules'] = get_review_modules_analytics(all_uni_modules, 1, time_period, Time.now, 'most', 20)
 
 		# highly rated modules
-		all_data["rated_modules"] = get_rating_modules_analytics(all_uni_modules, 1, time_period, Time.now, "most", 20)
+		all_data['rated_modules'] = get_rating_modules_analytics(all_uni_modules, 1, time_period, Time.now.utc, 'most', 20)
 
 		# active users
-		all_data["active_users"] = get_active_user(all_users, 1, time_period, Time.now, "most", 20)
+		all_data['active_users'] = get_active_user(all_users, 1, time_period, Time.now.utc, 'most', 20)
 
 		# login data
-		all_data["login_analytics"] = get_login_analytics(department, 1, time_period, Time.now)
+		all_data['login_analytics'] = get_login_analytics(department, 1, time_period, Time.now.utc)
 
 		# active courses
-		all_data["active_courses"] = get_active_courses(all_users, 1, time_period, Time.now, "most", 20)
+		all_data['active_courses'] = get_active_courses(all_users, 1, time_period, Time.now.utc, 'most', 20)
 
 		# active departments
-		all_data["active_departments"] = get_active_departments(all_users, 1, time_period, Time.now, "most", 20)
-
+		all_data['active_departments'] = get_active_departments(all_users, 1, time_period, Time.now.utc, 'most', 20)
 
 		# clicked career tags
-		all_data["clicked_career_tags"] = get_clicked_tags(all_tags, 1, time_period, Time.now, "most", 20, "career")
+		all_data['clicked_career_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now.utc, 'most', 20, 'career')
 
 		# clicked interest tags
-		all_data["clicked_interest_tags"] = get_clicked_tags(all_tags, 1, time_period, Time.now, "most", 20, "interest")
-
+		all_data['clicked_interest_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now.utc, 'most', 20, 'interest')
 
 		all_data
 	end
-
-
 end

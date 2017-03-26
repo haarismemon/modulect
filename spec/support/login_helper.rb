@@ -7,4 +7,10 @@ module LoginHelper
       click_button "Log in"
     end
   end
+
+  def log_out
+    find("#user-actions").click
+    find("#logout-user").click
+    page.set_rack_session(user_id: nil)
+  end
 end

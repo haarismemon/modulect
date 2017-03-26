@@ -1,2 +1,7 @@
 informatics:
-  name: "Informatics"
+  name: Informatics
+  faculty: nms
+
+physics:
+  name: Physics with Applications
+  faculty: nms

@@ -81,7 +81,8 @@ module Admin
 
       # Extract the text and send for processing
       csv_text = File.read(file_path)
-      parse_csv_and_display_notice(csv_text)
+      uploader = current_user
+      parse_csv_and_display_notice(csv_text, session[:resource_name], session[:resource_header], uploader)
 
       # Delete generated files after processing upload
       File.delete(file_path)

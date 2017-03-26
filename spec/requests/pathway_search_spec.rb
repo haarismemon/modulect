@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'support/login_helper'
 require 'support/wait_for_ajax'
 require 'support/pathway_search_steps'
-require 'timeout'
 
 feature "Student searching for module pathway", :js => true do
   include LoginHelper
@@ -17,8 +16,6 @@ feature "Student searching for module pathway", :js => true do
   fixtures :career_tags
   fixtures :uni_modules
   fixtures :groups
-
-  given(:sophie) { users(:sophie) }
 
   given(:computer_science_15) { courses(:computer_science_15) }
   given(:informatics) { departments(:informatics) }
@@ -64,8 +61,6 @@ feature "Student searching for module pathway", :js => true do
   end
 
   scenario "can select and save their modules" do
-    visit login_path
-    login_user(sophie, 'password')
     visit root_path
     click_on "Begin Search"
     fill_in_begin_form

@@ -1,13 +1,12 @@
 module Admin
 	class AnalyticsController < Admin::BaseController
-    # Controller handles the analytics in the admin area of the site.
-
 		include AnalyticsHelper
 		include SessionsHelper
 
-    before_filter :analytics
+    before_action :analytics
 
-    # The main action handling the main area of the analytics, including setting of a department, course, time period. Also handles the search. See inline comments for details
+    # The main action handling the main area of the analytics, including setting of a department, course, time period.
+    # Also handles the search. See inline comments for details
 		def analytics
       # the time periods which can be sorted by
 			@possible_times = ["day","week","month","year", "all_time"]
@@ -29,7 +28,6 @@ module Admin
         @courses = {}
         @uni_modules = {}
         @uni_module = {}
-
         # if the user tried to search verify that they are a super admin (only super admins can search). searching allows a super admin to quickly find departments
   			if params[:search].present? && current_user.user_level == "super_admin_access"
       		@deparments_list = Department.all.select { |department| department.name.downcase.include?(params[:search].downcase) }
@@ -76,11 +74,8 @@ module Admin
         end
         @all_tags = @all_tags.uniq{|tag| tag.id}
       end
-
-
-
-			
-		end
+      @all_data = get_all_data(@all_uni_modules, @all_users, @all_tags, @department, @time_period)
+    end
 
     # Change the value of the modules dropdown if course changes
     def update_modules
@@ -112,6 +107,5 @@ module Admin
     def update_selected_department
       @department = Department.find(params[:department_id])
     end
-		
 	end
 end

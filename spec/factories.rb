@@ -35,17 +35,17 @@ FactoryGirl.define do
   end
 
   factory :course do
-    name "BA Geography"
+    name "BA Geography with not Applications"
     year 2016
   end
 
   factory :department do
-    name "Mathematics"
+    name "Mathematics with Applications"
     faculty
   end
 
   factory :faculty do
-    name "Natural and Mathematical Sciences"
+    name "Natural and Mathematical Sciences at Kings"
   end
 
   factory :tag do
@@ -62,10 +62,9 @@ FactoryGirl.define do
   end
 
   factory :uni_module do
-    name          "Programming Applications"
-    code          "4CCS1PRA"
-    description   "PRA is aimed to further develop the Java programming
-                  skills of first year students"
+    name          "Philosophy and its Applications"
+    code          "6CCS1PHA"
+    description   "Philosphy is not a trivial subject for real life"
     lecturers     "Dr. Steffen Zschaler, Dr. Martin Chapman"
     semester      "2"
     credits       15
@@ -85,5 +84,4 @@ FactoryGirl.define do
   factory :pathway do
     data "1:23;45/2:37;38#"
   end
-
 end

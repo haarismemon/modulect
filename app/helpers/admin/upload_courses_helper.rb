@@ -2,7 +2,7 @@ module Admin::UploadCoursesHelper
 
   include Admin::MultiItemFieldHelper
 
-  def upload_course(new_record)
+  def upload_course(new_record, uploader)
     creations = 0
     updates = 0
 
@@ -16,9 +16,9 @@ module Admin::UploadCoursesHelper
     end
 
     # Department admin restrictions
-    if invalid_course_create?(csv_course, new_record_departments)
+    if invalid_course_create?(csv_course, new_record_departments, uploader)
       flash[:error] = "Failed to create course #{new_record['name']}, #{new_record['year']}: Course not linked to your department"
-    elsif invalid_course_update?(csv_course, new_record_departments)
+    elsif invalid_course_update?(csv_course, new_record_departments, uploader)
       flash[:error] = "Failed to update course #{new_record['name']}, #{new_record['year']}: Course not linked to your department"
     else
       # All validation checks passed
@@ -46,15 +46,15 @@ module Admin::UploadCoursesHelper
   end
 
   private
-  def invalid_course_create?(csv_course, new_record_departments)
+  def invalid_course_create?(csv_course, new_record_departments, uploader)
     # Prevent creating courses that don't belong to their department
-    dept_admin_invalid_request = is_not_super_admin? && !new_record_departments.include?(current_user.department.name)
+    dept_admin_invalid_request = is_not_super_admin?(uploader) && !new_record_departments.include?(uploader.department.name)
     !being_updated?(csv_course) && dept_admin_invalid_request
   end
 
-  def invalid_course_update?(csv_course, new_record_departments)
+  def invalid_course_update?(csv_course, new_record_departments, uploader)
     # Prevent updating courses not in their department and prevent un-linking their own dept from course
-    dept_admin_invalid_request = is_not_super_admin? && (!csv_course.departments.include?(current_user.department) || !new_record_departments.include?(current_user.department.name))
+    dept_admin_invalid_request = is_not_super_admin?(uploader) && (!csv_course.departments.include?(uploader.department) || !new_record_departments.include?(uploader.department.name))
     being_updated?(csv_course) && dept_admin_invalid_request
   end
 
@@ -116,7 +116,7 @@ module Admin::UploadCoursesHelper
     !the_course.nil?
   end
 
-  def is_not_super_admin?
-    current_user.user_level != 'super_admin_access'
+  def is_not_super_admin?(uploader)
+    uploader.user_level != 'super_admin_access'
   end
 end

@@ -15,6 +15,7 @@ module CoursesIndexSteps
 
   def click_delete_link
     click_on "Delete"
+    wait_for_ajax
   end
 
   def confirm_delete
