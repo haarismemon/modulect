@@ -113,10 +113,12 @@ module Admin
     # updates a course
     def update
       @course = Course.find(params[:id])
+      @course.departments.clear()
       duration_in_years_pre_update = @course.duration_in_years
       if @course.update_attributes course_params
 
-
+        
+      @course.departments.clear()
         @course.update_year_structures(duration_in_years_pre_update)
 
         departments = params[:course][:department_ids].split(',')
