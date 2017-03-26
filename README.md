@@ -1,15 +1,18 @@
 # Recursive Husky: Modulect
 
-## Dev setup:
+## Setup:
+
+From inside the project-run folder:
 
 ```
-git clone https://github.kcl.ac.uk/k1502493/project-run.git 
-cd project-run 
 bundle install 
+rails db:migrate
+rails db:seed (if necessary)
 rails s
 ```
 
-Visit 0.0.0.0:3000 in your browser.
+Visit 0.0.0.0:3000 or localhost:3000 in your browser.
+After submission, the application will be available at https://modulect.herokuapp.com
 
 ## Conventions:
 * [AirBNB Ruby Style Guide](https://github.com/airbnb/ruby)
