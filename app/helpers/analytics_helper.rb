@@ -595,56 +595,56 @@ module AnalyticsHelper
 	def get_all_data(all_uni_modules, all_users, all_tags, department, time_period)
 		all_data = Hash.new
 
-		all_data['number_of_visitors'] = get_number_visitors(department, 1, time_period, Time.now)
-		all_data['percentage_difference_number_of_visitors'] = percentage_difference(all_data['number_of_visitors'], get_number_visitors(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
+		all_data['number_of_visitors'] = get_number_visitors(department, 1, time_period, Time.now.utc)
+		all_data['percentage_difference_number_of_visitors'] = percentage_difference(all_data['number_of_visitors'], get_number_visitors(department, 1, time_period, get_start_desired_period(1, time_period, Time.now.utc)))
 
 		# number of quick searches
-		all_data['number_of_quick_searches'] = get_number_quick_searches(department, 1, time_period, Time.now)
-		all_data['percentage_difference_number_of_quick_searches'] = percentage_difference(all_data['number_of_quick_searches'], get_number_quick_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
+		all_data['number_of_quick_searches'] = get_number_quick_searches(department, 1, time_period, Time.now.utc)
+		all_data['percentage_difference_number_of_quick_searches'] = percentage_difference(all_data['number_of_quick_searches'], get_number_quick_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now.utc)))
 
 		# pathway searches
-		all_data['number_of_pathway_searches'] = get_number_pathway_searches(department, 1, time_period, Time.now)
-		all_data['percentage_difference_number_of_pathway_searches'] = percentage_difference(all_data['number_of_pathway_searches'], get_number_pathway_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
+		all_data['number_of_pathway_searches'] = get_number_pathway_searches(department, 1, time_period, Time.now.utc)
+		all_data['percentage_difference_number_of_pathway_searches'] = percentage_difference(all_data['number_of_pathway_searches'], get_number_pathway_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now.utc)))
 
 		# career searches
-		all_data['number_of_career_searches'] = get_number_career_searches(department, 1, time_period, Time.now)
-		all_data['percentage_difference_number_of_career_searches'] = percentage_difference(all_data['number_of_career_searches'], get_number_career_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now)))
+		all_data['number_of_career_searches'] = get_number_career_searches(department, 1, time_period, Time.now.utc)
+		all_data['percentage_difference_number_of_career_searches'] = percentage_difference(all_data['number_of_career_searches'], get_number_career_searches(department, 1, time_period, get_start_desired_period(1, time_period, Time.now.utc)))
 
 		# clicked tags
-		all_data['clicked_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now, 'most', 20, 'any')
+		all_data['clicked_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now.utc, 'most', 20, 'any')
 
 		# most visited modules
-		all_data['visited_modules'] = get_visited_modules(all_uni_modules, 1, time_period, Time.now, 'most', 20)
+		all_data['visited_modules'] = get_visited_modules(all_uni_modules, 1, time_period, Time.now.utc, 'most', 20)
 
 		# most saved modules
-		all_data['saved_modules'] = get_saved_modules(all_uni_modules, all_users, 1, time_period, Time.now, 'most', 20)
+		all_data['saved_modules'] = get_saved_modules(all_uni_modules, all_users, 1, time_period, Time.now.utc, 'most', 20)
 
 		# device usage
-		all_data['device_usage'] = get_device_usage(department, 1, time_period, Time.now)
+		all_data['device_usage'] = get_device_usage(department, 1, time_period, Time.now.utc)
 
 		# most review modules
 		all_data['reviewed_modules'] = get_review_modules_analytics(all_uni_modules, 1, time_period, Time.now, 'most', 20)
 
 		# highly rated modules
-		all_data['rated_modules'] = get_rating_modules_analytics(all_uni_modules, 1, time_period, Time.now, 'most', 20)
+		all_data['rated_modules'] = get_rating_modules_analytics(all_uni_modules, 1, time_period, Time.now.utc, 'most', 20)
 
 		# active users
-		all_data['active_users'] = get_active_user(all_users, 1, time_period, Time.now, 'most', 20)
+		all_data['active_users'] = get_active_user(all_users, 1, time_period, Time.now.utc, 'most', 20)
 
 		# login data
-		all_data['login_analytics'] = get_login_analytics(department, 1, time_period, Time.now)
+		all_data['login_analytics'] = get_login_analytics(department, 1, time_period, Time.now.utc)
 
 		# active courses
-		all_data['active_courses'] = get_active_courses(all_users, 1, time_period, Time.now, 'most', 20)
+		all_data['active_courses'] = get_active_courses(all_users, 1, time_period, Time.now.utc, 'most', 20)
 
 		# active departments
-		all_data['active_departments'] = get_active_departments(all_users, 1, time_period, Time.now, 'most', 20)
+		all_data['active_departments'] = get_active_departments(all_users, 1, time_period, Time.now.utc, 'most', 20)
 
 		# clicked career tags
-		all_data['clicked_career_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now, 'most', 20, 'career')
+		all_data['clicked_career_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now.utc, 'most', 20, 'career')
 
 		# clicked interest tags
-		all_data['clicked_interest_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now, 'most', 20, 'interest')
+		all_data['clicked_interest_tags'] = get_clicked_tags(all_tags, 1, time_period, Time.now.utc, 'most', 20, 'interest')
 
 		all_data
 	end
