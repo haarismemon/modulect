@@ -8,9 +8,16 @@ module Admin::UploadModulesHelper
 
     csv_module = find_module_by_code(new_record['code'])
 
-    if invalid_module_create?(csv_module, new_record, uploader)
+    # If departments cell is left empty in csv then turn it into empty string
+    # So that nothing is called on nil
+    new_record_departments = new_record['departments']
+    if new_record_departments.nil?
+      new_record_departments = ''
+    end
+
+    if invalid_module_create?(csv_module, new_record_departments, uploader)
       flash[:error] = "Failed to create module #{new_record['code']}: Module not linked to your department"
-    elsif invalid_module_update?(csv_module, new_record, uploader)
+    elsif invalid_module_update?(csv_module, new_record_departments, uploader)
       flash[:error] = "Failed to update module #{new_record['code']}: Module not linked to your department"
     else
       # All validation checks passed
@@ -35,15 +42,15 @@ module Admin::UploadModulesHelper
   end
 
   private
-  def invalid_module_create?(csv_module, new_record, uploader)
+  def invalid_module_create?(csv_module, new_record_departments, uploader)
     # Prevent creating modules that don't belong to their department
-     dept_admin_invalid_request = is_not_super_admin?(uploader)  && !new_record['departments'].include?(uploader.department.name)
+     dept_admin_invalid_request = is_not_super_admin?(uploader)  && !new_record_departments.include?(uploader.department.name)
     !being_updated?(csv_module) && dept_admin_invalid_request
   end
 
-  def invalid_module_update?(csv_module, new_record, uploader)
+  def invalid_module_update?(csv_module, new_record_departments, uploader)
     # Prevent updating modules not in their department and prevent un-linking their own dept from module
-    dept_admin_invalid_request = is_not_super_admin?(uploader) && (!csv_module.departments.include?(uploader.department) || !new_record['departments'].include?(uploader.department.name))
+    dept_admin_invalid_request = is_not_super_admin?(uploader) && (!csv_module.departments.include?(uploader.department) || !new_record_departments.include?(uploader.department.name))
     being_updated?(csv_module) && dept_admin_invalid_request
   end
 
