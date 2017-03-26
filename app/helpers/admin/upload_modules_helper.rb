@@ -44,7 +44,7 @@ module Admin::UploadModulesHelper
   private
   def invalid_module_create?(csv_module, new_record_departments, uploader)
     # Prevent creating modules that don't belong to their department
-     dept_admin_invalid_request = is_not_super_admin?(uploader)  && !new_record_departments.include?(uploader.department.name)
+    dept_admin_invalid_request = is_not_super_admin?(uploader) && !new_record_departments.include?(uploader.department.name)
     !being_updated?(csv_module) && dept_admin_invalid_request
   end
 
@@ -88,14 +88,9 @@ module Admin::UploadModulesHelper
     uni_module.departments.clear
     uploaded_department_names = split_multi_association_field(new_record['departments'])
     unless uploaded_department_names.blank?
-      if uploader.user_level == 'department_admin_access'
-        user_dept = Department.find(uploader.department_id).name
-        if uploaded_department_names.include? user_dept
-          uploaded_department_names.each do |dept_name|
-            chosen_dept = find_department_by_name(dept_name)
-            uni_module.departments << chosen_dept
-          end
-        end
+      uploaded_department_names.each do |dept_name|
+        chosen_dept = find_department_by_name(dept_name)
+        uni_module.departments << chosen_dept
       end
     end
   end
