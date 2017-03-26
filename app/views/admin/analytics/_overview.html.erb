@@ -9,7 +9,7 @@ The main graph shows the number of quick searches, career searches and pathway s
          <div class="small-header"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of visitors in the time period">Total Users (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
-         <div class="main-figure">
+         <div class="main-figure" id="number-of-visitors">
             <%= all_data["number_of_visitors"] %>
          </div>
          <% if @time_period != "all_time" %>
@@ -26,7 +26,7 @@ The main graph shows the number of quick searches, career searches and pathway s
       <div class="col-md-3 header-item">
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of quick searches made in the time period">Quick Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
-         <div class="main-figure">
+         <div class="main-figure" id="number-of-quick-searches">
             <%= all_data["number_of_quick_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
@@ -43,7 +43,7 @@ The main graph shows the number of quick searches, career searches and pathway s
       <div class="col-md-3 header-item">
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The number of pathway searches made in the time period">Pathway Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
-         <div class="main-figure">
+         <div class="main-figure" id="number-of-pathway-searches">
             <%= all_data["number_of_pathway_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
@@ -60,7 +60,7 @@ The main graph shows the number of quick searches, career searches and pathway s
       <div class="col-md-3 header-item last">
          <div class="small-header"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<a class="help-tooltip" data-toggle="tooltip"  data-placement="left" title="The number of career searches made in the time period">Career Searches (<% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %>)</a>
          </div>
-         <div class="main-figure">
+         <div class="main-figure" id="number-of-career-searches">
             <%= all_data["number_of_career_searches"] %>
          </div>
          <% if @time_period != "all_time" %>
@@ -133,7 +133,7 @@ The main graph shows the number of quick searches, career searches and pathway s
 
    <div class="row">
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="trending-tags-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="trending-tag-selector">
               <option value="vBar">V-Bar chart</option>
@@ -151,7 +151,7 @@ The main graph shows the number of quick searches, career searches and pathway s
         </div>
       </div>
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="trending-modules-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="trending-module-selector">
               <option value="vBar">V-Bar chart</option>
@@ -169,7 +169,7 @@ The main graph shows the number of quick searches, career searches and pathway s
         </div>
       </div>
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="most-saved-modules-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="saved-module-selector">
               <option value="vBar">V-Bar chart</option>
@@ -189,7 +189,7 @@ The main graph shows the number of quick searches, career searches and pathway s
     </div>
     <div class="row">
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="device-usage-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="device-usage-selector">
               <option value="vBar">V-Bar chart</option>
@@ -204,7 +204,7 @@ The main graph shows the number of quick searches, career searches and pathway s
         </div>
       </div>
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="top-reviewed-modules-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="reviewed-module-selector">
               <option value="vBar">V-Bar chart</option>
@@ -222,7 +222,7 @@ The main graph shows the number of quick searches, career searches and pathway s
         </div>
       </div>
        <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="top-rated-modules-tag" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="rated-module-selector">
               <option value="vBar" selected="selected">V-Bar chart</option>
@@ -242,7 +242,7 @@ The main graph shows the number of quick searches, career searches and pathway s
     </div>
     <div class="row">
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="most-active-students-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="active-students-selector">
               <option value="vBar">V-Bar chart</option>
@@ -257,7 +257,7 @@ The main graph shows the number of quick searches, career searches and pathway s
         </div>
       </div>
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="users-logged-in-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="login-selector">
               <option value="vBar">V-Bar chart</option>
@@ -271,7 +271,7 @@ The main graph shows the number of quick searches, career searches and pathway s
         </div>
       </div>
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="most-active-courses-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="active-courses-selector">
               <option value="vBar" selected="selected">V-Bar chart</option>
@@ -289,7 +289,7 @@ The main graph shows the number of quick searches, career searches and pathway s
     <% if current_user.user_level == "super_admin_access" %>
     <div class="row">
       <div class="col-md-4" >
-        <div class="col-md-12 login-card subox-card overview-card">
+        <div id="most-active-departments-card" class="col-md-12 login-card subox-card overview-card">
           <div class="side-right">
             <select class="selectpicker" id="active-departments-selector">
               <option value="vBar">V-Bar chart</option>

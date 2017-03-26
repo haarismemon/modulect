@@ -9,11 +9,13 @@ module BulkActionsSteps
 
   def select_bulk_clone
     find("#bulk-actions").click
+    wait_for_ajax
     find("#clone-all").click
   end
 
   def select_bulk_delete
     find("#bulk-actions").click
+    wait_for_ajax
     find("#delete-all").click
   end
 

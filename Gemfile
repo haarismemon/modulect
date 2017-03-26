@@ -28,7 +28,6 @@ gem 'kaminari'
 gem 'tinymce-rails',          '~> 4.3'
 gem 'device_detector'
 
-
 group :development, :test do
   gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -55,10 +54,10 @@ group :test do
   gem 'rspec-mocks', '~> 3.4', '>= 3.4.1'
   gem 'capybara'
   gem 'selenium-webdriver', '3.3.0'
+  gem 'rack_session_access'
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'simplecov'
-  gem 'pry-rails'
 end
 
 group :production do

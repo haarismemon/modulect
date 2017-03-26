@@ -2,7 +2,7 @@ require 'simplecov'
 SimpleCov.start
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'factory_girl_rails'
-
+require 'rack_session_access/capybara'
 require 'pry'
 
 ENV['RAILS_ENV'] ||= 'test'

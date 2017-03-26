@@ -3,7 +3,7 @@ module Admin::UploadHelper
   include UploadModulesHelper
   include UploadCoursesHelper
 
-  def parse_csv_and_display_notice(csv_text)
+  def parse_csv_and_display_notice(csv_text, resource_name, resource_header, uploader)
     # Replace characters not defined by utf-8
     csv_text = csv_text.encode(invalid: :replace, undef: :replace, replace: '')
     parsed_csv = CSV.parse(csv_text, headers: true)
@@ -12,25 +12,25 @@ module Admin::UploadHelper
 
     if parsed_csv.length == 0
       flash[:error] = 'Upload Failed: No records found. CSV is empty'
-    elsif uploaded_header != session[:resource_header]
+    elsif uploaded_header != resource_header
       # In this case the user didn't upload the resource the server was expecting
       flash[:error] = 'Upload Failed: Please ensure the CSV header matches the template file'
     else
       # Depending on the resource, call the appropriate upload method
       # And retrieve the number of creations and updates that were made
-      if session[:resource_name] == 'departments'
+      if resource_name == 'departments'
         creations, updates = upload_departments(parsed_csv)
-      elsif session[:resource_name] == 'faculties'
+      elsif resource_name == 'faculties'
         creations, updates = upload_faculties(parsed_csv)
-      elsif session[:resource_name] == 'courses'
-        creations, updates = upload_courses(parsed_csv)
-      elsif session[:resource_name] == 'uni_modules'
-        creations, updates = upload_uni_modules(parsed_csv)
+      elsif resource_name == 'courses'
+        creations, updates = upload_courses(parsed_csv, uploader)
+      elsif resource_name == 'uni_modules'
+        creations, updates = upload_uni_modules(parsed_csv, uploader)
       else
         flash[:notice] = 'Resource not recognized'
         creations, updates = 0, 0
       end
-      flash[:success] = "Upload complete: Attempted #{creations} creations, #{updates} updates"
+      flash[:success] = "Upload complete: Attempted #{creations} #{'creation'.pluralize(creations)}, #{updates} #{'update'.pluralize(updates)}"
     end
   end
 
@@ -94,22 +94,22 @@ module Admin::UploadHelper
     return creations, updates
   end
 
-  def upload_courses(parsed_csv)
+  def upload_courses(parsed_csv, uploader)
     creations, updates = 0, 0
     parsed_csv.each do |row|
       new_record = row.to_hash
-      new_creations, new_updates = upload_course(new_record)
+      new_creations, new_updates = upload_course(new_record, uploader)
       creations += new_creations
       updates += new_updates
     end
     return creations, updates
   end
 
-  def upload_uni_modules(parsed_csv)
+  def upload_uni_modules(parsed_csv, uploader)
     creations, updates = 0, 0
     parsed_csv.each do |row|
       new_record = row.to_hash
-      new_creations, new_updates = upload_uni_module(new_record)
+      new_creations, new_updates = upload_uni_module(new_record, uploader)
       creations += new_creations
       updates += new_updates
     end

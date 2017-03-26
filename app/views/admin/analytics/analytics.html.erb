@@ -6,73 +6,156 @@
 %>
 <% provide(:title, 'Analytics') %>
 <style>
-   #analytics-page .header-item{border-right:1px solid #dfe2e1;}
-   #analytics-page .header-item.last{border-right:0px;}
-   #analytics-page .tab-pane{padding-left:20px;padding-right: 20px;}
-   #analytics-page .small-header{font-weight:300;margin-bottom:5px;}
-   #analytics-page .main-figure{font-size:42px;margin-bottom:5px;}
-   #analytics-page .percentage-change{}
-   #analytics-page .green{color: #2ab27b;}
-   #analytics-page .red{color:#c77067;}
-   #analytics-page .header-card{padding-left: 0px;padding-right: 0px;padding-bottom: 0px;}
-   #analytics-page .header-item .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;font-family: "Open Sans"}
-   #analytics-page .overview-card{min-height: 320px;}
-   #analytics-page .subox-card{padding-left: 20px;padding-right: 20px;}
-   #analytics-page .subox-card .small-header {margin-bottom: 20px;}
-   #analytics-page .subox-card .small-header a{cursor: pointer;color: #555459;border-bottom:1px dotted #ccc;padding-bottom:5px;}
-   #analytics-page .expand-link a{color:#337ab7;font-family: "Open Sans";font-size: 12px;}
-   #analytics-page .trending-list{margin-left:15px;}
-   #analytics-page .trending-list li{ list-style: decimal;margin-bottom: 5px;font-size:16px;font-family: "Open Sans"}
-   .side-right{margin-left:auto;margin-right:auto;margin-bottom:25px;width:130px;}
-   .side-right .dropdown-toggle,
-   .side-right .dropdown-toggle:hover,
-   .side-right .dropdown-toggle:focus,
-   .side-right .dropdown-toggle:active {
-   background: whitesmoke;
-   color: #333;
-   box-shadow: 0px 3px 0px 0px #dfe2e1;
-   outline: none;
-   width: 130px;
-   font-size:13px;
-   padding-bottom: 0px;
-   }
-   #pagination-bottom .bootstrap-select{width:100px}
-   @media(max-width:991px) {
-   #analytics-page .header-item{border-right: 0px;border-bottom:1px solid #dfe2e1;padding-bottom:10px;text-align: center;}
-   #analytics-page .header-item.last{border-bottom:0px;}
-   #analytics-tabs li{display: block;float:none;}
-   }
+  #analytics-page .header-item {
+    border-right: 1px solid #dfe2e1;
+  }
+
+  #analytics-page .header-item.last {
+    border-right: 0px;
+  }
+
+  #analytics-page .tab-pane {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #analytics-page .small-header {
+    font-weight: 300;
+    margin-bottom: 5px;
+  }
+
+  #analytics-page .main-figure {
+    font-size: 42px;
+    margin-bottom: 5px;
+  }
+
+  #analytics-page .percentage-change {
+  }
+
+  #analytics-page .green {
+    color: #2ab27b;
+  }
+
+  #analytics-page .red {
+    color: #c77067;
+  }
+
+  #analytics-page .header-card {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+  }
+
+  #analytics-page .header-item .small-header a {
+    cursor: pointer;
+    color: #555459;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 5px;
+    font-family: "Open Sans"
+  }
+
+  #analytics-page .overview-card {
+    min-height: 320px;
+  }
+
+  #analytics-page .subox-card {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #analytics-page .subox-card .small-header {
+    margin-bottom: 20px;
+  }
+
+  #analytics-page .subox-card .small-header a {
+    cursor: pointer;
+    color: #555459;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 5px;
+  }
+
+  #analytics-page .expand-link a {
+    color: #337ab7;
+    font-family: "Open Sans";
+    font-size: 12px;
+  }
+
+  #analytics-page .trending-list {
+    margin-left: 15px;
+  }
+
+  #analytics-page .trending-list li {
+    list-style: decimal;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-family: "Open Sans"
+  }
+
+  .side-right {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 25px;
+    width: 130px;
+  }
+
+  .side-right .dropdown-toggle,
+  .side-right .dropdown-toggle:hover,
+  .side-right .dropdown-toggle:focus,
+  .side-right .dropdown-toggle:active {
+    background: whitesmoke;
+    color: #333;
+    box-shadow: 0px 3px 0px 0px #dfe2e1;
+    outline: none;
+    width: 130px;
+    font-size: 13px;
+    padding-bottom: 0px;
+  }
+
+  #pagination-bottom .bootstrap-select {
+    width: 100px
+  }
+
+  @media (max-width: 991px) {
+    #analytics-page .header-item {
+      border-right: 0px;
+      border-bottom: 1px solid #dfe2e1;
+      padding-bottom: 10px;
+      text-align: center;
+    }
+
+    #analytics-page .header-item.last {
+      border-bottom: 0px;
+    }
+
+    #analytics-tabs li {
+      display: block;
+      float: none;
+    }
+  }
 </style>
 
 <%= render partial: "admin/analytics/header" %>
 
 <div id="analytics-page">
-
-<%= render partial: "admin/analytics/tabs" %>
-
-<%
-all_data = get_all_data(@all_uni_modules, @all_users, @all_tags, @department, @time_period)
-
-%>
-   <div class="tab-content" style="margin-top:30px;">
-      <div id="overview" class="tab-pane fade in active">
-         <%= render partial: "admin/analytics/overview", :locals => {all_data: all_data} %>
-      </div>
-      <div id="quick-search" class="tab-pane fade">      
-         <%= render partial: "admin/analytics/quick_search", :locals => {all_data: all_data}  %>
-      </div>
-      <div id="pathway-search" class="tab-pane fade">   
-         <%= render partial: "admin/analytics/pathway_search", :locals => {all_data: all_data}  %>
-      </div>
-      <div id="career-search" class="tab-pane fade">
-         <%= render partial: "admin/analytics/career_search", :locals => {all_data: all_data}  %>
-      </div>
-      <div id="modules" class="tab-pane fade">
-         <%= render partial: "admin/analytics/modules", :locals => {all_data: all_data}  %>
-      </div>
-      <div id="tags" class="tab-pane fade">
-         <%= render partial: "admin/analytics/tags", :locals => {all_data: all_data}  %>
-      </div>
-   </div>
-</div>
+  <%= render partial: "admin/analytics/tabs" %>
+  <div class="tab-content" style="margin-top:30px;">
+    <div id="overview" class="tab-pane fade in active">
+      <%= render partial: "admin/analytics/overview", :locals => {all_data: @all_data} %>
+    </div>
+    <div id="quick-search" class="tab-pane fade">
+      <%= render partial: "admin/analytics/quick_search", :locals => {all_data: @all_data} %>
+    </div>
+    <div id="pathway-search" class="tab-pane fade">
+      <%= render partial: "admin/analytics/pathway_search", :locals => {all_data: @all_data} %>
+    </div>
+    <div id="career-search" class="tab-pane fade">
+      <%= render partial: "admin/analytics/career_search", :locals => {all_data: @all_data} %>
+    </div>
+    <div id="modules" class="tab-pane fade">
+      <%= render partial: "admin/analytics/modules", :locals => {all_data: @all_data} %>
+    </div>
+    <div id="tags" class="tab-pane fade">
+      <%= render partial: "admin/analytics/tags", :locals => {all_data: @all_data} %>
+    </div>
+  </div>
 </div>

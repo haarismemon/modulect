@@ -5,6 +5,7 @@ prp:
   credits: 15
   pass_rate: 40
   more_info_link: http://www.kcl.ac.uk/nms/depts/informatics/study/current/handbook/progs/Modules/4CCS1PRP.aspx
+  tags: software_engineer, network_engineer
 
 pra:
   name: Programming Applications
@@ -14,6 +15,7 @@ pra:
   exam_percentage: 75
   coursework_percentage: 25
   pass_rate: 50
+  tags: software_engineer, network_engineer
 
 fc1:
   name: Foundations of Computing 1
