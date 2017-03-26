@@ -116,9 +116,7 @@ module Admin
       @course.departments.clear()
       duration_in_years_pre_update = @course.duration_in_years
       if @course.update_attributes course_params
-
         
-      @course.departments.clear()
         @course.update_year_structures(duration_in_years_pre_update)
 
         departments = params[:course][:department_ids].split(',')
@@ -205,7 +203,7 @@ module Admin
     private
     def course_params
       params.require(:course).permit(:name, :description,
-                  :duration_in_years, :year, department_ids: [],
+                  :duration_in_years, :year,
                   year_structures_attributes: [:id, :year_of_study, :_destroy])
     end
 
