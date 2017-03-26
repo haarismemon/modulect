@@ -203,7 +203,7 @@ module Admin
     private
     def course_params
       params.require(:course).permit(:name, :description,
-                  :duration_in_years, :year, department_ids: [],
+                  :duration_in_years, :year,
                   year_structures_attributes: [:id, :year_of_study, :_destroy])
     end
 
