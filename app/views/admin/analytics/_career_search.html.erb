@@ -46,7 +46,7 @@ The main graph shows the number of career searches in the time period.
          datasets : [
          {
          label : "# number of career searches",
-         data : <%= attach_search_log_data_to_time_period(get_search_lists(@department, "career", 1, @time_period, Time.now), @time_period).to_json.html_safe %>,
+         data : <%= attach_search_log_data_to_time_period(get_search_lists(@department, "career", 1, @time_period, Time.now.utc), @time_period).to_json.html_safe %>,
          borderColor : "rgba(217,83,79,1)",
          backgroundColor : "rgba(217,83,79,0.1)"
          }
