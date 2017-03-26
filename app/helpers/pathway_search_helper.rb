@@ -21,12 +21,13 @@ module PathwaySearchHelper
     end
 
     # returns an array of tags with no duplicates
-    all_tags.uniq!
+    all_tags.uniq{|tag| tag.id}
   end
 
   # uses above helper to get all the tag names
   def all_tag_name_of_course(course)
     @all_tags = all_tags_of_course(course)
+    p @all_tags
     if !@all_tags.nil?
       @all_tags = @all_tags.pluck(:name)
     else
