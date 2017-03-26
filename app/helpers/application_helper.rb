@@ -275,7 +275,11 @@ module ApplicationHelper
   		end
 
   	else
-  		SearchLog.create(:search_type => type, :counter => 1)
+  		if logged_in? && current_user.department_id.present?
+  			SearchLog.create(:search_type => type, :counter => 1, :department_id => current_user.department_id)
+  		else
+  			SearchLog.create(:search_type => type, :counter => 1)
+  		end
 	end
 
   end
