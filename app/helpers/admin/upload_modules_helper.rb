@@ -50,8 +50,7 @@ module Admin::UploadModulesHelper
 
   def invalid_module_update?(csv_module, new_record_departments, uploader)
     # Prevent updating modules not in their department and prevent un-linking their own dept from module
-    dept_admin_invalid_request = is_not_super_admin?(uploader) && (!csv_module.departments.include?(uploader.department) || !new_record_departments.include?(uploader.department.name))
-    being_updated?(csv_module) && dept_admin_invalid_request
+    is_not_super_admin?(uploader) && being_updated?(csv_module) && (!csv_module.departments.include?(uploader.department) || !new_record_departments.include?(uploader.department.name))
   end
 
   def try_to_create_module(new_record, uploader)
