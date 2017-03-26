@@ -23,7 +23,6 @@ module SessionsHelper
 		end
 	end
 
-
 	# Returns the current logged in user.
 	def current_user
 		if (user_id = session[:user_id])

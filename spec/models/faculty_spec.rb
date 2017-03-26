@@ -72,6 +72,7 @@ RSpec.describe Faculty, type: :model do
     csv_content.slice! csv_header
     i = 0
     CSV.parse(csv_content) do |line|
+      line = line.join(",")
       faculty = faculties[i]
       expect(line).to include faculty.to_s
       faculty.departments.each do |department|

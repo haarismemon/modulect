@@ -1,9 +1,11 @@
 require 'support/selectize_select'
 require 'support/course_form_filler'
+require 'support/wait_for_ajax'
 
 module CourseCreationSteps
   include CourseFormFiller
   include SelectizeSelect
+  include WaitForAjax
 
   def select_new_course_action
     find("#new-course").click
@@ -32,7 +34,8 @@ module CourseCreationSteps
   end
 
   def click_add_module_group
-    find('.add_fields').click
+    find('#add-module-group').click
+    wait_for_ajax
   end
 
   def reload_page
