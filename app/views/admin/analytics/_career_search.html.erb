@@ -26,7 +26,7 @@ The main graph shows the number of career searches in the time period.
             <a class="help-tooltip" data-toggle="tooltip"  data-placement="right" title="The career which was most searched for">Top career of <% if @time_period == "day" %><%= format_time_period(@time_period, false, true)%><% else %><%= format_time_period(@time_period, true, false)%><% end %></a>
          </div>
          <div class="main-figure">
-         <%= get_top_module_name(get_top_size_check_analytics(all_data["clicked_tags"])) %>
+         <%= get_top_module_name(get_top_size_check_analytics(all_data["clicked_career_tags"])) %>
          </div>
          <div class="percentage-change">
             across any type of search
