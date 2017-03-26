@@ -53,24 +53,25 @@ module Admin
     password_received = params[:dwp]
     if current_user.is_password?(password_received)
 
-      Comment.destroy_all
-      Course.destroy_all
-      Department.destroy_all
-      Faculty.destroy_all
-      Group.destroy_all
-      Pathway.destroy_all
-      Tag.destroy_all
-      UniModule.destroy_all
-      User.where(:user_level => "user_access").destroy_all
-      User.where(:user_level => "department_admin_access").destroy_all
-      YearStructure.destroy_all
-      PathwaySearchLog.destroy_all
-      Notice.destroy_all
-      SearchLog.destroy_all
-      TagLog.destroy_all
-      UniModuleLog.destroy_all
-      VisitorLog.destroy_all
-      SuggestedPathway.destroy_all
+      Comment.delete_all
+      Course.delete_all
+      Department.delete_all
+      Faculty.delete_all
+      Group.delete_all
+      Pathway.delete_all
+      Tag.delete_all
+      UniModule.delete_all
+      User.where(:user_level => "user_access").delete_all
+      User.where(:user_level => "department_admin_access").delete_all
+      YearStructure.delete_all
+      PathwaySearchLog.delete_all
+      Notice.delete_all
+      SearchLog.delete_all
+      TagLog.delete_all
+      UniModuleLog.delete_all
+      VisitorLog.delete_all
+      SuggestedPathway.delete_all
+      SavedModule.delete_all
 
       # set settings back to default
       app_settings.update_attributes(:offline_message => "", :allow_new_registration => true, :tag_percentage_match => 60.0, :disable_new_reviews => false, :disable_all_reviews => false)
