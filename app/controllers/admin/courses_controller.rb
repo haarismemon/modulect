@@ -93,8 +93,9 @@ module Admin
         if params[:course][:department_ids].present? && !params[:course][:department_ids].empty?
           if current_user.user_level == "department_admin_access"
           user_dept = Department.find(current_user.department_id).name
-            if !(departments.include? user_dept)
-              @course.departments << Department.find_by_name(user_dept)
+         user_dept_obj = Department.find_by_name(user_dept)
+            if !(departments.include? user_dept) && !(@course.departments.include? user_dept_obj)
+              @course.departments << user_dept_obj
             end
           end
         end
@@ -113,9 +114,9 @@ module Admin
     # updates a course
     def update
       @course = Course.find(params[:id])
+      @course.departments.clear()
       duration_in_years_pre_update = @course.duration_in_years
       if @course.update_attributes course_params
-
 
         @course.update_year_structures(duration_in_years_pre_update)
 
@@ -123,8 +124,9 @@ module Admin
         if params[:course][:department_ids].present? && !params[:course][:department_ids].empty?
           if current_user.user_level == "department_admin_access"
           user_dept = Department.find(current_user.department_id).name
-            if !(departments.include? user_dept)
-              @course.departments << Department.find_by_name(user_dept)
+          user_dept_obj = Department.find_by_name(user_dept)
+            if !(departments.include? user_dept) && !(@course.departments.include? user_dept_obj)
+              @course.departments << user_dept_obj
             end
           end
         end

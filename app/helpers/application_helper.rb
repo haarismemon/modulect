@@ -248,8 +248,7 @@ module ApplicationHelper
 
   # add a type of search to the search log by checking if the type of search firstly exists and if it does increment a counter. if not it creates a new record.
   def add_to_search_log(type)
-  	logs = SearchLog.select{|log| log.search_type == type && log.created_at.hour == Time.now.hour}
-
+  	logs = SearchLog.select{|log| log.search_type == type && log.created_at.hour == Time.now.utc.hour}
   	if logs.size > 0
   		updated_some_log = false
   		logs.each do |log|
@@ -275,7 +274,11 @@ module ApplicationHelper
   		end
 
   	else
-  		SearchLog.create(:search_type => type, :counter => 1)
+  		if logged_in? && current_user.department_id.present?
+  			SearchLog.create(:search_type => type, :counter => 1, :department_id => current_user.department_id)
+  		else
+  			SearchLog.create(:search_type => type, :counter => 1)
+  		end
 	end
 
   end
