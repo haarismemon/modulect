@@ -5,3 +5,7 @@ informatics:
 physics:
   name: Physics with Applications
   faculty: nms
+
+chemistry:
+  name: Chemistry
+  faculty: nms

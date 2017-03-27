@@ -11,7 +11,7 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe AnalyticsHelper, type: :helper do
-  # fixtures :uni_modules
+  fixtures :uni_modules
 
   describe '#is_number?' do
     context 'when passed an integer' do
@@ -33,10 +33,10 @@ RSpec.describe AnalyticsHelper, type: :helper do
 
   describe '#get_review_modules_analytics' do
     context "when parsing visited modules data" do
-      # let! (:prp) { uni_modules(:prp) }
-      # let! (:uni_module_log) { UniModuleLog.create(counter: 2, uni_module: prp)}
-      # let! (:pra) { uni_modules(:pra)}
-      # let! (:uni_module_log2) { UniModuleLog.create(counter: 1, uni_module: pra)}
+      let! (:prp) { uni_modules(:prp) }
+      let! (:uni_module_log) { UniModuleLog.create(counter: 2, uni_module: prp)}
+      let! (:pra) { uni_modules(:pra)}
+      let! (:uni_module_log2) { UniModuleLog.create(counter: 1, uni_module: pra)}
 
       it "orders the modules in descending order of visits" do
         all_data = helper.get_all_data(UniModule.all, User.all, Tag.all, "any", "all_time")

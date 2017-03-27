@@ -27,7 +27,7 @@ feature 'Analytics', :js => true do
 
   context "statistics" do
     it "displays all statistics" do 
-      review_a_module(pra)
+      review_a_module(prp)
       visit_some_modules
       log_out
       login_and_visit_analytics_page

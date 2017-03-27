@@ -58,7 +58,7 @@ RSpec.describe Admin::UploadHelper, type: :helper do
 
     context "when handling multiple rows" do
 
-      let(:csv_text) { "name,code,description,lecturers,pass_rate,assessment_methods,semester,credits,exam_percentage,coursework_percentage,more_info_link,assessment_dates,prerequisite_modules,career_tags,interest_tags,departments\nShould add,8CCS2DSK,PLEASE CREATE,Kappa,80,Bananas,1,30,15,85,Kappa,YaKnow,,Informatics,Kappa,Informatics\nShould NOT,PLEASENO,,,,,2,15,,,,,INVALID MODULE,Informatics,Kappa,Chemistry\nShould add,8CCS2DSK,PLEASE UPDATE,,,,1,30,,,,,,Informatics,\"Kappa, Chocolates\",Informatics; Physics\n" }
+      let(:csv_text) { "name,code,description,lecturers,pass_rate,assessment_methods,semester,credits,exam_percentage,coursework_percentage,more_info_link,assessment_dates,prerequisite_modules,career_tags,interest_tags,departments\nShould add,8CCS2DSK,PLEASE CREATE,Kappa,80,Bananas,1,30,15,85,Kappa,YaKnow,,Informatics,Kappa,Informatics\nShould NOT,PLEASENO,,,,,2,15,,,,,INVALID MODULE,Informatics,Kappa,Chemistry\nShould add,8CCS2DSK,PLEASE UPDATE,,,,1,30,,,,,,Informatics,\"Kappa, Chocolates\",Informatics; Physics with Applications\n" }
 
       it "can both create and update" do
         expect{upload_csv(csv_text)}.to change{UniModule.count}.by(1)
@@ -116,7 +116,7 @@ RSpec.describe Admin::UploadHelper, type: :helper do
     end
 
     context "when passed multiple valid departments" do
-      let(:csv_text) { "name,departments\nMyFaculty,Informatics;Physics" }
+      let(:csv_text) { "name,departments\nMyFaculty,Informatics;Physics with Applications" }
       it "creates the faculty and associates the departments" do
         expect{upload_csv(csv_text)}.to change{Faculty.count}.by(1)
         expect_creation_attemps(1)
