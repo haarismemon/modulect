@@ -127,7 +127,6 @@ Rails.application.routes.draw do
   get 'career-search/choose'
   get 'career-search/view_results'
 
-  # UNI MODULES
   # Uni Modules
   resources :uni_modules, only: [:show] do
     resources :comments
