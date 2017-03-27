@@ -1,15 +1,10 @@
-module AnalyticsSteps
-  def setup_sophies_details
+require 'support/review_module'
 
-  end
-  def review_a_module
-    visit uni_module_path(prp)
-    click_button "Save"
-    find('#comment-creation-link').click
-    fill_in "comment_body", with: "An incredible module"
-    stars = page.all("ul.star-rating li")
-    stars[1].click
-    click_on 'Add Review'
+module AnalyticsSteps
+  include ReviewModule
+
+  def review_a_module(uni_module)
+    review_module(uni_module)
   end
 
   def visit_some_modules
