@@ -30,6 +30,7 @@ feature 'Reviewing a module', :js => true do
     find("option[value='rating']").click
     find("#helpful-btn-#{existing_comment.id}").click
     find("#report-btn-#{existing_comment.id}").click
+    find("#report-btn-#{existing_comment.id}").click
     find("#edit-btn-#{Comment.last.id}").click
     fill_in "edit-text-area", with: "A very, very good module!"
     find("#submit-btn").click

@@ -84,4 +84,10 @@ FactoryGirl.define do
   factory :pathway do
     data "1:23;45/2:37;38#"
   end
+
+  factory :suggested_pathway do
+    name "Success Pathway"
+    year 2015
+    course
+  end
 end

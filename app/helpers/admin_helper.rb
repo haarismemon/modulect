@@ -30,52 +30,30 @@ module AdminHelper
 
     # returns the number of courses for a department
     def get_num_courses_for_department(valid_department)
-      valid_department.courses.size
+      valid_department.courses.count
     end
 
     # returns the number of departments for a faculty
     def get_num_depts_for_faculty(valid_faculty)
-      count = 0
-
-      Department.all.each do |department|
-        if department.faculty_id == valid_faculty.id
-          count+= 1
-        end
-      end
-
-      count
+      valid_faculty.departments.count
     end
 
     # gets number of departments for a course
     def get_num_departments_for_course(valid_course)
-      count = 0
-      Department.all.each do |department|
-        if department.courses.include?(valid_course)
-          count+= 1
-        end
-      end
-
-      if count == 1 
-        count.to_s + " Department"
-      else 
-        count.to_s + " Departments"
-      end
+      count = valid_course.departments.count
+     "#{count} #{'Department'.pluralize(count)}"
     end
 
     def has_linked_tags(valid_module)
-      if valid_module.tags.size > 0
-        true
-      else
-        false
-      end
+      valid_module.tags.any?
     end
 
     # As a department admin, a group can be made out of modules
     # that only belong to that admin's managed departments.
     # Super admins can add any module.
-    def possible_uni_modules_for_new_group
-      if (current_user.department_admin?)
-        current_user.department.uni_modules
+    def possible_uni_modules_for_new_group(calling_user = current_user)
+      if (calling_user.department_admin?)
+        calling_user.department.uni_modules
       else
         UniModule.all
       end

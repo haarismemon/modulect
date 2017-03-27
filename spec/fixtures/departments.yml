@@ -1,6 +1,7 @@
 informatics:
   name: Informatics
   faculty: nms
+  uni_modules: prp, pra, fc1, fc2
 
 physics:
   name: Physics with Applications
