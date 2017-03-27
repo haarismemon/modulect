@@ -35,5 +35,3 @@ james:
   department: informatics
   faculty: nms
   last_login_time: <%= 2.hours.ago %>
-
-
