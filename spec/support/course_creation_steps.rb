@@ -18,6 +18,18 @@ module CourseCreationSteps
     click_button "New Course"
   end
 
+  def clone_first_course_on_index_page
+    visit admin_courses_path
+    select_first_checkbox
+    select_bulk_clone
+    confirm_bulk_action
+    expect(page).to have_current_path(admin_courses_path)
+    original_course = Course.first
+    cloned_course = Course.last
+    expect(page).to have_content("#{original_course.to_s}-CLONE")
+    expect(cloned_course.year_structures).not_to be_blank
+  end
+
   def define_a_module_group_for_each_year_structure(uni_modules_to_include)
     for i in 1 .. Course.last.year_structures.count
       visit edit_admin_course_path(Course.last)
