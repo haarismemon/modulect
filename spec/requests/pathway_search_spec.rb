@@ -9,9 +9,9 @@ feature "Student searching for module pathway", :js => true do
   include PathwaySearchSteps
   
   fixtures :users
-  fixtures :courses
   fixtures :departments
   fixtures :faculties
+  fixtures :courses
   fixtures :interest_tags
   fixtures :career_tags
   fixtures :uni_modules
@@ -56,8 +56,11 @@ feature "Student searching for module pathway", :js => true do
   given(:front_end_developer) { career_tags(:front_end_developer) }
   given(:hardware_engineer) { career_tags(:hardware_engineer) }
 
+  given (:james) { users(:james) }
+
   before do
     setup_database_associations
+    page.set_rack_session(user_id: james.id)
   end
 
   scenario "can select and save their modules" do
@@ -81,5 +84,14 @@ feature "Student searching for module pathway", :js => true do
     select_fourth_optional_module
 
     i_should_see_my_selected_optional_modules_for_first_year
+
+    fill_in "save-name", with: "MyPathway"
+    find("#save").click
+    click_on "Saved"
+    click_on "Saved Pathways"
+    click_on "Open"
+    i_should_see_all_compulsory_modules_for_my_year
+    i_should_see_my_selected_optional_modules_for_first_year
+    
   end
 end

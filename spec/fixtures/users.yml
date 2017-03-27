@@ -6,10 +6,10 @@ sophie:
   user_level: 3
   year_of_study: 1
   activated: true
-  activated_at: Time.zone.now
   course: computer_science_15
   department: informatics
   faculty: nms
+  activated_at: Time.zone.now
   last_login_time: <%= 2.hours.ago %>
 
 super_admin:
@@ -42,7 +42,4 @@ james:
   year_of_study: 1
   activated: true
   activated_at: Time.zone.now
-  course: computer_science_15
-  department: informatics
-  faculty: nms
   last_login_time: <%= 2.hours.ago %>

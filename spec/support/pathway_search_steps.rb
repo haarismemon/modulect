@@ -7,7 +7,7 @@ module PathwaySearchSteps
     select informatics.to_s.titleize, from: 'departments_select'
     wait_for_ajax
     select "BSc Computer Science (started 2015)", from: 'courses_select'
-    select "1", from: 'year_of_study_select'
+    select "1", from: 'user_year_of_study'
   end
 
   def select_first_three_tags
