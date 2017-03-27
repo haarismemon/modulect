@@ -13,6 +13,7 @@ feature 'Reviewing a module', :js => true do
   fixtures :comments
 
   given(:prp) { uni_modules(:prp) }
+  given (:existing_comment) { comments(:comment)}
 
   given! (:sophie) { users(:sophie) }
 
@@ -27,6 +28,14 @@ feature 'Reviewing a module', :js => true do
     review_module(prp)
     find("#sort-comments-by").click
     find("option[value='rating']").click
-    find(".helpful-btn").click
+    find("#helpful-btn-#{existing_comment.id}").click
+    find("#report-btn-#{existing_comment.id}").click
+    find("#edit-btn-#{Comment.last.id}").click
+    fill_in "edit-text-area", with: "A very, very good module!"
+    find("#submit-btn").click
+    expect(page).to have_content "A very, very good module!"
+    expect(page).to have_current_path(uni_module_path(prp))
+    find("#delete-btn-#{Comment.last.id}").click
+    expect(page).to have_current_path(uni_module_path(prp))
   end
 end
