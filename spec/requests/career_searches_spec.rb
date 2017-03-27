@@ -1,12 +1,9 @@
 require 'rails_helper'
-require 'support/wait_for_ajax'
-require 'support/pathway_search_steps'
+require 'support/career_search_steps'
 
-feature "Student searching for module pathway", :js => true do
-  include WaitForAjax
-  include PathwaySearchSteps
+feature "Student searching for a career", :js => true do
+  include CareerSearchSteps
   
-  fixtures :users
   fixtures :departments
   fixtures :faculties
   fixtures :courses
@@ -14,6 +11,7 @@ feature "Student searching for module pathway", :js => true do
   fixtures :career_tags
   fixtures :uni_modules
   fixtures :groups
+  fixtures :users
 
   given(:computer_science_15) { courses(:computer_science_15) }
   given(:informatics) { departments(:informatics) }
@@ -61,34 +59,23 @@ feature "Student searching for module pathway", :js => true do
     page.set_rack_session(user_id: james.id)
   end
 
-  scenario "can select and save their modules" do
+  scenario "can perform a career search" do
     visit root_path
-    click_on "Begin Search"
+    click_on "Start"
     fill_in_begin_form
     click_on "Next"
-    select_first_three_tags
-    click_on "View results"
-    i_should_see_all_compulsory_modules_for_my_year
+    find("label[for='4CCS1IAI']")
+    find("label[for='4CCS1IAI']").click
+    find("label[for='4CCS1DST']").click
+    find("label[for='4CCS1DBS']").click
+    find("label[for='4CCS1PRA']").click
+    click_on "View careers"
 
-    select_first_optional_module
-    sleep(1)
-
-    select_second_optional_module
-    sleep(1)
-
-    select_third_optional_module
-    sleep(1)
-
-    select_fourth_optional_module
-
-    i_should_see_my_selected_optional_modules_for_first_year
-
-    fill_in "save-name", with: "MyPathway"
-    find("#save").click
-    click_on "Saved"
-    click_on "Saved Pathways"
-    click_on "Open"
-    i_should_see_all_compulsory_modules_for_my_year
-    i_should_see_my_selected_optional_modules_for_first_year
+    expect(page).to have_content "Database Engineer"
+    expect(page).to have_content "Front-end Developer"
+    expect(page).to have_content "Hardware Engineer"
+    expect(page).to have_content "Logic Engineer"
+    expect(page).to have_content "Network Engineer"
+    expect(page).to have_content "Software Engineer"
   end
 end

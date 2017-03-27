@@ -42,10 +42,10 @@ class ApplicationController < ActionController::Base
     pathway = Pathway.find(params[:pathway_par])
     current_user.pathways.delete(pathway)
     if current_user.pathways.size < 1
-    respond_to do |format|
-      format.html { redirect_to '/saved#pathways' }
-      format.json { head :no_content }
-    end
+      respond_to do |format|
+        format.html { redirect_to '/saved#pathways' }
+        format.json { head :no_content }
+      end
     end
   end
 
